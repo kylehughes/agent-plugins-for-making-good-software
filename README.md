@@ -4,6 +4,22 @@ A Codex plugin marketplace for reusable skills and review workflows that help ma
 
 This is the Codex-native port of the Claude Code plugin marketplace with the same Apple Platform skill set. The port keeps skills inside the plugin and moves Claude subagents into project-scoped Codex custom agents under `.codex/agents/`.
 
+## Install
+
+Add this private GitHub marketplace to Codex:
+
+```shell
+codex plugin marketplace add kylehughes/codex-plugins-for-making-good-software
+```
+
+If Codex cannot resolve the private repository by slug, use the SSH URL instead:
+
+```shell
+codex plugin marketplace add git@github.com:kylehughes/codex-plugins-for-making-good-software.git
+```
+
+The GitHub account or SSH identity used by Codex must have access to the private repository. After the marketplace is registered, install or enable the `apple-platform` plugin from Codex's plugin UI surfaces.
+
 ## Marketplace
 
 The marketplace file is:
