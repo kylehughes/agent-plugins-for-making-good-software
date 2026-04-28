@@ -1,0 +1,33 @@
+{
+  "name": "apple-platform",
+  "version": "1.0.0",
+  "description": "Tools for Apple platform development.",
+  "author": {
+    "name": "Kyle Hughes"
+  },
+  "keywords": [
+    "apple",
+    "swift",
+    "ios",
+    "uikit",
+    "swift-concurrency",
+    "testing"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Apple Platform",
+    "shortDescription": "Swift, iOS, concurrency, testing, and review skills",
+    "longDescription": "Reusable Codex skills for Apple platform development, including Swift 6 coding standards, concurrency guidance, type-driven design, localization, UIKit content configuration, Swift Testing, code review, and technical writing.",
+    "developerName": "Kyle Hughes",
+    "category": "Productivity",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Use $apple-platform:writing-swift while updating this Swift code.",
+      "Use $apple-platform:reviewing-code to review this Swift diff.",
+      "Use $apple-platform:testing-swift-code to write Swift Testing tests."
+    ]
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "name": "making-good-software",
+  "interface": {
+    "displayName": "Making Good Software"
+  },
+  "plugins": [
+    {
+      "name": "apple-platform",
+      "source": {
+        "source": "local",
+        "path": "./plugins/apple-platform"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}
