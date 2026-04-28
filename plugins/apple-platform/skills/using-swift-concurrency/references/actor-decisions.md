@@ -1,19 +1,8 @@
----
-name: deciding-when-to-use-swift-actors
-description: >
-  Guides decisions about when Swift actors are appropriate vs classes, structs, or
-  @MainActor. Use when choosing between actor, class, or MainActor for shared state
-  management, when questioning whether an actor is the right concurrency primitive,
-  when actors are being introduced solely to fix Swift 6 compiler diagnostics, or when
-  deciding between struct, class, and actor for a new type. Also consult when evaluating
-  whether a "network client" or "service" type should be an actor, when synchronous
-  access requirements conflict with actor isolation, or when considering value types
-  vs reference types for concurrent code.
----
-
-# Deciding When to Use Swift Actors
+# Actor Decisions
 
 Apply these decision criteria when considering whether to introduce a custom actor into a Swift codebase.
+
+Source: Matt Massicotte, <https://www.massicotte.org/actors>, accessed 2025-11-24.
 
 ## The Actor Decision Test
 
@@ -33,7 +22,7 @@ If any condition is missing, use a different approach.
 | Shared state, all Sendable | Class (no actor needed) |
 | State needs synchronous access | Class with explicit synchronization |
 | Truly concurrent, non-Sendable state | Custom actor |
-| "Network client" with no non-Sendable state | `@MainActor` class with `async let` or `@concurrent` (Swift 6.2+) |
+| "Network client" with no non-Sendable state | `@MainActor` class with `async let` or `@concurrent` |
 
 ## Common Anti-Patterns
 
@@ -78,44 +67,6 @@ Before reaching actor vs class, first determine if a reference type is needed at
 
 Choose a class when sharing state without special isolation requirements. Choose an actor only when the three-condition test passes.
 
-## Concrete Example: Applying the Three-Condition Test
-
-Consider a type that caches downloaded images:
-
-```swift
-// Does it hold non-Sendable state? → Yes (NSCache is not Sendable)
-// Does it need atomic mutations? → Yes (concurrent cache reads/writes)
-// Can it run on MainActor? → No (image decoding is expensive)
-// ✅ All three conditions met → actor is appropriate
-
-actor ImageCache {
-    private let cache = NSCache<NSString, UIImage>()
-
-    func image(for key: String) -> UIImage? {
-        cache.object(forKey: key as NSString)
-    }
-
-    func store(_ image: UIImage, for key: String) {
-        cache.setObject(image, forKey: key as NSString)
-    }
-}
-```
-
-Now consider a type that fetches JSON from a URL:
-
-```swift
-// Does it hold non-Sendable state? → No (URLSession is Sendable)
-// ❌ First condition fails → actor is not appropriate
-
-@MainActor
-class APIClient {
-    func fetchUser(id: Int) async throws -> User {
-        let (data, _) = try await URLSession.shared.data(from: url)
-        return try JSONDecoder().decode(User.self, from: data)
-    }
-}
-```
-
 ## Mental Model: Actors as Remote Services
 
 Think of actors as remote network services:
@@ -126,13 +77,3 @@ Think of actors as remote network services:
 - All interaction is asynchronous
 
 This metaphor clarifies why synchronous access is impossible and why Sendable boundaries matter.
-
-## Scope
-
-This skill covers custom actors and `@MainActor` for local concurrency. It does not cover `distributed actor`, which introduces network transparency and has different design considerations.
-
-## Related Skills
-
-- **avoiding-problematic-swift-concurrency-patterns** — Covers what goes wrong when actors are misused (stateless actors, actors conforming to synchronous protocols, etc.).
-- **preventing-swift-logical-races** — Covers actor reentrancy bugs, which are a common surprise even when actors are the right choice.
-- **conforming-protocols-with-swift-concurrency** — Use when an actor or @MainActor type needs to conform to nonisolated protocols like Equatable or Hashable.

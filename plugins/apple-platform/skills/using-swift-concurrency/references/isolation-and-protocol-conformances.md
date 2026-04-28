@@ -1,18 +1,21 @@
----
-name: conforming-protocols-with-swift-concurrency
-description: >
-  Resolves protocol conformance isolation mismatches in Swift 6 concurrency. Use when
-  adding Equatable, Hashable, Codable, Comparable, CustomStringConvertible, Identifiable,
-  or other nonisolated protocol conformances to @MainActor-isolated or global-actor-isolated
-  types. Also use when encountering "conformance crosses into main actor-isolated code"
-  errors, when deciding between isolated conformances (@MainActor Equatable),
-  @preconcurrency conformance, nonisolated approaches, or assumeIsolated workarounds,
-  or when configuring Swift 6.2 InferIsolatedConformances and default-isolation settings.
----
+# Isolation and Protocol Conformances
 
-# Conforming Protocols with Swift Concurrency
+Use this reference to resolve protocol conformance isolation mismatches in Swift 6+. If you control the protocol definition, also read `protocol-design.md` before fixing only the conforming type.
 
-This skill provides guidance for resolving protocol conformance isolation mismatches in Swift 6+.
+Source: Matt Massicotte, "Concurrency Step-by-Step: Conforming to Protocols", <https://www.massicotte.org/step-by-step-conforming-to-protocols/>, accessed 2025-11-24.
+
+## Contents
+
+- [The Core Problem](#the-core-problem)
+- [Solution Selection](#solution-selection)
+- [Solution 1: Nonisolated Type (Preferred)](#solution-1-nonisolated-type-preferred)
+- [Solution 2: Isolated Conformance (Swift 6.2+)](#solution-2-isolated-conformance-swift-62)
+- [Solution 3: Preconcurrency Conformance](#solution-3-preconcurrency-conformance)
+- [Solution 4: Dynamic Isolation (Last Resort)](#solution-4-dynamic-isolation-last-resort)
+- [Swift 6.2 Compiler Settings](#swift-62-compiler-settings)
+- [Decision Flowchart](#decision-flowchart)
+- [Common Protocols Affected](#common-protocols-affected)
+- [Non-Sendable First Design](#non-sendable-first-design)
 
 ## The Core Problem
 
@@ -126,14 +129,13 @@ extension ImageModel: @preconcurrency Equatable {
 }
 ```
 
-**How it works**: Marks the conformance as predating full concurrency checking. The compiler treats the protocol methods as having the type's isolation, preventing calls from outside that isolation domain (e.g., calling `==` off the MainActor).
+**How it works**: Tells the compiler "treat this protocol as if it should be MainActor-isolated". Prevents calling `==` off the MainActor.
 
 **When to use**:
 - Isolated conformances cause compatibility issues
 - Need compile-time safety without isolated conformance complexity
-- Bridging code that predates Swift 6's strict concurrency model
 
-**Limitation**: Semantically implies the conformance predates concurrency — not always an accurate description for new code.
+**Limitation**: Semantically implies the protocol *should* be isolated but isn't—which isn't always accurate.
 
 ## Solution 4: Dynamic Isolation (Last Resort)
 
@@ -197,10 +199,6 @@ These nonisolated protocols frequently trigger isolation mismatches:
 - `CustomStringConvertible`
 - `Identifiable`
 
-### Synthesized Conformances (Codable, Hashable, Equatable)
-
-For protocols where the compiler synthesizes the implementation (e.g., `Codable` on a struct with all-Codable properties), the same isolation mismatch applies. The synthesized methods inherit the type's isolation, which conflicts with the nonisolated protocol requirement. Apply the same solution selection — isolated conformance or `@preconcurrency` — to synthesized conformances just as with manual ones.
-
 ## Non-Sendable First Design
 
 A powerful pattern: keep types nonisolated and non-Sendable by default.
@@ -223,8 +221,3 @@ struct ContentView: View {
 - Entire object graphs can share this pattern
 
 **Challenge**: Complex when the type needs internal async operations.
-
-## Related Skills
-
-- **avoiding-problematic-swift-concurrency-patterns** — Covers broader anti-patterns like actors conforming to synchronous protocols, which is a related but distinct problem.
-- **deciding-when-to-use-swift-actors** — Use when the upstream question is whether the type should be an actor at all, before worrying about protocol conformance isolation.

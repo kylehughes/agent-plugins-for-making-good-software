@@ -34,7 +34,7 @@ When the user asks to review a PR, branch, or diff:
 
 1. Compare the current branch against the relevant base branch, usually `main`.
 2. Use the `reviewing-code` skill for the review frame.
-3. For Swift changes, consult the focused Apple Platform skills that match the code touched: concurrency, actors, protocol conformance, symbol ordering, localization, API design, testing, and type modeling.
+3. For Swift changes, consult the focused Apple Platform skills that match the code touched: `using-swift-concurrency` for concurrency, actors, protocols, logical races, and async tests; then symbol ordering, localization, API design, testing, and type modeling as needed.
 4. Present concrete findings first, ordered by severity.
 5. Include file paths, symbols, and reproduction or verification notes where possible.
 6. Avoid style-only comments unless they hide correctness, maintainability, or platform-convention risk.

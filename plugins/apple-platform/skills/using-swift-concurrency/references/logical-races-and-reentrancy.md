@@ -1,18 +1,18 @@
----
-name: preventing-swift-logical-races
-description: >
-  Recognize and prevent logical race conditions (reentrancy, TOCTOU, state interleaving)
-  in Swift async/await code. Use when writing async functions that can be invoked multiple
-  times concurrently, working with actor reentrancy, migrating completion handlers to
-  async/await, debugging unexpected state in concurrent Swift code, implementing button
-  debouncing or guard-before-await patterns in SwiftUI, or when state checked before an
-  await is used after it. Also consult when Task ordering assumptions cause bugs or when
-  multiple taps/notifications trigger overlapping async work.
----
+# Logical Races and Reentrancy
 
-# Preventing Swift Logical Races
+Logical races occur when multiple asynchronous operations interleave in unexpected ways, causing incorrect state. Unlike data races (multiple threads accessing the same memory), logical races can occur even in single-threaded code with a runloop. This reference covers recognition and prevention strategies.
 
-Logical races occur when multiple asynchronous operations interleave in unexpected ways, causing incorrect state. Unlike data races (multiple threads accessing the same memory), logical races can occur even in single-threaded code with a runloop. This skill covers recognition and prevention strategies.
+Source: Matt Massicotte, "Concurrency Step-by-Step: Stateful Systems", <https://www.massicotte.org/step-by-step-stateful-systems/>, accessed 2025-11-24.
+
+## Contents
+
+- [Understanding Logical Races](#understanding-logical-races)
+- [Key Principle: Synchronous Critical Sections](#key-principle-synchronous-critical-sections)
+- [Actor Reentrancy](#actor-reentrancy)
+- [Migration Pitfalls: Completion Handlers → Async/Await](#migration-pitfalls-completion-handlers--asyncawait)
+- [Debugging Technique: Artificial Delays](#debugging-technique-artificial-delays)
+- [Recognition Checklist](#recognition-checklist)
+- [Summary](#summary)
 
 ## Understanding Logical Races
 
@@ -76,7 +76,7 @@ private func press() {
 }
 ```
 
-This works because the Task inherits @MainActor isolation, so its synchronous preamble (everything before the first `await`) executes atomically on the main thread. A second Task created by another tap will not begin its synchronous preamble until the first Task reaches its first `await` and suspends.
+This works because the Task body runs on @MainActor—only one can execute synchronous code at a time.
 
 ### Incorrect Pattern
 
@@ -200,7 +200,7 @@ private func press() {
 }
 ```
 
-These delays magnify real timing variations to make races more observable during testing. Use this technique only in debug builds or test targets — never ship `usleep` calls in production code.
+These delays magnify real timing variations to make races more observable during testing.
 
 ## Recognition Checklist
 
@@ -221,8 +221,3 @@ When reviewing async code, watch for:
 | Actor reentrancy | Actors prevent data races, not logical races |
 | Migration risk | async/await has different ordering semantics |
 | Single-threaded | MainActor code can still have logical races |
-
-## Related Skills
-
-- **deciding-when-to-use-swift-actors** — If actor reentrancy is proving too complex, the type may not need to be an actor. Consult this skill to re-evaluate.
-- **avoiding-problematic-swift-concurrency-patterns** — Covers structural anti-patterns (unstructured tasks, blocking async work) that often coexist with logical race issues.

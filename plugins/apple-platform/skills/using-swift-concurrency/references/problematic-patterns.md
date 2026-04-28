@@ -1,21 +1,18 @@
----
-name: avoiding-problematic-swift-concurrency-patterns
-description: >
-  Identifies and corrects common anti-patterns in Swift Concurrency code, including
-  split isolation, Task.detached misuse, stateless actors, blocking async work,
-  improper MainActor usage, unstructured Task overuse, and non-Sendable async pitfalls.
-  Use when reviewing or writing Swift async/await code, diagnosing Swift 6 concurrency
-  warnings or errors, refactoring completion-handler code to structured concurrency,
-  choosing between Task and async let, or fixing actor and MainActor isolation issues.
-  Also consult this skill when encountering DispatchSemaphore deadlocks in async contexts,
-  @preconcurrency import concerns, or redundant Sendable conformances.
----
+# Problematic Patterns
 
-# Avoiding Problematic Swift Concurrency Patterns
+Use this reference to recognize and fix common problematic patterns when using Swift Concurrency. These patterns are not inherently wrong but frequently lead to issues, compiler warnings, or unintended behavior.
 
-This skill provides guidance on recognizing and fixing common problematic patterns when using Swift Concurrency. These patterns are not inherently wrong but frequently lead to issues, compiler warnings, or unintended behavior.
+Source: Matt Massicotte, <https://www.massicotte.org/problematic-patterns/>, accessed 2025-11-24.
 
-## When to Apply This Skill
+## Contents
+
+- [When to Apply This Reference](#when-to-apply-this-reference)
+- [Pattern Quick Reference](#pattern-quick-reference)
+- [Detailed Patterns](#detailed-patterns)
+- [Non-Sendable Types with Async Methods](#non-sendable-types-with-async-methods)
+- [Summary Checklist](#summary-checklist)
+
+## When to Apply This Reference
 
 - Reviewing or writing Swift code that uses async/await, actors, or Task
 - Diagnosing Swift 6 concurrency warnings or errors
@@ -182,18 +179,16 @@ class ViewModel { }  // Already Sendable
 Combining both attributes on closures:
 
 ```swift
-// POTENTIALLY REDUNDANT (Swift 6.0+)
+// POTENTIALLY REDUNDANT (Swift 6+)
 @MainActor @Sendable () -> Void
 ```
 
-**Why problematic**: In Swift 6.0+, `@MainActor` closures are implicitly Sendable. The explicit `@Sendable` is redundant and suggests a misunderstanding of how global actor isolation provides Sendability.
+**Context**: In Swift 6, `@MainActor` closures are implicitly Sendable. The combination is only needed for Swift 5/Xcode 15 compatibility.
 
-**Fix** (Swift 6.0+ only):
+**For Swift 6 only**:
 ```swift
-@MainActor () -> Void  // Implicitly Sendable
+@MainActor () -> Void  // Sufficient
 ```
-
-**Note**: Keep both attributes if the code must also compile under Swift 5 / Xcode 15, where the implicit Sendability does not apply.
 
 ### Blocking for Async Work
 
@@ -344,7 +339,7 @@ let result = await objcObject.fetchData()
 
 **Guideline**: Only use auto-translated async APIs when the threading behavior is known. Prefer explicit wrappers when uncertain.
 
-### Non-Sendable Types with Async Methods
+## Non-Sendable Types with Async Methods
 
 Adding async methods to non-Sendable types without isolated parameters:
 
@@ -373,21 +368,11 @@ When reviewing Swift Concurrency code, check for:
 
 - [ ] Types with mixed isolation domains (split isolation)
 - [ ] Task.detached used just for MainActor offloading
-- [ ] Explicit task priorities without documented justification
+- [ ] Explicit priorities without documented justification
 - [ ] MainActor.run instead of @MainActor declarations
 - [ ] Actors without mutable instance state
-- [ ] Redundant Sendable conformances on global-actor-isolated types
-- [ ] @MainActor @Sendable closures that could drop @Sendable in Swift 6
 - [ ] Semaphores or DispatchGroups waiting on async work
 - [ ] Large closure bodies (extract to named functions)
-- [ ] Unstructured tasks where structured concurrency would work
+- [ ] Unstructured tasks where structured would work
 - [ ] Async extensions on @preconcurrency imported types
 - [ ] Actors conforming to synchronous protocols
-- [ ] Auto-translated Obj-C async APIs with unknown threading behavior
-- [ ] Non-Sendable types with async methods missing isolated parameters
-
-## Related Skills
-
-- **deciding-when-to-use-swift-actors** — Use when the question is whether to introduce an actor at all, not just how to use one correctly.
-- **preventing-swift-logical-races** — Use when investigating reentrancy bugs or state interleaving in async code, which are distinct from the structural anti-patterns covered here.
-- **conforming-protocols-with-swift-concurrency** — Use when resolving protocol conformance isolation mismatches on MainActor-isolated types.

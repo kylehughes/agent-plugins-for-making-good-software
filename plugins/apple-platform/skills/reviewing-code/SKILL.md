@@ -56,10 +56,7 @@ Inconsistency means the change is incomplete. A design change that only updates 
 With design verified, check the implementation against these standards. Consult the referenced skills for detailed rules:
 
 **Concurrency** (highest bug priority — concurrency issues are the hardest to reproduce and fix):
-- `preventing-swift-logical-races` — Guards before await, reentrancy protection
-- `avoiding-problematic-swift-concurrency-patterns` — No Task.detached, no MainActor.run, no blocking async
-- `conforming-protocols-with-swift-concurrency` — Isolated conformances, non-Sendable first
-- `deciding-when-to-use-swift-actors` — Three conditions for actor use
+- `using-swift-concurrency` — progressive-disclosure guidance for actors, protocol design, conformance isolation, logical races, problematic patterns, terminology, and async tests
 
 **Structure**:
 - `organizing-swift-types` — Access control, extension usage, no MARK comments
@@ -84,7 +81,7 @@ Implementation problems often mean incomplete design understanding. Fix that fir
 
 - Design changes without acknowledgment
 - Logical race conditions (check-then-act across await boundaries)
-- Actors that don't meet the three-condition test from `deciding-when-to-use-swift-actors`
+- Actors that don't meet the three-condition test from `using-swift-concurrency`
 - Force unwraps (`!`), `try!`, `as!`
 - XCTest usage (should be Swift Testing)
 - Inconsistency with surrounding code's assumptions

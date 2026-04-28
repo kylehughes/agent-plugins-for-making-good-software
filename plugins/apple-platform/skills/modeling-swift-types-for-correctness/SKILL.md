@@ -22,7 +22,7 @@ This skill covers *how to shape types* for correctness. Adjacent skills cover co
 - `organizing-swift-types` — *where* to put types (access control, extensions, file structure)
 - `designing-swift-apis` — *how to name* types (clarity at the point of use)
 - `writing-swift` — coding standards that apply to all Swift code
-- `preventing-swift-logical-races` — state correctness under concurrency
+- `using-swift-concurrency` — state correctness under concurrency
 
 ## When to Apply
 
@@ -380,4 +380,4 @@ Tenet 1: "Be pragmatic, not dogmatic." Type-driven design adds value only when t
 | `organizing-swift-types` | WHERE to put types you create |
 | `designing-swift-apis` | HOW to name the types and their members |
 | `writing-swift` | Coding standards applying to all Swift code |
-| `preventing-swift-logical-races` | State correctness under concurrency |
+| `using-swift-concurrency` | State correctness under concurrency |

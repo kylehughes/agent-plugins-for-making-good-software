@@ -46,7 +46,7 @@ Use progressive disclosure—layer your understanding before judging.
 **Layer 2: Context** (just-in-time)
 6. For each file, read the change with the matching command for the scope: parent-provided diff, `git diff <base>...HEAD -- path`, `git diff --cached -- path`, `git diff -- path`, or the full file for untracked files.
 7. Load relevant skills based on what the code contains:
-   - Concurrency code → `avoiding-problematic-swift-concurrency-patterns`, `conforming-protocols-with-swift-concurrency`, `preventing-swift-logical-races`, `deciding-when-to-use-swift-actors`
+   - Concurrency code → `using-swift-concurrency`
    - Type definitions → `organizing-swift-types`, `designing-swift-apis`
    - User-facing strings → `localizing-strings`
    - Symbol declarations → `ordering-symbols`

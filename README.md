@@ -34,19 +34,15 @@ plugins/apple-platform/.codex-plugin/plugin.json
 
 | Skill | Purpose |
 | :---- | :------ |
-| `avoiding-problematic-swift-concurrency-patterns` | Identifies and corrects common Swift Concurrency anti-patterns. |
 | `configuring-ios-content` | Implements `UIContentConfiguration`, `UIHostingConfiguration`, and `UIContentView`. |
-| `conforming-protocols-with-swift-concurrency` | Resolves Swift 6 protocol conformance isolation mismatches. |
-| `deciding-when-to-use-swift-actors` | Guides actor, class, struct, and `@MainActor` decisions. |
 | `designing-swift-apis` | Applies Apple's Swift API design guidelines. |
 | `localizing-strings` | Localizes user-facing strings with `String(localized:)` and string catalogs. |
 | `modeling-swift-types-for-correctness` | Designs Swift types that make invalid states unrepresentable. |
 | `ordering-symbols` | Defines canonical member ordering for Swift types. |
 | `organizing-swift-types` | Defines Swift type, extension, access control, and file layout conventions. |
-| `preventing-swift-logical-races` | Recognizes and prevents logical races in async Swift code. |
 | `reviewing-code` | Reviews Apple Platform changes for design consistency and correctness. |
 | `testing-swift-code` | Writes tests with the Swift Testing framework. |
-| `understanding-swift-concurrency-terms` | Defines Swift Concurrency terminology. |
+| `using-swift-concurrency` | Uses progressive-disclosure references for Swift Concurrency design, diagnostics, actors, protocols, logical races, anti-patterns, terminology, and async tests. |
 | `writing-swift` | Covers Swift 6 coding standards and file organization. |
 | `writing-technical-writing` | Writes direct, pragmatic technical prose. |
 
