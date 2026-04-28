@@ -41,6 +41,7 @@ plugins/apple-platform/.codex-plugin/plugin.json
 | `ordering-symbols` | Defines canonical member ordering for Swift types. |
 | `organizing-swift-types` | Defines Swift type, extension, access control, and file layout conventions. |
 | `reviewing-code` | Reviews Apple Platform changes for design consistency and correctness. |
+| `simplify-code` | Reviews changed code for reuse, simplicity, quality, and efficiency, then fixes issues directly. |
 | `testing-swift-code` | Writes tests with the Swift Testing framework. |
 | `using-swift-concurrency` | Uses progressive-disclosure references for Swift Concurrency design, diagnostics, actors, protocols, logical races, anti-patterns, terminology, and async tests. |
 | `writing-swift` | Covers Swift 6 coding standards and file organization. |
