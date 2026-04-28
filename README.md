@@ -59,4 +59,4 @@ Codex custom agents are not bundled as plugin components in this port. They live
 | `technical-writing-auditor` | Audits Markdown and doc comments for voice and structure. |
 | `type-driven-design-auditor` | Finds compile-time correctness opportunities in Swift types. |
 
-Use these agents only when explicitly asking Codex for subagents, delegated review, or parallel agent work. Otherwise the skills can be invoked directly with `$skill-name` or selected implicitly by Codex.
+Use these agents only when explicitly asking Codex for subagents, delegated review, or parallel agent work. Otherwise the skills can be invoked directly with plugin-qualified names like `$apple-platform:writing-swift` or selected implicitly by Codex.
