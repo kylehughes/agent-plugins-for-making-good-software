@@ -1,975 +1,448 @@
-# Type-Driven State Modeling — Deep Reference
+# Type-Driven State Modeling - Core Reference
 
-Extended treatment of every pattern from [SKILL.md](SKILL.md). Each section provides full before/after code, trade-off analysis, and decision guidance for Swift 6.2.
+This file is the entry reference for `modeling-swift-types-for-correctness`. It covers how to choose a modeling strategy, how strong each proof is, where Swift's type system stops, and how to migrate code without overmodeling it.
 
----
+For detailed pattern catalogs, load only the focused reference needed for the task:
 
-## Sum Types Over Boolean Flags
+- [references/algebraic-and-value-modeling.md](references/algebraic-and-value-modeling.md)
+- [references/generics-phantom-and-protocols.md](references/generics-phantom-and-protocols.md)
+- [references/ownership-concurrency-boundaries.md](references/ownership-concurrency-boundaries.md)
 
-### Decision Flowchart
+## What Kind of Invariant Is This?
 
-1. Are there two or more booleans that are mutually exclusive? → **Enum.**
-2. Is there a boolean paired with an optional that is non-nil only when true? → **Enum with associated value.**
-3. Is there a boolean paired with an optional that is non-nil only when false? → **Enum with associated value.**
-4. Is the boolean truly independent of all other state? → **Keep the boolean.**
+Classify the invariant before choosing a construct.
 
-### Full Before/After: Loading State
-
-**Before** — 8 representable states, 3 valid:
-
-```swift
-final class ViewModel: ObservableObject {
-    @Published var data: [Item]?
-    @Published var error: Error?
-    @Published var isLoading: Bool = false
-
-    func load() async {
-        isLoading = true
-        error = nil
-        do {
-            data = try await fetchItems()
-        } catch {
-            self.error = error
-        }
-        isLoading = false
-    }
-}
-```
-
-Invalid states: `isLoading = true` + `error != nil`, `isLoading = true` + `data != nil` + `error != nil`, etc. Each consumer must handle these defensively.
-
-**After** — 3 representable states, 3 valid:
-
-```swift
-final class ViewModel: ObservableObject {
-    @Published var items: LoadState<[Item]> = .loading
-
-    func load() async {
-        items = .loading
-        do {
-            items = .completed(.success(try await fetchItems()))
-        } catch {
-            items = .completed(.failure(error))
-        }
-    }
-}
-```
-
-No invalid states exist. The view can switch exhaustively.
-
-### Full Before/After: Authentication
-
-**Before:**
-
-```swift
-struct Session {
-    var isAuthenticated: Bool
-    var token: String?
-    var user: User?
-}
-// isAuthenticated = true, token = nil → crash when unwrapping
-```
-
-**After:**
-
-```swift
-enum Session: Sendable {
-    case authenticated(token: String, user: User)
-    case unauthenticated
-}
-```
-
-### Trade-Off Analysis
-
-| Factor | Booleans | Enum |
+| Invariant class | Question | Good first tools |
 |---|---|---|
-| States representable | 2^n (exponential) | Exactly n cases |
-| Invalid state possible | Yes | No |
-| Pattern matching | if/else chains | switch (exhaustive) |
-| Adding a new state | Add boolean + update all guards | Add case + compiler errors guide fixes |
-| Discoverability | Must read docs | Autocomplete shows all cases |
-| Cognitive load | Grows with boolean count | Constant per case |
+| Exclusivity | Can exactly one variant be true? | `enum`, `Result`, `Optional` |
+| Co-presence | Do fields become valid together? | Enum associated values, richer struct |
+| Absence reason | Is missing data meaningful? | Optional, enum, typed error |
+| Identity/domain | Can two same-shaped values be swapped? | Newtype, phantom tag |
+| Cardinality | Is zero, one, at least one, or fixed size required? | `NonEmpty`, `OptionSet`, `InlineArray`, integer generics |
+| Ordering | Must values be sorted or normalized? | Canonicalizing initializer |
+| Bounds | Must values be positive, finite, or within a range? | Bounded newtype, property wrapper |
+| Units/dimensions | Can units be mixed accidentally? | `Quantity<Unit, Value>`, phantom unit tags |
+| Phase/state | Are only some operations legal now? | Enum, typestate, constrained extension |
+| Capability/authority | Should possession of a value grant permission? | Token with private initializer |
+| Trust/sanitization | Has untrusted data been checked or escaped? | Raw/safe state wrapper |
+| Isolation | Which executor owns this value? | Actor isolation, global actor, `Sendable`, snapshot |
+| Ownership/lifetime | Can the value be copied or escape? | `~Copyable`, `~Escapable`, `borrowing`, `consuming`, `Span` |
+| Failure surface | What failures can occur? | `throws(E)`, `Result<Value, Failure>`, `Never` |
+| Layout/performance | Is representation part of correctness? | `InlineArray`, `BitwiseCopyable`, fixed wrappers |
+| Source boundary | Where does raw external data enter? | DTO -> domain refinement |
 
-### When to Consolidate Multiple Enums
+## Invariant-to-Tool Matrix
 
-If two enums always change together, they may be one enum in disguise:
+| Tool | Proves | Does Not Prove |
+|---|---|---|
+| `enum` | Finite variants and case-specific payloads | External string validity unless decoded carefully |
+| Struct/newtype | Nominal distinction and encapsulated validation | Safety if public storage or memberwise init bypass validation |
+| Optional | Absence allowed | Why absence happened |
+| `Result` | Stored success/failure outcome | Exhaustive control flow unless switched |
+| Generic wrapper | Relationship carried in type signature | Runtime-derived value constraints |
+| Phantom tag | Same representation, different domain/state | Unforgeability without controlled construction |
+| Constrained extension | Operation exists only when constraints hold | Simplicity when states are highly dynamic |
+| Associated type | Families of related types | Heterogeneous storage without erasure |
+| Same-type constraint | Two axes are identical | Arbitrary value-level equality |
+| `Sendable` | Safe transfer across concurrency domains | Thread safety of `@unchecked Sendable` without audited synchronization |
+| Actor/global actor | Executor ownership | Value validity outside that isolation unless snapshot/refined |
+| `~Copyable` | No implicit copies; consumed values cannot be reused | Collection/storage ergonomics of ordinary values |
+| `~Escapable` | Borrowed value cannot escape its lifetime | General dependent lifetime logic |
+| `Span` | Borrowed contiguous-memory view with compiler-checked lifetime | Ownership of the backing storage |
+| `InlineArray` | Fixed element count in the type | Dynamic size validation |
+| Integer generic parameter | Literal integer carried in a type | Arbitrary runtime integer as a type parameter |
+| Property wrapper | Repeated storage-level policy | Cross-field invariants by itself |
+| Macro | Generated proof plumbing; literal/static validation | Runtime input validity |
+| Result builder | DSL grammar shape | Required fields unless paired with staged/validated output |
+| Key path | Typed field reference | Dynamic field names from untrusted input |
+| Protocol witness | Behavior as a value | Free static specialization in every context |
+| Type eraser | Storage while preserving chosen axes | Axes you erase from the wrapper |
+
+## Proof-Strength Ladder
+
+Prefer the weakest construct that actually prevents misuse.
+
+| Strength | Construct | What It Buys |
+|---|---|---|
+| 1 | Comment | Human reminder only |
+| 2 | `typealias UserID = String` | Better vocabulary, no type safety |
+| 3 | External parameter label | Reduces call-site confusion |
+| 4 | Newtype | Prevents same-raw-type swaps |
+| 5 | Failable/throwing initializer | Validates before construction |
+| 6 | Private init + factory | Centralizes proof creation |
+| 7 | Enum with payloads | Invalid state combinations disappear |
+| 8 | Phantom/generic state | Invalid operations are absent |
+| 9 | Constrained extension/where clause | Relationships become compile-time requirements |
+| 10 | Ownership/lifetime type | Compiler enforces use-after-consume and nonescape rules |
+| 11 | Macro/literal validation | Static input checked before runtime |
+| 12 | Compiler mode/test harness | Regression pressure across the project |
+
+Type modeling is only a proof when all construction routes preserve the invariant. Audit these bypasses:
+
+- public stored properties
+- public or internal memberwise initializers
+- synthesized `Decodable`
+- public `init(rawValue:)`
+- public marker-protocol conformance
+- `unsafeBitCast`, force casts, unchecked bridging
+- `@unchecked Sendable`
+- `unsafeAssumingValid` helpers
+- test-only factories that leak into production modules
+
+## State-Count Arithmetic
+
+Count representable states, then count valid states. A type is suspicious when the gap is large.
 
 ```swift
-// Suspicious: these always change in lockstep
-enum ConnectionStatus { case connected, disconnected }
-enum DataStatus { case loaded, empty }
-
-// Better: single enum if states are correlated
-enum AppState {
-    case connected(data: [Item])
-    case disconnected
-    case loading
+struct LoadingModel {
+    var data: [Item]?
+    var error: Error?
+    var isLoading: Bool
 }
 ```
 
----
-
-## Product Type Consolidation
-
-### Decision Flowchart
-
-1. Are two or more arrays indexed in parallel? → **Single array of struct.**
-2. Is a dictionary used with a fixed, known set of keys? → **Named struct.**
-3. Is a tuple returned from a function and consumed across multiple call sites? → **Named struct.**
-4. Is a tuple used locally within a single function? → **Keep the tuple.**
-
-### Full Before/After: Parallel Arrays
-
-**Before:**
+This has `2 * 2 * 2 = 8` representable nil/error/loading combinations before considering the actual array contents. If the domain allows only idle, loading, loaded, and failed, use an enum.
 
 ```swift
-final class ContactList {
-    var emails: [String] = []
-    var names: [String] = []
-    var phoneNumbers: [String] = []
-
-    func addContact(name: String, email: String, phone: String) {
-        emails.append(email)
-        names.append(name)
-        phoneNumbers.append(phone)
-    }
-
-    func removeContact(at index: Int) {
-        emails.remove(at: index)
-        names.remove(at: index)
-        // Forgot phoneNumbers — silent bug
-    }
-}
-```
-
-**After:**
-
-```swift
-struct Contact: Sendable {
-    let email: String
-    let name: String
-    let phoneNumber: String
-}
-
-final class ContactList {
-    var contacts: [Contact] = []
-
-    func addContact(_ contact: Contact) {
-        contacts.append(contact)
-    }
-
-    func removeContact(at index: Int) {
-        contacts.remove(at: index) // All fields removed atomically
-    }
-}
-```
-
-### Full Before/After: Dictionary-as-Struct
-
-**Before:**
-
-```swift
-func parseConfig(_ json: [String: Any]) -> [String: Any] {
-    var config: [String: Any] = [:]
-    config["timeout"] = json["timeout"] as? Int ?? 30
-    config["retryCount"] = json["retryCount"] as? Int ?? 3
-    config["baseURL"] = json["baseURL"] as? String ?? "https://api.example.com"
-    return config
-}
-
-// Consumer: must know key names and types
-let timeout = config["timeout"] as! Int // Force cast, typo-prone
-```
-
-**After:**
-
-```swift
-struct NetworkConfig: Sendable {
-    let baseURL: String
-    let retryCount: Int
-    let timeout: Int
-
-    init(json: [String: Any]) {
-        baseURL = json["baseURL"] as? String ?? "https://api.example.com"
-        retryCount = json["retryCount"] as? Int ?? 3
-        timeout = json["timeout"] as? Int ?? 30
-    }
-}
-
-// Consumer: type-safe, autocomplete-friendly
-let timeout = config.timeout
-```
-
----
-
-## Optionality Refinement
-
-### Decision Flowchart
-
-1. Is an optional always non-nil when another field has a specific value? → **Enum with associated value.**
-2. Is an optional always nil when another field has a specific value? → **Enum with associated value.**
-3. Are two optionals mutually exclusive (exactly one is non-nil)? → **Enum with associated values.**
-4. Can both optionals independently be nil or non-nil? → **Keep both optional.**
-
-### Full Before/After: Form State
-
-**Before:**
-
-```swift
-struct FormState {
-    var errorMessage: String?
-    var isSubmitting: Bool
-    var submittedAt: Date?
-    var validationErrors: [String]?
-}
-// isSubmitting = true, submittedAt != nil → incoherent
-// errorMessage != nil, validationErrors != nil → which errors to show?
-```
-
-**After:**
-
-```swift
-enum FormState: Sendable {
-    case editing(validationErrors: [String])
-    case failed(errorMessage: String)
+enum LoadingModel {
     case idle
-    case submitted(at: Date)
-    case submitting
+    case loading
+    case loaded([Item])
+    case failed(Error)
 }
 ```
 
-Each state carries exactly the data relevant to it. No impossible combinations.
-
----
-
-## Phantom Types
-
-### Decision Flowchart
-
-1. Are there two or more values of the same underlying type (e.g., both `String`) that serve different roles at a call site? → **Phantom-typed wrapper.**
-2. Does a value pass through distinct states where different operations are valid in each? → **State-tagged phantom type.**
-3. Is there a builder or configuration with required fields that could be forgotten? → **Phantom-typed builder pattern.**
-4. Is there only one identifier of this type in the module, with no risk of confusion? → **Keep the raw type.**
-
-### Core Technique
-
-A phantom type parameter appears in the type signature but not in the stored properties. It exists only to create distinct types at the compile-time level.
+The same arithmetic catches optional product explosions:
 
 ```swift
-struct Tagged<Tag, RawValue: Hashable>: Hashable, RawRepresentable, Sendable {
-    let rawValue: RawValue
-}
-
-// RawRepresentable enables automatic Codable conformance when RawValue is Codable.
-```
-
-`Tag` is never instantiated — it is a compile-time label.
-
-### Identifier Safety
-
-```swift
-// Tag types — empty enums are conventional (no cases, no instances)
-enum UserTag {}
-enum WorkspaceTag {}
-
-typealias UserID = Tagged<UserTag, String>
-typealias WorkspaceID = Tagged<WorkspaceTag, String>
-
-// API surface becomes self-documenting and swap-proof
-func fetchUser(id: UserID, in workspace: WorkspaceID) async throws -> User
-```
-
-### State-Tagged Phantom Types
-
-Phantom types can encode state transitions at the type level:
-
-```swift
-enum Unvalidated {}
-enum Validated {}
-
-struct Form<State> {
-    let fields: [String: String]
-}
-
-extension Form where State == Unvalidated {
-    func validate() throws -> Form<Validated> {
-        // validation logic
-        Form<Validated>(fields: fields)
-    }
-}
-
-func submit(_ form: Form<Validated>) async throws {
-    // Only accepts validated forms — compiler enforces this
+struct LoginResult {
+    var token: String?
+    var mfaChallenge: Challenge?
+    var error: Error?
 }
 ```
 
-### Builder Pattern with Phantom Types
+If exactly one field should be present, the struct permits seven invalid combinations. Use an enum.
 
-Enforce required fields at compile time. The phantom state parameter restricts which methods are available, ensuring every path to `Complete` has set both fields:
+## Closed-World and Open-World Decisions
 
-```swift
-enum MissingName {}
-enum HasName {}
-enum Complete {}
+Use the construct that matches who owns the variant set.
 
-struct UserBuilder<State> {
-    fileprivate let email: String?
-    fileprivate let name: String?
+| Situation | Prefer |
+|---|---|
+| Finite cases owned by this module | `enum` |
+| Finite cases from an external resilient framework | `switch` with `@unknown default` |
+| External server strings with forward compatibility | `enum Known { case knownA; case unknown(String) }` |
+| Third parties add conformers | Protocol or existential |
+| Caller picks one concrete type | Generic function/type |
+| Callee hides one fixed concrete type | `some P` |
+| Heterogeneous runtime storage | `any P` or type eraser |
+| Behavior is configuration | Witness struct |
 
-    fileprivate init(email: String? = nil, name: String? = nil) {
-        self.email = email
-        self.name = name
-    }
-}
+For owned enums, do not use `default` in internal switches. Let a new case break compilation. For public libraries, decide whether adding a case is a source-breaking change. If clients must remain forward compatible, expose an unknown case or document `@unknown default` handling.
 
-extension UserBuilder where State == MissingName {
-    func withName(_ name: String) -> UserBuilder<HasName> {
-        UserBuilder<HasName>(name: name)
-    }
-}
+## Boundary-First Modeling
 
-extension UserBuilder where State == HasName {
-    func withEmail(_ email: String) -> UserBuilder<Complete> {
-        UserBuilder<Complete>(email: email, name: name)
-    }
-}
-
-extension UserBuilder where State == Complete {
-    func build() -> User {
-        // Both fields guaranteed non-nil by the state machine — each
-        // transition method sets one, and no path to Complete skips either.
-        guard let email, let name else {
-            preconditionFailure("Builder state machine violated")
-        }
-        return User(email: email, name: name)
-    }
-}
-```
-
-### Trade-Off Analysis
-
-| Factor | Phantom types | Runtime checks |
-|---|---|---|
-| Error detection | Compile time | Runtime |
-| API surface | Self-documenting | Requires documentation |
-| Flexibility | Rigid — new states need new tags | Dynamic — easy to add states |
-| Complexity | Higher for simple cases | Lower for simple cases |
-| Binary size | No impact (types erased at runtime) | No impact |
-
-### When to Use Phantom Types
-
-- Multiple identifiers of the same underlying type that could be confused
-- State transitions that should be enforced by the compiler
-- API boundaries where type safety prevents misuse
-
-### When to Skip Phantom Types
-
-- Single ID type in a narrow module
-- State that changes frequently during development (the tag types become churn)
-- When the set of valid states is dynamic, not static
-
----
-
-## ~Copyable and Move Semantics
-
-### Decision Flowchart
-
-1. Does copying this value create a logical error (double-close, double-consume, duplicate state machine)? → **`~Copyable`.**
-2. Does the value represent a resource with a finite lifecycle (open/close, acquire/release)? → **`~Copyable` with `consuming` cleanup.**
-3. Does the value represent a state machine with irreversible transitions? → **`~Copyable` with consuming transition methods.**
-4. Does the value need to be stored in collections or conform to `Equatable`/`Hashable`? → **Keep copyable; use runtime guards.**
-
-### Ownership Annotations
-
-Swift's ownership model provides three ways to pass values:
-
-| Annotation | Meaning | After call |
-|---|---|---|
-| `borrowing` | Read-only access | Value still usable |
-| `consuming` | Takes ownership | Value no longer usable |
-| `inout` | Exclusive mutable access | Value modified in place |
-
-### Consuming State Machines
-
-The most powerful application: state transitions that consume the current state.
+Keep raw shapes at the edge and refined types in the core.
 
 ```swift
-struct Idle: ~Copyable {
-    let config: Configuration
-
-    consuming func start() -> Running {
-        Running(config: config)
-    }
+struct UserDTO: Decodable {
+    let email: String
+    let id: String
+    let plan: String
 }
 
-struct Running: ~Copyable {
-    let config: Configuration
-    var progress: Double = 0
+struct User: Sendable {
+    let email: EmailAddress
+    let id: UserID
+    let plan: Plan
 
-    consuming func pause() -> Paused {
-        Paused(config: config, progress: progress)
-    }
-
-    consuming func complete() -> Completed {
-        Completed(config: config)
-    }
-}
-
-struct Paused: ~Copyable {
-    let config: Configuration
-    let progress: Double
-
-    consuming func resume() -> Running {
-        Running(config: config, progress: progress)
-    }
-
-    consuming func cancel() -> Idle {
-        Idle(config: config)
-    }
-}
-
-struct Completed: ~Copyable {
-    let config: Configuration
-}
-```
-
-The compiler enforces:
-- Cannot be in two states simultaneously (no copying)
-- Cannot use the old state after transitioning (consumed)
-- Cannot skip states (only defined transitions compile)
-- Cannot forget to transition (value must be consumed or explicitly discarded)
-
-### Borrowing and Consuming Methods
-
-```swift
-struct FileHandle: ~Copyable {
-    private let descriptor: Int32
-
-    // Borrowing: reads without consuming
-    borrowing func read(count: Int) -> Data {
-        // descriptor still valid after this call
-    }
-
-    // Consuming: closes and invalidates
-    consuming func close() {
-        // descriptor used, FileHandle consumed
-    }
-
-    deinit {
-        // Automatic cleanup if not explicitly closed
-    }
-}
-
-let file = FileHandle(descriptor: fd)
-let data = file.read(count: 1024) // borrows
-file.close()                       // consumes
-// file.read(count: 1)            // Compiler error: used after consuming
-```
-
-### ~Escapable (Swift 6.2)
-
-`~Escapable` types cannot outlive their scope, useful for borrowed views into data. This feature is still evolving — expect API refinements in future Swift releases.
-
-```swift
-struct BufferView: ~Copyable, ~Escapable {
-    let pointer: UnsafeBufferPointer<UInt8>
-    // Cannot be stored in a property or returned from scope
-    // Guarantees the buffer pointer remains valid during use
-}
-```
-
-### Trade-Off Analysis
-
-| Factor | ~Copyable | Regular types + runtime checks |
-|---|---|---|
-| Enforcement | Compile time | Runtime |
-| Ergonomics | Requires ownership awareness | Familiar value semantics |
-| Protocol support | Limited (no Equatable, Hashable yet) | Full protocol support |
-| Collection storage | Cannot be stored in standard collections | Full collection support |
-| Learning curve | High — new mental model | Low |
-
-### When to Use ~Copyable
-
-- Resource handles (files, connections, locks)
-- One-shot tokens or continuations
-- State machines with irreversible transitions
-- When double-use is a *safety* bug, not just a logic bug
-
-### When to Skip ~Copyable
-
-- Ordinary value types (models, configs, DTOs)
-- Types that need to be stored in arrays, dictionaries, or sets
-- Types that need Equatable, Hashable, or Codable conformance
-- When the copying concern is theoretical, not observed
-
----
-
-## Typed Throws
-
-### Decision Flowchart
-
-1. Will the caller `switch` on the error type to handle cases differently? → **Typed throws.**
-2. Is this a generic wrapper that should preserve the wrapped function's error type? → **Generic typed throws (`throws(E)`).**
-3. Does a protocol need conformers to specify their error type? → **Associated type + typed throws.**
-4. Does the caller present a generic error message regardless of type? → **Keep untyped `throws`.**
-
-### Basic Typed Throws
-
-```swift
-enum ParseError: Error {
-    case invalidFormat
-    case overflow
-    case unexpectedCharacter(Character)
-}
-
-func parseInteger(_ string: String) throws(ParseError) -> Int {
-    guard let value = Int(string) else {
-        if string.contains(where: { !$0.isNumber && $0 != "-" }) {
-            throw .unexpectedCharacter(string.first(where: { !$0.isNumber && $0 != "-" })!)
-        }
-        throw .overflow
-    }
-    return value
-}
-```
-
-### Generic Typed Throws
-
-Functions that propagate a closure's error type without erasing it:
-
-```swift
-func withRetry<Result, E: Error>(
-    maxAttempts: Int,
-    operation: () async throws(E) -> Result
-) async throws(E) -> Result {
-    for attempt in 1...maxAttempts {
+    init(dto: UserDTO) throws(UserMappingError) {
         do {
-            return try operation()
+            email = try EmailAddress(dto.email)
         } catch {
-            if attempt == maxAttempts { throw error }
+            throw .invalidEmail(error)
         }
-    }
-    fatalError("unreachable")
-}
-```
 
-The caller retains the specific error type:
+        guard let id = UserID(rawValue: dto.id) else {
+            throw .invalidID(dto.id)
+        }
 
-```swift
-// error is ParseError, not any Error
-let value = try await withRetry(maxAttempts: 3) {
-    try parseInteger(input)
-}
-```
-
-### Protocol Requirements with Typed Throws
-
-```swift
-protocol Validator {
-    associatedtype Input
-    associatedtype ValidationError: Error
-
-    func validate(_ input: Input) throws(ValidationError) -> Input
-}
-```
-
-Conforming types specify their error:
-
-```swift
-struct EmailValidator: Validator {
-    enum ValidationError: Error {
-        case invalidFormat
-        case tooLong
-    }
-
-    func validate(_ input: String) throws(ValidationError) -> String {
-        guard input.contains("@") else { throw .invalidFormat }
-        guard input.count <= 254 else { throw .tooLong }
-        return input
+        self.id = id
+        plan = Plan(rawValue: dto.plan) ?? .unknown(dto.plan)
     }
 }
 ```
 
-### Scoped Error Patterns
+Do not let `NSDictionary`, `Any`, `String` status values, raw SQL fragments, Objective-C nullability, untyped notification payloads, or decoded DTOs leak into domain logic.
 
-Use typed throws at module boundaries, untyped throws at the top level:
+## Compiler Limits
 
-```swift
-// Module boundary: specific errors
-public func loadUser(id: UserID) throws(DataError) -> User
+Do not overstate what Swift can express.
 
-// UI layer: catches and presents generically
-func handleLoad() async {
-    do {
-        user = try await loadUser(id: currentUserID)
-    } catch {
-        // error is DataError — can switch exhaustively
-        showError(error)
-    }
-}
-```
+Swift does not cleanly express:
 
-### Trade-Off Analysis
+- negative constraints, such as `T` is not `String`
+- arbitrary value-dependent types, such as "array length equals this runtime count"
+- disjunctive constraints, such as `T == A || T == B`
+- runtime string validity without validation
+- cross-object membership, such as "this ID belongs to this exact collection instance"
+- sortedness of a mutable array unless mutation is controlled
+- uniqueness of a nonce across all time without stateful coordination
+- exact actor executor behavior hidden behind erased closures unless the type says so
 
-| Factor | Typed throws | Untyped throws |
+When the compiler cannot prove the invariant, choose an honest boundary: validating initializer, macro for literals, runtime assertion in one place, or a domain service that owns the state.
+
+## Feature Availability
+
+Use current Swift features deliberately and version-gate advice when needed.
+
+| Area | Availability Framing | Modeling Relevance |
 |---|---|---|
-| Error specificity | Exact type preserved | Erased to `any Error` |
-| Exhaustive catching | Yes — compiler enforces | No — catch-all required |
-| Composability | Must align error types | Any error propagates freely |
-| Boilerplate | More explicit | Less explicit |
-| Protocol requirements | Fully expressible | Generic fallback |
+| Typed throws | Swift 6.0 language mode area | Preserves concrete failure type; use unconditional `catch` + `switch error` for exhaustive case handling. |
+| `throws(Never)` | Swift 6 typed throws model | Represents infallible generic failure; equivalent in practice to nonthrowing APIs when no error can be thrown. |
+| Noncopyable types and generics | Swift 6.0 language mode area, still evolving in libraries | Models linear resources and irreversible transitions. |
+| `BitwiseCopyable` | Swift 6.0 low-level layout marker area | Public conformance is a library promise about representation and destruction. |
+| Integer generic parameters | Documented in Swift 6.3 language reference | Carries literal integer values, such as dimensions or fixed sizes, in generic signatures. |
+| `InlineArray` | Swift 6.2 | Fixed-size inline storage; count is in the type. |
+| `Span` / `RawSpan` | Swift 6.2 safe systems programming | Borrowed memory views with compiler-checked lifetime constraints. |
+| Opt-in strict memory safety | Swift 6.2 | Compiler pressure against unsafe constructs in security-critical projects. |
+| Typed NotificationCenter messages | Swift 6.2 Foundation | Replaces string names and untyped dictionaries with concrete message types and concurrency semantics. |
+| Default actor isolation / `@concurrent` | Swift 6.2 concurrency options | Makes isolation choices visible in signatures and project settings. |
+| Macro build improvements | Swift 6.3 package/build tooling | Reduces some macro cost; macros still add debugging and build indirection. |
+| `@c` and module selectors | Swift 6.3 | Useful at interop/API boundaries, not central to most domain models. |
 
-### When to Use Typed Throws
+Sources for current feature framing: [Swift 6.2 Released](https://www.swift.org/blog/swift-6.2-released), [Swift 6.3 Released](https://www.swift.org/blog/swift-6.3-released), [Swift Language Reference: Generic Parameters and Arguments](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/genericparametersandarguments/), and [Swift compiler typed throws diagnostic](https://docs.swift.org/compiler/documentation/diagnostics/untyped-throws/).
 
-- Module boundaries where callers switch on error cases
-- Generic wrappers that should preserve the wrapped function's error type
-- Protocol requirements where conformers have distinct error types
+## Migration Recipe
 
-### When to Skip Typed Throws
+1. Pick one boundary or workflow, not the whole app.
+2. Introduce the new type with explicit construction.
+3. Add conversion from the legacy shape.
+4. Change core functions to accept the refined type.
+5. Let compiler errors identify callers.
+6. Convert callers nearest the boundary first.
+7. Deprecate raw overloads after call sites move.
+8. Remove bypasses such as public raw initializers.
+9. Add boundary tests and compile-fail misuse examples.
+10. Stop when remaining code is clearer with the old shape.
 
-- Top-level UI code that presents a generic error message
-- Functions that can fail for many unrelated reasons
-- Rapid prototyping where error handling is deferred
+## Unsafe Escape Hatch Policy
 
----
-
-## Validated Values
-
-### Decision Flowchart
-
-1. Does a validated value cross a function or module boundary? → **Failable-init newtype or throwing-init newtype.**
-2. Does a stored property need continuous enforcement of a constraint (e.g., clamped range)? → **Property wrapper.**
-3. Do callers need to know *why* validation failed? → **Throwing init with typed error.**
-4. Is the validation local to a single function and the value is not stored? → **Inline `guard`.**
-
-### Failable Init Newtypes
-
-Validate once, carry the guarantee:
-
-```swift
-struct NonEmptyString: Sendable {
-    let value: String
-
-    init?(_ value: String) {
-        guard !value.isEmpty else { return nil }
-        self.value = value
-    }
-}
-
-struct PositiveInt: Sendable {
-    let value: Int
-
-    init?(_ value: Int) {
-        guard value > 0 else { return nil }
-        self.value = value
-    }
-}
-
-// Usage: validation happens at the boundary
-func createUser(name: NonEmptyString, age: PositiveInt) -> User {
-    // No validation needed here — types guarantee constraints
-    User(name: name.value, age: age.value)
-}
-```
-
-### Throwing Init Variant
-
-When you need error information:
+Use escape hatches sparingly and make them auditable.
 
 ```swift
 struct EmailAddress: Sendable {
-    enum ValidationError: Error {
-        case missingAtSign
-        case tooLong
+    private let rawValue: String
+
+    init(_ rawValue: String) throws(ValidationError) { /* validate */ }
+
+    internal static func unsafeAssumingValid(_ rawValue: String) -> EmailAddress {
+        // Precondition: caller has already canonicalized and validated this address.
+        EmailAddress(rawValue: rawValue)
     }
 
-    let value: String
-
-    init(_ value: String) throws(ValidationError) {
-        guard value.contains("@") else { throw .missingAtSign }
-        guard value.count <= 254 else { throw .tooLong }
-        self.value = value
-    }
-}
-```
-
-### Property Wrappers for Embedded Validation
-
-```swift
-@propertyWrapper
-struct Clamped<Value: Comparable & Sendable>: Sendable {
-    private var storage: Value
-    let range: ClosedRange<Value>
-
-    var wrappedValue: Value {
-        get { storage }
-        set { storage = min(max(newValue, range.lowerBound), range.upperBound) }
-    }
-
-    init(wrappedValue: Value, _ range: ClosedRange<Value>) {
-        self.range = range
-        self.storage = min(max(wrappedValue, range.lowerBound), range.upperBound)
-    }
-}
-
-struct AudioSettings: Sendable {
-    @Clamped(0...100) var volume: Int = 50
-    @Clamped(20...20000) var frequency: Int = 440
-}
-```
-
-### Trade-Off Analysis
-
-| Factor | Newtype | Inline validation |
-|---|---|---|
-| Guarantee propagation | Through the type system | Manual at each site |
-| Boilerplate | Type definition | Guard/if at each use |
-| Performance | Minimal (usually optimized away) | Same |
-| Composability | Combine via generics | Ad hoc |
-| Discoverability | Type signature documents constraint | Must read implementation |
-
----
-
-## Advanced Patterns
-
-### Protocol Witnesses
-
-Replace runtime polymorphism with static dispatch when behavior is configured, not discovered:
-
-```swift
-// Existential approach: runtime dispatch, heap allocation
-protocol Formatter {
-    func format(_ value: Double) -> String
-}
-
-// Protocol witness approach: static dispatch, inline
-struct NumberFormat: Sendable {
-    let format: @Sendable (Double) -> String
-
-    static let currency = NumberFormat { value in
-        "$\(String(format: "%.2f", value))"
-    }
-
-    static let percentage = NumberFormat { value in
-        "\(String(format: "%.1f", value * 100))%"
+    private init(rawValue: String) {
+        self.rawValue = rawValue
     }
 }
 ```
 
-Use protocol witnesses when:
-- The set of implementations is known at compile time
-- Performance matters (avoids existential dispatch)
-- You want to store formatters/strategies as values without existential overhead
+Keep unchecked construction `internal` or `private` where possible. If it must be public, document the precondition and make the name impossible to miss.
 
-### Conditional Conformance
+## Worked Refactor: Raw JSON to UI Snapshot
 
-Extend generic types to gain capabilities when their type parameters support them:
+### Before
 
 ```swift
-// LoadState gains Equatable only when the wrapped type is Equatable
-extension LoadState: Equatable where T: Equatable {}
-
-// Array of optional values gains a custom method
-extension Array where Element: OptionalProtocol {
-    func compacted() -> [Element.Wrapped] {
-        compactMap(\.optional)
-    }
-}
-```
-
-### `some` vs `any`
-
-| Feature | `some P` (opaque) | `any P` (existential) |
-|---|---|---|
-| Concrete type | Fixed (but hidden) | Varies at runtime |
-| Storage | No box | Existential box (heap if large) |
-| Generic specialization | Yes | No |
-| Heterogeneous collections | No | Yes |
-| Self/associated type | Preserved | Erased |
-
-**Decision rule**: Use `some` by default. Use `any` only when you need heterogeneous storage or the concrete type genuinely varies at runtime.
-
-```swift
-// Prefer: concrete type known to compiler
-func makeView() -> some View { Text("Hello") }
-
-// When needed: heterogeneous storage
-var formatters: [any FormatStyle] = [.currency, .percentage]
-```
-
-### Result Builders for Domain Validation
-
-Enforce structural constraints at compile time:
-
-```swift
-@resultBuilder
-struct FormBuilder {
-    static func buildBlock(_ components: FormField...) -> [FormField] {
-        components
-    }
+struct UserResponse: Decodable {
+    var id: String
+    var email: String
+    var subscription: String
 }
 
-struct FormConfig {
-    let fields: [FormField]
-
-    init(@FormBuilder content: () -> [FormField]) {
-        fields = content()
-    }
-}
-```
-
-### InlineArray (Swift 6.2)
-
-Fixed-size array stored inline (stack or struct), no heap allocation:
-
-```swift
-// Exactly 3 elements — compile-time size guarantee
-let rgb: InlineArray<3, UInt8> = [255, 128, 0]
-```
-
-Use when:
-- Size is known at compile time
-- Performance is critical (cache-friendly)
-- You want the type to enforce size constraints
-
-### Marker Protocols
-
-Empty protocols as compile-time tags:
-
-```swift
-protocol Sanitized {}
-protocol Raw {}
-
-struct HTMLContent<State> {
-    let value: String
-}
-
-func render(_ content: HTMLContent<Sanitized>) -> String {
-    content.value // Safe to render — type guarantees sanitization
-}
-
-func sanitize(_ content: HTMLContent<Raw>) -> HTMLContent<Sanitized> {
-    HTMLContent<Sanitized>(value: escape(content.value))
-}
-```
-
----
-
-## Concurrency-Aware Type Safety
-
-### Sendable by Design
-
-Shape types so `Sendable` conformance is natural rather than forced:
-
-```swift
-// Natural Sendable: all stored properties are Sendable value types
-struct UserProfile: Sendable {
-    let avatarURL: URL
-    let displayName: String
-    let id: UUID
-}
-
-// Forced Sendable: requires @unchecked due to mutable reference type
-final class Cache: @unchecked Sendable {
-    private let lock = NSLock()
-    private var storage: [String: Data] = [:]
-}
-```
-
-**Prefer**: Structs with `let` properties (automatically Sendable) over classes that need `@unchecked Sendable`.
-
-### `sending` Parameter Modifier
-
-Transfers ownership across isolation boundaries:
-
-```swift
-func process(_ value: sending MyType) async {
-    // value is now owned by this isolation domain
-}
-```
-
-### Isolation as a Type-Level Concept
-
-`@MainActor`, `@Sendable`, and actor isolation are type-level properties enforced by the compiler. Design types so isolation requirements are obvious from the type signature:
-
-```swift
-// Isolation is visible in the type
 @MainActor
-final class ViewModel: ObservableObject {
-    // All access implicitly MainActor — no surprises
-}
+final class ProfileViewModel: ObservableObject {
+    @Published var error: Error?
+    @Published var isLoading = false
+    @Published var user: UserResponse?
 
-// Sendable closure requirement is visible in the type
-struct EventHandler: Sendable {
-    let handler: @Sendable (Event) -> Void
-}
-```
+    func load(id: String) async {
+        isLoading = true
+        defer { isLoading = false }
 
----
-
-## Pragmatism Guardrails — Detailed Examples
-
-### Over-Engineering: Phantom Types for Single ID
-
-**Over-engineered:**
-
-```swift
-enum UserTag {}
-typealias UserID = Tagged<UserTag, String>
-
-// Used in exactly one place
-struct UserService {
-    func fetch(id: UserID) async throws -> User
+        do {
+            user = try await api.get("/users/\(id)")
+        } catch {
+            self.error = error
+        }
+    }
 }
 ```
 
-If `UserID` is the only identifier in the module and there is no risk of confusion, a plain `String` parameter is clearer.
+Problems:
 
-### Over-Engineering: Enum for Independent Booleans
+- `id`, `email`, and `subscription` are unvalidated strings.
+- Loading state permits `isLoading == true` with stale `error`.
+- The endpoint path is stringly typed.
+- The UI stores transport DTOs.
+- The error surface is erased.
 
-**Over-engineered:**
+### After
 
 ```swift
-enum ToggleState {
-    case enabledAndAnimating
-    case enabledAndStatic
-    case disabledAndAnimating
-    case disabledAndStatic
+struct UserDTO: Decodable, Sendable {
+    let email: String
+    let id: String
+    let subscription: String
 }
-```
 
-If `isEnabled` and `isAnimating` are genuinely independent, two booleans are simpler. The combinatorial enum adds ceremony without preventing bugs.
+struct User: Sendable {
+    let email: EmailAddress
+    let id: UserID
+    let subscription: Subscription
 
-### Over-Engineering: Newtype for Local Validation
+    init(dto: UserDTO) throws(UserMappingError) {
+        do {
+            email = try EmailAddress(dto.email)
+        } catch {
+            throw .invalidEmail(error)
+        }
 
-**Over-engineered:**
+        guard let id = UserID(rawValue: dto.id) else {
+            throw .invalidID
+        }
 
-```swift
-struct ValidatedInput: Sendable {
-    let value: String
-    init?(_ value: String) {
-        guard !value.isEmpty else { return nil }
-        self.value = value
+        self.id = id
+        subscription = Subscription(rawValue: dto.subscription)
     }
 }
 
-// Used in one function, value never propagated
-func handleInput(_ raw: String) {
-    guard let validated = ValidatedInput(raw) else { return }
-    process(validated.value) // Immediately unwrapped
+enum Subscription: Sendable {
+    case free
+    case pro
+    case unknown(String)
+}
+
+enum UserMappingError: Error, Sendable {
+    case invalidEmail(EmailAddress.ValidationError)
+    case invalidID
+}
+
+struct Endpoint<Request: Sendable, Response: Sendable, Failure: Error & Sendable>: Sendable {
+    let path: @Sendable (Request) -> Path<Absolute>
+    let decode: @Sendable (Data) throws(Failure) -> Response
+}
+
+enum ProfileState: Sendable {
+    case idle
+    case loading(previous: UserSnapshot?)
+    case loaded(UserSnapshot)
+    case failed(ProfileError, previous: UserSnapshot?)
+}
+
+struct UserSnapshot: Sendable {
+    let displayEmail: String
+    let id: UserID
+    let subscriptionLabel: String
+}
+
+@MainActor
+final class ProfileViewModel: ObservableObject {
+    @Published private(set) var state: ProfileState = .idle
+
+    func load(id: UserID) async {
+        let previous = state.snapshot
+        state = .loading(previous: previous)
+
+        do {
+            let user = try await userClient.load(id: id)
+            state = .loaded(UserSnapshot(user))
+        } catch {
+            state = .failed(error, previous: previous)
+        }
+    }
 }
 ```
 
-If the validated value is immediately unwrapped and never passed further, inline `guard` is clearer.
+The core now receives refined IDs, validated emails, typed endpoint responses, typed errors, and an immutable `Sendable` UI snapshot. The raw JSON still exists, but only at the decoding boundary.
 
-### The Decision Checklist
+## Overmodeled Rollback
 
-Before introducing a new type for correctness, answer:
+Phantom axes are useful until they hide the domain.
 
-1. **Does this prevent a real bug?** Not hypothetical — has this class of error occurred, or is the risk concrete?
-2. **Does this cross a boundary?** Types earn their weight at function boundaries, module boundaries, API boundaries. Local values rarely need newtypes.
-3. **Will someone else encounter this type?** If only one function touches it, the learning cost may exceed the safety benefit.
-4. **Is the domain stable?** If requirements are changing weekly, rigid type structures create churn. Wait for stability.
-5. **Does the complexity compound?** A single phantom type is fine. A phantom type nested in a generic nested in a conditional conformance may need simplification.
+```swift
+struct Request<Auth, Body, Response, Retry, Cache, Metrics> {
+    /* ... */
+}
+```
 
-If any answer is "no" or uncertain, defer the type modeling until evidence accumulates.
+If most call sites spell five or six generic arguments and only one operation depends on each axis, collapse the model.
+
+```swift
+struct Endpoint<Request, Response, Failure: Error> {
+    let auth: AuthRequirement
+    let body: BodyPolicy
+    let retry: RetryPolicy<Failure>
+    let cache: CachePolicy
+}
+
+enum AuthRequirement {
+    case none
+    case user
+    case admin
+}
+```
+
+Keep a generic axis only when it makes an invalid call fail to compile. Use ordinary stored policy values for configuration that is inspected at runtime anyway.
+
+## Testing and Enforcement
+
+Type modeling moves bugs from call sites into constructors, conversions, and escape hatches. Test those places.
+
+- Add property or table tests for boundary constructors.
+- Keep compile-fail fixtures for major guarantees.
+- Prefer no `default` in owned enum switches.
+- Turn on strict concurrency and warnings-as-errors where the project can support them.
+- Use targeted warning controls when a project needs a ratchet: enable the diagnostic group for new code, acknowledge existing violations narrowly, and remove acknowledgements as wrappers replace unsafe or untyped shapes.
+- Consider strict memory safety for security-critical modules.
+- Add lint rules for recurring smells: `[String: Any]` in core code, raw string IDs in public APIs, multiple correlated booleans, `fatalError("impossible")`, force casts, and broad `@unchecked Sendable`.
+
+Compile-fail examples should show the intended misuse:
+
+```swift
+let userID: UserID = UserID(rawValue: "u_1")
+let workspaceID: WorkspaceID = WorkspaceID(rawValue: "w_1")
+
+fetchUser(id: workspaceID, in: userID)
+// expected-error: cannot convert value of type 'WorkspaceID' to expected argument type 'UserID'
+```
+
+A compile-fail harness can be small. Keep snippets under `Tests/CompileFail/`, run `swiftc -typecheck` or `swift test` with a custom script, and assert that each file fails for the expected reason. These fixtures are useful for public APIs where accidental broadening would otherwise compile silently.
+
+## API Boundary and Resilience
+
+Type modeling changes API shape. Treat public and module-boundary changes as design work, not cleanup.
+
+- Public validated wrappers need a stable construction story. Adding validation later can be source-breaking if callers already use raw initializers.
+- Public enums need a resilience decision: closed and exhaustively switched, or forward-compatible with unknown cases.
+- Public marker protocols are open-world extension points unless conformance is controlled. Do not use them as proof.
+- Public `RawRepresentable` types should validate in `init(rawValue:)` or keep raw construction unavailable.
+- Public type erasers should preserve the axes that encode correctness, such as `Input`, `Output`, `Failure`, `Auth`, or `State`.
+- Public `Sendable`, `BitwiseCopyable`, and ownership conformances are promises. Adding reference storage, locks, destructors, or actor isolation later can change that promise.
+- Boundary DTOs can remain flexible while the domain model is strict. This is often the right compatibility split.
+
+## Review Checklist
+
+Ask these questions in code review:
+
+- What invariant is this type trying to prove?
+- Where does raw data become refined data?
+- Can invalid construction happen through an initializer, stored property, decoding path, conformance, or test helper?
+- Does the chosen type remove an invalid operation, or only document intent?
+- Is a public marker protocol, public raw value, or public `init(rawValue:)` undermining the proof?
+- Are `some`, `any`, generics, and type erasure preserving the relationships that matter?
+- Does the model still work across actors and tasks without `@unchecked Sendable` hand-waving?
+- What is the escape hatch, and where is it used?
+- What compiler error proves misuse?
+- Is the type model simpler than the bugs it prevents?
