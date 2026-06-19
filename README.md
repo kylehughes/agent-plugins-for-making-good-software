@@ -18,7 +18,7 @@ If Codex cannot resolve the private repository by slug, use the SSH URL instead:
 codex plugin marketplace add git@github.com:kylehughes/codex-plugins-for-making-good-software.git
 ```
 
-The GitHub account or SSH identity used by Codex must have access to the private repository. After the marketplace is registered, install or enable the `apple-platform` plugin from Codex's plugin UI surfaces.
+The GitHub account or SSH identity used by Codex must have access to the private repository. After the marketplace is registered, install or enable the `apple-platform` plugin from Codex's plugin UI.
 
 ## Marketplace
 
