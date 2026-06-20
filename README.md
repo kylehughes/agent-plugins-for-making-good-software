@@ -1,34 +1,28 @@
 # Codex Plugins for Making Good Software
 
-A Codex plugin marketplace for reusable skills and review agents that help make good software.
+Codex plugin marketplace for the Apple Platform plugin: Swift, UIKit, App Intents, localization, testing, review, and technical writing.
 
-This is the Codex-native port of the Claude Code plugin marketplace with the same Apple Platform skill and agent set. The port keeps those assets inside the `apple-platform` plugin so the marketplace package, not this repository's project config, owns them.
+This repository is the Codex port of the Claude Code marketplace. Plugin-owned files live under `plugins/apple-platform` instead of project-scoped Codex configuration, so installed copies behave like marketplace assets.
 
 ## Install
 
-Add this private GitHub marketplace to Codex:
+Register the private marketplace:
 
 ```shell
 codex plugin marketplace add kylehughes/codex-plugins-for-making-good-software
 ```
 
-If Codex cannot resolve the private repository by slug, use the SSH URL instead:
+If Codex cannot resolve the private repository by slug, use the SSH URL:
 
 ```shell
 codex plugin marketplace add git@github.com:kylehughes/codex-plugins-for-making-good-software.git
 ```
 
-The GitHub account or SSH identity used by Codex must have access to the private repository. After the marketplace is registered, install or enable the `apple-platform` plugin from Codex's plugin UI.
+Codex needs a GitHub account or SSH key with access to the private repository. After registration, install or enable `apple-platform` from Codex's plugin UI.
 
 ## Marketplace
 
-The marketplace file is:
-
-```text
-.agents/plugins/marketplace.json
-```
-
-It declares one local plugin:
+The marketplace file is `.agents/plugins/marketplace.json`. It registers one local plugin:
 
 ```text
 plugins/apple-platform
@@ -38,9 +32,9 @@ plugins/apple-platform
 
 ### apple-platform
 
-Tools for Apple platform development.
+Skills and agent definitions for Apple-platform codebases.
 
-The Codex plugin manifest lives at:
+The Codex plugin manifest is:
 
 ```text
 plugins/apple-platform/.codex-plugin/plugin.json
@@ -60,18 +54,18 @@ plugins/apple-platform/.codex-plugin/plugin.json
 | `simplify-code` | Reviews changed code for reuse, simplicity, quality, and efficiency, then fixes issues directly. |
 | `testing-swift-code` | Writes tests with the Swift Testing framework. |
 | `using-swift-concurrency` | Covers Swift Concurrency design, diagnostics, actor isolation, logical races, and async tests. |
-| `writing-swift` | Covers Swift 6 coding standards and file organization. |
+| `writing-swift` | Writes, edits, debugs, reviews, migrates, and tests production Swift code and packages. |
 | `writing-technical-writing` | Writes direct, pragmatic technical prose. |
 
 #### Agents
 
-Agent definitions are bundled with the plugin under:
+Agent definitions are bundled under:
 
 ```text
 plugins/apple-platform/agents
 ```
 
-They are plugin artifacts, not project-scoped `.codex/agents` files:
+They are plugin artifacts, not project-scoped `.codex/agents` files.
 
 | Agent | Purpose |
 | :---- | :------ |
@@ -81,4 +75,4 @@ They are plugin artifacts, not project-scoped `.codex/agents` files:
 | `technical-writing-auditor` | Audits Markdown and doc comments for voice and structure. |
 | `type-driven-design-auditor` | Finds compile-time correctness opportunities in Swift types. |
 
-Use these agents only when explicitly asking Codex for subagents, delegated review, or parallel agent work and the current Codex runtime exposes plugin-vended agent roles. Otherwise the skills can be invoked directly with plugin-qualified names like `$apple-platform:writing-swift` or selected implicitly by Codex.
+Codex runtimes do not always expose plugin-vended agent roles. Use these agents when asking for subagents, delegated review, or parallel agent work. Otherwise invoke skills directly with plugin-qualified names like `$apple-platform:writing-swift`, or let Codex select them implicitly.
