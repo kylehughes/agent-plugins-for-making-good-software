@@ -1,8 +1,8 @@
 # Codex Plugins for Making Good Software
 
-A Codex plugin marketplace for reusable skills and review workflows that help make good software.
+A Codex plugin marketplace for reusable skills and review agents that help make good software.
 
-This is the Codex-native port of the Claude Code plugin marketplace with the same Apple Platform skill set. The port keeps skills inside the plugin and moves Claude subagents into project-scoped Codex custom agents under `.codex/agents/`.
+This is the Codex-native port of the Claude Code plugin marketplace with the same Apple Platform skill and agent set. The port keeps those assets inside the `apple-platform` plugin so the marketplace package, not this repository's project config, owns them.
 
 ## Install
 
@@ -63,9 +63,15 @@ plugins/apple-platform/.codex-plugin/plugin.json
 | `writing-swift` | Covers Swift 6 coding standards and file organization. |
 | `writing-technical-writing` | Writes direct, pragmatic technical prose. |
 
-#### Custom Agents
+#### Agents
 
-Codex custom agents are not bundled as plugin components in this port. They live at `.codex/agents/` for project-scoped use:
+Agent definitions are bundled with the plugin under:
+
+```text
+plugins/apple-platform/agents
+```
+
+They are plugin artifacts, not project-scoped `.codex/agents` files:
 
 | Agent | Purpose |
 | :---- | :------ |
@@ -75,4 +81,4 @@ Codex custom agents are not bundled as plugin components in this port. They live
 | `technical-writing-auditor` | Audits Markdown and doc comments for voice and structure. |
 | `type-driven-design-auditor` | Finds compile-time correctness opportunities in Swift types. |
 
-Use these agents only when explicitly asking Codex for subagents, delegated review, or parallel agent work. Otherwise the skills can be invoked directly with plugin-qualified names like `$apple-platform:writing-swift` or selected implicitly by Codex.
+Use these agents only when explicitly asking Codex for subagents, delegated review, or parallel agent work and the current Codex runtime exposes plugin-vended agent roles. Otherwise the skills can be invoked directly with plugin-qualified names like `$apple-platform:writing-swift` or selected implicitly by Codex.

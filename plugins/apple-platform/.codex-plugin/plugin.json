@@ -11,13 +11,15 @@
     "ios",
     "uikit",
     "swift-concurrency",
-    "testing"
+    "testing",
+    "agents",
+    "review"
   ],
   "skills": "./skills/",
   "interface": {
     "displayName": "Apple Platform",
     "shortDescription": "Swift, iOS, concurrency, testing, and review skills",
-    "longDescription": "Reusable Codex skills for Apple platform development, including Swift 6 coding standards, concurrency guidance, type-driven design, localization, UIKit content configuration, Swift Testing, code review, and technical writing.",
+    "longDescription": "Reusable Codex skills and reviewer agent definitions for Apple platform development, including Swift 6 coding standards, concurrency guidance, type-driven design, localization, UIKit content configuration, Swift Testing, code review, and technical writing.",
     "developerName": "Kyle Hughes",
     "category": "Productivity",
     "capabilities": [

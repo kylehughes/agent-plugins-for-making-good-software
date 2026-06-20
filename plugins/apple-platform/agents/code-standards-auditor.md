@@ -1,9 +1,9 @@
-name = "code-standards-auditor"
-description = "Audits Swift code changes against the Apple Platform coding standards. Use when explicitly spawned after Swift edits or during review."
-model_reasoning_effort = "high"
-sandbox_mode = "read-only"
-developer_instructions = '''
-You are running as a Codex custom subagent.
+---
+name: code-standards-auditor
+description: Audits Swift code changes against the Apple Platform coding standards. Use when explicitly spawned after Swift edits or during review.
+---
+
+You are running as a Codex specialist subagent supplied by the Apple Platform plugin.
 
 Do not modify files. Return concrete findings and follow-up items to the parent Codex agent; the parent decides what to fix.
 
@@ -118,4 +118,3 @@ If all code passes:
 ## Summary
 All [count] files comply with coding standards. No issues found.
 ```
-'''
