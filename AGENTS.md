@@ -1,34 +1,48 @@
 # AGENTS.md
 
-Repository guidance for Codex Plugins for Making Good Software.
+Repository guidance for Agent Plugins for Making Good Software.
+
+This file is the canonical guidance for the repository. `CLAUDE.md` is a symlink to it, so Claude Code and Codex read the same instructions.
 
 ## Repository Shape
 
-- This repository is a Codex plugin marketplace.
-- `.agents/plugins/marketplace.json` registers local plugins for Codex plugin discovery.
-- `plugins/apple-platform/.codex-plugin/plugin.json` is the Codex plugin manifest.
-- `plugins/apple-platform/skills/` contains the bundled Codex skills.
-- `plugins/apple-platform/agents/` contains bundled agent definitions for the Apple Platform plugin.
-- Do not put marketplace-vended agents in `.codex/agents/`; that makes them project-scoped to this repository instead of part of the plugin package.
-- There are no MCP servers or hooks in this port right now.
+This repository is a single plugin marketplace that is first-class on both Claude Code and Codex. The skill and agent content is shared; only the manifests differ per platform.
+
+- Shared content lives under `plugins/apple-platform/`:
+  - `plugins/apple-platform/skills/` — bundled skills, one directory per skill.
+  - `plugins/apple-platform/agents/` — bundled subagent definitions.
+- Claude Code manifests:
+  - `.claude-plugin/marketplace.json` registers the marketplace.
+  - `plugins/apple-platform/.claude-plugin/plugin.json` is the Claude plugin manifest.
+- Codex manifests:
+  - `.agents/plugins/marketplace.json` registers the marketplace.
+  - `plugins/apple-platform/.codex-plugin/plugin.json` is the Codex plugin manifest.
+
+Both runtimes auto-discover `skills/` and `agents/` inside the plugin, so neither manifest needs to enumerate them. Claude Code ignores unknown files (such as `skills/<name>/agents/openai.yaml`) and unknown frontmatter keys, so Codex-only metadata coexists in the shared files without breaking Claude.
+
+There are no MCP servers or hooks in this repository right now.
+
+## Single-Source Rule
+
+Skills and agents are stored once and serve both platforms. Do not fork content per platform.
+
+- Write skill and agent bodies to be runtime-neutral. Where a behavior depends on the runtime (for example, task tools), describe the preferred path and a fallback rather than hard-coding one runtime.
+- Keep platform-specific structure in the manifests, not in the content.
+- When you change a skill, an agent, or a manifest, update both platforms' manifests in the same change so they stay consistent.
 
 ## Skill Maintenance
 
-- Every skill must keep a `SKILL.md` with `name` and `description` frontmatter.
-- Preserve source `REFERENCE.md` and `ATTRIBUTION.md` files with their skill directories.
-- Remove Claude-only skill frontmatter if new skills are ported: `allowed-tools`, `disable-model-invocation`, `agent`, `context`, `model`, `effort`, `paths`, and hook fields.
+- Every skill keeps a `SKILL.md` with `name` and `description` frontmatter.
+- Preserve source `REFERENCE.md`, `ATTRIBUTION.md`, and `references/` files with their skill directories.
+- Keep `description` written for implicit skill selection: describe in natural language when to use the skill. This drives Claude Code's automatic invocation and Codex's implicit selection.
 - Add `skills/<name>/agents/openai.yaml` only when a skill needs Codex UI metadata, MCP dependencies, or `policy.allow_implicit_invocation: false`.
-- Keep descriptions written for implicit Codex skill selection: describe when to use the skill in natural language.
-- Keep plugin-level agent definitions as Markdown files with `name` and `description` frontmatter under `plugins/apple-platform/agents/`.
-- Do not add project `.codex/agents/*.toml` files to this repository unless the goal is intentionally local-only behavior.
 
-## Sibling Repository Sync
+## Agent Maintenance
 
-- This Codex marketplace is paired with the Claude Code marketplace at `/Users/kyle/Developer/Projects/Kyle Hughes/Claude Plugins for Making Good Software/Repositories/Plugin Marketplace`.
-- Treat the Claude repository as the Claude-native source and this repository as the Codex-native port. Keep skill substance aligned, but translate platform-specific structure instead of copying blindly.
-- Common mappings: `.claude-plugin/` to `.codex-plugin/`, `.claude-plugin/marketplace.json` to `.agents/plugins/marketplace.json`, Claude plugin `agents/*.md` to Codex plugin `agents/*.md`, and `CLAUDE.md` guidance to `AGENTS.md`.
-- When changing a skill, agent, manifest, or marketplace entry in either repo, check the sibling repo for the equivalent update before considering the work complete.
-- Do not sync generated state such as `.claude/` worktrees, `.DS_Store`, local logs, or other machine artifacts.
+- Agents are Markdown files with frontmatter under `plugins/apple-platform/agents/`.
+- Frontmatter is a superset: `name`, `description`, plus Claude Code fields (`tools`, `skills`, `model`, `color`). Codex ignores the fields it does not use.
+- Bodies are runtime-neutral. Reporting instructions prefer task tools (`TaskCreate`/`TaskList`) when the runtime exposes them and fall back to a prioritized follow-up list otherwise.
+- Codex does not automatically spawn custom agents from their descriptions. Spawn the Apple Platform reviewer agents only when the user explicitly asks for subagents, delegated review, or parallel agent work and the runtime exposes those roles. If the roles are not available, run the review directly with the relevant skills.
 
 ## Review Workflow
 
@@ -41,15 +55,13 @@ When the user asks to review a PR, branch, or diff:
 5. Include file paths, symbols, and reproduction or verification notes where possible.
 6. Avoid style-only comments unless they hide correctness, maintainability, or platform-convention risk.
 
-Codex does not automatically spawn custom agents from their descriptions. Spawn the Apple Platform reviewer agents only when the user explicitly asks for subagents, delegated review, or parallel agent work and the current Codex runtime exposes those roles. If the roles are not available, run the review directly with the relevant skills instead of adding project-scoped `.codex/agents` files. If spawned, use the narrowest useful set:
+When agents are spawned, use the narrowest useful set, wait for their results before finalizing, then consolidate duplicate findings instead of forwarding separate reports wholesale:
 
 - `code-reviewer`: structural design consistency and architecture fit.
 - `code-standards-auditor`: codified Swift and Apple Platform standards.
 - `type-driven-design-auditor`: opportunities to make invalid states unrepresentable.
 - `information-entropy-reducer`: unnecessary complexity and cognitive load.
 - `technical-writing-auditor`: README, ADR, Markdown, and Swift doc-comment voice.
-
-Wait for spawned agent results before finalizing, then consolidate duplicate findings instead of forwarding separate agent reports wholesale.
 
 ## Apple Platform Defaults
 
@@ -63,6 +75,7 @@ Wait for spawned agent results before finalizing, then consolidate duplicate fin
 
 ## Validation
 
-- Validate JSON manifests with `python3 -m json.tool`.
-- Validate TOML with Python 3.11+ `tomllib` when available.
-- After porting or renaming skills, run `rg --hidden -g '!.git' -n "Claude|CLAUDE|\\.claude|TaskCreate|TaskList" .` and remove stale Claude-specific behavior unless the text is intentionally historical.
+- Validate JSON manifests with `python3 -m json.tool`: `.claude-plugin/marketplace.json`, `.agents/plugins/marketplace.json`, `plugins/apple-platform/.claude-plugin/plugin.json`, and `plugins/apple-platform/.codex-plugin/plugin.json`.
+- Run `claude plugin validate plugins/apple-platform` for the Claude manifest.
+- Load the marketplace in Codex against the local path to confirm the agents and skills register.
+- Do not commit generated state such as `.claude/` worktrees, `.DS_Store`, or local logs.

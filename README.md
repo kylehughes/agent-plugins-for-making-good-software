@@ -1,51 +1,54 @@
-# Codex Plugins for Making Good Software
+# Agent Plugins for Making Good Software
 
-Codex plugin marketplace for the Apple Platform plugin: Swift, UIKit, App Intents, localization, testing, review, and technical writing.
+A plugin marketplace for the Apple Platform plugin: Swift, UIKit, App Intents, localization, testing, review, and technical writing.
 
-This repository is the Codex port of the Claude Code marketplace. Plugin-owned files live under `plugins/apple-platform` instead of project-scoped Codex configuration, so installed copies behave like marketplace assets.
+The marketplace is first-class on both Claude Code and Codex. Skills and agent definitions are stored once and shared; each runtime reads its own manifest. The marketplace is named `making-good-software`, so the plugin installs as `apple-platform@making-good-software` on both.
 
 ## Install
 
-Register the private marketplace:
+This is a private repository. Both runtimes need a GitHub account or SSH key with access.
+
+### Claude Code
 
 ```shell
-codex plugin marketplace add kylehughes/codex-plugins-for-making-good-software
+/plugin marketplace add kylehughes/agent-plugins-for-making-good-software
+/plugin install apple-platform@making-good-software
+```
+
+### Codex
+
+```shell
+codex plugin marketplace add kylehughes/agent-plugins-for-making-good-software
 ```
 
 If Codex cannot resolve the private repository by slug, use the SSH URL:
 
 ```shell
-codex plugin marketplace add git@github.com:kylehughes/codex-plugins-for-making-good-software.git
+codex plugin marketplace add git@github.com:kylehughes/agent-plugins-for-making-good-software.git
 ```
 
-Codex needs a GitHub account or SSH key with access to the private repository. After registration, install or enable `apple-platform` from Codex's plugin UI.
+After registration, install or enable `apple-platform` from Codex's plugin UI.
 
 ## Marketplace
 
-The marketplace file is `.agents/plugins/marketplace.json`. It registers one local plugin:
+Each runtime registers the same plugin from its own manifest:
 
-```text
-plugins/apple-platform
-```
+| Runtime | Marketplace manifest | Plugin manifest |
+| :------ | :------------------- | :-------------- |
+| Claude Code | `.claude-plugin/marketplace.json` | `plugins/apple-platform/.claude-plugin/plugin.json` |
+| Codex | `.agents/plugins/marketplace.json` | `plugins/apple-platform/.codex-plugin/plugin.json` |
 
-## Plugins
+## apple-platform
 
-### apple-platform
+Skills and agent definitions for Apple-platform codebases. The shared content lives under `plugins/apple-platform/skills` and `plugins/apple-platform/agents`; both runtimes auto-discover it.
 
-Skills and agent definitions for Apple-platform codebases.
-
-The Codex plugin manifest is:
-
-```text
-plugins/apple-platform/.codex-plugin/plugin.json
-```
-
-#### Skills
+### Skills
 
 | Skill | Purpose |
 | :---- | :------ |
 | `configuring-ios-content` | Implements `UIContentConfiguration`, `UIHostingConfiguration`, and `UIContentView`. |
 | `designing-swift-apis` | Applies Apple's Swift API design guidelines. |
+| `implementing-app-intents` | Implements App Intents for iOS 26 and iOS 27, including Siri, Apple Intelligence, entities, and Spotlight. |
 | `localizing-strings` | Localizes user-facing strings with `String(localized:)` and string catalogs. |
 | `modeling-swift-types-for-correctness` | Designs Swift types that make invalid states unrepresentable. |
 | `ordering-symbols` | Defines canonical member ordering for Swift types. |
@@ -57,15 +60,9 @@ plugins/apple-platform/.codex-plugin/plugin.json
 | `writing-swift` | Writes, edits, debugs, reviews, migrates, and tests production Swift code and packages. |
 | `writing-technical-writing` | Writes direct, pragmatic technical prose. |
 
-#### Agents
+Invoke a skill with its plugin-qualified name: `$apple-platform:writing-swift` in Codex, or `apple-platform:writing-swift` in Claude Code. Both runtimes can also select skills implicitly from their descriptions.
 
-Agent definitions are bundled under:
-
-```text
-plugins/apple-platform/agents
-```
-
-They are plugin artifacts, not project-scoped `.codex/agents` files.
+### Agents
 
 | Agent | Purpose |
 | :---- | :------ |
@@ -75,4 +72,4 @@ They are plugin artifacts, not project-scoped `.codex/agents` files.
 | `technical-writing-auditor` | Audits Markdown and doc comments for voice and structure. |
 | `type-driven-design-auditor` | Finds compile-time correctness opportunities in Swift types. |
 
-Codex runtimes do not always expose plugin-vended agent roles. Use these agents when asking for subagents, delegated review, or parallel agent work. Otherwise invoke skills directly with plugin-qualified names like `$apple-platform:writing-swift`, or let Codex select them implicitly.
+Claude Code can invoke these agents proactively. Codex does not spawn plugin agents from their descriptions, so ask for subagents, delegated review, or parallel agent work explicitly; otherwise the review runs directly against the skills.

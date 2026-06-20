@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "making-good-software",
+  "owner": {
+    "name": "Kyle Hughes",
+    "email": "kyle@kylehugh.es"
+  },
+  "description": "Plugins for making good software",
+  "plugins": [
+    {
+      "name": "apple-platform",
+      "source": "./plugins/apple-platform",
+      "displayName": "Apple Platform",
+      "description": "Swift, UIKit, App Intents, localization, testing, review, and technical-writing tools for Apple platform development.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Kyle Hughes",
+        "email": "kyle@kylehugh.es"
+      },
+      "homepage": "https://github.com/kylehughes/agent-plugins-for-making-good-software",
+      "repository": "https://github.com/kylehughes/agent-plugins-for-making-good-software",
+      "keywords": [
+        "apple",
+        "swift",
+        "ios",
+        "uikit",
+        "swift-concurrency",
+        "testing",
+        "agents",
+        "review"
+      ],
+      "category": "productivity"
+    }
+  ]
+}
