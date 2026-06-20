@@ -1,0 +1,86 @@
+{
+  "skill": "writing-swift",
+  "version": 1,
+  "cases": [
+    {
+      "should_trigger": true,
+      "prompt": "Fix these Swift 6 concurrency errors around main-thread-isolated work being sent into a task group without papering over the data-race risk."
+    },
+    {
+      "should_trigger": true,
+      "prompt": "Create a modern Swift package for an HTTP retry policy and include deterministic test coverage."
+    },
+    {
+      "should_trigger": true,
+      "prompt": "Review the changed Swift files in this PR for concurrency lifetime issues, cancellation, API compatibility, and crashes."
+    },
+    {
+      "should_trigger": true,
+      "prompt": "Migrate this legacy unit test suite to the modern Swift test framework while keeping UI and performance tests on their current framework."
+    },
+    {
+      "should_trigger": true,
+      "prompt": "Implement a concurrency-safe image cache that deduplicates simultaneous loads and keeps shared work alive while any caller still needs it."
+    },
+    {
+      "should_trigger": true,
+      "prompt": "Why does my package manifest reject default main-actor isolation, and what is the smallest safe manifest-level change?"
+    },
+    {
+      "should_trigger": true,
+      "prompt": "Modernize this Swift networking service for structured concurrency while preserving iOS 17 support."
+    },
+    {
+      "should_trigger": true,
+      "prompt": "Bridge this repeated C callback into an async stream with correct buffering, cleanup, and cancellation."
+    },
+    {
+      "should_trigger": true,
+      "prompt": "Expose this Swift function to a C client using the current interop features, including build validation."
+    },
+    {
+      "should_trigger": true,
+      "prompt": "Refactor this public Swift API so impossible authentication states cannot be represented without breaking existing clients."
+    },
+    {
+      "should_trigger": false,
+      "prompt": "Explain the SWIFT/BIC code format used for international bank transfers."
+    },
+    {
+      "should_trigger": false,
+      "prompt": "Write a biography of Taylor Swift and list her most influential albums."
+    },
+    {
+      "should_trigger": false,
+      "prompt": "Identify this bird; I think it might be a swift."
+    },
+    {
+      "should_trigger": false,
+      "prompt": "Implement structured concurrency in Rust using Tokio."
+    },
+    {
+      "should_trigger": false,
+      "prompt": "Convert this Android Kotlin coroutine repository to use Flow."
+    },
+    {
+      "should_trigger": false,
+      "prompt": "Design an app icon for my iOS application; no source-code changes are needed."
+    },
+    {
+      "should_trigger": false,
+      "prompt": "Review this TypeScript SDK named swift-client; it contains no Swift or Apple-platform code."
+    },
+    {
+      "should_trigger": false,
+      "prompt": "Rewrite this Objective-C-only framework while preserving its Objective-C public API; do not introduce Swift."
+    },
+    {
+      "should_trigger": false,
+      "prompt": "Draft product requirements for an iPhone app without choosing an implementation language."
+    },
+    {
+      "should_trigger": false,
+      "prompt": "Summarize Apple's Swift API Design Guidelines for a nontechnical presentation; no coding or review is involved."
+    }
+  ]
+}

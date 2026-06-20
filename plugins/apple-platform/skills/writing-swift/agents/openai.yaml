@@ -1,0 +1,6 @@
+interface:
+  display_name: "Writing Swift"
+  short_description: "Implement and review production Swift 6 code"
+  default_prompt: >-
+    Use $writing-swift to implement, debug, review, migrate, or test Swift code while preserving the repository's toolchain,
+    deployment targets, public compatibility, architecture, and conventions.
