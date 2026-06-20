@@ -49,7 +49,7 @@ Skills and agent definitions for Apple-platform codebases. The shared content li
 | `configuring-ios-content` | Implements `UIContentConfiguration`, `UIHostingConfiguration`, and `UIContentView`. |
 | `designing-swift-apis` | Applies Apple's Swift API design guidelines. |
 | `implementing-app-intents` | Implements App Intents for iOS 26 and iOS 27, including Siri, Apple Intelligence, entities, and Spotlight. |
-| `ios-type-safe-accessibility-identifiers` | Builds a compiler-checked `accessibilityIdentifier` contract across SwiftUI, UIKit, XCUITest, and screenshot automation. |
+| `instrumenting-accessibility-identifiers` | Builds a compiler-checked `accessibilityIdentifier` contract across SwiftUI, UIKit, XCUITest, and screenshot automation. |
 | `localizing-strings` | Localizes user-facing strings with `String(localized:)` and string catalogs. |
 | `modeling-swift-types-for-correctness` | Designs Swift types that make invalid states unrepresentable. |
 | `ordering-symbols` | Defines canonical member ordering for Swift types. |
