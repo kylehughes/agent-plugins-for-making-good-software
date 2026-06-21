@@ -46,20 +46,20 @@ Skills and agent definitions for Apple-platform codebases. The shared content li
 
 | Skill | Purpose |
 | :---- | :------ |
-| `configuring-ios-content` | Implements `UIContentConfiguration`, `UIHostingConfiguration`, and `UIContentView`. |
-| `designing-swift-apis` | Applies Apple's Swift API design guidelines. |
-| `implementing-app-intents` | Implements App Intents for iOS 26 and iOS 27, including Siri, Apple Intelligence, entities, and Spotlight. |
-| `instrumenting-accessibility-identifiers` | Builds a compiler-checked `accessibilityIdentifier` contract across SwiftUI, UIKit, XCUITest, and screenshot automation. |
-| `localizing-strings` | Localizes user-facing strings with `String(localized:)` and string catalogs. |
-| `modeling-swift-types-for-correctness` | Designs Swift types that make invalid states unrepresentable. |
-| `ordering-symbols` | Defines canonical member ordering for Swift types. |
-| `organizing-swift-types` | Defines Swift type, extension, access control, and file layout conventions. |
-| `reviewing-code` | Reviews Apple Platform changes for design consistency and correctness. |
-| `simplify-code` | Reviews changed code for reuse, simplicity, quality, and efficiency, then fixes issues directly. |
-| `testing-swift-code` | Writes tests with the Swift Testing framework. |
-| `using-swift-concurrency` | Covers Swift Concurrency design, diagnostics, actor isolation, logical races, and async tests. |
-| `writing-swift` | Writes, edits, debugs, reviews, migrates, and tests production Swift code and packages. |
-| `writing-technical-writing` | Writes direct, pragmatic technical prose. |
+| `configuring-ios-content` | Patterns for `UIContentConfiguration`, `UIHostingConfiguration`, and `UIContentView` in UIKit cells. |
+| `designing-swift-apis` | Apple's Swift API design guidelines for naming, argument labels, and doc comments. |
+| `implementing-app-intents` | Guidance for App Intents on iOS 26 and 27: Siri, Apple Intelligence, entities, and Spotlight. |
+| `instrumenting-accessibility-identifiers` | A type-safe `accessibilityIdentifier` pattern across SwiftUI, UIKit, XCUITest, and screenshot automation. |
+| `localizing-strings` | Patterns for `String(localized:)` and string catalogs. |
+| `modeling-swift-types-for-correctness` | Patterns for modeling Swift types that make invalid states unrepresentable. |
+| `ordering-symbols` | The canonical member ordering for Swift types. |
+| `organizing-swift-types` | Conventions for Swift types, extensions, access control, and file layout. |
+| `reviewing-code` | A review frame for design consistency, correctness, and concurrency safety. |
+| `simplify-code` | A cleanup pass for reuse, simplicity, quality, and efficiency. |
+| `testing-swift-code` | Conventions for the Swift Testing framework (`@Test`, `@Suite`, `#expect`). |
+| `using-swift-concurrency` | Swift Concurrency design, diagnostics, actor isolation, logical races, and async tests. |
+| `writing-swift` | Swift 6 standards for production code and packages. |
+| `writing-technical-writing` | Conventions for direct, pragmatic technical prose. |
 
 Invoke a skill with its plugin-qualified name: `$apple-platform:writing-swift` in Codex, or `apple-platform:writing-swift` in Claude Code. Both runtimes can also select skills implicitly from their descriptions.
 
