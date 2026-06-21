@@ -2,7 +2,7 @@
 
 A plugin marketplace for making good software, first-class on both Claude Code and Codex.
 
-It currently ships one plugin, `apple-platform`, whose skills and agents are tailored to Apple-platform development. Content is stored once and shared; each runtime reads its own manifest. The marketplace is named `making-good-software`, so the plugin installs as `apple-platform@making-good-software` on both.
+It currently ships one plugin, `apple-platform`, with skills and agents tailored to Apple-platform development.
 
 ## Install
 
@@ -29,18 +29,9 @@ codex plugin marketplace add git@github.com:kylehughes/agent-plugins-for-making-
 
 After registration, install or enable `apple-platform` from Codex's plugin UI.
 
-## Marketplace
-
-Each runtime registers plugins from its own manifest:
-
-| Runtime | Marketplace manifest | Plugin manifest |
-| :------ | :------------------- | :-------------- |
-| Claude Code | `.claude-plugin/marketplace.json` | `plugins/apple-platform/.claude-plugin/plugin.json` |
-| Codex | `.agents/plugins/marketplace.json` | `plugins/apple-platform/.codex-plugin/plugin.json` |
-
 ## apple-platform
 
-Skills and agent definitions for Apple-platform codebases. The shared content lives under `plugins/apple-platform/skills` and `plugins/apple-platform/agents`; both runtimes auto-discover it.
+Skills and agent definitions for Apple-platform codebases.
 
 ### Skills
 
@@ -61,8 +52,6 @@ Skills and agent definitions for Apple-platform codebases. The shared content li
 | `writing-swift` | Swift 6 standards for production code and packages. |
 | `writing-technical-writing` | Conventions for direct, pragmatic technical prose. |
 
-Invoke a skill with its plugin-qualified name: `$apple-platform:writing-swift` in Codex, or `apple-platform:writing-swift` in Claude Code. Both runtimes can also select skills implicitly from their descriptions.
-
 ### Agents
 
 | Agent | Purpose |
@@ -72,5 +61,3 @@ Invoke a skill with its plugin-qualified name: `$apple-platform:writing-swift` i
 | `information-entropy-reducer` | Flags unnecessary complexity and cognitive load. |
 | `technical-writing-auditor` | Audits Markdown and doc comments for voice and structure. |
 | `type-driven-design-auditor` | Finds compile-time correctness opportunities in Swift types. |
-
-Claude Code can invoke these agents proactively. Codex does not spawn plugin agents from their descriptions, so ask for subagents, delegated review, or parallel agent work explicitly; otherwise the review runs directly against the skills.
