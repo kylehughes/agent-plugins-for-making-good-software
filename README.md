@@ -1,8 +1,8 @@
 # Agent Plugins for Making Good Software
 
-A plugin marketplace for the Apple Platform plugin: Swift, UIKit, App Intents, localization, testing, review, and technical writing.
+A plugin marketplace for making good software, first-class on both Claude Code and Codex.
 
-The marketplace is first-class on both Claude Code and Codex. Skills and agent definitions are stored once and shared; each runtime reads its own manifest. The marketplace is named `making-good-software`, so the plugin installs as `apple-platform@making-good-software` on both.
+It currently ships one plugin, `apple-platform`, whose skills and agents are tailored to Apple-platform development. Content is stored once and shared; each runtime reads its own manifest. The marketplace is named `making-good-software`, so the plugin installs as `apple-platform@making-good-software` on both.
 
 ## Install
 
@@ -31,7 +31,7 @@ After registration, install or enable `apple-platform` from Codex's plugin UI.
 
 ## Marketplace
 
-Each runtime registers the same plugin from its own manifest:
+Each runtime registers plugins from its own manifest:
 
 | Runtime | Marketplace manifest | Plugin manifest |
 | :------ | :------------------- | :-------------- |
