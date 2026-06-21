@@ -3,8 +3,12 @@
   "version": "1.0.0",
   "description": "Tools for Apple platform development.",
   "author": {
-    "name": "Kyle Hughes"
+    "name": "Kyle Hughes",
+    "email": "kyle@kylehugh.es",
+    "url": "https://github.com/kylehughes"
   },
+  "homepage": "https://github.com/kylehughes/agent-plugins-for-making-good-software",
+  "repository": "https://github.com/kylehughes/agent-plugins-for-making-good-software",
   "keywords": [
     "apple",
     "swift",
