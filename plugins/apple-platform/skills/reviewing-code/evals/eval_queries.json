@@ -1,0 +1,22 @@
+[
+  {"query":"Review this pull request for correctness and leave only merge-blocking or actionable comments.","should_trigger":true},
+  {"query":"Can you inspect my staged diff and tell me whether it is safe to merge?","should_trigger":true},
+  {"query":"Audit this service for race conditions and stale writes; the repository is in ~/src/orders.","should_trigger":true},
+  {"query":"Please review the AI-generated patch below and find regressions, not style nits.","should_trigger":true},
+  {"query":"Compare commit 8a91d4e with its parent and identify concrete bugs.","should_trigger":true},
+  {"query":"Do a security-focused code review of the new account export endpoints.","should_trigger":true},
+  {"query":"Check whether this database migration is safe during a rolling deployment.","should_trigger":true},
+  {"query":"Read this Swift diff and write line-level PR comments for any real concurrency defects.","should_trigger":true},
+  {"query":"Review the dependency update and lockfile changes for runtime compatibility.","should_trigger":true},
+  {"query":"I do not trust this refactor. Verify that it preserves behavior and call out anything that does not.","should_trigger":true},
+  {"query":"Implement the pagination endpoint described in the ticket.","should_trigger":false},
+  {"query":"This unit test is failing on CI; debug it and patch the code.","should_trigger":false},
+  {"query":"Explain what this actor-based Swift type does.","should_trigger":false},
+  {"query":"Write tests for the new CSV parser.","should_trigger":false},
+  {"query":"Refactor this controller into smaller functions without changing behavior.","should_trigger":false},
+  {"query":"Generate a conventional commit message from my staged changes.","should_trigger":false},
+  {"query":"Summarize the pull request description and changed files for release notes.","should_trigger":false},
+  {"query":"Address the three review comments already left on my PR.","should_trigger":false},
+  {"query":"Run the formatter and fix all lint violations.","should_trigger":false},
+  {"query":"Design an architecture for a new notification service.","should_trigger":false}
+]

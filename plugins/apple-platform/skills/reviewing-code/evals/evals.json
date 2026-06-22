@@ -1,0 +1,81 @@
+{
+  "skill_name": "reviewing-code",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Review this new TypeScript function as a change review and return actionable findings only:\n\n```ts\nasync function reserveLastItem(id: string): Promise<boolean> {\n  const item = await db.items.find(id);\n  if (!item || item.stock <= 0) return false;\n  await payment.authorize(item.price);\n  await db.items.update(id, { stock: item.stock - 1 });\n  return true;\n}\n```",
+      "expected_output": "A concurrency finding explaining that two requests can both observe the final unit and succeed, with an atomic transaction/conditional update repair direction. It should not include style comments.",
+      "assertions": [
+        "Reports a race or lost-update/oversell defect",
+        "Describes a concrete two-request interleaving",
+        "Explains a user or data impact",
+        "Suggests an atomic database operation, lock, or transaction as the repair class",
+        "Does not report naming, formatting, or generic test-style comments"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Perform a security-focused review of this Python endpoint:\n\n```py\n@app.get('/admin/reports')\ndef reports(request):\n    if request.user is None:\n        raise Unauthorized()\n    return load_all_customer_reports()\n```",
+      "expected_output": "A high-severity authorization finding: authentication is checked but admin authorization is not, allowing any signed-in user to access all customer reports.",
+      "assertions": [
+        "Distinguishes authentication from authorization",
+        "States that a non-admin authenticated user can reach the sensitive data",
+        "Assigns P1 or otherwise clearly high severity",
+        "Provides a concrete role/permission enforcement repair direction"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Review only defects introduced by this diff. Do not audit unchanged code:\n\n```diff\n function render(input) {\n   const result = eval(input);\n-  return 'Result: ' + result;\n+  return `Computed result: ${result}`;\n }\n```",
+      "expected_output": "No actionable findings, because the dangerous eval call is pre-existing and the diff changes only display text. The response may note the narrow review scope but must not file the unchanged eval as a finding.",
+      "assertions": [
+        "Does not report the unchanged eval call as a defect introduced by the patch",
+        "States that there are no actionable findings or equivalent",
+        "Does not invent a regression in the string change"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Review this behavior-preserving refactor and avoid optional cleanup suggestions:\n\n```diff\n-export function total(lines: Line[]) {\n-  let value = 0;\n-  for (const line of lines) value += line.price * line.quantity;\n-  return value;\n-}\n+function lineTotal(line: Line) {\n+  return line.price * line.quantity;\n+}\n+export function total(lines: Line[]) {\n+  return lines.reduce((value, line) => value + lineTotal(line), 0);\n+}\n```",
+      "expected_output": "No actionable findings. The reviewer should not object to reduce, helper naming, or style when behavior is preserved.",
+      "assertions": [
+        "Returns no actionable findings or equivalent",
+        "Does not report subjective style or abstraction concerns",
+        "Does not claim a behavior change without evidence"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Review this deployment change. The service is rolled out gradually, so old and new application instances overlap:\n\n```diff\n-ALTER TABLE users ADD COLUMN full_name text;\n+ALTER TABLE users RENAME COLUMN name TO full_name;\n\n-SELECT id, name FROM users;\n+SELECT id, full_name FROM users;\n```",
+      "expected_output": "A compatibility finding explaining that renaming the column breaks old instances during rolling deployment and possibly rollback, with an additive expand/migrate/contract approach.",
+      "assertions": [
+        "Identifies mixed-version or rolling-deployment incompatibility",
+        "Explains how old instances fail after the rename",
+        "Mentions rollback or old-reader compatibility",
+        "Suggests an additive migration followed by backfill/cutover/removal"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Review this Jest regression test:\n\n```ts\nit('retries delivery once', async () => {\n  const send = jest.fn().mockRejectedValueOnce(new Error('timeout')).mockResolvedValue(undefined);\n  await deliver(message, send);\n  expect(send).toBeDefined();\n});\n```",
+      "expected_output": "A test-quality finding explaining that the assertion is vacuous and passes even if deliver never invokes send; it should recommend asserting call count and relevant arguments.",
+      "assertions": [
+        "Identifies the toBeDefined assertion as vacuous",
+        "Explains that the test passes even when send is never called",
+        "Suggests asserting the call count and/or arguments",
+        "Does not merely say to add more tests"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Review this Swift async state update:\n\n```swift\n@MainActor\nfinal class SearchModel {\n    var results: [Result] = []\n\n    func search(_ query: String) async throws {\n        let response = try await api.search(query)\n        results = response.results\n    }\n}\n```\n\nThe UI starts a new task for every keystroke and does not cancel earlier tasks.",
+      "expected_output": "A stale-result ordering finding: an earlier request may complete after a later one and overwrite current results. The repair direction should use cancellation, request identity, or a latest-query check rather than claiming MainActor prevents the logical race.",
+      "assertions": [
+        "Identifies out-of-order completion and stale result overwrite",
+        "Does not claim MainActor serial execution prevents the logical race",
+        "Describes the two-request ordering scenario",
+        "Suggests cancellation, request identity, or validating the latest query"
+      ]
+    }
+  ]
+}

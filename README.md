@@ -45,7 +45,7 @@ Skills and agent definitions for Apple-platform codebases.
 | `modeling-swift-types-for-correctness` | Patterns for modeling Swift types that make invalid states unrepresentable. |
 | `ordering-symbols` | The canonical member ordering for Swift types. |
 | `organizing-swift-types` | Conventions for Swift types, extensions, access control, and file layout. |
-| `reviewing-code` | A review frame for design consistency, correctness, and concurrency safety. |
+| `reviewing-code` | A review frame for correctness, security, concurrency, and compatibility risks, with line-specific findings. |
 | `simplify-code` | A cleanup pass for reuse, simplicity, quality, and efficiency. |
 | `testing-swift-code` | Conventions for the Swift Testing framework (`@Test`, `@Suite`, `#expect`). |
 | `using-swift-concurrency` | Swift Concurrency design, diagnostics, actor isolation, logical races, and async tests. |
