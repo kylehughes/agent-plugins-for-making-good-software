@@ -1,0 +1,35 @@
+{
+  "name": "universal",
+  "version": "1.0.0",
+  "description": "Platform-agnostic tools for making good software.",
+  "author": {
+    "name": "Kyle Hughes",
+    "email": "kyle@kylehugh.es",
+    "url": "https://github.com/kylehughes"
+  },
+  "homepage": "https://github.com/kylehughes/agent-plugins-for-making-good-software",
+  "repository": "https://github.com/kylehughes/agent-plugins-for-making-good-software",
+  "keywords": [
+    "code-review",
+    "review",
+    "quality",
+    "correctness",
+    "platform-agnostic",
+    "agents"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Universal",
+    "shortDescription": "Code review and software quality, any language",
+    "longDescription": "Reusable, platform-agnostic skills and agents for making good software, including evidence-based, line-specific code review.",
+    "developerName": "Kyle Hughes",
+    "category": "Productivity",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Use $universal:reviewing-code to review this diff."
+    ]
+  }
+}

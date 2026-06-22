@@ -6,19 +6,21 @@ This file is the canonical guidance for the repository. `CLAUDE.md` is a symlink
 
 ## Repository Shape
 
-This repository is a single plugin marketplace that is first-class on both Claude Code and Codex. The skill and agent content is shared; only the manifests differ per platform.
+This repository is a plugin marketplace that is first-class on both Claude Code and Codex. The skill and agent content is shared; only the manifests differ per platform.
 
-- Shared content lives under `plugins/apple-platform/`:
-  - `plugins/apple-platform/skills/` — bundled skills, one directory per skill.
-  - `plugins/apple-platform/agents/` — bundled subagent definitions.
-- Claude Code manifests:
-  - `.claude-plugin/marketplace.json` registers the marketplace.
-  - `plugins/apple-platform/.claude-plugin/plugin.json` is the Claude plugin manifest.
-- Codex manifests:
-  - `.agents/plugins/marketplace.json` registers the marketplace.
-  - `plugins/apple-platform/.codex-plugin/plugin.json` is the Codex plugin manifest.
+- The marketplace ships two plugins under `plugins/`:
+  - `apple-platform` — skills and agents tailored to Apple-platform development.
+  - `universal` — platform-agnostic tools for making good software.
+- Each plugin holds its shared content and both platforms' manifests:
+  - `plugins/<plugin>/skills/` — bundled skills, one directory per skill.
+  - `plugins/<plugin>/agents/` — bundled subagent definitions.
+  - `plugins/<plugin>/.claude-plugin/plugin.json` — Claude plugin manifest.
+  - `plugins/<plugin>/.codex-plugin/plugin.json` — Codex plugin manifest.
+- Marketplace manifests register every plugin:
+  - `.claude-plugin/marketplace.json` for Claude Code.
+  - `.agents/plugins/marketplace.json` for Codex.
 
-Both runtimes auto-discover `skills/` and `agents/` inside the plugin, so neither manifest needs to enumerate them. Claude Code ignores unknown files (such as `skills/<name>/agents/openai.yaml`) and unknown frontmatter keys, so Codex-only metadata coexists in the shared files without breaking Claude.
+Keep a skill and the agents that preload it in the same plugin so agent `skills:` references resolve without a cross-plugin dependency. Both runtimes auto-discover `skills/` and `agents/` inside each plugin, so neither manifest needs to enumerate them. Claude Code ignores unknown files (such as `skills/<name>/agents/openai.yaml`) and unknown frontmatter keys, so Codex-only metadata coexists in the shared files without breaking Claude.
 
 There are no MCP servers or hooks in this repository right now.
 

@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "universal",
+  "displayName": "Universal",
+  "version": "1.0.0",
+  "description": "Platform-agnostic tools for making good software.",
+  "author": {
+    "name": "Kyle Hughes",
+    "email": "kyle@kylehugh.es",
+    "url": "https://github.com/kylehughes"
+  },
+  "homepage": "https://github.com/kylehughes/agent-plugins-for-making-good-software",
+  "repository": "https://github.com/kylehughes/agent-plugins-for-making-good-software",
+  "keywords": [
+    "code-review",
+    "review",
+    "quality",
+    "correctness",
+    "platform-agnostic",
+    "agents"
+  ]
+}

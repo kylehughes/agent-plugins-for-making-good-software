@@ -2,7 +2,7 @@
 
 A plugin marketplace for making good software, first-class on both Claude Code and Codex.
 
-It currently ships one plugin, `apple-platform`, with skills and agents tailored to Apple-platform development.
+It ships two plugins: `apple-platform`, with skills and agents tailored to Apple-platform development, and `universal`, with platform-agnostic tools for making good software.
 
 ## Install
 
@@ -13,6 +13,7 @@ This is a private repository. Both runtimes need a GitHub account or SSH key wit
 ```shell
 /plugin marketplace add kylehughes/agent-plugins-for-making-good-software
 /plugin install apple-platform@making-good-software
+/plugin install universal@making-good-software
 ```
 
 ### Codex
@@ -27,7 +28,7 @@ If Codex cannot resolve the private repository by slug, use the SSH URL:
 codex plugin marketplace add git@github.com:kylehughes/agent-plugins-for-making-good-software.git
 ```
 
-After registration, install or enable `apple-platform` from Codex's plugin UI.
+After registration, install or enable `apple-platform` and `universal` from Codex's plugin UI.
 
 ## apple-platform
 
@@ -45,7 +46,6 @@ Skills and agent definitions for Apple-platform codebases.
 | `modeling-swift-types-for-correctness` | Patterns for modeling Swift types that make invalid states unrepresentable. |
 | `ordering-symbols` | The canonical member ordering for Swift types. |
 | `organizing-swift-types` | Conventions for Swift types, extensions, access control, and file layout. |
-| `reviewing-code` | A review frame for correctness, security, concurrency, and compatibility risks, with line-specific findings. |
 | `simplify-code` | A cleanup pass for reuse, simplicity, quality, and efficiency. |
 | `testing-swift-code` | Conventions for the Swift Testing framework (`@Test`, `@Suite`, `#expect`). |
 | `using-swift-concurrency` | Swift Concurrency design, diagnostics, actor isolation, logical races, and async tests. |
@@ -61,3 +61,19 @@ Skills and agent definitions for Apple-platform codebases.
 | `information-entropy-reducer` | Flags unnecessary complexity and cognitive load. |
 | `technical-writing-auditor` | Audits Markdown and doc comments for voice and structure. |
 | `type-driven-design-auditor` | Finds compile-time correctness opportunities in Swift types. |
+
+## universal
+
+Platform-agnostic tools for making good software.
+
+### Skills
+
+| Skill | Purpose |
+| :---- | :------ |
+| `reviewing-code` | A review frame for correctness, security, concurrency, and compatibility risks, with line-specific findings. |
+
+### Agents
+
+| Agent | Purpose |
+| :---- | :------ |
+| `code-reviewer` | Reviews structural design consistency and architecture fit. |
