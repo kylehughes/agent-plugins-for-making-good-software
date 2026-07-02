@@ -1,285 +1,264 @@
 ---
 name: writing-technical-writing
-description: Writes technical prose (READMEs, ADRs, code comments) in a pragmatic, direct developer-to-developer voice. Use when creating or editing .md files, writing Swift doc comments, authoring ADRs, or reviewing technical writing for voice consistency.
+description: "Writes, edits, reviews, and normalizes developer-facing technical prose: READMEs, ADRs, RFCs, design docs, API docs, Swift/DocC comments, runbooks, migration guides, release notes, PR descriptions, troubleshooting guides, and Markdown. Use for Apple-platform docs or any software/domain technical writing when correctness, clarity, voice consistency, and actionable structure matter. Do not use for marketing copy unless developer accuracy matters."
 ---
 
 # Writing Technical Writing
 
-This skill defines the voice, style, and structure for technical writing. Follow these patterns for consistency across documentation.
+Produce technical prose that is correct, concrete, and useful to capable readers. Prefer finished text over commentary about the text.
+
+## Operating Rules
+
+1. **Preserve truth.** Do not invent APIs, versions, compatibility claims, dates, benchmarks, ownership, commands, file paths, or behavior. Inspect source material when available. Mark unresolved facts with `TODO:` or an explicit assumptions/open-questions section.
+2. **Preserve local convention.** Follow nearby documentation for file names, heading style, terminology, capitalization, examples, and depth before applying this guide.
+3. **Optimize in this order:** technical correctness, reader usefulness, maintainability, consistency, brevity.
+4. **Write the document, not a preface.** Do not include chatbot scaffolding such as `Sure`, `Here’s`, `I’ll`, `Let me`, or explanations of how the answer was produced.
+5. **Prefer concrete constraints over vague confidence.** Name prerequisites, limits, failure modes, side effects, rollback paths, and trade-offs.
+6. **Do not hide risk.** For decisions, migrations, destructive commands, security-sensitive work, or operational procedures, include the downside and how to detect or recover from failure.
+7. **Ask only when blocked.** If a reasonable assumption lets the work proceed, state the assumption in the artifact or a short note and continue.
+
+## Workflow
+
+### Before Writing
+
+- Identify the reader: maintainer, app developer, API consumer, operator, reviewer, or future decision-maker.
+- Identify the job: learn, install, decide, migrate, debug, operate, review, or reference.
+- Gather source of truth from the repository, existing docs, code, tests, issue text, design notes, or user-provided material.
+- Reuse existing terminology. If terms conflict, choose the term used by public APIs or user-facing docs and note the mismatch if it matters.
+
+### When Creating New Prose
+
+- Start with the purpose or problem, not historical background.
+- Put the most common path before edge cases.
+- Include a minimal working example before optional configuration.
+- Explain why a rule or decision exists when the reason affects future maintenance.
+- Use examples that resemble the real codebase. Avoid placeholder names such as `foo`, `bar`, `MyClass`, or `doThing()` unless the surrounding project already uses them.
+
+### When Editing Existing Prose
+
+- Preserve meaning unless the user explicitly asks for a rewrite.
+- Improve structure before polishing sentences.
+- Remove duplication, filler, stale claims, and unsupported certainty.
+- Keep stable anchors, heading IDs, public symbol names, and links intact unless they are wrong.
+- Prefer small, reviewable edits for existing project docs.
+
+### When Reviewing Prose
+
+Use severity, not taste, to prioritize feedback:
+
+1. Incorrect, misleading, unsafe, or unverifiable statements.
+2. Missing prerequisites, failure modes, rollback, or compatibility constraints.
+3. Structure that prevents the reader from completing the job.
+4. Voice, consistency, grammar, and concision.
+
+For deeper reviews, read `references/review-checklist.md` and optionally run `scripts/lint_technical_writing.py` against Markdown or Swift files.
 
 ## Voice
 
-### Tone
+### Default Tone
 
-- **Pragmatic and honest**: Acknowledge trade-offs, constraints, and downsides openly.
-- **Direct and declarative**: Use active voice and imperative mood for instructions.
-- **Confident without arrogance**: State positions clearly without hedging or dismissing alternatives.
-- **Developer-to-developer**: Speak as a peer, assume competence.
+- Pragmatic and direct.
+- Neutral rather than enthusiastic.
+- Confident when the facts support confidence.
+- Honest about trade-offs and unknowns.
+- Peer-to-peer: assume the reader is competent, but do not assume they know project-specific context.
 
-### Pronoun Usage
+### Pronouns
 
-Use "we" for the team voice:
+Use pronouns based on document type:
+
+- **Internal team docs:** use `we` for team conventions and decisions.
+- **Task instructions:** use imperative mood: “Run `make test`.”
+- **External developer docs:** `you` is acceptable when speaking to the developer using an API.
+- **Reference docs:** prefer third person or declaration-focused prose.
 
 ```markdown
-<!-- Correct -->
-We use Homebrew to install dependencies.
-We prefer value types for models.
+<!-- Good: internal convention -->
+We keep generated sources out of review unless the generator changed.
 
-<!-- Incorrect -->
-You should use Homebrew to install dependencies.
-Users must prefer value types for models.
+<!-- Good: task instruction -->
+Run `make bootstrap` before opening the workspace.
+
+<!-- Good: external developer doc -->
+Use `ImagePipeline` when you need request coalescing and memory-backed caching.
+
+<!-- Weak -->
+Users should simply leverage the image system to do caching.
 ```
 
 ### Tense
 
-Use present tense to describe current state:
+Use present tense for current behavior and decisions.
 
 ```markdown
-<!-- Correct -->
-This package defines the data layer.
-The goal is to keep call sites stable.
+<!-- Good -->
+This package owns session persistence.
+The adapter converts delegate callbacks into `AsyncSequence` values.
 
-<!-- Incorrect -->
-This package will define the data layer.
-The goal would be to keep call sites stable.
+<!-- Weak -->
+This package will own session persistence.
+The adapter would convert delegate callbacks into `AsyncSequence` values.
 ```
 
-### Instructions
+Use future tense only for planned work, roadmap items, or explicitly time-bound changes.
 
-Use imperative mood for actionable steps:
+## Word Choice
 
-```markdown
-<!-- Correct -->
-Run this command to install dependencies.
-Add the secrets to 1Password.
+### Avoid by Default
 
-<!-- Incorrect -->
-You can run this command to install dependencies.
-You should add the secrets to 1Password.
-```
+Avoid words and phrases that add confidence without information:
 
-## Anti-Patterns
+- `just`, `simply`, `basically`, `essentially`, `obviously`, `clearly`
+- `seamless`, `robust`, `powerful`, `easy`, `straightforward`, unless the claim is proved or contextualized
+- `utilize` when `use` works
+- `leverage` when `use`, `build on`, `call`, or `compose` is more precise
+- `it should be noted that`, `it is important to note that`, `as previously mentioned`
+- unsupported hedges such as `might`, `could potentially`, `may or may not`
 
-Never use these patterns — they sound like AI-generated content:
+Do not ban precise uncertainty. Use `may`, `can`, `might`, or `should` when they express real conditional behavior, permission, probability, or standards language.
 
-| Pattern | Example | Why It's Wrong |
-|---------|---------|----------------|
-| Enthusiasm markers | "This is great for debugging!" | Unprofessional, sounds like marketing |
-| Filler words | "This basically reduces complexity" | Adds no information, hedges |
-| AI-isms | "Let me explain...", "Here's how to...", "Sure!" | Sounds like chatbot output |
-| Hedging | "This might help", "could potentially" | Lacks confidence |
-| Over-qualification | "It should be noted that..." | Verbose, indirect |
-| Exclamation points | "Install the dependencies!" | Overly casual in technical prose |
+### Normative Language
 
-### Specific Words to Avoid
+Use `must`, `must not`, `should`, `should not`, and `may` deliberately.
 
-- "simply", "just", "basically", "essentially" (as filler)
-- "Let me...", "I'll...", "Here's...", "Sure!", "Certainly!", "Great!", "Awesome!"
-- "might", "could potentially", "may or may not"
-- "It should be noted that...", "It is important to note that..."
+- Use `must` for requirements that break correctness, safety, compatibility, or policy.
+- Use `should` for strong recommendations with valid exceptions.
+- Use `may` for optional behavior.
+- In formal specifications, define normative terms or reference the project’s standard before using RFC-style requirements.
 
-## Document Structures
+## Structure Principles
 
-### READMEs
+Every substantial document should answer these questions in the order the reader needs them:
+
+1. What is this?
+2. When do we use it?
+3. How do we use it safely?
+4. What are the constraints, trade-offs, and failure modes?
+5. How do we verify that it worked?
+6. Where should the reader look next?
+
+For full templates, read `references/document-patterns.md`.
+
+### README Baseline
 
 ```markdown
 # Package Name
 
-One-line summary of what this package does.
+One sentence describing what the package does and who it serves.
 
-## About
+## When to Use This
 
-Explain purpose, context, and when to use this package.
+Name the concrete scenarios this package handles.
 
-### Capabilities
+## Non-Goals
 
-What this package enables (bullet list).
-
-### Non-Goals
-
-What this package intentionally does not do.
+Name what this package intentionally does not handle.
 
 ## Getting Started
 
-Practical usage instructions with code examples.
+Prerequisites, installation, and a minimal working example.
 
-### Design
+## Core Concepts
 
-Core patterns, concepts, and architectural decisions.
+Explain the small set of ideas needed to read or modify the code.
 
-## Architecture
+## Configuration
 
-Detailed explanation of structure and concepts.
+List required and optional settings with defaults.
+
+## Testing
+
+Show the commands that verify local changes.
 
 ## Trade-Offs and Constraints
 
-Honest discussion of limitations and design decisions.
+Name the limits, failure modes, and design costs.
 ```
 
-### ADRs (Architecture Decision Records)
+### ADR Baseline
 
-Location: `Documents/Decisions/YYYY-MM-DDTHHMM Title.md`
+Use the repository’s ADR location if one exists. Otherwise prefer `docs/decisions/YYYY-MM-DD-title.md`.
 
 ```markdown
 # Title
 
-## Context and Problem Statement
+Status: Proposed | Accepted | Superseded
+Date: YYYY-MM-DD
 
-Describe the situation and frame the problem as a question:
-"How can we ensure that X while also Y?"
+## Context
+
+Describe the current situation and the forces that make the decision necessary.
+
+## Decision
+
+We chose [option], because [reason tied to the context].
 
 ## Considered Options
 
-- Option A description
-- Option B description
-- Option C description
+| Option | Benefits | Costs | Why not |
+|--------|----------|-------|---------|
+| A      |          |       |         |
+| B      |          |       |         |
 
-## Decision Outcome
+## Consequences
 
-Chosen option: "Option B", because [rationale connecting back to the problem].
-
-### Consequences
-
-- Good, because [benefit].
-- Good, because [another benefit].
-- Bad, because [downside or trade-off].
+- Good: [benefit].
+- Bad: [cost, risk, or constraint].
+- Follow-up: [work needed to make the decision safe or complete].
 ```
 
-The "Consequences" section must include at least one "Bad" item. Omitting downsides is dishonest.
+Every decision statement needs a reason. If there is no downside, state the residual risk or explain why the trade-off is negligible.
 
-### Code Documentation (Swift)
+## Code and API Documentation
 
-First line is a complete sentence describing purpose:
+Document public APIs when the reader needs semantics that are not obvious from the signature.
 
-```swift
-/// A single-result operation that fetches a resource from the remote service.
-public protocol DataRequest<Model>: Request { }
-```
+Cover the parts that affect correct use:
 
-Multi-paragraph for complex concepts:
+- Purpose and lifecycle.
+- Parameters, return values, thrown errors, and side effects.
+- Threading, actor isolation, cancellation, ordering, and reentrancy.
+- Preconditions and invalid states.
+- Performance characteristics when they affect caller choices.
+- Security, privacy, persistence, network, or filesystem effects.
 
-```swift
-/// A pattern for managing hierarchical relationships among navigation flows.
-///
-/// By adopting `FlowControlling`, you can form intricate structures of nested objects
-/// that manage their own child flows. This pattern facilitates clean separation
-/// of responsibilities.
-public protocol FlowControlling: AnyObject { }
-```
+Do not write comments that restate the next line of code. Use implementation comments for invariants, workarounds, surprising behavior, or bug-prone constraints.
 
-Use callouts for important notes:
+For Swift, DocC, and Apple-platform specifics, read `references/apple-platform.md`.
 
-```swift
-/// - Note: This has a `Sendable` requirement because of constraints on `AnyAsyncSequence`.
-/// - Important: "Subscription" refers to in-app purchase subscriptions, not push notification subscriptions.
-/// - Attention: Modifying this property outside the framework is a programming error.
-```
+## Markdown Formatting
 
-Document parameters and returns for public APIs:
-
-```swift
-/// Create a new request.
-///
-/// - Parameter fileName: The name of the file to create.
-/// - Parameter mimeType: The MIME type of the file.
-/// - Returns: A configured request ready for execution.
-/// - Throws: `ValidationError` if the MIME type is unsupported.
-```
-
-## Formatting
-
-### Code Blocks
-
-Always include language hints:
-
-````markdown
-```swift
-let client = NetworkClient()
-```
-
-```sh
-make build/app
-```
-````
-
-### Inline Code
-
-Use backticks for:
-- File paths: `Sources/Networking/README.md`
-- Commands: `make build/app`
-- Types and symbols: `DataRequest`, `execute(_:)`
-- Values: `true`, `nil`, `"production"`
-
-### Emphasis
-
-Use **bold** for key terms and warnings, not ALL CAPS:
-
-```markdown
-<!-- Correct -->
-**Use this package when** you need ergonomic data operations.
-
-<!-- Incorrect -->
-USE THIS PACKAGE WHEN you need ergonomic data operations.
-```
-
-### Asides
-
-Use em-dashes for mid-sentence asides:
-
-```markdown
-<!-- Correct -->
-The model layer — which sits above the network client — keeps call sites stable.
-
-<!-- Incorrect -->
-The model layer (which sits above the network client) keeps call sites stable.
-```
-
-### Callouts
-
-For GitHub-rendered markdown, use:
+- Use sentence-case headings unless the project uses title case.
+- Keep heading levels hierarchical; do not jump from `##` to `####`.
+- Include language hints on fenced code blocks.
+- Use `sh` for copy-paste commands and `console` for terminal transcripts with prompts or output.
+- Do not include `$` prompts in copy-paste command blocks.
+- Use backticks for paths, commands, symbols, flags, environment variables, literal values, and package names when they are code identifiers.
+- Use tables for dense comparisons or configuration matrices. Do not use tables for prose that would be easier to scan as headings or bullets.
+- Use GitHub callouts for warnings and operational hazards:
 
 ```markdown
 > [!NOTE]
-> There are no requirements for running on Simulator.
+> Simulator builds do not require push notification entitlements.
 
 > [!WARNING]
-> This will delete all local data.
+> This command deletes local derived data and cannot be undone.
 ```
 
-### Tables
+## Links and References
 
-Use tables for structured data like variables, options, or comparisons:
+- Prefer descriptive links over bare URLs.
+- Prefer relative links for repository-local documents.
+- Check links when tools allow it.
+- Do not cite stale external behavior from memory. Verify current external facts or mark them for verification.
 
-```markdown
-| Variable | Required | Description |
-|----------|:--------:|-------------|
-| PACKAGE  | Yes      | Name of the package to build |
-| CONFIG   | No       | Build configuration. Defaults to `Debug`. |
-```
+## Security and Safety
 
-## Rationale
+- Never include real credentials, tokens, private keys, customer data, or personal data in examples.
+- Use realistic but fake placeholders: `sk_test_redacted`, `user@example.com`, `00000000-0000-0000-0000-000000000000`.
+- Label destructive commands and include verification or rollback when available.
+- Prefer least-privilege examples for permissions, entitlements, IAM policies, API scopes, and filesystem access.
 
-Always explain "why" after decisions:
+## Output Rules
 
-```markdown
-<!-- Correct -->
-Chosen option: "Accept automatic behavior", because iOS enforces APNS
-environment selection regardless of entitlements configuration.
-
-<!-- Incorrect -->
-Chosen option: "Accept automatic behavior".
-```
-
-The word "because" should appear after every decision statement.
-
-## Examples
-
-Use realistic examples, not contrived ones. Make examples consistent with existing patterns in the codebase.
-
-```markdown
-<!-- Correct: Realistic -->
-let response = try await client.execute(UploadRequest(fileName: "photo.jpg", mimeType: "image/jpeg"))
-
-<!-- Incorrect: Contrived -->
-let response = try await client.execute(MyRequest(foo: "bar"))
-```
+When asked to write or rewrite a document, output the finished artifact unless the user asked for analysis. When asked for a review, output findings plus concrete replacements. When facts are missing, include the smallest possible `TODO:` markers instead of inventing details.
