@@ -1,248 +1,225 @@
 ---
 name: ordering-symbols
-description: Defines the canonical order for members within Swift types — properties, initializers, computed properties, and methods — using access-level grouping and lexicographic sorting. Use when writing new Swift types, adding members to existing structs/classes/enums, reorganizing or refactoring Swift code, deciding where to place a new property or method, or reviewing member ordering in pull requests.
+description: Defines the canonical order for Swift 6.3 symbols in iOS projects — type aliases, nested types, enum cases, stored properties, initializers, lazy/computed properties, subscripts, and methods — using access-level grouping and lexicographic sorting wherever reordering is semantics-preserving. Use when writing new Swift types, adding members to existing structs/classes/actors/enums/protocols/extensions, reorganizing or refactoring Swift code, deciding where to place a new property or method, or reviewing member ordering in pull requests.
 ---
 
 # Swift Lexicographic Symbol Ordering
 
-## Overview
+## Objective
 
-Maintain deterministic, lexicographic ordering of members within Swift types wherever reordering is semantics-preserving. Consistent member ordering eliminates subjective decisions about "where does this go?" and makes types scannable — readers always know where to find a given member.
+Maintain deterministic, lexicographic ordering of Swift declarations wherever reordering is semantics-preserving. Consistent member ordering removes subjective placement decisions and makes types scannable: readers should know where to find a symbol without knowing its implementation.
 
-## When to Apply
+This skill enforces the existing preference: order by declaration category, access level, static-vs-instance, and name. It does not introduce semantic grouping as an alternative to lexicographic ordering.
 
-Apply lexicographic ordering when:
-- Writing new Swift types (classes, structs, enums, extensions)
-- Refactoring or reorganizing existing Swift code
-- Reviewing code to ensure consistent organization
-- Adding new members to existing types
+## Version and Platform Assumptions
 
-**Critical:** Only reorder when it's safe to do so. Never reorder if it would break compilation, change runtime behavior, or violate required ordering (e.g., `super.init()` must remain in its required position).
+- Use current Swift syntax and language behavior. Swift 6.3 is the relevant language version.
+- iOS projects commonly span iOS 16 through the latest stable SDKs, with newer/beta APIs guarded as needed. Availability gates are safety boundaries, not sorting keys.
+- Do not preserve old Swift-era conventions for compatibility with versions below the stated deployment target.
+- Do not remove, weaken, or reorder availability fallbacks merely to improve symbol ordering.
 
-## When NOT to Apply
+## Non-Negotiable Safety Rule
 
-### Function and Initializer Parameters
+Only reorder sibling declarations or sibling statements when it is safe to do so. Never reorder if the change could affect compilation, overload resolution, initialization order, synthesized API shape, runtime behavior, UI order, availability behavior, reflection, serialization, generated code, or tests.
 
-**DO NOT apply lexicographic ordering to function parameters or initializer parameters.**
+When editing existing code, move a declaration together with all directly attached documentation comments, attributes, property wrappers, macros, conditional-compilation directives that guard only that declaration, and inline comments that describe that declaration.
 
-Parameters should be ordered semantically based on their role and relationships:
+If safety is uncertain, preserve the current order rather than guessing.
 
-1. **Identity** — `id` and identifiers typically come first
-2. **Related groups** — Keep conceptually related parameters together (e.g., `firstName`, `lastName`, `fullName`)
-3. **Primary data** — The main subject or content being operated on
-4. **Configuration** — Settings that modify behavior
-5. **Dependencies** — Required collaborators and services
-6. **Optionals with defaults** — Parameters that have sensible defaults
-7. **Closures** — Completion handlers and callbacks go last
+## Canonical Sort Keys
 
-When parameters have no clear semantic relationship, fall back to lexicographic ordering as a tiebreaker.
+When a declaration is safe to reorder, compare it using these keys in order:
 
-```swift
-// ✅ GOOD: Semantic parameter ordering
-init(
-    id: UUID,                                 // Identity first
-    firstName: String,                        // Related name components
-    lastName: String,                         //   grouped together
-    fullName: String,
-    profilePhotoURL: URL?,                    // Other properties
-    completion: @escaping () -> Void          // Closures last
-)
+1. Major declaration category.
+2. Access level, where applicable.
+3. Static/type member before instance member, where applicable.
+4. Declaration kind, where applicable.
+5. Lexicographic name/signature.
+6. Original order as a stable tie-breaker.
 
-func send(
-    _ content: String,                        // Primary data
-    with attachments: [Attachment],           // Associated data
-    isImportant: Bool,                        // Configuration
-    completion: @escaping (Result) -> Void    // Closure last
-) async
+### Access-Level Order
 
-// ❌ BAD: Lexicographic parameter ordering
-init(
-    completion: @escaping () -> Void,         // Closure should be last
-    firstName: String,
-    fullName: String,
-    id: UUID,                                 // Identity buried in middle
-    lastName: String,                         // Name components scattered
-    profilePhotoURL: URL?
-)
-```
+Use this access order, from broadest to narrowest:
 
-## Ordering Rules
+1. `open`
+2. `public`
+3. `package`
+4. `internal` / omitted access modifier
+5. `fileprivate`
+6. `private`
 
-### 1. Within Type Declarations (class / struct / enum)
+Rules:
 
-Order members in this sequence:
+- Omitted access is `internal`, unless inherited from an enclosing `private`, `fileprivate`, `package`, `public`, or `open` declaration/extension.
+- Sort a declaration by its getter/access level, not by setter-only access. For example, `public private(set) var title` belongs in the `public` bucket, and `private(set) var count` belongs in the `internal` bucket.
+- Access modifiers on extensions affect unannotated members inside the extension.
+- Access level is primary only where the ordering rules below say it is primary. Do not globally sort every declaration by access before category.
 
-1. **typealiases** – alphabetical by name
+### Name Comparison
 
-2. **stored properties**
-   - Group order: static let → static var → instance let → instance var
-   - Within each group: public → internal → fileprivate → private
-   - Within each access level: alphabetical by identifier
-   - Importantly: NOT LAZY PROPERTIES.
+Use deterministic code-point lexicographic ordering for the comparison string.
 
-3. **initializers** (`init` and `deinit`)
-   - Order by access level first: public → internal → fileprivate → private
-   - Within each access level: alphabetical (e.g., `init()` before `init(coder:)`)
+- For properties and enum cases, compare the declared identifier.
+- For type aliases, associated types, nested types, classes, structs, actors, enums, and protocols, compare the declared type name.
+- For methods, compare the base name first. Use the full signature only as a tie-breaker among overloads.
+- For initializers, compare the canonical initializer signature, such as `init()`, `init(coder:)`, `init(from:)`, `init(id:name:)`.
+- For subscripts, compare `subscript` signatures after named computed properties and before methods.
+- For operator functions, compare the operator token as the method base name.
+- Ignore backticks around escaped identifiers for comparison, but otherwise treat every character literally. `_`, `$`, digits, and capitalization participate in the sort.
+- Attributes and modifiers are not sort keys unless they change access level or static/type-member status. Ignore `@MainActor`, `@objc`, `@IBAction`, `@IBOutlet`, `@Published`, `@State`, `@Environment`, `@Observable`, `@discardableResult`, `final`, `override`, `required`, `convenience`, `mutating`, `nonmutating`, `async`, `throws`, `rethrows`, `isolated`, `nonisolated`, and similar annotations for ordering.
 
-4. **implementation details** (lazy properties, computed properties, methods)
+## Type Declaration Order
 
-   **Access level is the primary sort key** across all implementation details:
-   - public → internal → fileprivate → private
+Apply these rules inside `class`, `struct`, `actor`, `enum`, and concrete extension bodies. Apply the protocol-specific variant below inside protocol declarations.
 
-   **Within each access level**, order by member kind:
-   - Lazy properties → computed properties → methods
-   - Static before instance within each kind
-   - Alphabetical within each kind
+### 1. Type-Level Declarations
 
-   This means a `public` computed property comes before a `private` lazy property, and an `internal` method comes before a `private` lazy property.
+Place type-level declarations before value-level members.
 
-### 2. File-Level Extensions
+Order:
 
-Order extensions at file scope:
+1. `typealias` declarations, alphabetical by alias name.
+2. Nested types (`struct`, `class`, `actor`, `enum`, `protocol`), alphabetical by nested type name.
 
-1. **Protocol conformance extensions** – alphabetical by protocol name
-   - Each extension internally follows the type-level ordering rules above
+Each nested type internally follows this skill.
 
-2. **Extensions with nested types** – alphabetical by the inner type name
+Do not move a nested type if doing so would break access to file-private helpers, conditional-compilation boundaries, macro expansion expectations, or local documentation structure.
 
-### 3. Inside Function/Initializer Bodies
+### 2. Enum Cases
 
-When statements are independent (no data or side-effect dependencies):
-- Sort constant/variable declarations (`let`/`var`) lexicographically
-- Sort array/dictionary literal elements (e.g., in `NSLayoutConstraint.activate([...])`)
-  - Sort first by variable/receiver name
-  - Then by called method/selector
+Enum cases belong after type-level declarations and before stored properties.
 
-**Never reorder** when there are dependencies that would change behavior.
+Sort enum cases alphabetically only when safe. Reordering enum cases is often not safe because it can change synthesized `CaseIterable.allCases` order, implicit raw values, UI ordering, persistence expectations, tests, analytics values, switch readability, and human-facing semantics.
 
-### 4. General Notes
+Treat enum case reordering as safe only when all of these are true:
 
-- Use standard ASCII/Unicode code-point ordering for "alphabetical"
-- Correctness takes precedence: preserve original order if reordering would break the code
-- When uncertain about safety, ask for confirmation rather than risking incorrect reordering
-- **Always use multi-line formatting** for braced constructs (computed properties, closures, guard/if statements, methods). Never use single-line forms like `var x: Int { 0 }` or `guard condition else { return }`
+- Cases have explicit raw values if raw values exist.
+- The enum does not rely on synthesized case order, or all dependent call sites/tests are updated.
+- The case order is not user-facing, serialized, persisted, reflected, or part of a protocol/API contract.
+- No comments or sectioning indicate deliberate semantic ordering.
 
-## Examples
+If any condition is unclear, preserve case order.
 
-### Type Declaration
+When safe to sort:
 
 ```swift
-// ✅ CORRECT
-struct User {
-    // 1. typealiases (alphabetical)
-    typealias Identifier = UUID
-
-    // 2. stored properties (static let → static var → instance let → instance var)
-    static let defaultName = "Guest"
-    static var registrationCount = 0
-
-    let id: UUID
-    let name: String
-
-    var email: String
-    var isActive: Bool
-
-    // 3. initializers (access level, then alphabetical)
-    init(id: UUID, name: String, email: String, isActive: Bool) {
-        self.id = id
-        self.name = name
-        self.email = email
-        self.isActive = isActive
-    }
-
-    init(name: String) {
-        self.id = UUID()
-        self.name = name
-        self.email = ""
-        self.isActive = true
-    }
-
-    // 4a. computed properties (before methods)
-    var displayName: String {
-        name.isEmpty ? Self.defaultName : name
-    }
-
-    var isValid: Bool {
-        !email.isEmpty && isActive
-    }
-
-    // 4b. methods (alphabetical)
-    mutating func activate() {
-        isActive = true
-    }
-
-    mutating func deactivate() {
-        isActive = false
-    }
+// ✅ Safe only if case order is not semantically observed.
+enum SortDirection: String {
+    case ascending = "ascending"
+    case descending = "descending"
 }
 ```
 
-### Access Level Ordering
+### 3. Stored Properties
+
+Stored properties come after type-level declarations and enum cases, and before initializers.
+
+Group order:
+
+1. `static let`
+2. `static var`
+3. instance `let`
+4. instance `var`
+
+Within each group:
+
+1. Access level: `open` → `public` → `package` → `internal` → `fileprivate` → `private`
+2. Alphabetical by identifier
+
+Important classification rules:
+
+- Lazy properties are not part of this stored-property section. They are implementation details.
+- Property-wrapper declarations such as `@State`, `@Binding`, `@Environment`, `@Published`, `@FocusState`, `@AppStorage`, and `@NSManaged` are sorted by the declared property identifier, not by the wrapper or generated backing storage.
+- Stored properties with observers (`willSet` / `didSet`) remain stored properties unless they use an explicit `get` or `set` accessor.
+- A property with `get`, `set`, `_read`, `_modify`, or a computed body is a computed property, not a stored property.
+- Static stored properties are sorted as stored properties even though their initialization is lazy.
+
+Stored property reordering is high-risk. Preserve order when declaration order affects synthesized memberwise initializer parameter order, default-value side effects, property-wrapper initialization order, reflection, memory/layout assumptions, persistence, generated code, or snapshot tests.
+
+### 4. Initializers and Deinitializers
+
+Initializers come after stored properties and before implementation details.
+
+Order initializers by:
+
+1. Access level: `open` → `public` → `package` → `internal` → `fileprivate` → `private`
+2. Canonical initializer signature
+
+Rules:
+
+- `required`, `convenience`, `override`, `@MainActor`, `async`, `throws`, and failable spelling (`init?`, `init!`) are not primary sort keys. Use them only as tie-breakers when signatures are otherwise identical.
+- `deinit` has no access level. Place `deinit` after all initializers and before implementation details.
+- Never reorder statements inside an initializer in a way that changes initialization requirements. Required `super.init(...)`, `self.init(...)`, stored-property assignments, actor isolation rules, and early returns must stay valid.
+
+### 5. Implementation Details
+
+Implementation details come after initializers/deinitializers.
+
+Access level is the primary sort key across all implementation details:
+
+1. `open`
+2. `public`
+3. `package`
+4. `internal`
+5. `fileprivate`
+6. `private`
+
+Within each access level, order by kind:
+
+1. Lazy properties
+2. Computed properties
+3. Subscripts
+4. Methods
+
+Within each kind:
+
+1. Static/type members (`static` and `class`) before instance members.
+2. Alphabetical by identifier or signature.
+
+This means a `public` computed property comes before a `private` lazy property, and an `internal` method comes before a `private` lazy property. Do not sort all lazy properties before all computed properties globally; sort by access level first in the implementation-details section.
+
+Classification examples:
+
+- `lazy var imageLoader = ImageLoader()` → lazy property.
+- `var body: some View { ... }` → computed property.
+- `static var previewValue: Self { ... }` → static computed property.
+- `class var supportsSecureCoding: Bool { ... }` → type computed property.
+- `subscript(id: ID) -> Value { ... }` → subscript.
+- `@IBAction func didTapSave(_ sender: UIButton)` → method.
+- `static func == (...) -> Bool` → static method, sorted by operator token.
+
+## Protocol Declaration Order
+
+Inside a `protocol`, use the same preference adapted to protocol requirements:
+
+1. Associated types and type aliases, alphabetical by name.
+2. Property requirements, static/type before instance, alphabetical by name.
+3. Initializer requirements, alphabetical by canonical initializer signature.
+4. Subscript requirements, alphabetical by signature.
+5. Method requirements, static/type before instance, alphabetical by base name and then full signature.
+
+Access level is normally inherited from the protocol. `optional` in `@objc` protocols is not a sorting key.
+
+Do not reorder associated types or requirements when later declarations depend on earlier names, documentation intentionally explains them in sequence, Objective-C optional requirements are grouped for a reason, or the protocol is public API whose displayed order is part of generated documentation expectations.
+
+## File-Level Extension Order
+
+At file scope, order extensions for the same extended type in this sequence:
+
+1. Protocol conformance extensions, alphabetical by protocol name.
+2. Extensions whose primary purpose is nested types, alphabetical by the first nested type name.
+3. Plain implementation extensions, if the file already uses them.
+
+### Protocol Conformance Extensions
+
+Sort conformance extensions by conformed protocol name.
 
 ```swift
-// ✅ CORRECT
-class ViewModel {
-    // Stored properties: public → internal → private, alphabetical within each
-    public let title: String
-
-    let subtitle: String
-
-    private let apiClient: APIClient
-
-    // Implementation details: access level is primary sort key
-    // public lazy → public computed → public methods
-    public lazy var formattedTitle: String = title.uppercased()
-
-    public var isLoading: Bool {
-        state == .loading
-    }
-
-    public func load() {
-        // ...
-    }
-
-    public func refresh() {
-        // ...
-    }
-
-    // internal lazy → internal computed → internal methods
-    lazy var cache: Cache = Cache()
-
-    var hasContent: Bool {
-        !items.isEmpty
-    }
-
-    func handleError(_ error: Error) {
-        // ...
-    }
-
-    func validateInput() {
-        // ...
-    }
-
-    // private lazy → private computed → private methods
-    private lazy var items: [Item] = []
-
-    private var state: State {
-        .idle
-    }
-
-    private func fetchData() {
-        // ...
-    }
-
-    private func parseResponse() {
-        // ...
-    }
-}
-```
-
-### Protocol Conformances
-
-```swift
-// ✅ CORRECT - Alphabetical by protocol name
+// ✅ Correct: protocol names are alphabetical.
 extension User: Codable {
-    // Codable implementation following internal ordering rules
+    init(from decoder: Decoder) throws {
+        // ...
+    }
 }
 
 extension User: Equatable {
@@ -258,12 +235,103 @@ extension User: Hashable {
 }
 ```
 
-Note: The `Equatable` and `Hashable` implementations above are single-statement bodies, which is acceptable. The multi-line rule applies to the braces being on separate lines, not to requiring multiple statements.
+Rules:
 
-### Function Body - Safe Reordering
+- If an extension conforms to multiple protocols, alphabetize the protocol list and sort the extension by the first protocol in that sorted list.
+- Do not split a multi-protocol conformance extension unless explicitly requested and safe.
+- For otherwise identical protocol names, use the `where` clause string as a tie-breaker.
+- Keep conformance-required members inside the relevant conformance extension unless project code already uses a different convention.
+- Each extension body follows the type-level ordering rules.
+
+### Extensions With Nested Types
+
+Sort nested-type extensions by the nested type name. If an extension contains multiple nested types, sort by the first nested type after sorting the nested types inside the extension.
+
+### Plain Implementation Extensions
+
+Do not create plain implementation extensions solely to satisfy ordering. If plain implementation extensions already exist, place them after conformance and nested-type extensions, then sort their contents using the implementation-detail rules.
+
+If multiple plain implementation extensions exist for the same type and same access level, either merge them when safe or sort them by the first contained member name. Preserve separate extensions when they are separated by conditional compilation, availability, comments, generated-code boundaries, or build configuration.
+
+## Conditional Compilation and Availability
+
+Availability and conditional compilation are not sort keys. They are safety boundaries.
+
+Rules:
+
+- A declaration annotated with `@available(...)` is sorted by its normal category/access/name when moving it is safe.
+- Do not reorder declarations across `#if`, `#elseif`, `#else`, or `#endif` boundaries unless the entire conditional region moves intact and remains correct.
+- Do not reorder runtime availability branches such as `if #available(iOS 26.0, *) { ... } else { ... }` merely for lexicographic order.
+- Preserve fallback paths required by the deployment target. In an iOS 16+ codebase, newer iOS 17–27 APIs must remain guarded when used in code that can run on older supported OS versions.
+- Do not assume beta APIs are stable. Keep beta-only declarations and fallbacks guarded exactly as needed by the project.
+
+## Function and Initializer Parameters
+
+Do not apply lexicographic ordering to function parameters, initializer parameters, closure parameters, tuple elements used as API shape, or result-builder child order.
+
+Parameters should be ordered semantically based on role and relationships:
+
+1. Identity: `id` and identifiers typically come first.
+2. Related groups: keep conceptually related parameters together, such as `firstName`, `lastName`, `fullName`.
+3. Primary data: the main subject/content being operated on.
+4. Configuration: settings that modify behavior.
+5. Dependencies: required collaborators and services.
+6. Optionals/defaulted parameters: values with sensible defaults.
+7. Closures: completion handlers, callbacks, and builder closures go last.
+
+When parameters have no clear semantic relationship, use lexicographic ordering only as a tiebreaker.
 
 ```swift
-// ✅ CORRECT - Independent statements sorted alphabetically
+// ✅ Good: semantic parameter ordering.
+init(
+    id: UUID,
+    firstName: String,
+    lastName: String,
+    fullName: String,
+    profilePhotoURL: URL?,
+    completion: @escaping () -> Void
+)
+
+func send(
+    _ content: String,
+    with attachments: [Attachment],
+    isImportant: Bool,
+    completion: @escaping (Result) -> Void
+) async
+
+// ❌ Bad: lexicographic parameter ordering overrides semantics.
+init(
+    completion: @escaping () -> Void,
+    firstName: String,
+    fullName: String,
+    id: UUID,
+    lastName: String,
+    profilePhotoURL: URL?
+)
+```
+
+## Ordering Inside Function, Initializer, and Closure Bodies
+
+Inside executable bodies, sort only contiguous independent statements.
+
+Safe targets for sorting:
+
+- Independent `let` / `var` declarations, alphabetical by declared identifier.
+- Independent assignment/configuration statements, first by receiver name, then by property/method name.
+- Independent array or dictionary literal elements when order is not semantically observed.
+- Constraint lists such as `NSLayoutConstraint.activate([...])`, sorted by primary item/receiver, then anchor/attribute, then relation.
+- Test fixture declarations when no setup sequence is required.
+
+Never sort across:
+
+- Data dependencies or first-use dependencies.
+- Side effects, `await`, `try`, `defer`, locking, transactions, animations, notifications, logging, metrics, or lifecycle calls unless independence is obvious.
+- `guard`, `if`/`else`, `switch`, `catch`, `defer`, loops, task groups, or cancellation handlers.
+- Result builders, SwiftUI `body` child views, `VStack`/`HStack`/`ZStack` contents, menus, table/collection sections, navigation routes, toolbar items, accessibility order, or any UI sequence.
+- Arrays used as displayed data, ordered commands, ordered validation steps, ordered middleware, ordered tests, or ordered fallback chains.
+
+```swift
+// ✅ Correct: independent declarations and independent assignments are sorted.
 func setupUI() {
     let backButton = UIButton()
     let headerLabel = UILabel()
@@ -273,30 +341,142 @@ func setupUI() {
     headerLabel.text = "Welcome"
     subtitleLabel.text = "Please sign in"
 }
-```
 
-### Function Body - Preserve Dependencies
-
-```swift
-// ✅ CORRECT - Dependent statements NOT reordered
+// ✅ Correct: dependencies preserve original order.
 func processUser() {
-    let user = fetchUser()      // Must come first
-    let name = user.name        // Depends on user
-    let validated = validate(name)  // Depends on name
-    updateUI(with: validated)   // Depends on validated
+    let user = fetchUser()
+    let name = user.name
+    let validated = validate(name)
+
+    updateUI(with: validated)
 }
 ```
+
+## Formatting Enforcement
+
+Always use multi-line formatting for braced constructs. Do not use single-line braced forms.
+
+Use this:
+
+```swift
+var isValid: Bool {
+    !email.isEmpty
+}
+
+guard isValid else {
+    return
+}
+
+let handler = {
+    refresh()
+}
+```
+
+Do not use this:
+
+```swift
+var isValid: Bool { !email.isEmpty }
+
+guard isValid else { return }
+
+let handler = { refresh() }
+```
+
+Single-statement bodies are acceptable only when the braces remain multi-line.
+
+## Comments, MARKs, and Documentation
+
+- Move documentation comments and attached comments with the declaration they document.
+- Do not let `// MARK:` sections override the canonical ordering rules.
+- Remove or update stale `// MARK:` headings if reordering makes them inaccurate.
+- Do not add new `// MARK:` sections merely to justify a noncanonical order.
+- Preserve generated-code comments, copyright headers, lint directives, formatter directives, and warning-suppression comments exactly unless explicitly asked to edit them.
+
+## Complete Type Example
+
+```swift
+struct UserViewModel {
+    typealias Identifier = UUID
+
+    enum Mode {
+        case compact
+        case expanded
+    }
+
+    static let defaultName = "Guest"
+    static var registrationCount = 0
+
+    public let id: Identifier
+
+    let name: String
+
+    private let apiClient: APIClient
+
+    var email: String
+    var isActive: Bool
+
+    public init(id: Identifier, name: String, email: String, isActive: Bool, apiClient: APIClient) {
+        self.id = id
+        self.name = name
+        self.apiClient = apiClient
+        self.email = email
+        self.isActive = isActive
+    }
+
+    init(name: String, apiClient: APIClient) {
+        self.id = UUID()
+        self.name = name
+        self.apiClient = apiClient
+        self.email = ""
+        self.isActive = true
+    }
+
+    public var displayName: String {
+        name.isEmpty ? Self.defaultName : name
+    }
+
+    public func refresh() async throws {
+        try await load()
+    }
+
+    var isValid: Bool {
+        !email.isEmpty && isActive
+    }
+
+    func activate() {
+        isActive = true
+    }
+
+    func deactivate() {
+        isActive = false
+    }
+
+    private lazy var cache = UserCache()
+
+    private var hasCachedValue: Bool {
+        cache.contains(id)
+    }
+
+    private func load() async throws {
+        // ...
+    }
+}
+```
+
+Notes about the example:
+
+- Stored properties use storage kind first, then access level.
+- Implementation details use access level first, then lazy/computed/method kind.
+- The `private lazy var cache` appears after internal methods because access level is primary inside implementation details.
 
 ## Application Strategy
 
 When writing or editing Swift code:
 
-1. **Start with the structure** - Place members in the correct category order (typealiases → properties → initializers → computed properties → methods)
-
-2. **Apply access level ordering** - Within each category, group by access level (public → internal → fileprivate → private)
-
-3. **Sort alphabetically** - Within each access level group, sort members alphabetically by name
-
-4. **Verify safety** - Before reordering, confirm that the change won't affect behavior or break dependencies
-
-5. **When unsure** - Ask for confirmation rather than making potentially unsafe changes
+1. Identify the smallest declaration scope or statement block that can be safely reordered.
+2. Classify each sibling declaration by category.
+3. Apply the relevant access-level, static-vs-instance, kind, and name keys.
+4. Preserve comments, attributes, wrappers, macros, and conditional guards with their declarations.
+5. Check safety boundaries: initialization, enum order, property-wrapper order, availability, generated code, UI/result-builder order, and side effects.
+6. Apply multi-line braced formatting.
+7. Preserve original order for anything not proven safe.
