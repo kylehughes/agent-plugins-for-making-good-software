@@ -50,7 +50,6 @@ Skills and agent definitions for Apple-platform codebases.
 | `testing-swift-code` | Conventions for the Swift Testing framework (`@Test`, `@Suite`, `#expect`). |
 | `using-swift-concurrency` | Swift Concurrency design, diagnostics, actor isolation, logical races, and async tests. |
 | `writing-swift` | Swift 6 standards for production code and packages. |
-| `writing-technical-writing` | Conventions for direct, pragmatic technical prose. |
 
 ### Agents
 
@@ -72,6 +71,7 @@ Platform-agnostic tools for making good software.
 | :---- | :------ |
 | `reviewing-code` | A review frame for correctness, security, concurrency, and compatibility risks, with line-specific findings. |
 | `simplifying-code` | A behavior-preserving cleanup pass — reuse, simplify, de-duplicate, harden — for any language. |
+| `writing-technical-prose` | Conventions for direct, pragmatic developer-facing prose — READMEs, ADRs, docs, and comments. |
 
 ### Agents
 

@@ -1,4 +1,0 @@
-interface:
-  display_name: "Technical Writing"
-  short_description: "Draft and edit developer-facing docs"
-  default_prompt: "Use $writing-technical-writing to draft, edit, or review developer-facing technical documentation with a pragmatic, accurate voice."

@@ -1,9 +1,9 @@
 ---
-name: writing-technical-writing
+name: writing-technical-prose
 description: "Writes, edits, reviews, and normalizes developer-facing technical prose: READMEs, ADRs, RFCs, design docs, API docs, Swift/DocC comments, runbooks, migration guides, release notes, PR descriptions, troubleshooting guides, and Markdown. Use for Apple-platform docs or any software/domain technical writing when correctness, clarity, voice consistency, and actionable structure matter. Do not use for marketing copy unless developer accuracy matters."
 ---
 
-# Writing Technical Writing
+# Writing Technical Prose
 
 Produce technical prose that is correct, concrete, and useful to capable readers. Prefer finished text over commentary about the text.
 
