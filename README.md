@@ -46,7 +46,7 @@ Skills and agent definitions for Apple-platform codebases.
 | `modeling-swift-types-for-correctness` | Patterns for modeling Swift types that make invalid states unrepresentable. |
 | `ordering-symbols` | The canonical member ordering for Swift types. |
 | `organizing-swift-types` | Conventions for Swift types, extensions, access control, and file layout. |
-| `simplify-code` | A cleanup pass for reuse, simplicity, quality, and efficiency. |
+| `simplifying-apple-platform-code` | The Apple-platform companion to `simplifying-code`: Swift, SwiftUI, UIKit, Xcode, availability, and concurrency cleanup. |
 | `testing-swift-code` | Conventions for the Swift Testing framework (`@Test`, `@Suite`, `#expect`). |
 | `using-swift-concurrency` | Swift Concurrency design, diagnostics, actor isolation, logical races, and async tests. |
 | `writing-swift` | Swift 6 standards for production code and packages. |
@@ -71,6 +71,7 @@ Platform-agnostic tools for making good software.
 | Skill | Purpose |
 | :---- | :------ |
 | `reviewing-code` | A review frame for correctness, security, concurrency, and compatibility risks, with line-specific findings. |
+| `simplifying-code` | A behavior-preserving cleanup pass — reuse, simplify, de-duplicate, harden — for any language. |
 
 ### Agents
 
