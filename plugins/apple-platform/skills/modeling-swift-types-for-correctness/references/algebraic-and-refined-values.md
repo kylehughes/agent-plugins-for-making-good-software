@@ -1,0 +1,480 @@
+# Algebraic and Refined Value Modeling
+
+Use this reference for enums, correlated data, validated wrappers, collection invariants, units, money, intervals, canonicalization, and `Codable` design.
+
+## Sum Types: Model Alternatives Directly
+
+Use an enum when a value is exactly one of a finite set of variants.
+
+```swift
+enum AuthenticationState: Sendable {
+    case anonymous
+    case authenticating
+    case authenticated(UserSession)
+    case failed(AuthenticationFailure)
+}
+```
+
+This is stronger than:
+
+```swift
+struct AuthenticationState {
+    var isAuthenticated: Bool
+    var isAuthenticating: Bool
+    var session: UserSession?
+    var error: AuthenticationFailure?
+}
+```
+
+The struct permits contradictory booleans, a session while unauthenticated, and an error during success. The enum permits only named cases.
+
+### Associated values bind correlated data
+
+```swift
+enum DownloadState: Sendable {
+    case idle
+    case downloading(progress: Double, resumeData: Data?)
+    case complete(URL)
+    case failed(DownloadFailure, resumeData: Data?)
+}
+```
+
+Payloads exist only in the cases where they make sense. Avoid copying associated values into separate stored properties. The enum proves case/payload correlation, not every invariant inside a payload: `Double` still permits negative values, values above one, infinities, and `NaN`. Refine the payload type or validate at construction when those states are invalid.
+
+### Derived convenience is fine
+
+```swift
+extension DownloadState {
+    var isActive: Bool {
+        if case .downloading = self { true } else { false }
+    }
+}
+```
+
+A computed property cannot drift. A stored `isActive` can.
+
+### Avoid `default` for owned closed enums
+
+When the module owns every case, exhaustive switches turn new cases into useful compiler errors. Use `@unknown default` for imported nonfrozen enums where a future case is possible.
+
+For external string domains, preserve unknown values when forward compatibility matters:
+
+```swift
+enum ServerStatus: Equatable, Sendable {
+    case pending
+    case active
+    case disabled
+    case unknown(String)
+}
+```
+
+Fail decoding instead when an unknown value means the payload is unsafe to use. Choose deliberately.
+
+## Product Types: Bind Values That Form One Fact
+
+A struct is a product: every stored property is present together.
+
+```swift
+struct PostalAddress: Hashable, Sendable {
+    let street: NonEmptyString
+    let locality: NonEmptyString
+    let region: RegionCode
+    let postalCode: PostalCode
+}
+```
+
+Use a struct to replace parallel arrays, loosely related tuples, repeated parameter lists, and dictionaries with fixed keys.
+
+### Do not store redundant facts casually
+
+Avoid storing both:
+
+- Array and count.
+- Start, end, and duration.
+- Enum state and matching booleans.
+- Raw value and normalized value when one can be canonical storage.
+- Child collection and a separately mutable summary.
+
+If denormalization is required for performance, centralize mutation in one type or actor and test consistency as an invariant.
+
+## Optional Is a Two-Case Sum Type
+
+Use `Optional` when the only meaningful distinction is present versus absent and absence needs no reason.
+
+Prefer a richer enum when `nil` conflates cases:
+
+```swift
+enum AvatarState: Sendable {
+    case notRequested
+    case loading
+    case unavailable
+    case image(ImageData)
+    case failed(AvatarFailure)
+}
+```
+
+Do not replace every optional with a custom enum. Optional remains the clearest model for ordinary absence.
+
+## Validated Newtypes
+
+A refined value wraps a raw representation and only exposes values that passed validation.
+
+```swift
+enum NonEmptyStringError: Error, Equatable, Sendable {
+    case empty
+    case tooLong(maximum: Int)
+}
+
+struct NonEmptyString: Hashable, Sendable {
+    static let maximumLength = 200
+
+    private let storage: String
+
+    init(_ raw: String) throws(NonEmptyStringError) {
+        let canonical = raw.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !canonical.isEmpty else { throw .empty }
+        guard canonical.count <= Self.maximumLength else {
+            throw .tooLong(maximum: Self.maximumLength)
+        }
+        storage = canonical
+    }
+
+    var value: String { storage }
+}
+```
+
+The bound is part of this type's fixed meaning, so callers cannot select a weaker policy than decoding uses. State the unit of every string bound: `String.count` measures extended grapheme clusters, while protocols and storage systems may constrain Unicode scalars, UTF-8 bytes, or another encoded representation. Canonicalize first, then measure the representation the external contract actually limits. If limits differ by field, define separate domain types/policies or make the policy explicit in the surrounding validator rather than pretending one type has one guarantee. The current Swift 6 baseline supports the typed-throws spelling; use it only when the closed failure set improves callers.
+
+The checked initializer proves only what its implementation and access control preserve. Audit:
+
+- Stored properties are not publicly writable.
+- No memberwise or alternate initializer bypasses validation.
+- `Decodable` calls the checked path.
+- Internal unchecked construction is narrow and documented.
+- Reference-typed storage cannot mutate behind the wrapper.
+- Canonicalization is deterministic and appropriate for the domain.
+
+### Validation versus canonicalization
+
+Validation rejects invalid input. Canonicalization maps multiple acceptable representations to one stored form. They are related but not interchangeable.
+
+Examples:
+
+- Trim UI whitespace before creating a display name.
+- Lowercase an ASCII-only protocol token when the protocol defines case insensitivity.
+- Do not lowercase arbitrary user identifiers using a locale-sensitive transform unless the domain specifies it.
+- Normalize Unicode only when equality and interoperability rules demand a specific normalization form.
+- Preserve original presentation separately when round-tripping matters.
+
+Name policy explicitly when reasonable teams could choose differently:
+
+```swift
+struct EmailAddress {
+    enum CanonicalizationPolicy { case preserve, lowercaseDomain }
+}
+```
+
+Do not pretend that a simplistic regex fully validates a complex internet standard. Model the guarantee you actually provide, such as “nonempty address-like input accepted by our backend.”
+
+## Failable, Throwing, or Result-Producing Construction
+
+### Failable initializer
+
+Use `init?` when failure needs no diagnostics and the validation is simple.
+
+```swift
+struct Percentage: Hashable, Sendable {
+    let value: Double
+
+    init?(_ value: Double) {
+        guard value.isFinite, (0...100).contains(value) else { return nil }
+        self.value = value
+    }
+}
+```
+
+### Throwing initializer
+
+Use when callers need a reason, field context, or localized mapping.
+
+### `Result` or accumulating validation
+
+Use when validation is stored, transformed, composed, or must report all failures instead of stopping at the first.
+
+Do not expose several construction forms without a reason. One obvious checked path is easier to audit.
+
+## `RawRepresentable` Is Not Automatic Safety
+
+This is safe only if `init(rawValue:)` enforces the invariant or raw construction is intentionally unrestricted.
+
+```swift
+struct FeatureName: RawRepresentable, Hashable, Sendable {
+    let rawValue: String
+
+    init?(rawValue: String) {
+        guard !rawValue.isEmpty else { return nil }
+        self.rawValue = rawValue
+    }
+}
+```
+
+Be aware that adopting `RawRepresentable` advertises raw conversion as a central semantic. For many domain values, an ordinary `init(_:)` and `value` property are clearer.
+
+## String-Literal Conformance Cannot Report Validation Failure
+
+`ExpressibleByStringLiteral.init(stringLiteral:)` is nonthrowing. Therefore use literal conformance only when:
+
+- Every string literal is valid by definition.
+- A macro validates literals at compile time.
+- Invalid literals intentionally trap and that policy is acceptable.
+
+Do not add it merely for prettier call sites on a fallibly validated type.
+
+## Collection Invariants
+
+### Nonempty collection
+
+```swift
+struct NonEmptyArray<Element> {
+    private var storage: [Element]
+
+    init(head: Element, tail: [Element] = []) {
+        storage = [head] + tail
+    }
+
+    init?(_ elements: [Element]) {
+        guard !elements.isEmpty else { return nil }
+        storage = elements
+    }
+
+    var first: Element { storage[0] }
+    var elements: [Element] { storage }
+}
+```
+
+Do not expose mutation such as `removeAll()` that can violate nonemptiness. Provide operations whose result type reflects possible emptiness, or reject the final removal.
+
+### Bounded collection
+
+```swift
+struct BoundedArray<Element> {
+    let elements: [Element]
+    let limit: ClosedRange<Int>
+
+    init(_ elements: [Element], limit: ClosedRange<Int>) throws {
+        guard limit.contains(elements.count) else { throw CardinalityError.outOfRange }
+        self.elements = elements
+        self.limit = limit
+    }
+}
+```
+
+When the bounds are domain constants, put them in the type's implementation rather than storing a caller-selected range. When bounds vary at runtime, they cannot generally be encoded as Swift type parameters.
+
+### Sorted or unique collection
+
+Decide whether construction:
+
+- Rejects unsorted or duplicate input.
+- Canonicalizes by sorting/deduplicating.
+- Preserves first occurrence or last occurrence.
+- Uses a comparator or identity policy.
+
+Expose mutation only through operations that preserve the chosen semantics.
+
+### Fixed cardinality versus fixed layout
+
+A business invariant such as exactly three coordinates does not require `InlineArray`.
+
+```swift
+struct Triangle<Vertex> {
+    let a: Vertex
+    let b: Vertex
+    let c: Vertex
+}
+```
+
+This is available on all deployment targets and gives fields meaning. Use `InlineArray` only when its contiguous inline layout or generic fixed count is valuable and iOS 26+ availability is acceptable or isolated.
+
+## Numeric Bounds and Floating-Point Traps
+
+Always decide how to treat:
+
+- `NaN`.
+- Positive and negative infinity.
+- Signed zero when it matters.
+- Overflow and underflow.
+- Closed versus half-open bounds.
+- Unit conversion and rounding.
+
+```swift
+struct UnitInterval: Hashable, Sendable {
+    let value: Double
+
+    init(_ value: Double) throws {
+        guard value.isFinite, (0...1).contains(value) else {
+            throw UnitIntervalError.outOfRange
+        }
+        self.value = value
+    }
+}
+```
+
+Clamping and validation are different APIs. Name clamping explicitly; do not silently clamp in an initializer whose callers expect rejection.
+
+## Intervals and Ordering
+
+```swift
+struct DateIntervalValue: Hashable, Sendable {
+    let start: Date
+    let end: Date
+
+    init(start: Date, end: Date) throws {
+        guard start <= end else { throw IntervalError.reversed }
+        self.start = start
+        self.end = end
+    }
+
+    var duration: TimeInterval { end.timeIntervalSince(start) }
+}
+```
+
+Decide whether zero-length intervals are valid. Decide whether endpoints are closed, open, or half-open for discrete domains. Use domain names such as `SubscriptionPeriod` when those semantics matter more than generic reuse.
+
+## Money
+
+Do not use binary floating point for exact monetary amounts unless the domain explicitly tolerates approximation.
+
+A practical model often stores minor units and currency:
+
+```swift
+struct Money: Hashable, Sendable {
+    let minorUnits: Int64
+    let currency: CurrencyCode
+}
+```
+
+Model and test:
+
+- Currency scale and rounding policy.
+- Overflow.
+- Whether different currencies can be compared or added.
+- Locale is presentation, not identity.
+- Exchange rates have source, timestamp, and direction.
+
+Do not overload `+` across currencies with an implicit conversion.
+
+## Units and Dimensions
+
+Nominal wrappers are often enough:
+
+```swift
+struct Meters: Hashable, Sendable { let value: Double }
+struct Seconds: Hashable, Sendable { let value: Double }
+```
+
+A generic quantity reduces repetition:
+
+```swift
+struct Quantity<Unit, Scalar>: Sendable where Scalar: Sendable {
+    let value: Scalar
+}
+
+enum MeterUnit {}
+enum SecondUnit {}
+
+typealias Distance = Quantity<MeterUnit, Double>
+typealias DurationValue = Quantity<SecondUnit, Double>
+```
+
+Do not build a full dimensional-analysis system unless multiplication, division, exponentiation, and generic algorithms need it. Explicit conversion functions are usually clearer for app code.
+
+## Dates, Time Zones, and Calendars
+
+`Date` is an instant, not a civil date, local time, or calendar component set. Use separate types for:
+
+- Instant in time.
+- Calendar date.
+- Local wall-clock time.
+- Zoned date-time.
+- Recurrence rule.
+- Duration versus calendar offset.
+
+Do not derive identity from a formatted localized string. Inject calendar, locale, and time zone into parsing/presentation policies where reproducibility matters.
+
+## `Codable` and Refined Types
+
+Synthesized `Decodable` is safe only when synthesized initialization cannot bypass the invariant. Private stored properties do not by themselves guarantee this; synthesis has access inside the type.
+
+Prefer explicit decoding:
+
+```swift
+extension NonEmptyString: Codable {
+    init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        let raw = try container.decode(String.self)
+        do {
+            try self.init(raw)
+        } catch {
+            throw DecodingError.dataCorruptedError(
+                in: container,
+                debugDescription: "Expected a nonempty string within the type's fixed maximum length."
+            )
+        }
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(storage)
+    }
+}
+```
+
+When server payloads need field-specific errors, decode a DTO first and map into the domain model with context. Do not leak `DecodingError` or raw backend strings through every domain layer unless that is intentional.
+
+### Versioned persistence
+
+A previously valid value may become invalid after rules change. Decide among:
+
+- Keep old rules for persisted schema versions.
+- Migrate to a new canonical form.
+- Quarantine and request user correction.
+- Treat corruption as recoverable and discard cache data.
+
+Never assume that “we only encode valid values” proves all future decoded bytes are valid.
+
+## Hashing and Equality
+
+Equality must match domain identity and canonicalization.
+
+- If canonical storage is lowercased, synthesized equality may be correct.
+- If original presentation is preserved separately, exclude it from identity when appropriate.
+- Do not make mutable reference-backed state part of a hash key.
+- Do not change fields participating in `Hashable` while a value is in a set or dictionary.
+- For floating point, understand that `NaN != NaN`; reject NaN in value types that require ordinary equivalence.
+
+## Public API Resilience
+
+For public libraries:
+
+- Adding an enum case can be source-breaking for exhaustive client switches unless the enum is nonfrozen across a resilient boundary.
+- Changing a struct's stored properties is an ABI concern when layout is exposed or library evolution is disabled.
+- Adding validation can reject previously accepted source or persisted data.
+- Changing canonicalization can alter equality, hashes, database keys, and wire output.
+- A public unchecked initializer becomes permanent API debt.
+
+Record these as compatibility changes, not internal implementation details.
+
+## Review Checklist
+
+- Is the state space finite and represented by cases rather than flags?
+- Are correlated values constructed together?
+- Is derived state computed rather than stored?
+- Does each refined type state its exact guarantee without overstating standards compliance?
+- Are bounds and floating-point edge cases explicit?
+- Are construction and mutation sealed?
+- Does decoding call validation?
+- Are unknown external enum values handled intentionally?
+- Are money, units, dates, and locale concepts separated correctly?
+- Does equality follow canonical identity?
+- Is a layout-oriented type being used only for measured layout needs?

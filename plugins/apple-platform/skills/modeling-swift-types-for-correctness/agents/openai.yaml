@@ -1,0 +1,4 @@
+interface:
+  display_name: "Model Swift Types for Correctness"
+  short_description: "Make invalid Swift states unrepresentable"
+  default_prompt: "Review or implement this Swift model so its invariants are enforced by the lightest practical type design while preserving the project's iOS deployment, selected current Swift/Xcode toolchain, SDK availability, concurrency, and ABI constraints."

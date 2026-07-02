@@ -1,303 +1,227 @@
 ---
 name: modeling-swift-types-for-correctness
 description: >-
-  Designs Swift types that make invalid states unrepresentable at compile time. Use when choosing between
-  booleans and enums, replacing parallel arrays or optional-laden structs, applying phantom types, newtypes,
-  typestate APIs, capability tokens, validated values, typed keys, ownership/lifetime types, ~Copyable move
-  semantics, typed throws, Sendable/isolation constraints, or any pattern that shifts runtime checks into
-  the type system. Trigger this skill whenever the task involves modeling state machines, eliminating
-  impossible states, designing sum or product types, wrapping raw values for type safety, enforcing ownership
-  or linear consumption, modeling trust/sanitization, replacing stringly typed identifiers, reducing
-  fatalError("impossible") branches, or deciding whether a Swift type model is too weak or too heavy.
-  (swift, types, correctness, compile-time, state modeling, enum, struct, phantom type, newtype, validated
-  value, capability token, ~Copyable, ~Escapable, typed throws, Sendable, state machine)
+  Design or refactor Swift models so invalid states, swapped identifiers, unchecked boundary values,
+  illegal transitions, unsafe ownership, and concurrency misuse are difficult or impossible to express.
+  Use for SwiftUI feature state, forms, navigation and effect identity; boolean or optional state
+  explosions; enums with associated values; validated newtypes; phantom IDs; units or trust states;
+  typestate and staged builders; capability tokens; generic/protocol relationships; typed errors;
+  Sendable or actor isolation; ~Copyable or ~Escapable; security/resource boundaries; Codable,
+  persistence, Objective-C or C interop; and version-aware APIs that deploy to iOS 16 with newer SDKs.
+  Also use to audit whether a type invariant is bypassable or a design is overengineered. Do not use for
+  cosmetic naming-only refactors with no meaningful invariant.
 ---
 
-# Type-Driven State Modeling in Swift
+# Model Swift Types for Correctness
 
-## Philosophy
+## Mission
 
-Tenet 3: "Push logic into types." Use Swift's compiler as a reviewer by making invalid states difficult or impossible to construct.
+Use Swift's type system to remove invalid operations and invalid state combinations from ordinary code paths. Prefer the lightest model that creates a useful compiler error at the misuse site.
 
-The goal is not clever types. The goal is obvious APIs where misuse fails at the call site, validation happens once at a boundary, and the rest of the code can operate on refined values without repeated defensive checks.
+Do not claim that a type proves an invariant merely because its intended initializer validates. The proof is only as strong as every construction route, mutation path, synthesized conformance, decoder, macro, Objective-C or C bridge, and unchecked escape hatch.
 
-Swift is not dependently typed. Do not claim compile-time enforcement for arbitrary runtime values. Swift can prove finite cases, nominal distinctions, ownership/lifetime constraints, generic relationships, literal integer parameters, literal macros, actor isolation, `Sendable`, and controlled construction. Runtime-derived facts still need validation that produces a refined value.
+Swift cannot prove arbitrary facts about runtime input before validation. Refine untrusted input at a boundary, then pass the refined value inward.
 
-## Workflow
+## Operating Procedure
 
-1. **Name the invariant.** Decide whether the problem is exclusivity, co-presence, absence reason, identity/domain, cardinality, ordering, bounds, units, phase/state, capability, trust, isolation, ownership/lifetime, failure surface, layout, or boundary refinement.
-2. **Choose the lightest proof.** Prefer the smallest type change that makes the invalid operation fail to compile or impossible to express.
-3. **Control construction.** A type proves an invariant only when all relevant initializers, stored properties, conformances, decoding paths, and escape hatches preserve it.
-4. **Refine at boundaries.** Keep DTOs, database rows, Objective-C shapes, C buffers, analytics dictionaries, user defaults, and server strings raw at the edge; convert into domain types before core logic.
-5. **Let compiler errors drive migration.** Introduce the refined type, change core functions first, follow type errors to callers, then remove raw overloads.
-6. **Test the proof.** Add constructor tests for boundary values and compile-fail examples for misuse when the invariant is important.
+### 1. Establish the compatibility envelope before proposing syntax
 
-## Invariant Taxonomy
+Inspect the project rather than inferring capability from the deployment target. Determine all of these independently:
 
-| Invariant | Typical Swift Tools |
+1. Minimum deployment versions, especially `IPHONEOS_DEPLOYMENT_TARGET` or SwiftPM `platforms`.
+2. The selected Xcode channel and the actual compiler reported by `xcrun swift --version`.
+3. That every affected target uses Swift 6 language mode (`SWIFT_VERSION = 6.0` or `.v6`).
+4. The SDK used to compile.
+5. Strict-concurrency, default-actor-isolation, upcoming-feature, experimental-feature, and strict-memory-safety settings.
+6. Whether the affected target is an app, package, binary framework, or library-evolution boundary.
+
+Run `python3 scripts/audit_project.py <project-root>` for a heuristic inventory, then verify target-specific Xcode settings. Treat any non-Swift-6 target as migration work, not as a compatibility lane. Current Swift language features can often deploy to iOS 16; SDK and standard-library symbols still require their documented runtime availability.
+
+Use the right gate:
+
+- `#if canImport(Module)` for optional module presence.
+- `@available(iOS 26, *)` on declarations and `if #available(iOS 26, *)` at runtime for OS-gated APIs.
+- A narrowly isolated `#if compiler(...)` only when the repository deliberately tests both current stable and current beta Xcode; never as a runtime check.
+- Do not add language-mode conditional branches. This skill assumes one Swift 6 language mode.
+- Never use `#if os(iOS)` as an OS-version check.
+
+Read [references/ios-versioning.md](references/ios-versioning.md) whenever deployment spans iOS 16 through current or beta SDKs.
+
+### 2. State the invariant before choosing a pattern
+
+Write one sentence in domain language:
+
+> A submitted registration has a validated email and accepted terms, and it cannot return to draft state.
+
+Then list the currently representable invalid cases. Include malformed external data, not just in-memory callers.
+
+Classify the invariant:
+
+| Axis | Typical question |
 |---|---|
-| Exactly one state/variant | `enum`, nested enums, `Never`, `Result<Success, Never>` |
-| Correlated fields or co-presence | Enum associated values, separate state structs, product type consolidation |
-| Absence with reason | Optional, enum, `Result`, typed throws |
-| Identity/domain separation | Newtype, phantom-typed ID, typed key |
-| Cardinality and bounds | `NonEmpty`, bounded newtype, `OptionSet`, `InlineArray`, integer generic parameter |
-| Ordering and canonical form | Validating initializer, canonicalizing initializer, domain interval type |
-| Units and dimensions | `Quantity<Unit, Value>`, phantom tags, constrained conversions |
-| Phase/state transition | Enum, typestate generic, constrained extension, `~Copyable` consuming transition |
-| Capability/authority | Unforgeable token with private initializer, actor- or module-issued proof |
-| Trust/sanitization | Raw/sanitized/escaped/parameterized wrapper states |
-| Isolation/concurrency | `Sendable`, `@Sendable`, actor/global-actor isolation, `sending`, immutable snapshot |
-| Ownership/lifetime | `~Copyable`, `borrowing`, `consuming`, `inout`, `~Escapable`, `Span` |
-| Failure surface | `throws(E)`, `Result<Value, Failure>`, `Failure == Never`, accumulated validation |
-| Layout/performance | `InlineArray`, `BitwiseCopyable`, fixed-size wrappers, safe unsafe-interop wrapper |
-| Source boundary | DTO-to-domain refinement, custom `Decodable`, typed NotificationCenter message |
+| Variant | Must exactly one case be active? |
+| Correlation | Must values appear or change together? |
+| Identity | Can same-representation values be accidentally swapped? |
+| Refinement | Must raw input satisfy bounds, format, ordering, or canonical form? |
+| Phase | Are operations valid only before or after a transition? |
+| Authority | Must an operation require a permission value only a trusted issuer can construct? |
+| Trust | Has text or data been validated, sanitized, escaped, or parameterized? |
+| Ownership | Is copying, reuse after consumption, or escaping a borrow the bug? |
+| Isolation | Which executor owns mutable state, and what may cross isolation? |
+| Failure | Does the caller benefit from a closed, precise failure surface? |
+| Layout | Is fixed size or memory representation actually required and measured? |
+| Boundary | Where does raw or foreign representation become trusted domain state? |
 
-## Smell to Pattern Matrix
+### 3. Choose the lightest adequate proof
 
-| Smell | Invariant | Lightest Adequate Construct | Heavier Alternatives | Avoid |
-|---|---|---|---|---|
-| `isLoading`, `data?`, `error?` | Exclusive phase + co-presence | Enum with associated values | Generic `LoadState<Value, Failure>` | Stored derived booleans |
-| One of several optionals must exist | Exclusive payload | Enum | Separate state structs | `guard let` maze plus `fatalError` |
-| Parallel arrays | Element co-presence | Array of struct | Domain collection wrapper | Shared index discipline |
-| `[String: Any]` with fixed keys | Named fields | Struct or typed key map | DTO plus domain model | Force casts in core code |
-| Raw `String` IDs | Identity/domain | Newtype | Phantom `Identifier<Tag>` | `typealias` as safety |
-| Status string or mode integer | Finite variant | Enum with unknown case if external | Resilient public enum | Sentinel values |
-| Public validated wrapper with public storage | Bounds/trust | Private storage + validating init | Factory + unsafe internal escape hatch | Public memberwise bypass |
-| `isAdmin` parameter | Capability | Unforgeable capability token | Session typestate | Boolean authorization |
-| Raw HTML/SQL/shell text | Trust boundary | `HTML<Sanitized>`, `SQL<Parameterized>` | Macro/literal validation | Escaping by convention |
-| Resource used once | Ownership | `~Copyable` + `consuming` | Closure-scoped access | Copyable wrapper with comments |
-| Actor-owned mutable model crossing tasks | Isolation | Immutable `Sendable` snapshot | Transfer with `sending` | Leaking non-Sendable references |
-| Untyped domain failure | Failure surface | `throws(E)` or `Result<Value, E>` | Layered error mapping | Giant global `AppError` |
-| Required builder fields | Construction order | Staged builder or phantom state | Macro-generated builder | Plain result builder alone |
-| Heterogeneous `[any P]` loses relationships | Type relationship | Generic or constrained existential | Type eraser preserving axes | Erasing `Self`/associated types too early |
+Use this default order unless the domain contradicts it:
 
-## Proof-Strength Ladder
+| Problem | Default | Escalate when |
+|---|---|---|
+| Mutually exclusive flags or correlated optionals | Enum with associated values | Different states need materially different APIs or storage |
+| Values that must move together | Struct | The collection itself needs non-empty, sorted, keyed, or bounded semantics |
+| Swappable IDs or same-typed parameters | Nominal wrapper | Many domains share one implementation; then use a module-owned phantom tag |
+| Runtime validation | Private storage plus throwing or failable initializer | Callers need accumulated errors, canonicalization policy, or staged validation |
+| State-dependent operations | Separate state structs | Representation is shared and transitions compose; then consider typestate |
+| Authorization | Private-initializer capability value | Authority is dynamic or revocable; keep the decision in an actor/service |
+| Cross-task mutable state | Actor | A measured synchronous hot path requires a lock |
+| Precise local failures | Small error enum or typed throws | The layer is an open integration boundary; preserve or erase errors deliberately |
+| Resource lifetime | Scoped operation plus `defer`/cancellation cleanup | Copies or escape must be statically rejected; then use verified ownership/lifetime features |
+| Fixed-size storage | Tuple or small domain struct | Profiling proves layout/allocation matters and availability permits `InlineArray` |
 
-Use stronger tools only when the weaker tool does not prove the invariant.
+A comment, `typealias`, naming convention, or boolean authorization flag is documentation, not a proof.
 
-1. Comment: documents intent; proves nothing.
-2. `typealias`: improves readability; proves nothing because the raw type is still accepted.
-3. Named parameter: reduces call-site confusion; does not prevent same-type swaps.
-4. Nominal newtype: prevents accidental mixing; proof depends on access control and validation.
-5. Failable or throwing initializer: validates construction; can be bypassed by public stored properties, memberwise init, or synthesized decoding.
-6. Private init plus factory: centralizes proof production; still audit internal unsafe paths.
-7. Enum with payloads: encodes finite valid states; use no `default` for owned enums.
-8. Generic or phantom state: removes invalid operations from the API; watch generic explosion.
-9. Constrained extension or same-type constraint: exposes operations only when relationships hold.
-10. Ownership/lifetime type: compiler enforces use-after-consume and nonescaping borrowed views.
-11. Macro or literal validation: proves static input; runtime input still needs validation.
-12. Compiler mode: strict concurrency, strict memory safety, warnings-as-errors, and compile-fail fixtures keep the model from regressing.
+Read [references/decision-guide.md](references/decision-guide.md) for the full selection matrix and rollback criteria.
 
-## Closed-World vs Open-World
+### 4. Close every bypass
 
-- Use an `enum` when the variants are finite and owned by this module.
-- Use a protocol or existential when third parties can add variants.
-- Use a generic parameter when the caller chooses one concrete type.
-- Use `some P` when the callee returns one fixed concrete type but hides it.
-- Use `any P` only for heterogeneous runtime storage or dynamic dispatch.
-- Use a witness struct when behavior is data or configuration rather than subtype identity.
-- Use a type eraser when you need storage while preserving associated-type axes such as `Input`, `Output`, and `Failure`.
+Audit all routes into and through the type:
 
-Public library enums need a resilience decision. Internal closed domains should avoid `default` so new cases produce compiler errors. External string domains often need `case unknown(String)` instead of failing decode.
+- Public, internal, synthesized, memberwise, convenience, literal, and `RawRepresentable` initializers.
+- Mutable stored properties, writable subscripts, reference-semantic storage, and collection mutation.
+- `Decodable`, database hydration, model macros, reflection, and test fixtures.
+- Objective-C initializers, KVC/KVO, `NSCoding`, `NSCopying`, C/C++ imports, unsafe pointers, and raw handles.
+- `@unchecked Sendable`, unchecked or `unsafe` factories, `unsafeBitCast`, force casts, force unwraps, and unchecked indexes.
+- Public protocol conformances or marker types that outside modules can forge.
 
-## Core Patterns
+Prefer one obvious checked constructor and a narrowly scoped, loudly named unchecked path when one is unavoidable. Document its precondition and keep its callers at a trusted boundary.
 
-### Sum Types Over Boolean Flags
+### 5. Separate raw, validated, and presented representations
 
-Replace mutually exclusive booleans and correlated optionals with an enum that has exactly the valid cases.
+Use a boundary pipeline:
 
-```swift
-enum LoadState<Value: Sendable, Failure: Error & Sendable>: Sendable {
-    case idle
-    case loading(previous: Value?)
-    case loaded(Value)
-    case failed(Failure, previous: Value?)
-}
-
-extension LoadState {
-    var isLoading: Bool {
-        if case .loading = self { true } else { false }
-    }
-}
+```text
+JSON / database / Objective-C / user input
+        -> raw DTO or foreign shape
+        -> validation and canonicalization
+        -> domain type
+        -> view or transport projection
 ```
 
-Derived booleans are fine. Stored booleans that duplicate enum state are not.
+Do not make malformed wire data impossible to decode by pretending it is already a domain model. Decode raw values, map errors with context, and construct the domain type explicitly. Custom `Decodable` is appropriate when the wire and domain shapes truly coincide, but it must call the same invariant-preserving constructor.
 
-### Product Type Consolidation
+### 6. Select a runtime lane
 
-Bind values that must move together into a named struct or domain collection.
+Use one lane per changed API and state it in the answer or code review:
 
-```swift
-struct Contact: Sendable {
-    let email: EmailAddress
-    let name: NonEmptyString
-    let phoneNumber: PhoneNumber?
-}
-```
+- **iOS 16 baseline:** Uses the current Swift 6 compiler while avoiding symbols unavailable on iOS 16. This is the default for shared domain code.
+- **Availability lane:** Uses a newer SDK API or standard-library type behind declaration and runtime availability, with an iOS 16 fallback.
+- **Preview lane:** Uses the current beta Xcode/Swift/iOS SDK only when the repository explicitly opts in. Isolate preview-only source and do not leak preview types into stable domain APIs.
 
-Avoid storing facts that can drift out of sync, such as `count` beside an array, `duration` beside `start` and `end`, or `isValid` beside raw fields.
+Do not infer runtime support from the fact that syntax compiles. In particular, `InlineArray` is iOS 26+, Foundation's typed notification messages are iOS 26+, `Synchronization.Mutex` is iOS 18+, and `OSAllocatedUnfairLock` is available from iOS 16. `Span` is unusually back-deployed, but APIs that produce spans can have later availability.
 
-### Validated Values and Newtypes
+### 7. Implement the smallest coherent migration
 
-Validate once at a trust boundary and pass the refined type inward.
+When editing code:
 
-```swift
-struct EmailAddress: Hashable, Sendable {
-    private let rawValue: String
+1. Introduce the domain type and its tests.
+2. Change the innermost business operation to require it.
+3. Follow compiler errors outward to callers.
+4. Convert raw values at source boundaries.
+5. Remove or deprecate raw overloads after migration.
+6. Keep adapter shims at module or availability boundaries, not throughout core logic.
+7. Avoid unrelated architecture cleanup unless it is required to close the invariant.
 
-    init(_ rawValue: String) throws(ValidationError) {
-        let canonical = rawValue.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
-        guard canonical.contains("@") else { throw .missingAtSign }
-        self.rawValue = canonical
-    }
-}
-```
+The compiler should reveal migration sites; tests must still cover runtime validation, serialization, availability fallbacks, cancellation, and interop.
 
-Control the memberwise initializer. `ExpressibleByStringLiteral` cannot fail, and `RawRepresentable` is only safe when `init(rawValue:)` validates or construction is otherwise sealed.
+### 8. Validate the proof
 
-### Phantom Types, Typestate, and Capability Tokens
+At minimum:
 
-Use phantom parameters when the same runtime representation has different compile-time roles.
+- Positive constructor tests for valid and canonicalized values.
+- Boundary and adjacent-value tests for every numeric or cardinality constraint.
+- Negative tests for malformed decoded or persisted data.
+- Round-trip tests when `Codable`, persistence, or Objective-C bridging is involved.
+- Concurrency tests or stress tests for actor/lock-backed invariants.
+- Compile-fail fixtures for high-value misuse such as swapped IDs or inaccessible construction.
+- Builds with the minimum deployment target and the selected current SDK.
+- Builds once in Swift 6 language mode with the project’s selected current compiler; test runtime fallback branches separately.
 
-```swift
-struct Identifier<Tag>: Hashable, RawRepresentable, Sendable {
-    let rawValue: String
-}
+Run `python3 scripts/validate_skill.py .` when modifying this skill. See [references/testing-migration-and-review.md](references/testing-migration-and-review.md) for project-level validation and review checklists.
 
-enum UserTag {}
-enum WorkspaceTag {}
+## Non-Negotiable Rules
 
-typealias UserID = Identifier<UserTag>
-typealias WorkspaceID = Identifier<WorkspaceTag>
-```
+1. Never describe a runtime-validated value as compile-time validated before construction succeeds.
+2. Never use `typealias` as evidence that two raw-value domains cannot be mixed.
+3. Never store derived flags beside their source enum or value unless there is a measured denormalization need and one mutation authority.
+4. Never expose public writable storage that can invalidate a validated wrapper.
+5. Never synthesize `Decodable` for a refined type without verifying that decoding cannot bypass validation.
+6. Do not use `ExpressibleByStringLiteral` for validation that can fail unless literals are guaranteed by construction, checked by a validating macro, or governed by an explicit trap policy.
+7. Never treat `RawRepresentable` as validation by itself.
+8. Never use a public, freely conformable marker protocol as a trusted-issued capability proof.
+9. Never use `@unchecked Sendable` as a fix for diagnostics without a written synchronization or immutability proof.
+10. Never choose a lock merely to avoid actor isolation; choose it only for synchronous semantics or measured performance, and keep the critical section small.
+11. Never make typed throws the default for an error surface expected to evolve openly across layers.
+12. Never expose ownership or nonescapable machinery unless copying or escaping is the actual invariant being defended.
+13. Never add compatibility branches for a non-current Swift language mode.
+14. Never introduce beta-only syntax or APIs into the baseline lane without an explicit project decision.
+15. Never preserve a generic typestate design after it makes call sites, diagnostics, or build times worse than separate concrete types.
+16. Never describe a nominal wrapper as security enforcement: authorization, cryptographic verification, revocation, sandbox access, and unsafe-memory proofs remain runtime responsibilities.
 
-For state-dependent APIs, put operations in constrained extensions.
+## Output Contract
 
-```swift
-enum Unvalidated {}
-enum Validated {}
+For design, review, or implementation work, provide these results in proportion to the task:
 
-struct Form<State>: Sendable {
-    private let fields: [String: String]
-}
+1. **Invariant:** one sentence, plus invalid states removed.
+2. **Environment:** deployment target, selected current Xcode/Swift toolchain, SDK, and relevant build settings; mark unknowns.
+3. **Chosen model:** why it is the lightest adequate construct.
+4. **Proof boundary:** exactly which constructors, decoders, mutations, and interop paths preserve it.
+5. **Code:** complete enough to compile in the stated lane; include fallback or gate when needed.
+6. **Migration:** compiler-driven sequence and compatibility impact.
+7. **Validation:** tests, compile-fail cases, and minimum/current OS coverage.
+8. **Tradeoffs:** escape hatches, resilience, performance, and signs the model should be simplified.
 
-extension Form where State == Unvalidated {
-    func validate() throws(ValidationError) -> Form<Validated> { /* ... */ }
-}
+When reviewing an existing design, distinguish:
 
-func submit(_ form: Form<Validated>) async throws(SubmitError) { /* ... */ }
-```
+- **Proven:** misuse is unavailable through ordinary APIs.
+- **Checked:** misuse is detected at runtime at a controlled boundary.
+- **Documented:** convention or comments only.
+- **Bypassable:** at least one construction or mutation path violates the claimed proof.
 
-Public marker protocols are forgeable by public conformance. They prove something only when construction or conformance is controlled through access control, private requirements, sealed wrappers, or capability tokens.
+## Reference Map
 
-### Ownership and Lifetime
+Load only what the task needs:
 
-Use ownership when copying or escaping is the bug.
+- [references/decision-guide.md](references/decision-guide.md): invariant taxonomy, smell matrix, proof ladder, and overmodeling rollback.
+- [references/algebraic-and-refined-values.md](references/algebraic-and-refined-values.md): enums, product types, validated values, bounds, units, money, intervals, collections, and `Codable` traps.
+- [references/identity-typestate-capabilities.md](references/identity-typestate-capabilities.md): nominal and phantom IDs, typestate, staged builders, capabilities, trust states, and generic-complexity rollback.
+- [references/ui-state-navigation-and-effects.md](references/ui-state-navigation-and-effects.md): SwiftUI/UI state, forms, request identity, effects, cancellation, routes, restoration, `OptionSet`, and iOS 16 observation adapters.
+- [references/advanced-generics-and-protocols.md](references/advanced-generics-and-protocols.md): same-type relationships, primary associated types, constrained existentials, `some`/`any`, witness structs, dispatch hazards, packs, key paths, and macros.
+- [references/ownership-concurrency-errors.md](references/ownership-concurrency-errors.md): `Sendable`, actors, locks, `~Copyable`, borrowing/consuming, nonescapable values, strict memory safety, `BitwiseCopyable`, typed throws, and cancellation.
+- [references/boundaries-and-interop.md](references/boundaries-and-interop.md): networking, persistence, notifications, Objective-C/C, analytics, and public API resilience.
+- [references/security-and-resource-modeling.md](references/security-and-resource-modeling.md): authentication, revocable authority, secrets, interpreter-specific trust, URLs/paths, filesystem races, handles, cryptographic states, and unsafe-code audits.
+- [references/ios-versioning.md](references/ios-versioning.md): one-current-toolchain policy, iOS 16–27 runtime availability, stable versus preview Xcode, and feature availability.
+- [references/testing-migration-and-review.md](references/testing-migration-and-review.md): tests, compile-fail fixtures, migration sequencing, performance checks, and review rubric.
+- [references/sources.md](references/sources.md): primary specifications and official release documentation used to verify time-sensitive guidance.
 
-```swift
-struct Transaction<State>: ~Copyable {
-    private let handle: DatabaseHandle
-}
+## Included Utilities and Fixtures
 
-extension Transaction where State == Active {
-    consuming func commit() throws(TransactionError) -> Transaction<Committed> { /* ... */ }
-    consuming func rollback() -> Transaction<RolledBack> { /* ... */ }
-}
-```
-
-Use `borrowing` to inspect, `consuming` to take ownership exactly once, `inout` for exclusive mutation, `~Escapable` and `Span` for borrowed views that must not outlive their owner.
-
-### Modeling Failures Honestly
-
-Use `Optional` for absence without diagnostics, `Result` for stored or composable outcomes, `throws` for control-flow failure, typed throws when callers benefit from the exact failure type, and accumulated validation when forms or batches need all errors.
-
-Typed throws gives a `catch` block a precise error type. It does not make a chain of `catch .case` clauses generally exhaustive. Use an unconditional `catch` and switch inside when exhaustive case handling matters.
-
-```swift
-do {
-    _ = try validate(input)
-} catch {
-    switch error {
-    case .empty:
-        break
-    case .tooLong(let max):
-        print(max)
-    }
-}
-```
-
-Use `throws(Never)` or `Result<Value, Never>` when failure is impossible. Keep `Never`-based APIs honest; do not invent unreachable failure paths to satisfy a generic abstraction.
-
-### Generics, Protocols, and Existentials
-
-Use associated types, same-type constraints, and conditional conformances to model relationships.
-
-```swift
-protocol Endpoint {
-    associatedtype Request: Sendable
-    associatedtype Response: Sendable
-    associatedtype Failure: Error & Sendable
-
-    func decode(_ data: Data) throws(Failure) -> Response
-}
-
-func send<E: Endpoint>(_ endpoint: E, request: E.Request) async throws(E.Failure) -> E.Response { /* ... */ }
-```
-
-Put constraints on methods or extensions when only those operations require them. Do not constrain the whole type to `Codable`, `Sendable`, or `Equatable` if most operations do not need that capability.
-
-### Builders, Macros, and Reflection
-
-A result builder alone does not prove a required field exists. Pair builders with staged overloads, phantom state, validating output types, or macros that generate sealed construction paths.
-
-Use macros to remove repetitive proof plumbing, such as newtypes, typed IDs, case paths, or literal validation. Do not hide core domain logic in generated code. Literal validation only proves literal/static input; runtime strings still need validated constructors.
-
-Use `KeyPath<Root, Value>` or typed keys instead of string field names for forms, sorting, predicates, analytics, user defaults, feature flags, and localization keys.
-
-### Concurrency and Boundaries
-
-Model isolation in signatures. Prefer immutable `Sendable` structs for values that cross actors, `@MainActor` view models for UI-owned state, `@Sendable` closures for concurrent execution, and immutable snapshots for actor-owned mutable models.
-
-At app boundaries, convert raw shapes into domain types:
-
-- JSON/database rows -> DTO -> validated domain model
-- Objective-C dictionaries/nullability -> Swift nominal values
-- C/C++ handles and buffers -> ownership/lifetime wrappers
-- Notification names/userInfo -> typed notification messages
-- server routes -> typed endpoints, cursors, freshness, and error types
-- secrets/PII/raw HTML/SQL/shell fragments -> redacted or safe-state wrappers
-
-## Escape Hatches
-
-Unsafe or unchecked construction is sometimes necessary for performance, decoding, tests, or interop. Keep it narrow.
-
-- Prefer `internal` or `private` escape hatches.
-- Name them loudly: `unsafeAssumingValid`, `unchecked`, `trusted`.
-- Document the precondition in one sentence.
-- Centralize uses at the boundary.
-- Add tests or compile-fail fixtures that prove ordinary construction cannot bypass validation.
-
-## When to Stop
-
-Type modeling adds value only when the safety benefit exceeds the learning and maintenance cost.
-
-Skip or simplify when:
-
-- The value is created and consumed in one function.
-- The invariant is obvious, stable, and low risk.
-- The generic axes are multiplying faster than the domain states.
-- Type-checking slows down or diagnostics become unreadable.
-- A plain enum or struct would express the model more clearly than a phantom hierarchy.
-- The proof has already been established inside a module and type erasure at the boundary would reduce noise.
-
-When a design is overmodeled, collapse phantom axes into an enum, replace generic state with separate structs, erase behavior behind a preserving type eraser, or move validation back to the boundary.
-
-## References
-
-Read only the reference needed for the task:
-
-- [REFERENCE.md](REFERENCE.md) - core taxonomy, proof rules, feature availability, migration, and worked refactors.
-- [references/algebraic-and-value-modeling.md](references/algebraic-and-value-modeling.md) - enums, product/value modeling, Codable, non-empty/bounded values, routes, forms, money, units, dates, typed keys.
-- [references/generics-phantom-and-protocols.md](references/generics-phantom-and-protocols.md) - phantom state, capability tokens, trust types, associated types, same-type constraints, `some`/`any`, type erasure, builders, macros.
-- [references/ownership-concurrency-boundaries.md](references/ownership-concurrency-boundaries.md) - `~Copyable`, `~Escapable`, `Span`, typed throws, validation, Sendable/isolation, networking, persistence, interop, security.
-
+- `scripts/audit_project.py`: inventories the selected Swift/Xcode toolchain, Swift 6 mode, deployment, availability, and build settings without modifying the project.
+- `scripts/validate_skill.py`: validates metadata, links, eval data, and Swift fixtures.
+- `scripts/check_examples.sh`: type-checks positive examples and confirms negative fixtures fail.
+- `examples/CorePatterns.swift`: deployment-neutral domain modeling examples.
+- `examples/CorePatternsRuntimeChecks.swift`: executable validation and `Codable` boundary checks for the core fixtures.
+- `examples/CurrentSwiftPatterns.swift`: current Swift 6 typed-errors, ownership, and concurrency examples.
+- `examples/CompileFail*.swift`: negative fixtures for identity, sealed construction, typestate, and ownership misuse.
+- `evals/trigger-evals.json`: positive and negative activation prompts.
+- `evals/quality-evals.md`: scenario-based expectations for skill behavior.

@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "skill": "modeling-swift-types-for-correctness",
+  "cases": [
+    {
+      "id": "boolean-state-explosion",
+      "prompt": "This SwiftUI view model has isLoading, data, error, isRefreshing, and staleData. Refactor the state so impossible combinations disappear.",
+      "should_trigger": true,
+      "reason": "The request is explicitly about mutually exclusive state and correlated payloads."
+    },
+    {
+      "id": "swapped-identifiers",
+      "prompt": "Our API accepts UUID for both userID and workspaceID, and we shipped a call-site swap. Make this impossible in Swift.",
+      "should_trigger": true,
+      "reason": "Nominal or phantom identity separation is the core problem."
+    },
+    {
+      "id": "validated-codable",
+      "prompt": "Design a NonEmptyString that cannot be decoded from an empty JSON string and cannot be constructed through a synthesized memberwise initializer.",
+      "should_trigger": true,
+      "reason": "This requires construction sealing and boundary validation."
+    },
+    {
+      "id": "ios16-typed-notifications",
+      "prompt": "I deploy to iOS 16 but compile with Xcode 26. Use typed NotificationCenter messages on iOS 26 without leaking two payload types through the app.",
+      "should_trigger": true,
+      "reason": "The task combines a typed boundary with deployment-aware adaptation."
+    },
+    {
+      "id": "inline-array-cardinality",
+      "prompt": "Should I use InlineArray to guarantee exactly three RGB components in a library that supports iOS 16?",
+      "should_trigger": true,
+      "reason": "The request needs cardinality modeling and a precise availability distinction."
+    },
+    {
+      "id": "sendable-audit",
+      "prompt": "Harden this cache model for Swift 6 strict concurrency. It currently uses @unchecked Sendable around mutable reference storage.",
+      "should_trigger": true,
+      "reason": "Isolation and Sendable are part of the model's invariant."
+    },
+    {
+      "id": "transaction-typestate",
+      "prompt": "Model a database transaction so commit and rollback are available only while active and the handle cannot be finalized twice.",
+      "should_trigger": true,
+      "reason": "The task combines typestate with single-use ownership."
+    },
+    {
+      "id": "capability-token",
+      "prompt": "Replace an isAdmin Boolean parameter with an authorization proof that ordinary feature modules cannot forge.",
+      "should_trigger": true,
+      "reason": "This is a trusted-issued capability design problem."
+    },
+    {
+      "id": "typed-errors",
+      "prompt": "Review whether this public networking API should use throws(MyError), and preserve cancellation correctly.",
+      "should_trigger": true,
+      "reason": "The request concerns closed failure surfaces, resilience, and cancellation semantics."
+    },
+    {
+      "id": "raw-domain-boundary",
+      "prompt": "Our Core Data @Model is also the domain model, and invalid legacy rows crash feature code. Propose a safer mapping design.",
+      "should_trigger": true,
+      "reason": "Persistence-to-domain refinement is the central concern."
+    },
+    {
+      "id": "trust-state",
+      "prompt": "Use Swift types to distinguish raw user text from HTML-safe text, without implying the same value is safe for SQL or JavaScript.",
+      "should_trigger": true,
+      "reason": "This is explicit trust-state modeling."
+    },
+    {
+      "id": "overmodeling-review",
+      "prompt": "This form has six phantom generic states and terrible diagnostics. Tell me which proof axes are useful and collapse the rest.",
+      "should_trigger": true,
+      "reason": "The skill should also recognize and remove excessive type machinery."
+    },
+    {
+      "id": "objc-boundary",
+      "prompt": "Expose a validated Swift AccountID and NonEmptyString model to Objective-C without adding public raw initializers.",
+      "should_trigger": true,
+      "reason": "The invariant must survive a foreign-language boundary."
+    },
+    {
+      "id": "public-enum-resilience",
+      "prompt": "We publish a binary Swift framework. Review this public exhaustive enum and typed error for source and library evolution risks.",
+      "should_trigger": true,
+      "reason": "Public type modeling and resilience are directly in scope."
+    },
+    {
+      "id": "nonempty-collection",
+      "prompt": "Implement a non-empty collection wrapper with safe head/tail access and Codable validation.",
+      "should_trigger": true,
+      "reason": "This is a refined cardinality type with a decoding bypass risk."
+    },
+    {
+      "id": "stale-effect-identity",
+      "prompt": "An older SwiftUI search task sometimes completes after a newer query and overwrites the screen. The app supports iOS 16 and iOS 17 Observation. Model this correctly.",
+      "should_trigger": true,
+      "reason": "The task needs explicit effect identity, state transitions, cancellation semantics, and availability-neutral UI state."
+    },
+    {
+      "id": "protocol-extension-dispatch",
+      "prompt": "This generic Swift API calls a protocol-extension default instead of the conformer's same-named method. Correct the protocol model without unnecessary type erasure.",
+      "should_trigger": true,
+      "reason": "Protocol requirements, static relationships, and extension dispatch are core type-modeling concerns."
+    },
+    {
+      "id": "security-url-path",
+      "prompt": "Harden a callback URL and downloaded-file destination API. It currently trusts URL string prefixes and path concatenation.",
+      "should_trigger": true,
+      "reason": "This requires interpreter-specific trust, structured URL/path validation, and a clear boundary between types and security enforcement."
+    },
+    {
+      "id": "strict-memory-safety-audit",
+      "prompt": "Audit this current-Swift C interop wrapper under strict memory safety and decide whether BitwiseCopyable is a valid constraint.",
+      "should_trigger": true,
+      "reason": "The request concerns unsafe proof boundaries, ownership, representation contracts, and current compiler settings."
+    },
+    {
+      "id": "naming-only",
+      "prompt": "Rename fetchUsr to fetchUser and update call sites.",
+      "should_trigger": false,
+      "reason": "This is a cosmetic rename with no invariant or type-design decision."
+    },
+    {
+      "id": "swiftui-spacing",
+      "prompt": "Make the VStack spacing 12 points and align the button to the trailing edge.",
+      "should_trigger": false,
+      "reason": "Layout styling is unrelated to state or domain modeling."
+    },
+    {
+      "id": "asset-catalog",
+      "prompt": "Add dark-mode variants for the app icon and accent color.",
+      "should_trigger": false,
+      "reason": "Asset configuration does not involve Swift type correctness."
+    },
+    {
+      "id": "build-number",
+      "prompt": "Increment MARKETING_VERSION and CURRENT_PROJECT_VERSION for the release build.",
+      "should_trigger": false,
+      "reason": "Build metadata editing has no relevant invariant design."
+    },
+    {
+      "id": "copy-editing",
+      "prompt": "Rewrite these App Store release notes to be clearer and shorter.",
+      "should_trigger": false,
+      "reason": "This is prose editing."
+    },
+    {
+      "id": "snapshot-test-update",
+      "prompt": "Regenerate the approved PNG snapshots after the intentional font change.",
+      "should_trigger": false,
+      "reason": "Snapshot maintenance alone is not a type-modeling task."
+    },
+    {
+      "id": "localization",
+      "prompt": "Translate these three onboarding strings into French.",
+      "should_trigger": false,
+      "reason": "Translation does not require modeling an invariant."
+    },
+    {
+      "id": "package-update",
+      "prompt": "Update swift-collections to the latest compatible package version and resolve the lockfile.",
+      "should_trigger": false,
+      "reason": "Dependency maintenance is not automatically a domain-type task."
+    },
+    {
+      "id": "performance-profiling",
+      "prompt": "Profile image decoding with Instruments and identify the slowest stack frames.",
+      "should_trigger": false,
+      "reason": "Profiling without a type or invariant design request is outside scope."
+    }
+  ]
+}
