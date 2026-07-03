@@ -1,223 +1,280 @@
 # Logical Races and Reentrancy
 
-Logical races occur when multiple asynchronous operations interleave in unexpected ways, causing incorrect state. Unlike data races (multiple threads accessing the same memory), logical races can occur even in single-threaded code with a runloop. This reference covers recognition and prevention strategies.
+Use this reference when async code produces out-of-order state, stale UI updates, duplicate work, actor reentrancy bugs, or behavior changes after converting completion handlers to async/await.
 
-Source: Matt Massicotte, "Concurrency Step-by-Step: Stateful Systems", <https://www.massicotte.org/step-by-step-stateful-systems/>, accessed 2025-11-24.
+## Data race versus logical race
 
-## Contents
-
-- [Understanding Logical Races](#understanding-logical-races)
-- [Key Principle: Synchronous Critical Sections](#key-principle-synchronous-critical-sections)
-- [Actor Reentrancy](#actor-reentrancy)
-- [Migration Pitfalls: Completion Handlers → Async/Await](#migration-pitfalls-completion-handlers--asyncawait)
-- [Debugging Technique: Artificial Delays](#debugging-technique-artificial-delays)
-- [Recognition Checklist](#recognition-checklist)
-- [Summary](#summary)
-
-## Understanding Logical Races
-
-### What They Are
+Swift’s strict concurrency can prevent many data races. It does not prove that your state machine is logically correct.
 
 Logical races happen when:
-- An async operation can be "re-entered" before a previous invocation completes
-- Multiple async calls interleave, causing operations to complete out of order
-- State assumptions made before an `await` become invalid after it
 
-### Example: The Classic UI Race
+- Multiple async operations overlap and complete out of order.
+- State read before an `await` is stale after the `await`.
+- An actor method is re-entered while suspended.
+- A task starts later than code assumed.
+- Migration from queues/completion handlers changes ordering.
+
+## Critical rule
+
+`await` ends your synchronous critical section.
+
+Everything that must be checked and reserved atomically should happen before the first suspension point.
+
+Bad:
 
 ```swift
-private func press() {
+@MainActor
+func submit() {
     Task {
-        await system.toggleState()
-        self.state = await system.state
+        await prepare()
+        guard !isSubmitting else { return }
+        isSubmitting = true
+        await send()
+        isSubmitting = false
     }
 }
 ```
 
-If the user taps twice quickly:
-1. First tap: `toggleState` begins (slow)
-2. Second tap: another `toggleState` begins (fast)
-3. Second tap's read completes, UI updates
-4. First tap finally completes, UI updates again—**reversing user intent**
-
-## Key Principle: Synchronous Critical Sections
-
-**The check must be synchronous.** Any state consultation that guards an async operation must happen before the first `await`.
-
-### Correct Pattern
+Better:
 
 ```swift
-@State private var inProgress = false
+@MainActor
+func submit() {
+    guard !isSubmitting else { return }
+    isSubmitting = true
 
-private func press() {
-    if inProgress { return }  // Synchronous guard
-    self.inProgress = true
+    Task { [weak self] in
+        guard let self else { return }
+        defer { self.isSubmitting = false }
+        await self.send()
+    }
+}
+```
 
+## Stale UI completions
+
+Problem:
+
+```swift
+@MainActor
+func load(userID: User.ID) {
     Task {
-        await system.toggleState()
-        self.state = await system.state
-        self.inProgress = false
+        profile = try await service.profile(id: userID)
     }
 }
 ```
 
-### Also Correct (Guard Inside Task)
+If `userID` changes or a second load starts, an older result may overwrite newer state.
+
+Fix options:
+
+### Cancel previous task
 
 ```swift
-private func press() {
-    Task {
-        if inProgress { return }  // Still synchronous within MainActor
-        self.inProgress = true
+private var loadTask: Task<Void, Never>?
 
-        await system.toggleState()
-        self.state = await system.state
-        self.inProgress = false
+@MainActor
+func load(userID: User.ID) {
+    loadTask?.cancel()
+    loadTask = Task { [weak self] in
+        do {
+            let profile = try await service.profile(id: userID)
+            guard !Task.isCancelled else { return }
+            self?.profile = profile
+        } catch is CancellationError { }
+        catch { self?.error = error }
     }
 }
 ```
 
-This works because the Task body runs on @MainActor—only one can execute synchronous code at a time.
-
-### Incorrect Pattern
+### Version result
 
 ```swift
-private func press() {
-    Task {
-        if inProgress { return }
+private var generation = 0
 
-        await system.prepare()  // ⚠️ State can change during this await!
+@MainActor
+func load(userID: User.ID) async {
+    generation += 1
+    let currentGeneration = generation
 
-        self.inProgress = true  // Too late—race condition exists
-        // ...
+    do {
+        let profile = try await service.profile(id: userID)
+        guard generation == currentGeneration else { return }
+        self.profile = profile
+    } catch {
+        guard generation == currentGeneration else { return }
+        self.error = error
     }
 }
 ```
 
-**Think of `await` as ending a critical section.** All state checks and modifications that must be atomic need to happen synchronously, before any suspension point.
-
-## Actor Reentrancy
-
-Actors protect against data races but **not** logical races. Actor methods can be called by multiple callers simultaneously.
-
-### Vulnerable Actor Pattern
+### Validate state after await
 
 ```swift
-actor RemoteSystem {
-    private var initialized = false
+let requestedID = selectedID
+let profile = try await service.profile(id: requestedID)
+guard selectedID == requestedID else { return }
+self.profile = profile
+```
 
-    func toggleState() async {
-        await initializeIfNeeded()  // ⚠️ Multiple callers can reach here
-        self.state.toggle()
+## Actor reentrancy
+
+Actors serialize synchronous access, but actor methods are reentrant at suspension points.
+
+Problem:
+
+```swift
+actor TokenProvider {
+    private var token: Token?
+
+    func validToken() async throws -> Token {
+        if let token, token.isValid { return token }
+        token = try await refreshToken()
+        return token!
     }
 }
 ```
 
-Multiple callers can invoke `toggleState()` concurrently. Both may see `initialized == false` and run initialization twice.
+Two callers can both pass the initial check and refresh.
 
-### Solutions for Actor Reentrancy
+Better with in-flight task:
 
-1. **Synchronous guards** (same as UI pattern):
-   ```swift
-   func toggleState() async {
-       if isInitializing { return }
-       isInitializing = true
-       // ...
-   }
-   ```
-
-2. **Async locks** for complex scenarios (e.g., `AsyncSemaphore`)
-
-3. **Reconsider the design**: If struggling with actor reentrancy, verify an actor is actually needed. Sometimes simpler approaches work.
-
-## Migration Pitfalls: Completion Handlers → Async/Await
-
-Converting completion handlers to async/await is **not** purely syntactic. Critical semantic differences exist:
-
-### Ordering Changes
-
-**Completion handler version** (synchronous dispatch):
 ```swift
-func toggleState(completionHandler: @escaping @Sendable () -> Void) {
+actor TokenProvider {
+    private var token: Token?
+    private var refreshTask: Task<Token, Error>?
+
+    func validToken() async throws -> Token {
+        if let token, token.isValid { return token }
+        if let refreshTask { return try await refreshTask.value }
+
+        let task = Task { try await refreshToken() }
+        refreshTask = task
+
+        do {
+            let token = try await task.value
+            self.token = token
+            self.refreshTask = nil
+            return token
+        } catch {
+            self.refreshTask = nil
+            throw error
+        }
+    }
+}
+```
+
+## Re-check after await
+
+Whenever an actor method uses pre-await state after suspension, re-check.
+
+Bad:
+
+```swift
+actor Store {
+    private var items: [Item.ID: Item] = [:]
+
+    func update(id: Item.ID) async throws {
+        guard var item = items[id] else { return }
+        item.details = try await fetchDetails(id)
+        items[id] = item // May resurrect deleted item or overwrite newer item.
+    }
+}
+```
+
+Better:
+
+```swift
+func update(id: Item.ID) async throws {
+    guard items[id] != nil else { return }
+    let details = try await fetchDetails(id)
+    guard var current = items[id] else { return }
+    current.details = details
+    items[id] = current
+}
+```
+
+## Ordering changes from completion handlers
+
+Completion-handler code often synchronously enqueues work onto a specific queue. Async/await code introduces task scheduling and suspension, which can change ordering.
+
+Before:
+
+```swift
+func toggle(completion: @escaping () -> Void) {
     queue.async {
         self.state.toggle()
-        completionHandler()
-    }
-}
-```
-The call to `toggleState` synchronously adds work to a queue, preserving call order.
-
-**Async version**:
-```swift
-func toggleState() async {
-    self.state.toggle()
-}
-
-await system.toggleState()
-```
-The `await` introduces a scheduling step—Tasks don't have FIFO semantics in the general case.
-
-### Task Creation Delays
-
-Wrapping code in `Task { }` introduces a scheduling delay that can widen race windows:
-
-```swift
-// Before: Synchronous call into system
-system.toggleState {
-    // callback
-}
-
-// After: Async scheduling required
-Task {
-    await system.toggleState()
-}
-```
-
-The Task body doesn't run immediately—it must be scheduled.
-
-## Debugging Technique: Artificial Delays
-
-Insert random delays to expose latent races:
-
-```swift
-func randomDelay() {
-    usleep((0..<1_000_000).randomElement()!)
-}
-
-private func press() {
-    Task {
-        randomDelay()  // Task start latency
-
-        randomDelay()  // Before await
-        await system.toggleState()
-        randomDelay()  // After await
-
-        randomDelay()  // Before next await
-        let value = await system.state
-        randomDelay()  // After await
-
-        self.state = value
+        completion()
     }
 }
 ```
 
-These delays magnify real timing variations to make races more observable during testing.
+After:
 
-## Recognition Checklist
+```swift
+func toggle() async {
+    state.toggle()
+}
 
-When reviewing async code, watch for:
+Task { await toggle() }
+```
 
-- [ ] Multiple invocations possible before completion (button taps, notifications)
-- [ ] State checked before `await` but used after
-- [ ] Assumptions about execution order across Tasks
-- [ ] Actor methods with multiple `await` calls before state modification
-- [ ] Migration from completion handlers that changed timing semantics
+Creating the task does not execute the body immediately. If ordering matters from a synchronous caller, consider making the caller async, using `Task.immediate` sparingly, or preserving a serial executor/actor boundary.
 
-## Summary
+## Button taps and idempotency
 
-| Concept | Key Point |
-|---------|-----------|
-| Logical race | State interleaving, not memory corruption |
-| Critical section | Synchronous code before first `await` |
-| Actor reentrancy | Actors prevent data races, not logical races |
-| Migration risk | async/await has different ordering semantics |
-| Single-threaded | MainActor code can still have logical races |
+For user actions:
+
+- Disable or guard synchronously before starting work.
+- Decide whether repeated taps cancel previous work, queue work, coalesce work, or no-op.
+- Reflect the policy in state names: `isLoading`, `currentRequestID`, `inFlight`, `pending`, `lastSubmittedVersion`.
+
+Example coalescing:
+
+```swift
+@MainActor
+func refresh() {
+    if refreshTask != nil { return }
+    refreshTask = Task { [weak self] in
+        defer { self?.refreshTask = nil }
+        await self?.runRefresh()
+    }
+}
+```
+
+Example latest-wins:
+
+```swift
+@MainActor
+func search(_ query: String) {
+    searchTask?.cancel()
+    searchTask = Task { [weak self] in
+        await self?.performSearch(query)
+    }
+}
+```
+
+## Artificial delay debugging
+
+To expose races, insert randomized delays in debug-only code or tests around suspension boundaries.
+
+```swift
+#if DEBUG
+func raceProbe() async {
+    let delay = UInt64.random(in: 0...20_000_000)
+    try? await Task.sleep(nanoseconds: delay)
+}
+#endif
+```
+
+Use probes to find bugs, not to fix tests. Production correctness must come from explicit happens-before edges, cancellation, versioning, or state reservations.
+
+## Review checklist
+
+- What state is read before each `await`?
+- Can that state change during the suspension?
+- Are user actions repeatable, cancelable, coalesced, or ignored?
+- Can older results overwrite newer state?
+- Do actor methods re-check invariants after suspension?
+- Did converting from callbacks/queues to tasks change ordering?
+- Are tests covering overlapped calls, not just one-at-a-time calls?

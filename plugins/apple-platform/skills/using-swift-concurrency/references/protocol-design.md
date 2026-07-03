@@ -1,142 +1,226 @@
 # Protocol Design
 
-Use this reference when creating or revising Swift protocols that may be used across actor boundaries, under Swift 6 strict concurrency, or in codebases with default actor isolation settings.
+Use this reference when creating or revising Swift protocols that may interact with actors, MainActor, `Sendable`, default actor isolation, async requirements, or reusable packages.
 
-Source: Matt Massicotte, "Concurrency Step-by-Step: Designing Protocols", <https://www.massicotte.org/step-by-step-designing-protocols/>, published 2026-04-26.
+## Protocols include concurrency contracts
 
-## Contents
+A protocol requirement specifies more than shape. It can specify:
 
-- [Design From Both Sides](#design-from-both-sides)
-- [Know the Active Dialect](#know-the-active-dialect)
-- [Isolation Is a Contract](#isolation-is-a-contract)
-- [Refined Protocols Carry Their Requirements](#refined-protocols-carry-their-requirements)
-- [Synchronous Requirements Are Inflexible](#synchronous-requirements-are-inflexible)
-- [Async Requirements Are More Flexible](#async-requirements-are-more-flexible)
-- [`Sendable` Is a Severe Requirement](#sendable-is-a-severe-requirement)
-- [Conformance-Side Escape Hatches](#conformance-side-escape-hatches)
-- [Design Checklist](#design-checklist)
+- Isolation: nonisolated, `@MainActor`, another global actor, or caller-inherited.
+- Synchronicity: synchronous versus `async`.
+- Transferability: `Sendable`, `@Sendable`, `sending`.
+- Reentrancy/lifetime expectations: escaping closures, streams, cancellation.
 
-## Design From Both Sides
+Design protocols from both sides: call sites and ordinary conformers.
 
-Protocols are contracts. In concurrent Swift, the contract includes isolation, suspension, and transferability.
+## First question: who should conform?
 
-When designing a protocol, evaluate two perspectives:
+Before writing the protocol, name likely conformers:
 
-- How callers will use protocol values or generics.
-- How ordinary conforming types will satisfy the requirements.
+- Immutable value snapshots?
+- UI view models?
+- Actors?
+- Legacy Objective-C classes?
+- Mock/test doubles?
+- Reusable package implementations?
 
-Create at least one plain conforming type while designing the protocol. Use it as feedback on whether the protocol is demanding unnecessary isolation, `Sendable`, or synchronous access.
+If a plain struct or mock cannot conform without ceremony, the protocol may be over-isolated or over-Sendable.
 
-## Know the Active Dialect
+## Default actor isolation traps
 
-Protocol behavior can change substantially with these settings and features:
+In a target with `-default-isolation MainActor`, an unannotated protocol can become main-actor isolated. That is correct only for UI protocols.
 
-| Setting or feature | Why it matters |
-|---|---|
-| `DefaultActorIsolation` | A `MainActor` default can implicitly isolate protocols, types, and members. |
-| `NonisolatedNonsendingByDefault` | Changes how nonisolated async requirements inherit isolation and avoid `Sendable` pressure. |
-| `InferIsolatedConformances` | May infer actor-isolated conformances, but explicit conformance isolation is still useful when inference does not match intent. |
-
-For portable protocols, avoid relying on a target's default actor isolation. Write the contract explicitly when isolation matters.
-
-## Isolation Is a Contract
-
-`@MainActor`, another global actor, and `nonisolated` are not implementation details on protocol requirements. They define where callers may use the requirement and what conforming types must provide.
-
-Avoid letting a `MainActor` default silently become part of a reusable protocol unless the protocol is inherently UI-bound. A protocol used by model, storage, networking, or domain types is usually more flexible when it is explicitly `nonisolated` or when individual requirements carry the needed isolation.
+For domain protocols, opt out explicitly:
 
 ```swift
-nonisolated protocol CacheRecord {
-    var key: String { get }
-}
-```
-
-If the protocol is only meaningful on the main actor, state that directly:
-
-```swift
-@MainActor
-protocol ViewStateModel {
-    func refresh() async
-}
-```
-
-## Refined Protocols Carry Their Requirements
-
-A protocol that refines another protocol inherits that protocol's isolation contract. This matters most when refining SDK or third-party protocols defined under different defaults.
-
-```swift
-nonisolated protocol StoredEntity: Identifiable {
+nonisolated protocol UserRecord: Sendable, Identifiable {
+    var id: UUID { get }
     var displayName: String { get }
 }
 ```
 
-If `Identifiable.id` is nonisolated, conformers must be able to provide `id` nonisolated unless they use an isolated conformance or another compatible design. Do not assume your protocol's default isolation overrides inherited requirements.
-
-When a refined protocol causes surprising diagnostics, expand the inherited requirements mentally: ask what isolation each requirement actually demands.
-
-## Synchronous Requirements Are Inflexible
-
-A synchronous nonisolated requirement promises immediate access from any isolation domain:
+For UI protocols, state isolation directly:
 
 ```swift
-nonisolated protocol UserRecord {
-    var id: String { get }
+@MainActor
+protocol ProfileScreenModel: AnyObject {
+    var title: String { get }
+    func refresh() async
 }
 ```
 
-That requirement excludes conformers whose `id` is actor-isolated unless they can provide a safe nonisolated implementation or use an isolated conformance. Before requiring synchronous access, ask whether callers truly need it.
+Do not let a module default silently decide a reusable protocol’s public contract.
 
-## Async Requirements Are More Flexible
+## Synchronous requirements are strong
 
-If callers can suspend, an async requirement can accept more conforming implementations:
+A synchronous nonisolated requirement promises immediate access from any allowed context.
 
 ```swift
-nonisolated protocol UserRecord {
-    var id: String { get async }
+nonisolated protocol CacheKeyed {
+    var cacheKey: String { get }
 }
 ```
 
-The requirement means access is allowed to suspend, not that every implementation must suspend. A synchronous stored property can satisfy an async requirement when the isolation rules allow it.
+This excludes conformers whose value is actor-isolated unless they provide a safe nonisolated witness or isolated conformance.
 
-This flexibility is especially useful when conformers may be actors, `@MainActor` types, or plain value types. Verify behavior under the Swift language mode and feature flags used by the target; `NonisolatedNonsendingByDefault` is a major part of this model.
+Use synchronous requirements for:
 
-## `Sendable` Is a Severe Requirement
+- IDs and immutable values.
+- Cheap pure properties.
+- Protocols used in collections, hashing, equality, or decoding.
 
-Requiring `Sendable` says conforming values can be used safely across isolation domains:
+Avoid synchronous requirements for:
+
+- Values that may need actor access.
+- UI-derived state unless the protocol is `@MainActor`.
+- Remote or persistent state.
+
+## Async requirements are flexible
+
+If callers can suspend, an async requirement can support actors, UI models, and plain values.
 
 ```swift
-nonisolated protocol TransferableRecord: Sendable, Identifiable {
+nonisolated protocol UserDisplaySource {
+    var displayName: String { get async }
 }
 ```
 
-This can be exactly right for immutable values passed between actors. It can also make conformers much harder to write, especially if the protocol has synchronous requirements that may be called from multiple isolation domains.
+A synchronous implementation can satisfy many async requirements when isolation rules allow it. Use async requirements when the protocol represents a capability rather than a cheap stored value.
 
-Use this rule of thumb:
+Do not make everything async. Async APIs add suspension points, reentrancy, and test complexity.
 
-- Add `Sendable` when cross-actor transfer is core to the protocol's purpose.
-- Do not add `Sendable` just to work around default `MainActor` diagnostics.
-- Remember that `Sendable` can disable default `MainActor` inference for conforming types because the protocol has declared concurrency as part of its contract.
+## `Sendable` on protocols
 
-## Conformance-Side Escape Hatches
+Add `Sendable` to a protocol only when conforming values are intended to cross isolation domains.
 
-When an existing protocol design collides with a conforming type's isolation, choose the least surprising fix:
+Correct:
 
-| Fix | Use when |
-|---|---|
-| Make the conforming member `nonisolated` | The member is immutable or otherwise safe to access from any isolation. |
-| Use an isolated conformance | The protocol can be satisfied only from a specific global actor context. |
-| Change a requirement to `async` | Callers do not need synchronous access and conformers may be isolated. |
-| Add `Sendable` | Transferability is truly part of the protocol contract. |
-| Relax protocol isolation | The protocol was accidentally isolated by default settings. |
+```swift
+nonisolated protocol RequestPayload: Sendable, Codable { }
+```
 
-Do not use these as mechanical compiler fixes. Each option changes what callers may do and what conformers must guarantee.
+Too broad:
 
-## Design Checklist
+```swift
+protocol Coordinator: AnyObject, Sendable { }
+```
 
-- Is this protocol inherently actor-isolated, or did a default setting add isolation accidentally?
-- Does every refined protocol bring requirements with compatible isolation?
-- Do callers truly need synchronous access, or would `async` make the contract more correct?
-- Is `Sendable` a semantic requirement or just a workaround?
-- Can a regular value type conform without ceremony?
-- Can an actor or `@MainActor` type conform if that should be supported?
-- Are isolation choices explicit enough to survive different target settings?
+A coordinator is usually UI-bound reference state; `@MainActor` is probably the real contract.
+
+## Closure requirements
+
+Escaping closures that may run from tasks or other isolation domains should declare both execution isolation and sendability.
+
+Background/concurrent callback:
+
+```swift
+nonisolated protocol Downloader {
+    func download(
+        _ request: Request,
+        progress: @escaping @Sendable (Progress) -> Void
+    ) async throws -> Data
+}
+```
+
+UI callback:
+
+```swift
+nonisolated protocol LoginCoordinator {
+    func login(
+        onEvent: @escaping @MainActor (LoginEvent) -> Void
+    ) async
+}
+```
+
+In Swift 6.3, a global-actor-isolated closure is normally inferred `@Sendable`. Still, include `@Sendable` if it clarifies an API boundary or if a generic/storage context requires it.
+
+## Actors conforming to protocols
+
+Actors cannot satisfy arbitrary synchronous nonisolated requirements with actor-isolated state.
+
+Bad protocol for actors:
+
+```swift
+protocol CounterProtocol {
+    var count: Int { get }
+}
+```
+
+Actor-friendly:
+
+```swift
+protocol CounterProtocol {
+    var count: Int { get async }
+}
+```
+
+Or provide a safe nonisolated witness for immutable state:
+
+```swift
+actor UserStore: Identifiable {
+    nonisolated let id: UUID
+    private var users: [User.ID: User]
+}
+```
+
+## Service protocols
+
+Avoid `@MainActor` service protocols unless service calls must run on MainActor. UI consumers can call nonisolated async services from MainActor safely.
+
+```swift
+nonisolated protocol ProfileService: Sendable {
+    func profile(id: User.ID) async throws -> ProfileSnapshot
+}
+```
+
+If the implementation is a reference type with internal mutable state, make it safely `Sendable` or isolate it behind an actor. Do not force all services to be `@MainActor` because one view model uses them.
+
+## Protocols refined from SDK protocols
+
+A protocol that refines another protocol inherits its requirements and isolation expectations.
+
+```swift
+nonisolated protocol StoredEntity: Identifiable, Codable, Sendable {
+    var displayName: String { get }
+}
+```
+
+`Identifiable.id`, `Codable` machinery, and `Sendable` constraints all affect conformers. When diagnostics seem surprising, expand the inherited protocol requirements mentally.
+
+## Associated types
+
+Constrain associated types according to transfer semantics.
+
+```swift
+nonisolated protocol Repository: Sendable {
+    associatedtype Entity: Sendable & Identifiable
+
+    func entity(id: Entity.ID) async throws -> Entity
+}
+```
+
+If `Entity` is a UI-bound model object, this protocol is wrong. Return a `Sendable` snapshot or make the protocol `@MainActor`.
+
+## Conformance-side escape hatches are not protocol design
+
+If every conformer needs one of these, redesign the protocol:
+
+- `@preconcurrency` conformance.
+- `@unchecked Sendable`.
+- `nonisolated(unsafe)`.
+- `assumeIsolated`.
+- Dummy async wrappers around synchronous UI state.
+
+Use isolated conformances for individual UI-bound types that conform to generic protocols, not as a substitute for clear protocol isolation.
+
+## Design checklist
+
+- Is the protocol UI-bound, domain-level, service-level, or low-level concurrency infrastructure?
+- Is isolation explicit enough to survive different target default isolation settings?
+- Can a simple struct conform?
+- Can an actor conform if that is a target use case?
+- Do synchronous requirements really need to be synchronous?
+- Is `Sendable` required by semantics or just by one implementation?
+- Are closure parameters correctly `@Sendable`, actor-isolated, or both?
+- Are associated types constrained to Sendable only when returned/transferred across isolation?
+- Are inherited protocol requirements compatible with expected conformers?

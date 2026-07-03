@@ -1,378 +1,374 @@
 # Problematic Patterns
 
-Use this reference to recognize and fix common problematic patterns when using Swift Concurrency. These patterns are not inherently wrong but frequently lead to issues, compiler warnings, or unintended behavior.
+Use this reference to audit Swift Concurrency code for patterns that compile but are fragile, misleading, unavailable on iOS 16, or semantically wrong.
 
-Source: Matt Massicotte, <https://www.massicotte.org/problematic-patterns/>, accessed 2025-11-24.
+## Quick reference
 
-## Contents
+| Pattern | Problem | Better default |
+|---|---|---|
+| Actor as background queue | Actors are isolation domains, not background annotations. | `@concurrent`, structured tasks, or service design. |
+| Stateless actor | Serializes nothing useful. | `struct`/`final class` service. |
+| Split isolation | One type has mixed actor domains. | Type-level actor or separate types. |
+| `Task.detached` for off-main work | Loses context and requires Sendable captures. | `@concurrent`, task group, or service. |
+| Hidden unstructured tasks | No owner/cancellation/test handle. | Structured task or returned/stored handle. |
+| `MainActor.run` everywhere | Dynamic boundary instead of static contract. | `@MainActor` declarations. |
+| Blocking async work | Deadlocks/thread starvation. | Stay async; do not semaphore-wait. |
+| `@unchecked Sendable` as fix-it | Manual proof missing. | Values, actors, locks, snapshots. |
+| `@preconcurrency` spread everywhere | Silences diagnostics globally. | Adapter boundary. |
+| New API without availability | Crashes/compile issues on iOS 16. | `#available`/fallback/adapter. |
+| Sleep/yield tests | Flaky scheduler guesses. | Event-driven synchronization. |
 
-- [When to Apply This Reference](#when-to-apply-this-reference)
-- [Pattern Quick Reference](#pattern-quick-reference)
-- [Detailed Patterns](#detailed-patterns)
-- [Non-Sendable Types with Async Methods](#non-sendable-types-with-async-methods)
-- [Summary Checklist](#summary-checklist)
+## Split isolation
 
-## When to Apply This Reference
-
-- Reviewing or writing Swift code that uses async/await, actors, or Task
-- Diagnosing Swift 6 concurrency warnings or errors
-- Refactoring completion-handler code to async/await
-- Deciding between structured and unstructured concurrency
-- Working with MainActor isolation
-
-## Pattern Quick Reference
-
-| Pattern | Problem | Better Approach |
-|---------|---------|-----------------|
-| Split isolation | Mixed isolation domains in one type | Apply global actor to entire type |
-| Task.detached | Loses priority and task-locals | Use nonisolated async functions |
-| Stateless actors | No state to protect | Use nonisolated async functions |
-| MainActor.run | Bypasses static isolation checking | Declare functions @MainActor |
-| Blocking async work | Deadlock risk | Use await, never semaphores |
-| Unstructured tasks | Manual cancellation, unclear flow | Prefer structured concurrency |
-
-## Detailed Patterns
-
-### Split Isolation
-
-A type that mixes isolation domains internally:
+Problem:
 
 ```swift
-// PROBLEMATIC: Split isolation
-class SomeClass {
-    var name: String           // non-isolated
-    @MainActor var value: Int  // MainActor-isolated
+final class ScreenModel {
+    var id: UUID
+    @MainActor var title: String
 }
 ```
 
-**Why problematic**: If created off the MainActor, `value` becomes permanently inaccessible. The type isn't Sendable, preventing transfer back to MainActor.
+The type has no coherent isolation contract. It may become impossible to use safely across actors.
 
-**Fix**: Apply the global actor to the entire type:
+Better:
 
 ```swift
 @MainActor
-class SomeClass {
-    var name: String
-    var value: Int
+final class ScreenModel {
+    nonisolated let id: UUID
+    var title: String
 }
 ```
 
-### Task.detached Misuse
+Or separate DTO/state from UI model.
 
-Using `Task.detached` simply to run work off the MainActor:
+## Stateless actors
+
+Problem:
 
 ```swift
-// PROBLEMATIC: Task.detached for offloading
+actor APIClient {
+    func user(id: User.ID) async throws -> User { ... }
+}
+```
+
+No state is protected. The actor adds async boundaries and possible serialization without benefit.
+
+Better:
+
+```swift
+struct APIClient: Sendable {
+    func user(id: User.ID) async throws -> User { ... }
+}
+```
+
+Use an actor only if protecting mutable state such as token refresh, cache, rate limits, in-flight de-duplication, or a non-thread-safe dependency.
+
+## Actor chosen for synchronous state
+
+Problem:
+
+```swift
+actor FeatureFlags {
+    private var flags: [String: Bool]
+
+    func isEnabled(_ key: String) -> Bool { flags[key] == true }
+}
+```
+
+Every caller must `await` even when synchronous access is required throughout the app.
+
+Better options:
+
+- Immutable `Sendable` snapshot.
+- `@MainActor` if flags are UI/configuration state only used on main.
+- Lock-protected class if synchronous shared mutation is truly needed.
+- Actor if async access is acceptable and serialization is valuable.
+
+## `Task.detached` misuse
+
+Problem:
+
+```swift
 @MainActor
-func doSomeStuff() {
+func refresh() {
     Task.detached {
-        expensiveWork()
+        let value = await service.fetch()
+        await MainActor.run { self.value = value }
     }
 }
 ```
 
-**Why problematic**: Detached tasks lose priority inheritance and task-local values, not just isolation. This causes unexpected behavior.
+Detached loses actor inheritance and structured cancellation, and capturing `self` is problematic.
 
-**Fix**: Use a nonisolated async function with a regular Task:
+Better:
 
 ```swift
 @MainActor
-func doSomeStuff() {
+func refresh() {
+    task?.cancel()
+    task = Task { [weak self] in
+        guard let self else { return }
+        let value = await self.service.fetch()
+        self.value = value
+    }
+}
+```
+
+If CPU-heavy work should leave MainActor, put that work in an `@concurrent` function with Sendable inputs/outputs.
+
+## Unstructured task inside async function
+
+Problem:
+
+```swift
+func save() async {
+    Task { await database.save(draft) }
+}
+```
+
+The function returns before saving; cancellation/errors are lost.
+
+Better:
+
+```swift
+func save() async throws {
+    try await database.save(draft)
+}
+```
+
+Only create unstructured tasks at synchronous boundaries or independent lifecycle boundaries.
+
+## Fire-and-forget with no owner
+
+Problem:
+
+```swift
+func startObserving() {
     Task {
-        await expensiveWork()
+        for await event in events { handle(event) }
+    }
+}
+```
+
+The task can leak forever and tests cannot await it.
+
+Better:
+
+```swift
+private var observationTask: Task<Void, Never>?
+
+func startObserving() {
+    observationTask?.cancel()
+    observationTask = Task { [weak self] in
+        await self?.observe()
     }
 }
 
-nonisolated func expensiveWork() async {
-    // Work runs off MainActor
+func stopObserving() {
+    observationTask?.cancel()
+    observationTask = nil
 }
 ```
 
-### Explicit Task Priorities
+## MainActor overreach
 
-Setting explicit priorities without clear justification:
+Problem:
 
 ```swift
-// QUESTIONABLE: Why not default priority?
-Task(priority: .background) {
-    await someWork()
+@MainActor
+struct APIResponse: Codable, Sendable {
+    let id: UUID
 }
 ```
 
-**Why problematic**: Priority inversions are easy to introduce accidentally. The system handles priority inheritance well by default.
+A data value is accidentally UI-bound, causing Codable/Sendable/generic issues.
 
-**Guideline**: Always document why the default priority is insufficient:
+Better:
 
 ```swift
-// Background because this is non-user-facing analytics upload
-// that should yield to all interactive work
-Task(priority: .background) {
-    await uploadAnalytics()
+nonisolated struct APIResponse: Codable, Sendable {
+    let id: UUID
 }
 ```
 
-### MainActor.run Overuse
+Use `@MainActor` for UI state and imperative UI APIs, not for portable data.
 
-Using `MainActor.run` when static isolation would work:
+## `MainActor.run` overuse
+
+Problem:
 
 ```swift
-// PROBLEMATIC: Dynamic isolation
 await MainActor.run {
-    updateUI()
+    model.title = title
 }
 ```
 
-**Why problematic**: Bypasses compile-time isolation checking. The compiler cannot verify correct usage at call sites.
+This hides the reusable isolation contract.
 
-**Fix**: Declare the function with static isolation:
+Better:
 
 ```swift
 @MainActor
-func updateUI() { ... }
-
-// At call site - compiler enforces correctness
-await updateUI()
-```
-
-### Stateless Actors
-
-Actors with no instance properties:
-
-```swift
-// PROBLEMATIC: No state to protect
-actor NetworkService {
-    func fetchData() async -> Data { ... }
+func apply(title: String) {
+    model.title = title
 }
+
+await apply(title: title)
 ```
 
-**Why problematic**: Actors exist to protect mutable state. Without state, the actor just adds overhead and serializes access unnecessarily.
+Use `MainActor.run` at legacy/dynamic boundaries only.
 
-**Fix**: Use a nonisolated async function or a struct with async methods:
+## Blocking on async
 
-```swift
-struct NetworkService {
-    func fetchData() async -> Data { ... }
-}
-```
-
-### Redundant Sendable Conformances
-
-Explicitly conforming global-actor-isolated types to Sendable:
+Problem:
 
 ```swift
-// REDUNDANT: @MainActor types are already Sendable
-@MainActor
-class ViewModel: Sendable { }
-```
-
-**Why problematic**: May indicate confusion about how global actor isolation provides Sendability. Not wrong, but suspicious.
-
-**Fix**: Remove redundant conformance:
-
-```swift
-@MainActor
-class ViewModel { }  // Already Sendable
-```
-
-### @MainActor @Sendable Closures
-
-Combining both attributes on closures:
-
-```swift
-// POTENTIALLY REDUNDANT (Swift 6+)
-@MainActor @Sendable () -> Void
-```
-
-**Context**: In Swift 6, `@MainActor` closures are implicitly Sendable. The combination is only needed for Swift 5/Xcode 15 compatibility.
-
-**For Swift 6 only**:
-```swift
-@MainActor () -> Void  // Sufficient
-```
-
-### Blocking for Async Work
-
-Using DispatchSemaphore or DispatchGroup to wait on async work:
-
-```swift
-// DANGEROUS: Deadlock risk
-let semaphore = DispatchSemaphore(value: 0)
+let group = DispatchGroup()
+group.enter()
 Task {
-    await someWork()
-    semaphore.signal()
+    await work()
+    group.leave()
 }
-semaphore.wait()  // May deadlock
+group.wait()
 ```
 
-**Why problematic**: Swift's cooperative thread pool can deadlock if threads block waiting for async work that needs those same threads.
+Can starve the cooperative executor and deadlock.
 
-**Fix**: Stay in async context or restructure to avoid synchronous waiting:
+Better: make the caller async or redesign the boundary.
 
-```swift
-// Option 1: Stay async
-await someWork()
+## Lock held across await
 
-// Option 2: If sync API required, document the limitation
-// and ensure caller is never on cooperative pool
-```
-
-### Too Much Code in Closures
-
-Large closure bodies make concurrency diagnostics hard to understand:
+Problem:
 
 ```swift
-// PROBLEMATIC: Hard to diagnose
-someAsyncAPI { result in
-    // 50+ lines of code
-    // Where exactly is the warning?
+lock.withLock {
+    state.isLoading = true
+    await service.load() // invalid design even if written through wrappers
 }
 ```
 
-**Fix**: Extract closure bodies into named functions:
+Locks protect synchronous critical sections only.
+
+Better:
 
 ```swift
-func handleResult(_ result: Result) {
-    // Clear isolation context
-    // Easier to diagnose
-}
+lock.withLock { $0.isLoading = true }
+let value = try await service.load()
+lock.withLock { $0.value = value; $0.isLoading = false }
+```
 
-someAsyncAPI { result in
-    handleResult(result)
+Re-check state after await if needed.
+
+## `@unchecked Sendable` without invariant
+
+Problem:
+
+```swift
+final class Store: @unchecked Sendable {
+    var items: [Item] = []
 }
 ```
 
-### Unstructured When Structured Would Work
+No safety proof.
 
-Creating Tasks when structured concurrency is available:
+Better:
 
 ```swift
-// PROBLEMATIC: Unstructured without need
-func process() async {
-    Task {
-        await stepOne()
-    }
-    Task {
-        await stepTwo()
-    }
+actor Store {
+    private var items: [Item] = []
 }
 ```
 
-**Why problematic**: Loses automatic cancellation propagation, makes control flow unclear, requires manual coordination.
+Or a lock-protected final class with documented invariant.
 
-**Fix**: Use structured concurrency:
+## Availability blind spots
+
+Problem:
 
 ```swift
-func process() async {
-    async let one = stepOne()
-    async let two = stepTwo()
-    await (one, two)  // Automatic cancellation if parent cancelled
-}
-
-// Or with TaskGroup for dynamic parallelism
-await withTaskGroup(of: Void.self) { group in
-    group.addTask { await stepOne() }
-    group.addTask { await stepTwo() }
-}
+@Observable
+final class Model { }
 ```
 
-### @preconcurrency Import with Async Extensions
+If the app supports iOS 16, this is not an unconditional baseline.
 
-Adding async wrappers to types from @preconcurrency imports:
+Better:
 
 ```swift
-@preconcurrency import SomeFramework
+@MainActor
+final class Model: ObservableObject { }
 
-extension SomeType {
-    func doWork() async -> Result {
-        await withCheckedContinuation { continuation in
-            doWork { result in
-                continuation.resume(returning: result)
-            }
-        }
+@available(iOS 17, *)
+@Observable
+@MainActor
+final class ObservationModel { }
+```
+
+Do the same for newer synchronization and beta frameworks.
+
+## Async wrapper over multi-shot callback
+
+Problem:
+
+```swift
+func nextValue() async -> Value {
+    await withCheckedContinuation { continuation in
+        source.onValue = { continuation.resume(returning: $0) }
     }
 }
 ```
 
-**Why problematic**: The async wrapper may run callbacks on different threads than the completion-handler version, changing semantics. The @preconcurrency silences warnings that would catch this.
+If `onValue` fires more than once, the continuation resumes multiple times.
 
-**Guideline**: Verify the original API's threading guarantees before wrapping. Document any semantic changes.
+Better: use `AsyncStream`, or clear the callback after first value with synchronization.
 
-### Actors Conforming to Synchronous Protocols
+## Ignoring actor reentrancy
 
-Making actors conform to protocols with synchronous requirements:
-
-```swift
-protocol DataProvider {
-    func getData() -> Data  // Synchronous
-}
-
-// PROBLEMATIC: Can't call synchronously from outside
-actor MyProvider: DataProvider {
-    func getData() -> Data { ... }
-}
-```
-
-**Why problematic**: Actor methods are inherently async from outside the actor. Synchronous protocol methods can only be called from within the actor itself, limiting usefulness.
-
-**Fix**: Consider whether an actor is appropriate, or use nonisolated methods if the data access is truly safe:
+Problem:
 
 ```swift
-actor MyProvider: DataProvider {
-    private let cachedData: Data  // Immutable after init
+actor Store {
+    private var loaded = false
 
-    nonisolated func getData() -> Data {
-        cachedData  // Safe because immutable
+    func loadIfNeeded() async {
+        guard !loaded else { return }
+        await load()
+        loaded = true
     }
 }
 ```
 
-### Obj-C to Async Translation Issues
+Multiple calls can pass the guard before `loaded` changes.
 
-Relying on compiler-generated async versions of Objective-C APIs:
+Better: set an in-progress flag/task before awaiting or re-check after await.
 
-```swift
-// Compiler generates async version automatically
-let result = await objcObject.fetchData()
-```
+## Tests that guess scheduler progress
 
-**Why problematic**: Unless the Obj-C type is MainActor-isolated or Sendable, the translation may have different semantics and produce warnings without @preconcurrency.
-
-**Guideline**: Only use auto-translated async APIs when the threading behavior is known. Prefer explicit wrappers when uncertain.
-
-## Non-Sendable Types with Async Methods
-
-Adding async methods to non-Sendable types without isolated parameters:
+Problem:
 
 ```swift
-// PROBLEMATIC: Where does this run?
-class MyClass {  // Not Sendable
-    func doWork() async { ... }
-}
+subject.start()
+await Task.yield()
+#expect(subject.didStart)
 ```
 
-**Why problematic**: Without isolated parameters, the async method's isolation is unclear. This usually produces warnings with strict checking enabled.
-
-**Fix**: Use isolated parameters to make isolation explicit:
+Better:
 
 ```swift
-class MyClass {
-    func doWork(isolation: isolated (any Actor)? = #isolation) async {
-        // Runs on caller's isolation domain
-    }
-}
+subject.start()
+await subject.waitUntilStarted()
+#expect(subject.didStart)
 ```
 
-## Summary Checklist
+## Checklist
 
-When reviewing Swift Concurrency code, check for:
-
-- [ ] Types with mixed isolation domains (split isolation)
-- [ ] Task.detached used just for MainActor offloading
-- [ ] Explicit priorities without documented justification
-- [ ] MainActor.run instead of @MainActor declarations
-- [ ] Actors without mutable instance state
-- [ ] Semaphores or DispatchGroups waiting on async work
-- [ ] Large closure bodies (extract to named functions)
-- [ ] Unstructured tasks where structured would work
-- [ ] Async extensions on @preconcurrency imported types
-- [ ] Actors conforming to synchronous protocols
+- Is any actor stateless or used as a background queue?
+- Does every unstructured task have an owner and cancellation?
+- Is default MainActor isolation accidentally applied to data/protocols?
+- Is any `@unchecked Sendable` missing a safety proof?
+- Are locks purely synchronous?
+- Are continuations exactly-once and cancellation-safe?
+- Are iOS 17+ / iOS 18+ / beta APIs gated for iOS 16 projects?
+- Are async tests event-driven?

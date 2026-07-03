@@ -1,177 +1,289 @@
 # Async Testing
 
-Use this reference when writing or reviewing tests for Swift Concurrency behavior in any Swift or iOS project. Keep tests event-driven: prove the specific happens-before edge the assertion depends on instead of hoping the scheduler has made progress.
+Use this reference when writing or fixing tests for Swift Concurrency behavior. Prefer Swift Testing where the project uses it, but keep patterns portable to XCTest when needed.
 
-## Contents
-
-- [Core Principle](#core-principle)
-- [Portable Synchronization Patterns](#portable-synchronization-patterns)
-- [Timing Tests](#timing-tests)
-- [AsyncSequence Tests](#asyncsequence-tests)
-- [Cancellation Tests](#cancellation-tests)
-- [Non-Occurrence Tests](#non-occurrence-tests)
-- [Actor and Reentrancy Tests](#actor-and-reentrancy-tests)
-- [Anti-Patterns](#anti-patterns)
-- [Checklist](#checklist)
-
-## Core Principle
+## Core rule
 
 Async tests should wait for observable events, not scheduler turns.
 
-`Task.yield()`, `Task.sleep`, and wall-clock delays prove only that time passed or the scheduler had an opportunity to run. They do not prove that a task started, an observer subscribed, an `AsyncSequence` emitted, a cancellation handler ran, or an actor reached a stable state.
+`Task.yield()` and `Task.sleep` do not prove a task started, a stream subscribed, a callback fired, cancellation propagated, or an actor reached a stable state. They prove only that the scheduler had an opportunity or time passed.
 
-Prefer a test-controlled signal:
+## Event-driven waits
 
-- Await a value from the system's `AsyncSequence`.
-- Resume a continuation when the code under test reaches a milestone.
-- Await a task's result.
-- Poll a state predicate with a short real-time timeout only when the system has no event surface.
-- Inject a clock when testing time-based behavior.
+Prefer one of these:
 
-## Portable Synchronization Patterns
+- Await the task’s `value`.
+- Await a value from an `AsyncSequence`.
+- Resume a continuation from test instrumentation.
+- Use Swift Testing `confirmation` for events that happen before the confirmation closure returns.
+- Poll a predicate with a short timeout only when there is no event surface.
+- Inject a clock/scheduler for time-based behavior.
 
-Use the strongest synchronization surface available:
+## Returning task handles for testability
 
-| Need | Pattern |
-|---|---|
-| Know a task reached a point | `withCheckedContinuation` or `AsyncStream` milestone emitted by test instrumentation |
-| Collect ordered values | Consume the `AsyncSequence` into a recorder task, then await counts or predicates |
-| Test debouncing, throttling, retry, timeout | Inject a `Clock` or scheduler abstraction; advance virtual time when available |
-| Test cancellation | Cancel the task, then await the task result or a cancellation milestone |
-| Test non-occurrence | First prove subscription or task startup, then wait a short bounded interval for an unwanted event |
-| Test actor reentrancy | Arrange concurrent callers, then assert the invariant after all tasks complete |
+If production code starts unstructured work, return the task handle when possible.
 
-Keep timeouts as safety bounds. They should fail stuck tests, not be the mechanism that makes passing tests pass.
+Production:
 
-## Timing Tests
+```swift
+@discardableResult
+func refresh() -> Task<Void, Never> {
+    Task { await runRefresh() }
+}
+```
 
-Prefer APIs that accept `Clock` or another scheduler abstraction:
+Test:
+
+```swift
+@Test
+func refreshLoadsItems() async {
+    let task = await model.refresh()
+    await task.value
+    #expect(await model.items.count == 3)
+}
+```
+
+This is better than sleeping after `refresh()`.
+
+## Swift Testing confirmations
+
+Use `confirmation` to confirm events that occur during the operation passed to the confirmation closure. Do not treat it as an XCTest expectation that waits independently after the closure returns.
+
+Good:
+
+```swift
+@Test
+func notifiesDelegate() async {
+    await confirmation("delegate called") { confirmed in
+        delegate.onEvent = { confirmed() }
+        await subject.performOperationThatCallsDelegateBeforeReturning()
+    }
+}
+```
+
+Bad:
+
+```swift
+await confirmation("called") { confirmed in
+    subject.startFireAndForgetWork { confirmed() }
+    // Closure returns before the task necessarily runs.
+}
+```
+
+If the subject starts unstructured work, make it return the task and await it inside the confirmation closure.
+
+## XCTest expectations
+
+For existing XCTest suites, expectations remain useful for callback APIs, but still prefer direct async tests when the API is async.
+
+```swift
+func testCallback() async throws {
+    let expectation = expectation(description: "callback")
+    subject.start { value in
+        XCTAssertEqual(value, expected)
+        expectation.fulfill()
+    }
+    await fulfillment(of: [expectation], timeout: 1.0)
+}
+```
+
+Keep timeouts as safety bounds, not as progress mechanisms.
+
+## AsyncSequence recorder
+
+For long-lived streams, build a recorder with explicit startup and shutdown.
+
+```swift
+actor Recorder<Element> {
+    private var values: [Element] = []
+    private var waiters: [(Int, CheckedContinuation<Void, Never>)] = []
+
+    func append(_ value: Element) {
+        values.append(value)
+        let ready = waiters.filter { values.count >= $0.0 }
+        waiters.removeAll { values.count >= $0.0 }
+        for (_, continuation) in ready { continuation.resume() }
+    }
+
+    func waitForCount(_ count: Int) async {
+        if values.count >= count { return }
+        await withCheckedContinuation { continuation in
+            waiters.append((count, continuation))
+        }
+    }
+
+    func snapshot() -> [Element] { values }
+}
+```
+
+Consumer task:
+
+```swift
+let recorder = Recorder<Int>()
+let task = Task {
+    for await value in stream {
+        await recorder.append(value)
+    }
+}
+
+await recorder.waitForCount(2)
+#expect(await recorder.snapshot() == [1, 2])
+task.cancel()
+await task.value
+```
+
+In real tests, add timeouts around waits to prevent hangs.
+
+## Timeouts
+
+A timeout should fail stuck tests. It should not make passing tests pass.
+
+Useful helper shape:
+
+```swift
+func withTimeout<T: Sendable>(
+    _ duration: Duration,
+    operation: @escaping @Sendable () async throws -> T
+) async throws -> T {
+    try await withThrowingTaskGroup(of: T.self) { group in
+        group.addTask { try await operation() }
+        group.addTask {
+            try await Task.sleep(for: duration)
+            throw TimeoutError()
+        }
+
+        let result = try await group.next()!
+        group.cancelAll()
+        return result
+    }
+}
+```
+
+If `Task.sleep(for:)` availability is a concern in an older target, use the project’s existing timeout helper or nanosecond sleep wrapper. Do not duplicate unsafe helpers everywhere.
+
+## Clocks and time-based code
+
+Production code with delays should accept a `Clock` or scheduler abstraction when feasible.
 
 ```swift
 func retry<C: Clock>(
     clock: C,
-    operation: @escaping () async throws -> Void
+    operation: @Sendable () async throws -> Void
 ) async throws where C.Duration == Duration {
-    // production code sleeps through `clock`
+    for attempt in 0..<3 {
+        do { return try await operation() }
+        catch {
+            if attempt == 2 { throw error }
+            try await clock.sleep(for: .seconds(1))
+        }
+    }
 }
 ```
 
-In tests, pass a controllable clock if the project has one. If not, keep real-time sleeps short, isolated, and justified. Do not stack arbitrary sleeps to "settle" the system.
+Tests can pass a controllable clock if the project has one. If not, keep real-time sleeps short and isolated to timeout/safety behavior.
 
-For time-based `AsyncSequence` operators, test through the sequence boundary when possible: feed deterministic input, advance time, and await emitted output. Avoid relying on hidden implementation tasks having observed input after a fixed number of yields.
+## Cancellation tests
 
-## AsyncSequence Tests
+A cancellation test should prove:
 
-When testing an `AsyncSequence`, record values from one consumer task and coordinate shutdown explicitly:
+1. The task was cancelled.
+2. The operation observed cancellation.
+3. Cleanup occurred.
 
 ```swift
-let stream = AsyncStream<Int> { continuation in
-    continuation.yield(1)
-    continuation.yield(2)
-    continuation.finish()
-}
+@Test
+func cancellationStopsObservation() async {
+    let task = Task { await subject.observe() }
+    await subject.waitUntilSubscribed()
 
-let values = await stream.reduce(into: []) { result, value in
-    result.append(value)
-}
+    task.cancel()
+    await task.value
 
-#expect(values == [1, 2])
+    #expect(await subject.isObserving == false)
+}
 ```
 
-For long-lived streams, build a small test recorder that:
+If the operation throws, assert `CancellationError` specifically.
 
-- Starts consuming before the action under test.
-- Stores events in order.
-- Exposes async waits for a count or predicate.
-- Cancels consumption during teardown.
-- Awaits cancellation before treating the final transcript as stable.
-
-The final point matters: after cancellation is requested, a recorder task may still process an already-enqueued value. Await recorder termination before asserting that no more values can appear.
-
-## Cancellation Tests
-
-Cancellation is cooperative. A passing cancellation test usually proves three things:
-
-1. The task was actually cancelled.
-2. The operation reached a cancellation-aware suspension point or checked `Task.isCancelled`.
-3. The system performed the expected cleanup or stopped emitting values.
-
-Prefer this shape:
-
-```swift
-let task = Task {
-    await operation()
-}
-
-task.cancel()
-await task.value
-
-#expect(await system.isStopped)
-```
-
-If the operation should throw `CancellationError`, assert that exact result. If it intentionally swallows cancellation, assert the documented terminal state.
-
-## Non-Occurrence Tests
+## Non-occurrence tests
 
 Non-occurrence assertions are valid only after setup is proven.
 
-Bad shape:
+Bad:
 
 ```swift
-startObserving()
+subject.start()
 try await Task.sleep(for: .milliseconds(100))
 #expect(events.isEmpty)
 ```
 
-Better shape:
+Better:
 
 ```swift
-startObserving()
-await recorder.waitUntilSubscribed()
+subject.start()
+await subject.waitUntilSubscribed()
 
-performActionThatMustNotEmit()
-
-let unexpected = await recorder.nextEvent(timeout: .milliseconds(100))
-#expect(unexpected == nil)
+subject.performActionThatMustNotEmit()
+let event = await recorder.next(timeout: .milliseconds(100))
+#expect(event == nil)
 ```
 
-The short timeout is a bounded observation window, not a progress driver. Keep it as small as the environment permits.
+The timeout is the observation window, not a scheduler-progress hack.
 
-## Actor and Reentrancy Tests
+## Actor reentrancy tests
 
-Actors prevent data races, not logical races. Tests for actor-based state should include concurrent callers when invariants depend on interleaving:
+If actor correctness depends on overlapping calls, test overlapping calls.
 
 ```swift
-await withTaskGroup(of: Void.self) { group in
-    for _ in 0 ..< 10 {
-        group.addTask {
-            await store.loadIfNeeded()
+@Test
+func loadIfNeededRunsOnce() async throws {
+    let store = Store()
+
+    await withTaskGroup(of: Void.self) { group in
+        for _ in 0..<20 {
+            group.addTask { await store.loadIfNeeded() }
         }
     }
-}
 
-let loadCount = await store.loadCount
-#expect(loadCount == 1)
+    #expect(await store.loadCount == 1)
+}
 ```
 
-When a method reads state, awaits, then writes state, add tests where multiple calls overlap. The goal is to expose stale assumptions made before suspension points.
+A single sequential call does not test actor reentrancy.
 
-## Anti-Patterns
+## MainActor tests
+
+Use `@MainActor` on tests that inspect or mutate UI-isolated state.
+
+```swift
+@MainActor
+@Test
+func showsLoadedState() async {
+    let model = Model(service: .mock)
+    await model.load()
+    #expect(model.state == .loaded)
+}
+```
+
+Do not isolate every test helper to MainActor if helpers are DTOs, recorders, or background services. Test targets with default MainActor isolation can accidentally make non-UI test utilities harder to use.
+
+## Anti-patterns
 
 | Pattern | Problem | Prefer |
 |---|---|---|
-| Fixed `Task.yield()` loops | They guess at scheduler progress. | Await an explicit milestone or emitted value. |
-| `Task.sleep` to settle work | Slow and still racy under load. | Event-driven waits with real-time timeout safety. |
-| No timeout around waits | Stuck tests hang indefinitely. | Short, explicit timeouts around awaited test signals. |
-| Timeout expiry as success | Passing depends on waiting long enough. | Prove setup, then use a bounded non-occurrence window. |
-| Ignoring recorder shutdown | Late values can mutate the transcript after assertion. | Cancel and await recorder termination. |
-| Assuming actor isolation prevents ordering bugs | Actors are reentrant at suspension points. | Test overlapping calls and post-`await` invariants. |
+| `Task.yield()` loops | Guess scheduler progress. | Await event/task/continuation. |
+| Sleep to settle | Slow and racy. | Observable event with timeout safety. |
+| Unawaited fire-and-forget in subject | Test cannot know completion. | Return task handle or expose milestone. |
+| Confirmation closure returns before event | Swift Testing confirmation fails/flakes. | Await the work inside the closure. |
+| Ignoring stream teardown | Late events mutate transcript after assertion. | Cancel consumer and await termination. |
+| Sequential-only actor tests | Miss reentrancy bugs. | Overlapping callers. |
 
 ## Checklist
 
-- Does the test prove the observer or task started before driving the behavior?
-- Does each assertion wait on the exact event or state transition it needs?
-- Are sleeps and yield loops absent except for tightly justified compatibility cases?
-- Is every indefinite wait protected by a real-time timeout?
-- Does teardown cancel long-lived tasks and await their termination?
-- Do actor tests cover overlapping calls when state crosses an `await`?
+- Does the test wait for the exact event needed by the assertion?
+- Are all indefinite waits protected by a timeout?
+- Are sleeps/yields absent except for bounded non-occurrence windows or timeout helpers?
+- Can unstructured production tasks be observed or awaited in tests?
+- Does teardown cancel and await long-lived tasks?
+- Are MainActor tests isolated explicitly and narrowly?
+- Do actor tests exercise overlap when invariants cross suspension points?

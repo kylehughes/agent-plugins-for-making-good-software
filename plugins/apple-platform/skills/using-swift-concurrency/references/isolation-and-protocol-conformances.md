@@ -1,223 +1,287 @@
 # Isolation and Protocol Conformances
 
-Use this reference to resolve protocol conformance isolation mismatches in Swift 6+. If you control the protocol definition, also read `protocol-design.md` before fixing only the conforming type.
+Use this reference to resolve protocol conformance errors involving actor isolation, `@MainActor`, default actor isolation, `Equatable`, `Hashable`, `Codable`, `Identifiable`, delegates, and other synchronous protocols.
 
-Source: Matt Massicotte, "Concurrency Step-by-Step: Conforming to Protocols", <https://www.massicotte.org/step-by-step-conforming-to-protocols/>, accessed 2025-11-24.
+If you control the protocol, read `protocol-design.md` first.
 
-## Contents
+## Core mismatch
 
-- [The Core Problem](#the-core-problem)
-- [Solution Selection](#solution-selection)
-- [Solution 1: Nonisolated Type (Preferred)](#solution-1-nonisolated-type-preferred)
-- [Solution 2: Isolated Conformance (Swift 6.2+)](#solution-2-isolated-conformance-swift-62)
-- [Solution 3: Preconcurrency Conformance](#solution-3-preconcurrency-conformance)
-- [Solution 4: Dynamic Isolation (Last Resort)](#solution-4-dynamic-isolation-last-resort)
-- [Swift 6.2 Compiler Settings](#swift-62-compiler-settings)
-- [Decision Flowchart](#decision-flowchart)
-- [Common Protocols Affected](#common-protocols-affected)
-- [Non-Sendable First Design](#non-sendable-first-design)
+Many standard protocols have synchronous nonisolated requirements. A `@MainActor` type or a type in a MainActor-default target may not be able to satisfy those requirements with isolated state.
 
-## The Core Problem
+Typical diagnostic shape:
 
-When a MainActor-isolated type conforms to a nonisolated protocol (like `Equatable`), the compiler reports:
-
-```
-Conformance of 'MyType' to protocol 'Equatable' crosses into main actor-isolated code and can cause data races
+```text
+Main actor-isolated ... cannot satisfy nonisolated protocol requirement
 ```
 
-This happens because:
-- The protocol expects nonisolated methods callable from any thread
-- The type's methods are MainActor-isolated, callable only from the main thread
-- These requirements conflict
+Do not fix this by reflexively adding `nonisolated(unsafe)`, `@unchecked Sendable`, or `MainActor.assumeIsolated`. Choose the conformance model that matches the API.
 
-## Solution Selection
+## Solution order
 
-Choose the appropriate solution based on context:
+1. **Make the data nonisolated** if it is pure data and should not be UI-bound.
+2. **Make specific witnesses nonisolated** if they are immutable, Sendable, and safe from any isolation domain.
+3. **Use an isolated conformance** when the type is genuinely global-actor isolated and the conformance should only be used on that actor.
+4. **Use a DTO/snapshot** when encoding, equality, hashing, or identity should not depend on live actor-isolated UI state.
+5. **Use `@preconcurrency`** only for legacy protocols/modules where modern isolation cannot be expressed cleanly.
+6. **Use `assumeIsolated` or `nonisolated(unsafe)`** only as a last resort with a runtime/threading proof.
 
-| Solution | When to Use |
-|----------|-------------|
-| **Nonisolated type** | Type doesn't need actor isolation; uses non-Sendable for safety |
-| **Isolated conformance** | Type needs MainActor; protocol is compatible with isolation |
-| **Preconcurrency conformance** | Protocol incompatible with isolated conformances |
-| **nonisolated-assumeIsolated** | Last resort; non-global actor types |
+## Nonisolated data types
 
-## Solution 1: Nonisolated Type (Preferred)
-
-Before adding isolation, question whether the type actually needs it.
+In a MainActor-default UI target, DTOs and state enums often need explicit `nonisolated`.
 
 ```swift
-@Observable
-nonisolated class ImageModel {
-    private var state: Bool = true
-
-    var imageName: String {
-        state ? "star" : "star.fill"
-    }
-
-    func toggle() {
-        state.toggle()
-    }
+nonisolated struct ProfileDTO: Sendable, Codable, Equatable, Identifiable {
+    let id: UUID
+    let name: String
 }
+```
 
-extension ImageModel: Equatable {
-    static func == (lhs: ImageModel, rhs: ImageModel) -> Bool {
-        lhs.state == rhs.state
+If many such declarations appear, move them to a nonisolated domain module.
+
+## Nonisolated witnesses
+
+Immutable identity can often be safely nonisolated:
+
+```swift
+@MainActor
+final class RowViewModel: Identifiable {
+    nonisolated let id: UUID
+
+    var title: String
+
+    init(id: UUID, title: String) {
+        self.id = id
+        self.title = title
     }
 }
 ```
 
-**Why this works**: Non-Sendable types cannot leave their isolated context. When instantiated on the MainActor (e.g., in a SwiftUI View), they remain stuck there—no explicit isolation needed.
+Use this for stable, immutable, Sendable values. Do not mark mutable UI state nonisolated.
 
-**When to use**:
-- Type doesn't perform internal async operations
-- Safety comes from usage context, not type definition
-- Maximum flexibility across different actors
+## Isolated conformances
 
-**Limitation**: Difficult when the type itself needs to use concurrency features internally.
-
-## Solution 2: Isolated Conformance (Swift 6.2+)
-
-Constrain the conformance to a specific global actor:
+Use isolated conformances when a global-actor-isolated type should conform only from that actor.
 
 ```swift
-@MainActor @Observable
-class ImageModel {
-    private var state: Bool = true
-    // ...
+@MainActor
+final class ImageModel {
+    var name: String = ""
 }
 
 extension ImageModel: @MainActor Equatable {
     static func == (lhs: ImageModel, rhs: ImageModel) -> Bool {
-        lhs.state == rhs.state
+        lhs.name == rhs.name
     }
 }
 ```
 
-**How it works**: Creates a MainActor-specific variant of the protocol. The type is `Equatable`, but only from the MainActor context.
+This says the conformance is usable on MainActor. It does not mean generic code from arbitrary isolation domains can freely use the conformance.
 
-**Implicit inference** (Swift 6.2 with `InferIsolatedConformances`):
+## `Equatable`
+
+Good for immutable identity:
+
 ```swift
-// With default-isolation: MainActor and InferIsolatedConformances: enabled
-extension ImageModel: Equatable {  // Implicitly @MainActor
-    static func == (lhs: ImageModel, rhs: ImageModel) -> Bool {
-        lhs.state == rhs.state
+@MainActor
+final class ItemViewModel: Identifiable, Equatable {
+    nonisolated let id: UUID
+    var title: String
+
+    nonisolated static func == (lhs: ItemViewModel, rhs: ItemViewModel) -> Bool {
+        lhs.id == rhs.id
     }
 }
 ```
 
-**When to use**:
-- Type genuinely needs MainActor isolation
-- Protocol is compatible with isolated conformances
-- Using Swift 6.2+
-
-**Limitation**: Not all protocols support isolated conformances. Some have inherently concurrent behaviors.
-
-## Solution 3: Preconcurrency Conformance
-
-Use when isolated conformances aren't compatible:
+Good for UI-state equality only on MainActor:
 
 ```swift
-@MainActor @Observable
-class ImageModel {
-    // ...
-}
-
-extension ImageModel: @preconcurrency Equatable {
-    static func == (lhs: ImageModel, rhs: ImageModel) -> Bool {
-        lhs.state == rhs.state
+extension ItemViewModel: @MainActor Equatable {
+    static func == (lhs: ItemViewModel, rhs: ItemViewModel) -> Bool {
+        lhs.title == rhs.title
     }
 }
 ```
 
-**How it works**: Tells the compiler "treat this protocol as if it should be MainActor-isolated". Prevents calling `==` off the MainActor.
+Bad: using `assumeIsolated` for equality that can be called by sets, diffing, tests, or background generic algorithms.
 
-**When to use**:
-- Isolated conformances cause compatibility issues
-- Need compile-time safety without isolated conformance complexity
+## `Hashable`
 
-**Limitation**: Semantically implies the protocol *should* be isolated but isn't—which isn't always accurate.
+Hashing must be stable while a value is stored in a set or dictionary. Do not hash mutable UI state.
 
-## Solution 4: Dynamic Isolation (Last Resort)
-
-The pre-Swift 6.0 approach using `assumeIsolated`:
+Prefer immutable IDs:
 
 ```swift
-extension ImageModel: Equatable {
-    nonisolated static func == (lhs: ImageModel, rhs: ImageModel) -> Bool {
+@MainActor
+final class RowModel: Identifiable, Hashable {
+    nonisolated let id: UUID
+
+    nonisolated func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+
+    nonisolated static func == (lhs: RowModel, rhs: RowModel) -> Bool {
+        lhs.id == rhs.id
+    }
+}
+```
+
+If equality/hash truly depend on isolated mutable state, reconsider the type’s use as a hash key.
+
+## `Codable`
+
+Do not usually make live UI objects `Codable`. Encode/decode DTOs.
+
+Better:
+
+```swift
+nonisolated struct DraftDocumentDTO: Sendable, Codable {
+    var title: String
+    var body: String
+}
+
+@MainActor
+final class DraftDocumentModel: ObservableObject {
+    @Published var title: String = ""
+    @Published var body: String = ""
+
+    var snapshot: DraftDocumentDTO {
+        DraftDocumentDTO(title: title, body: body)
+    }
+}
+```
+
+For value types in a MainActor-default target, nested coding keys may need explicit `nonisolated`:
+
+```swift
+nonisolated struct Payload: Codable, Sendable {
+    let id: UUID
+
+    nonisolated private enum CodingKeys: String, CodingKey {
+        case id
+    }
+}
+```
+
+If a type is intentionally `@MainActor Codable`, verify every generated/synthesized requirement and nested type has compatible isolation. Synthesis can create surprising diagnostics under default MainActor isolation.
+
+## `Identifiable`
+
+Use stable immutable IDs. Mark them nonisolated when the type is actor-isolated but the identity is safe:
+
+```swift
+actor Download: Identifiable {
+    nonisolated let id: UUID
+    private var progress: Double = 0
+}
+```
+
+Do not compute `id` from mutable isolated state for a nonisolated requirement.
+
+## `CustomStringConvertible` and logging protocols
+
+`description` is synchronous and often called from arbitrary contexts. Avoid reading actor-isolated mutable state.
+
+Prefer a snapshot:
+
+```swift
+struct JobSnapshot: Sendable, CustomStringConvertible {
+    let id: UUID
+    let state: State
+
+    var description: String { "Job(\(id), \(state))" }
+}
+```
+
+Or provide isolated debug helpers instead of conforming:
+
+```swift
+@MainActor
+func debugDescription() -> String { ... }
+```
+
+## Delegates and Objective-C protocols
+
+Legacy delegate requirements are often nonisolated because the framework predates Swift concurrency annotations.
+
+Options:
+
+- Use an isolated conformance if the protocol and compiler support it.
+- Use a small nonisolated adapter that forwards into an actor/MainActor task.
+- Use `@preconcurrency import` for the legacy framework boundary, not everywhere.
+- Keep callback threading documented.
+
+Example adapter:
+
+```swift
+final class LegacyDelegateAdapter: NSObject, LegacyDelegate {
+    weak var owner: (any LegacyEventHandling)?
+
+    func legacyDidUpdate(_ value: LegacyValue) {
+        Task { @MainActor [weak owner] in
+            await owner?.handle(value)
+        }
+    }
+}
+
+@MainActor
+protocol LegacyEventHandling: AnyObject {
+    func handle(_ value: LegacyValue)
+}
+```
+
+## `@preconcurrency` conformance
+
+Use only for compatibility with old protocols whose requirements are not annotated accurately and where isolated conformances cannot model the behavior.
+
+```swift
+@MainActor
+final class Model { }
+
+extension Model: @preconcurrency LegacyProtocol { }
+```
+
+This is a migration escape hatch. It does not make the legacy protocol thread-safe.
+
+## `assumeIsolated`
+
+Last resort:
+
+```swift
+extension Model: LegacyProtocol {
+    nonisolated func callback() {
         MainActor.assumeIsolated {
-            lhs.state == rhs.state
+            self.handleCallback()
         }
     }
 }
 ```
 
-**How it works**:
-1. Mark method `nonisolated` to match protocol requirement
-2. Use `assumeIsolated` to assert runtime isolation
-3. Crashes if called from wrong thread
+Use only when an external invariant guarantees the current executor. It can trap at runtime when the invariant is false. Prefer static isolation or an adapter.
 
-**When to use**:
-- Non-global actor types
-- No other solution works
+## Decision flow
 
-**Limitations**:
-- Verbose boilerplate
-- Runtime crashes instead of compile-time errors
-- Sendable restrictions at actor boundaries
-
-## Swift 6.2 Compiler Settings
-
-Understanding these flags is critical:
-
-| Flag | Effect |
-|------|--------|
-| `default-isolation: MainActor` | All declarations default to MainActor |
-| `InferIsolatedConformances` | Automatically infer isolated conformances for global actor types |
-
-**Important**: These are independent settings. "Approachable Concurrency" in Xcode controls both, but they can be configured separately.
-
-**Note**: Enabling `default-isolation: MainActor` implicitly enables `InferIsolatedConformances`.
-
-## Decision Flowchart
-
-```
-Does the type actually need actor isolation?
-├─ No → Use nonisolated type (Solution 1)
-└─ Yes → Is the protocol compatible with isolated conformances?
-         ├─ Yes → Use isolated conformance (Solution 2)
-         └─ No/Unsure → Use preconcurrency (Solution 3)
-                        └─ Still failing? → Use assumeIsolated (Solution 4)
+```text
+Is the type accidentally isolated by default settings?
+├─ Yes → mark data type/protocol/extension `nonisolated` or move modules.
+└─ No
+   Does the requirement only need immutable Sendable state?
+   ├─ Yes → provide a `nonisolated` witness.
+   └─ No
+      Is the conformance only meaningful on a global actor?
+      ├─ Yes → isolated conformance.
+      └─ No
+         Can the protocol become async or isolated?
+         ├─ Yes → redesign protocol.
+         └─ No → DTO, adapter, @preconcurrency, or assumeIsolated with proof.
 ```
 
-## Common Protocols Affected
+## Checklist
 
-These nonisolated protocols frequently trigger isolation mismatches:
-- `Equatable`
-- `Hashable`
-- `Comparable`
-- `Codable` (`Encodable`, `Decodable`)
-- `CustomStringConvertible`
-- `Identifiable`
-
-## Non-Sendable First Design
-
-A powerful pattern: keep types nonisolated and non-Sendable by default.
-
-**Principle**: Instead of isolating the type definition, let the usage context provide isolation. Non-Sendable types cannot cross actor boundaries, so they're "stuck" wherever they're created.
-
-```swift
-// The type is nonisolated
-nonisolated class Model { ... }
-
-struct ContentView: View {
-    // Created on MainActor, stuck on MainActor
-    @State private var model = Model()
-}
-```
-
-**Benefits**:
-- Simpler protocol conformances
-- More flexible—works with any actor
-- Entire object graphs can share this pattern
-
-**Challenge**: Complex when the type needs internal async operations.
+- Is the conformance error caused by accidental default MainActor isolation?
+- Is the protocol requirement synchronous/nonisolated by design?
+- Can immutable identity satisfy the requirement safely?
+- Would a DTO be cleaner than conforming a live UI object?
+- Is an isolated conformance valid and sufficient?
+- Is any `@preconcurrency`, `nonisolated(unsafe)`, or `assumeIsolated` localized and justified?
+- Are synthesized `Codable`, `Hashable`, and nested types checked under the target’s default isolation?
