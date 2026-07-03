@@ -184,6 +184,8 @@ On iOS 27, UIKit menus can surface Ask Siri when relevant annotated content exis
 
 Use `Transferable`, `IntentValueRepresentation`, or `ValueRepresentation` when Siri, ChatGPT, Shortcuts, or another app should receive the content itself rather than only an entity ID.
 
+For known file/data formats, export plain text, rich text, images, PDFs, or files. For system-known structured values, export a value representation. A landmark that only exports text can be mailed; a landmark that exports `PlaceDescriptor` can be routed into a Maps-style action. A contact-like entity that exports `IntentPerson` can flow into calling or messaging actions. See [value-representation-and-structured-transfer.md](value-representation-and-structured-transfer.md).
+
 ```swift
 extension ProjectEntity: Transferable {
     static var transferRepresentation: some TransferRepresentation {

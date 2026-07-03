@@ -1,6 +1,6 @@
 # Attribution and Verification Notes
 
-Verification date: 2026-06-19.
+Verification date: 2026-07-03.
 
 This skill was rebuilt from the user-provided starter skill and cross-checked against Apple Developer documentation and Apple WWDC transcripts available as of the verification date.
 
@@ -22,6 +22,11 @@ This skill was rebuilt from the user-provided starter skill and cross-checked ag
 - Apple Developer Documentation: `AppEntityAnnotatable` (including Apple’s prohibition on app-defined conformances), `UITableViewAppIntentsDataSource`, `UICollectionViewAppIntentsDataSource`, `UIView.appEntityUIElementProvider`, and `AppEntityUIElement`.
 - Apple Developer Documentation: `SiriTipUIView`, `setIntent(intent:)`, and `isPresented`.
 - Apple Developer Documentation: `ShortcutsUIButton`, `init(style:)`, and `ShortcutsLinkStyle`.
+- Apple Developer Documentation: `IntentValueRepresentation` and `AppEntity.ValueRepresentation`.
+- Apple Developer Documentation: `GeoToolbox` and `PlaceDescriptor`.
+- Apple WWDC 2026: “Discover new capabilities in the App Intents framework,” especially `ValueRepresentation` with `PlaceDescriptor`.
+- Apple WWDC 2026: “Build intelligent Siri experiences with App Schemas,” especially onscreen awareness, `Transferable`, `IntentValueRepresentation`, `IntentValueQuery`, and import/export workflows.
+- Matthew Cassinelli, “Teach Siri AI to Share Structured Types Without Known Formats Across Apps with ValueRepresentation,” July 1, 2026.
 - Apple Developer Documentation: “Providing contextual cues to Apple Intelligence and Siri”.
 
 ## Version notes

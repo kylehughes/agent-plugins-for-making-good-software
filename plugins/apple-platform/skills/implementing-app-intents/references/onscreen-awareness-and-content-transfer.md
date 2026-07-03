@@ -244,44 +244,27 @@ Guidelines:
 - Prefer temporary files for generated exports.
 - Keep exports cancellation-aware.
 
-## IntentValueRepresentation
+## IntentValueRepresentation and ValueRepresentation
 
-Use when a Transferable representation should preserve App Intents value semantics.
+Use `IntentValueRepresentation` or `ValueRepresentation` when a `Transferable` entity should preserve App Intents value semantics instead of only exporting bytes. This is the right tool when the destination needs a system-known structured value, such as `IntentPerson` or `PlaceDescriptor`, rather than a PDF, image, or string.
 
 ```swift
-extension DocumentEntity: Transferable {
+import AppIntents
+import CoreTransferable
+import GeoToolbox
+
+extension LandmarkEntity: Transferable {
     static var transferRepresentation: some TransferRepresentation {
-        IntentValueRepresentation(exporting: DocumentEntity.self) { document in
-            try await DocumentRepository.shared.intentValue(for: document.id)
-        }
+        ValueRepresentation(exporting: \.placeDescriptor)
 
-        DataRepresentation(exportedContentType: .plainText) { document in
-            try await DocumentRepository.shared.plainTextData(for: document.id)
+        DataRepresentation(exportedContentType: .plainText) { landmark in
+            Data(landmark.name.utf8)
         }
     }
 }
 ```
 
-Use for richer Siri/Apple Intelligence handoff where the receiver can preserve semantic value, not only bytes.
-
-## ValueRepresentation
-
-For iOS 27-era structured values, use value representation when the object does not deserve entity identity.
-
-```swift
-struct RouteStop: Codable, Hashable, Sendable {
-    var name: String
-    var arrivalWindow: DateInterval?
-}
-
-extension RouteStop: ValueRepresentable {
-    var valueRepresentation: ValueRepresentation {
-        ValueRepresentation(title: "\(name)")
-    }
-}
-```
-
-Good for places, measurements, durations, person-name components, routes, imported descriptors, and lightweight values.
+For a full treatment of structured cross-app transfer, including `PlaceDescriptor`, import closures, `IntentValueQuery`, UIKit annotations, and failure modes, see [value-representation-and-structured-transfer.md](value-representation-and-structured-transfer.md).
 
 ## Incoming content with IntentValueQuery
 

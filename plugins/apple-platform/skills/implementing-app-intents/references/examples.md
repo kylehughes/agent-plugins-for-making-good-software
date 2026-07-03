@@ -511,3 +511,43 @@ final class ProjectIntentTests: XCTestCase {
     }
 }
 ```
+
+
+## Structured value transfer: place entity to Maps-style actions
+
+```swift
+import AppIntents
+import CoreLocation
+import CoreTransferable
+import GeoToolbox
+import UniformTypeIdentifiers
+
+struct LandmarkEntity: AppEntity, Transferable, Sendable, Identifiable {
+    static let defaultQuery = LandmarkQuery()
+
+    let id: Int
+    let name: String
+    let coordinate: CLLocationCoordinate2D
+
+    static var typeDisplayRepresentation: TypeDisplayRepresentation { "Landmark" }
+
+    var displayRepresentation: DisplayRepresentation {
+        DisplayRepresentation(title: "\(name)", image: .init(systemName: "mappin.and.ellipse"))
+    }
+
+    static var transferRepresentation: some TransferRepresentation {
+        ValueRepresentation(exporting: { landmark in
+            PlaceDescriptor(
+                representations: [.coordinate(landmark.coordinate)],
+                commonName: landmark.name
+            )
+        })
+
+        DataRepresentation(exportedContentType: .plainText) { landmark in
+            Data(landmark.name.utf8)
+        }
+    }
+}
+```
+
+Use this pattern when a visible or selected entity should flow into another app as structured value, for example “get directions to this landmark.” Pair it with onscreen annotations and an `OpenIntent`; transfer alone does not make the entity discoverable.

@@ -492,11 +492,12 @@ This makes an existing UIKit drag implementation part of the Apple Intelligence 
 
 Recommended representations, in priority order where applicable:
 
-1. Structured app-defined content type.
-2. Plain text or attributed text.
-3. Image.
-4. PDF or document file.
-5. URL/deep link when it is a meaningful representation, not merely a fallback.
+1. System-known structured value through `ValueRepresentation`/`IntentValueRepresentation`, such as `PlaceDescriptor` or `IntentPerson`.
+2. Structured app-defined content type where the receiving surface actually supports that type.
+3. Plain text or attributed text.
+4. Image.
+5. PDF or document file.
+6. URL/deep link when it is a meaningful representation, not merely a fallback.
 
 Rules:
 
@@ -505,10 +506,11 @@ Rules:
 - Keep generated file names safe and localized where appropriate.
 - Use temporary files with cleanup.
 - Cap export size or use file representations for large data.
-- Avoid rendering a screenshot when a structured text/PDF representation provides better semantic content.
+- Avoid rendering a screenshot when structured text, PDF, or system value representation provides better semantic content.
+- Do not put `ValueRepresentation` in view-controller code; it belongs beside the entity’s `Transferable` conformance.
 - Recheck permissions at export time; the entity may have been resolved earlier.
 
-UIKit drag and share code may also expose `NSItemProvider`. Reuse the same export service so Siri transfer, drag and drop, share sheets, and App Intents do not diverge.
+UIKit drag and share code may also expose `NSItemProvider`. Reuse the same export service so Siri transfer, drag and drop, share sheets, and App Intents do not diverge. For details and examples, see [value-representation-and-structured-transfer.md](value-representation-and-structured-transfer.md).
 
 ## 20. Visual Intelligence and UIKit navigation
 

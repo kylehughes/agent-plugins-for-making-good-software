@@ -1,6 +1,6 @@
 ---
-name: implementing-app-intents
-description: Implements modern App Intents for iOS 26 and iOS 27 with emphasis on Siri, Apple Intelligence, App Schemas, App Entities, entity queries, semantic Spotlight indexing, UIKit and SwiftUI onscreen awareness, UIKit scene routing, Visual Intelligence, Transferable content, Shortcuts, widgets, controls, snippets, long-running execution, and AppIntentsTesting.
+name: implementing-app-intents-ios26-ios27
+description: Implements modern App Intents for iOS 26 and iOS 27 with emphasis on Siri, Apple Intelligence, App Schemas, App Entities, entity queries, semantic Spotlight indexing, UIKit and SwiftUI onscreen awareness, UIKit scene routing, Visual Intelligence, Transferable content, ValueRepresentation structured transfer, Shortcuts, widgets, controls, snippets, long-running execution, and AppIntentsTesting.
 ---
 
 # Implementing App Intents for iOS 26 and iOS 27
@@ -21,17 +21,18 @@ Expose the app’s actions and data in a way the system can understand semantica
 4. [entities-queries-and-indexing.md](references/entities-queries-and-indexing.md) — entities, queries, property queries, identity, indexing, Spotlight.
 5. [intents-dialog-snippets-and-confirmation.md](references/intents-dialog-snippets-and-confirmation.md) — AppIntent design, results, dialog, snippets, confirmation, choices, undo.
 6. [onscreen-awareness-and-content-transfer.md](references/onscreen-awareness-and-content-transfer.md) — screen context, annotations, Transferable, visual intelligence, incoming content.
-7. [uikit-integration.md](references/uikit-integration.md) — full UIKit architecture, scene routing, onscreen awareness, drag/drop, promotion, privacy, and lifecycle guidance.
-8. [uikit-examples.md](references/uikit-examples.md) — UIKit code patterns.
-9. [ui-framework-crosswalk.md](references/ui-framework-crosswalk.md) — SwiftUI/UIKit equivalence and intentional SwiftUI-only system surfaces.
-10. [shortcuts-spotlight-widgets-and-controls.md](references/shortcuts-spotlight-widgets-and-controls.md) — discovery surfaces and system integrations.
-11. [execution-packaging-performance-and-privacy.md](references/execution-packaging-performance-and-privacy.md) — foreground/background execution, long-running work, extensions, packages, privacy.
-12. [testing-and-debugging.md](references/testing-and-debugging.md) — AppIntentsTesting, XCUITest, manual validation, failure diagnosis.
-13. [migration-ios26-to-ios27.md](references/migration-ios26-to-ios27.md) — migration and adoption plan.
-14. [checklists.md](references/checklists.md) — production checklists.
-15. [examples.md](references/examples.md) — composable Swift skeletons.
-16. [agent-playbook.md](references/agent-playbook.md) — how an agent should apply this skill to a codebase.
-17. [attribution.md](references/attribution.md) — source list and verification notes.
+7. [value-representation-and-structured-transfer.md](references/value-representation-and-structured-transfer.md) — `ValueRepresentation`, `IntentValueRepresentation`, `PlaceDescriptor`, structured cross-app transfer, import, and handoff failure modes.
+8. [uikit-integration.md](references/uikit-integration.md) — full UIKit architecture, scene routing, onscreen awareness, drag/drop, promotion, privacy, and lifecycle guidance.
+9. [uikit-examples.md](references/uikit-examples.md) — UIKit code patterns.
+10. [ui-framework-crosswalk.md](references/ui-framework-crosswalk.md) — SwiftUI/UIKit equivalence and intentional SwiftUI-only system surfaces.
+11. [shortcuts-spotlight-widgets-and-controls.md](references/shortcuts-spotlight-widgets-and-controls.md) — discovery surfaces and system integrations.
+12. [execution-packaging-performance-and-privacy.md](references/execution-packaging-performance-and-privacy.md) — foreground/background execution, long-running work, extensions, packages, privacy.
+13. [testing-and-debugging.md](references/testing-and-debugging.md) — AppIntentsTesting, XCUITest, manual validation, failure diagnosis.
+14. [migration-ios26-to-ios27.md](references/migration-ios26-to-ios27.md) — migration and adoption plan.
+15. [checklists.md](references/checklists.md) — production checklists.
+16. [examples.md](references/examples.md) — composable Swift skeletons.
+17. [agent-playbook.md](references/agent-playbook.md) — how an agent should apply this skill to a codebase.
+18. [attribution.md](references/attribution.md) — source list and verification notes.
 
 ## When to use this skill
 
@@ -59,7 +60,7 @@ Use this skill when the user asks to:
 6. Add OpenIntent for every entity that can be tapped, opened, returned, indexed, or found visually.
 7. Add semantic indexing for durable searchable content. Use CoreSpotlight/AppIntents indexing, not ad hoc string matching.
 8. Add onscreen awareness for visible content: `NSUserActivity` for the primary item, view annotations for rows/cards/canvas objects, and collection annotations for selection. In UIKit, map stable diffable item IDs through table/collection App Intents data sources and route incoming intents through the selected `UIScene`.
-9. Add Transferable/IntentValueRepresentation/ValueRepresentation so the system can inspect or pass content as text, rich text, image, PDF, file, semantic descriptor, or structured value.
+9. Add `Transferable` representations. Use `DataRepresentation`/`FileRepresentation` for known file/data formats, and `ValueRepresentation`/`IntentValueRepresentation` for system-known structured values such as `PlaceDescriptor` or `IntentPerson`.
 10. Add App Shortcuts and parameter summaries for discoverability. Required parameters must appear in parameterSummary unless defaulted.
 11. Add dialog, snippets, confirmation, requestChoice, undo, ownership, and foreground continuation for sensitive, ambiguous, or visual workflows.
 12. Add donations, RelevantEntities, PredictableIntent, and Spotlight associations only after the model is correct.
@@ -83,7 +84,7 @@ Entities, queries, schemas, indexing, donations, transfer, and domain services a
 - Do not mutate app state inside a SnippetIntent whose purpose is only rendering. Put mutations in the primary action or explicit button/toggle intents.
 - Do not swallow cancellation from confirmation, value request, choice request, long-running work, or async operations.
 - Do not block intent execution on network calls that can be deferred, cached, indexed, represented as progress, or continued in the foreground.
-- Do not leak raw internal IDs, file paths, access tokens, hidden metadata, or private content in display representations, Transferable exports, snippets, dialogs, or indexed properties.
+- Do not leak raw internal IDs, file paths, access tokens, hidden metadata, location precision, or private content in display representations, Transferable/value exports, snippets, dialogs, or indexed properties.
 - Do not mark an intent `isAssistantOnly` if it is expected to appear in Spotlight or Shortcuts.
 - Do not navigate a UIKit app by taking `connectedScenes.first`, finding a global top view controller, or retaining one process-wide navigation controller.
 - Do not call `perform()` on the `any UISceneAppIntent` supplied to `AppIntentSceneDelegate`; the framework owns execution.
@@ -101,7 +102,7 @@ When asked to implement App Intents, produce:
 - Intent catalog: Open/Create/Update/Delete/Search/Export/Share/Control actions with protocols, parameters, result types, snippets, confirmation, execution target, and tests.
 - Swift code availability-gated for iOS 26/iOS 27 when necessary.
 - UI-host plan: SwiftUI view-control path or UIKit scene/coordinator path, including cold launch, multiwindow behavior, onscreen annotations, reusable-view hygiene, and unavoidable SwiftUI islands.
-- Siri/Apple Intelligence plan: App Schemas, onscreen annotations, Transferable, IntentValueQuery, donations, RelevantEntities, semantic search.
+- Siri/Apple Intelligence plan: App Schemas, onscreen annotations, Transferable, ValueRepresentation/IntentValueRepresentation, IntentValueQuery, donations, RelevantEntities, semantic search.
 - Discoverability plan: App Shortcuts, parameter summaries, Spotlight, widgets, controls, Live Activities, Action button.
 - Testing plan: AppIntentsTesting coverage, manual system surfaces, and failure-mode checks.
 

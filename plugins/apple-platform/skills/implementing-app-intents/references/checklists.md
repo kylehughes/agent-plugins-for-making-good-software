@@ -105,12 +105,25 @@ For each intent:
 - [ ] Plain text export exists where useful.
 - [ ] Rich text export exists for rich documents/messages.
 - [ ] PDF/image/file export exists when visual fidelity matters.
-- [ ] IntentValueRepresentation or ValueRepresentation used where appropriate.
+- [ ] IntentValueRepresentation or ValueRepresentation used where a system-known structured value exists.
 - [ ] Export is permission-aware.
 - [ ] Hidden metadata is stripped.
 - [ ] Temporary files are managed.
 - [ ] Exports are cancellation-aware.
 - [ ] Sensitive content requires confirmation or unlock.
+
+## Structured value transfer checklist
+
+- [ ] Entity has a real query and stable ID before transfer is considered.
+- [ ] A system-known value type exists and accurately represents the entity.
+- [ ] Places export `PlaceDescriptor` instead of fake coordinate files or strings.
+- [ ] Contact-like entities export `IntentPerson` only when semantically true.
+- [ ] `ValueRepresentation` / `IntentValueRepresentation` lives in the entity/value layer, not UIKit or SwiftUI views.
+- [ ] Data/file representations still exist for destinations that need bytes.
+- [ ] `IntentValueQuery` resolves incoming values to existing entities when appropriate.
+- [ ] Import closures create new entities only when that is the intended workflow.
+- [ ] Exports recheck authorization, account access, and location precision.
+- [ ] Manual Siri/Shortcuts tests cover a real cross-app destination action.
 
 ## Snippet checklist
 

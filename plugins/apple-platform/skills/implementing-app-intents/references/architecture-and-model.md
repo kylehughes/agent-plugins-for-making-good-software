@@ -45,7 +45,7 @@ Use these as implementation buckets, not a substitute for SDK availability check
 
 - Broader and deeper App Schemas for Siri.
 - App entities and app actions used by Siri for more contextual and personal requests.
-- `ValueRepresentation` for structured values that are not full app entities.
+- `ValueRepresentation` / `IntentValueRepresentation` for transferring entities as system-known structured values across apps.
 - `RelevantEntities` for context-specific suggestions beyond Spotlight indexing and donations.
 - `EntityCollection` for passing large or lazy collections by identifier.
 - `SyncableEntity` and `SyncableEntityIdentifier` for stable local/synced identity.
@@ -55,6 +55,12 @@ Use these as implementation buckets, not a substitute for SDK availability check
 - Background GPU execution support where the app capability and platform allow it.
 - `ExecutionTargets` for declaring whether an intent should run in the app, App Intents extension, or WidgetKit extension.
 - `AppIntentsTesting` for integration tests that exercise the same framework paths used by Siri, Shortcuts, Spotlight, and widgets.
+
+## Structured value transfer orientation
+
+For cross-app Siri and Apple Intelligence workflows, treat transfer as a semantic capability separate from entity resolution. Entity queries and indexing let Siri find the object. Onscreen annotations let Siri know which object the user means by “this.” `Transferable` tells the system how that object can move to another action.
+
+Use `DataRepresentation` and `FileRepresentation` for known byte/file formats. Use `ValueRepresentation` / `IntentValueRepresentation` for system-known structured values such as `PlaceDescriptor` or `IntentPerson`. A place string is not equivalent to a `PlaceDescriptor`; a contact display name is not equivalent to `IntentPerson`. See [value-representation-and-structured-transfer.md](value-representation-and-structured-transfer.md).
 
 ## Project architecture
 
@@ -272,7 +278,7 @@ Use:
 - SwiftUI `.appEntityIdentifier(...)` for individual views.
 - Collection annotations for lists/grids/tables and selected content.
 - UIKit individual-view annotations for a handful of objects; table/collection App Intents data sources for reusable collections; `appEntityUIElementProvider` for custom canvases. Map index paths through the current data source to durable IDs and clear reused annotations.
-- Transferable representations for content Siri or ChatGPT should inspect.
+- Transferable representations for content Siri or ChatGPT should inspect, including `ValueRepresentation` where the receiver needs a system-known structured value.
 
 ### 8. Add indexing and donations
 

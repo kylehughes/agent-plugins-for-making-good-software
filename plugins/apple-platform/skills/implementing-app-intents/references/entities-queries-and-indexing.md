@@ -11,7 +11,7 @@ UIKit/SwiftUI rule: entities and queries are shared semantic types. Never put `U
 | `TransientAppEntity` | Temporary values produced during a flow | No durable query. Good for ephemeral search results, generated previews, unsaved drafts. |
 | `AppEnum` | Fixed set of values | Stable raw values and strong display names. |
 | `@UnionValue` | A parameter/result can be one of several types | Useful for flexible Siri requests and Shortcuts pickers. |
-| `ValueRepresentation` | Structured value that is not a full entity | iOS 27-era mechanism for system-understandable value shapes. |
+| `ValueRepresentation` / `IntentValueRepresentation` | Transfer representation from an entity to a system-known structured value | Use with `Transferable`; not arbitrary serialization and not a substitute for entity identity/querying. |
 | `EntityCollection` | Large/lazy entity collection passed by identifier | Avoid resolving every member up front. |
 | `SyncableEntity` | Entity with local and stable sync identity | Useful for cloud-synced apps and cross-device references. |
 
@@ -367,29 +367,30 @@ struct PlaylistEntity: AppEntity {
 
 Use when the collection is large, ordered, or lazily loaded. Do not use when `[Entity]` is small and already loaded.
 
-## ValueRepresentation
+## ValueRepresentation / IntentValueRepresentation
 
-Use for structured values that are not app entities but still need semantic shape.
+Use value representations for structured cross-app handoff from an entity to a system-known value. The common pattern is an `AppEntity` that also conforms to `Transferable` and exports a structured value alongside ordinary file/data representations.
 
 ```swift
-struct PlaceValue: Sendable, Hashable, Codable {
-    var name: String
-    var latitude: Double
-    var longitude: Double
-    var address: String?
-}
+import AppIntents
+import CoreTransferable
+import GeoToolbox
 
-extension PlaceValue: ValueRepresentable {
-    var valueRepresentation: ValueRepresentation {
-        ValueRepresentation(
-            title: "\(name)",
-            subtitle: address.map { "\($0)" }
-        )
+struct LandmarkEntity: AppEntity, Transferable {
+    static let defaultQuery = LandmarkQuery()
+
+    let id: Int
+
+    @Property(title: "Place")
+    var placeDescriptor: PlaceDescriptor
+
+    static var transferRepresentation: some TransferRepresentation {
+        ValueRepresentation(exporting: \.placeDescriptor)
     }
 }
 ```
 
-Good uses: places, measurements, person-name components, routes, durations, lightweight descriptors. Do not turn everything into an entity; entities need identity and queries.
+Use this when the destination needs semantic data such as a place or person. Do not use it for arbitrary JSON, private IDs, or values the system does not understand. Do not turn every lightweight value into an entity; entities need identity and queries, while value representations describe how an existing transferable entity can travel across apps. See [value-representation-and-structured-transfer.md](value-representation-and-structured-transfer.md).
 
 ## @UnionValue
 

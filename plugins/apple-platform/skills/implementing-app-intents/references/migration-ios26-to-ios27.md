@@ -82,7 +82,7 @@ Use for album photos, playlist tracks, project tasks, folder files, conversation
 
 ### Priority 5: Add ValueRepresentation
 
-Use for structured non-entity values: place descriptors, person-name components, durations, measurements, lightweight imported descriptors, and location/search criteria values.
+Use on `Transferable` entities when they can be exported as system-known structured values, especially `PlaceDescriptor` for places and `IntentPerson` for contact-like entities. This is not arbitrary object serialization; if no system value fits, improve schemas, indexing, queries, and app-specific intents instead. See [value-representation-and-structured-transfer.md](value-representation-and-structured-transfer.md).
 
 ### Priority 6: Add UnionValue parameters
 
