@@ -1,0 +1,4 @@
+interface:
+  display_name: "Instrumenting Accessibility Identifiers"
+  short_description: "Type-safe accessibilityIdentifier contracts"
+  default_prompt: "Use $instrumenting-accessibility-identifiers to add, migrate, or review a compiler-checked accessibilityIdentifier contract across SwiftUI, UIKit, and XCUITest."

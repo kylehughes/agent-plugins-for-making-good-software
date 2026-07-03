@@ -1,0 +1,4 @@
+interface:
+  display_name: "Testing Swift Code"
+  short_description: "Swift Testing framework (@Test, #expect)"
+  default_prompt: "Use $testing-swift-code to write and structure tests with the Swift Testing framework: @Test, @Suite, #expect, and #require."

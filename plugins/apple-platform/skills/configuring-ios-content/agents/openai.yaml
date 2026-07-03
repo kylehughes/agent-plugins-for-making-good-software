@@ -1,0 +1,4 @@
+interface:
+  display_name: "Configuring iOS Content"
+  short_description: "Modern UIKit cell and content configuration"
+  default_prompt: "Use $configuring-ios-content to build UIKit cell and content-view configurations with UIContentConfiguration, cell registrations, and UIHostingConfiguration for iOS 16+."

@@ -37,11 +37,11 @@ Skills and agents are stored once and serve both platforms. Do not fork content 
 - Every skill keeps a `SKILL.md` with `name` and `description` frontmatter.
 - Preserve source `REFERENCE.md`, `ATTRIBUTION.md`, and `references/` files with their skill directories.
 - Keep `description` written for implicit skill selection: describe in natural language when to use the skill. This drives Claude Code's automatic invocation and Codex's implicit selection.
-- Add `skills/<name>/agents/openai.yaml` only when a skill needs Codex UI metadata, MCP dependencies, or `policy.allow_implicit_invocation: false`.
+- Every skill also carries `skills/<name>/agents/openai.yaml` with Codex `interface` metadata: `display_name`, `short_description`, and a `default_prompt` (invoking the skill as `$<name>`). Claude Code ignores this file. Add MCP dependencies or `policy.allow_implicit_invocation: false` to it when a skill needs them.
 
 ## Agent Maintenance
 
-- Agents are Markdown files with frontmatter under `plugins/apple-platform/agents/`.
+- Agents are Markdown files with frontmatter under `plugins/<plugin>/agents/`.
 - Frontmatter is a superset: `name`, `description`, plus Claude Code fields (`tools`, `skills`, `model`, `color`). Codex ignores the fields it does not use.
 - Bodies are runtime-neutral. Reporting instructions prefer task tools (`TaskCreate`/`TaskList`) when the runtime exposes them and fall back to a prioritized follow-up list otherwise.
 - Codex does not automatically spawn custom agents from their descriptions. Spawn the Apple Platform reviewer agents only when the user explicitly asks for subagents, delegated review, or parallel agent work and the runtime exposes those roles. If the roles are not available, run the review directly with the relevant skills.

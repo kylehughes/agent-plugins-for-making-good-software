@@ -1,0 +1,4 @@
+interface:
+  display_name: "Simplifying Code"
+  short_description: "Behavior-preserving cleanup, any language"
+  default_prompt: "Use $simplifying-code to run a behavior-preserving cleanup pass — reuse, simplify, de-duplicate, and harden — over code that already exists."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Using Swift Concurrency"
+  short_description: "Correct Swift 6 concurrency and isolation"
+  default_prompt: "Use $using-swift-concurrency to write, review, migrate, or debug async/await, actors, Sendable, and isolation under Swift 6 strict concurrency."

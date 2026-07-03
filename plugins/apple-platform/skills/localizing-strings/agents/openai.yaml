@@ -1,0 +1,4 @@
+interface:
+  display_name: "Localizing Strings"
+  short_description: "String(localized:) and string catalogs"
+  default_prompt: "Use $localizing-strings to localize user-facing text with String(localized:) extensions and Localizable.xcstrings string catalogs."

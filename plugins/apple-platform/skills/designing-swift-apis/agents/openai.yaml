@@ -1,0 +1,4 @@
+interface:
+  display_name: "Designing Swift APIs"
+  short_description: "Apply Apple's Swift API design guidelines"
+  default_prompt: "Use $designing-swift-apis to name and shape Swift APIs, argument labels, and doc comments so call sites read as clear, grammatical English."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ordering Symbols"
+  short_description: "Canonical Swift member ordering"
+  default_prompt: "Use $ordering-symbols to order Swift declarations by category, access level, and name wherever reordering is semantics-preserving."

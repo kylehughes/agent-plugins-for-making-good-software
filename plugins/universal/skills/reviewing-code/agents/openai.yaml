@@ -1,0 +1,4 @@
+interface:
+  display_name: "Reviewing Code"
+  short_description: "Evidence-based code review, any language"
+  default_prompt: "Use $reviewing-code to review a diff, pull request, or repository for correctness, security, concurrency, and compatibility risks, and report line-specific findings."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Organizing Swift Types"
+  short_description: "Swift type, extension, and file layout conventions"
+  default_prompt: "Use $organizing-swift-types to structure Swift type declarations, access control, extensions, and file layout, and to remove prohibited organizational patterns like MARK comments."
