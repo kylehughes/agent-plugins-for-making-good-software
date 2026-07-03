@@ -55,10 +55,8 @@ Skills and agent definitions for Apple-platform codebases.
 
 | Agent | Purpose |
 | :---- | :------ |
-| `code-reviewer` | Reviews structural design consistency and architecture fit. |
 | `code-standards-auditor` | Audits Swift changes against the bundled coding standards. |
 | `information-entropy-reducer` | Flags unnecessary complexity and cognitive load. |
-| `technical-writing-auditor` | Audits Markdown and doc comments for voice and structure. |
 | `type-driven-design-auditor` | Finds compile-time correctness opportunities in Swift types. |
 
 ## universal
@@ -78,3 +76,4 @@ Platform-agnostic tools for making good software.
 | Agent | Purpose |
 | :---- | :------ |
 | `code-reviewer` | Reviews structural design consistency and architecture fit. |
+| `technical-writing-auditor` | Audits developer-facing docs and comments for voice, structure, and AI-isms. |
