@@ -40,7 +40,7 @@ Skills and agent definitions for Apple-platform codebases.
 | :---- | :------ |
 | `configuring-ios-content` | Patterns for `UIContentConfiguration`, `UIHostingConfiguration`, and `UIContentView` in UIKit cells. |
 | `designing-swift-apis` | Apple's Swift API design guidelines for naming, argument labels, and doc comments. |
-| `implementing-app-intents` | Guidance for App Intents on iOS 26 and 27: Siri, Apple Intelligence, entities, and Spotlight. |
+| `implementing-app-intents` | Guidance for App Intents: Siri, Apple Intelligence, entities, Spotlight, and value representations. |
 | `instrumenting-accessibility-identifiers` | A type-safe `accessibilityIdentifier` pattern across SwiftUI, UIKit, XCUITest, and screenshot automation. |
 | `localizing-strings` | Patterns for `String(localized:)` and string catalogs. |
 | `modeling-swift-types-for-correctness` | Patterns for modeling Swift types that make invalid states unrepresentable. |

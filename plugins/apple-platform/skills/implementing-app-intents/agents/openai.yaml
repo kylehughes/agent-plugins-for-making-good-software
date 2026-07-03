@@ -1,4 +1,4 @@
 interface:
   display_name: "Implementing App Intents"
   short_description: "App Intents for Siri, Spotlight, and Shortcuts"
-  default_prompt: "Use $implementing-app-intents to design App Intents, entities, queries, value representations, and onscreen awareness for iOS 26/27 across SwiftUI and UIKit."
+  default_prompt: "Use $implementing-app-intents to design App Intents, entities, queries, value representations, and onscreen awareness across SwiftUI and UIKit."

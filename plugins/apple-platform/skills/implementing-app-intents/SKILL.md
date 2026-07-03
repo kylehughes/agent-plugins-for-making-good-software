@@ -1,9 +1,9 @@
 ---
-name: implementing-app-intents-ios26-ios27
-description: Implements modern App Intents for iOS 26 and iOS 27 with emphasis on Siri, Apple Intelligence, App Schemas, App Entities, entity queries, semantic Spotlight indexing, UIKit and SwiftUI onscreen awareness, UIKit scene routing, Visual Intelligence, Transferable content, ValueRepresentation structured transfer, Shortcuts, widgets, controls, snippets, long-running execution, and AppIntentsTesting.
+name: implementing-app-intents
+description: Implements modern App Intents with emphasis on Siri, Apple Intelligence, App Schemas, App Entities, entity queries, semantic Spotlight indexing, UIKit and SwiftUI onscreen awareness, UIKit scene routing, Visual Intelligence, Transferable content, ValueRepresentation structured transfer, Shortcuts, widgets, controls, snippets, long-running execution, and AppIntentsTesting.
 ---
 
-# Implementing App Intents for iOS 26 and iOS 27
+# Implementing App Intents
 
 Use this skill when designing, auditing, or implementing App Intents for Apple-platform apps, especially when the goal is integration with Siri, Apple Intelligence, Shortcuts, Spotlight, widgets, controls, Live Activities, the Action button, visual intelligence, onscreen awareness, or cross-app automation.
 
