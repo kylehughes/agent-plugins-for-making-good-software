@@ -81,43 +81,44 @@ Assistant-only intents are intentionally not discovery surfaces for Spotlight or
 
 ## Domain selection matrix
 
-| App domain | Prefer these schema families when they fit | Typical custom extras |
+This matrix is limited to App Schema domains verified in the iPhoneOS 26.5 SDK: `journal`, `photos`, `visualIntelligence`, `reader`, `system`, `wordProcessor`, `presentation`, `spreadsheet`, `browser`, `files`, `camera`, `mail`, `whiteboard`, and `books`.
+
+| App domain | Prefer these verified schema families when they fit | Typical custom extras / gap strategy |
 | --- | --- | --- |
 | Photos/media library | Photos, Visual Intelligence, Files | Smart albums, custom edits, app metadata |
 | Camera/scanning | Camera, Photos, Files, Visual Intelligence | Capture presets, OCR workflows, templates |
 | Books/PDF/reading | Books, Reader, Files | Reading state, annotations, collections |
 | Browser/web | Browser | Profiles, tab groups, reading list semantics |
 | Notes/journal | Journal, Word Processor, Files | Tags, notebooks, templates, mood/state fields |
-| Email/messaging | Mail, Messages, Contacts/person values | Team inboxes, thread states, app routing |
-| Calendar/tasks | Calendar, System search, Files | Project linkage, task states, custom recurrence |
+| Email | Mail, `IntentPerson` values | Team inboxes, thread states, app routing |
+| Messaging/chat | Mail only when actually mail-like; otherwise custom entities/intents plus `IntentPerson` | Threads, messages, reactions, read state |
+| Calendar/tasks | System search, Files, custom entities/intents; no verified Calendar or Tasks schema domain in iPhoneOS 26.5 | Project linkage, task states, recurrence, attendees |
 | Office documents | Presentation, Spreadsheet, Word Processor, Files | Slide/page/table/cell/selection models |
 | Whiteboard/canvas | Whiteboard, Files, Visual Intelligence | Nodes, groups, annotations, layers |
-| Audio/playback | Audio/media schemas when available | Queue state, playback device, session metadata |
-| Clock/timer/alarm | Clock/system schemas when available | Presets, routines, labels, linked workflows |
+| Audio/playback | Custom entities/intents; no verified Audio/media schema domain in iPhoneOS 26.5 | Queue state, playback device, session metadata |
+| Clock/timer/alarm | System search or custom entities/intents; no verified Clock/alarm/timer schema domain in iPhoneOS 26.5 | Presets, routines, labels, linked workflows |
 | Generic search | System search-in-app | App-specific scopes and filters |
 
 ## Notable schema families
 
-The exact available schemas depend on the SDK. Use Xcode’s AppIntents schema autocomplete and docs as source of truth. Public documentation and sessions cover or reference these families:
+Verified App Schema domains in the iPhoneOS 26.5 SDK:
 
-- Photos
 - Books
 - Browser
 - Camera
-- Reader/document reader
 - Files
 - Journal
 - Mail
-- Messages
-- Calendar
+- Photos
 - Presentation
+- Reader
 - Spreadsheet
+- System
+- Visual Intelligence
 - Whiteboard
 - Word processor
-- Audio/media
-- Clock/alarm/timer
-- Visual Intelligence / semantic content search
-- System search-in-app
+
+Not verified as schema domains in iPhoneOS 26.5: Messages, Calendar, Tasks, Audio/media, Clock, Alarm, or Timer. Do not generate `@AppIntent(schema: .messages...)`, `@AppEntity(schema: .calendar...)`, or similar code unless the selected SDK declares that domain.
 
 ## Photos domain pattern
 
@@ -232,12 +233,16 @@ Notes:
 - Be conservative exposing private journal content through indexing or Transferable.
 - Use snippets sparingly because journal content is sensitive.
 
-## Mail / Messages pattern
+## Mail / messaging pattern
+
+The iPhoneOS 26.5 SDK verifies `mail` as an App Schema domain. It does **not** verify `messages` as a schema domain. Use Mail schemas for actual email/draft/send workflows; use custom entities and intents for chat/messaging products unless a selected SDK adds a matching domain.
+
+Mail-like entity shape:
 
 ```swift
-@AppEntity(schema: .messages.message)
-struct MessageEntity: IndexedEntity {
-    static let defaultQuery = MessageQuery()
+@AppEntity(schema: .mail.message) // Verify exact schema entity names in the selected SDK.
+struct MailMessageEntity: IndexedEntity {
+    static let defaultQuery = MailMessageQuery()
     let id: String
 
     @Property(title: "Text", indexingKey: \.textContent)
@@ -252,19 +257,37 @@ struct MessageEntity: IndexedEntity {
 }
 ```
 
+Custom chat/messaging shape when no schema domain exists:
+
+```swift
+struct ChatMessageEntity: IndexedEntity {
+    static let defaultQuery = ChatMessageQuery()
+    let id: String
+
+    @Property(title: "Text", indexingKey: \.textContent)
+    var text: AttributedString
+
+    @Property(title: "Conversation", indexingKey: \.displayName)
+    var conversationTitle: String
+
+    var sender: IntentPerson?
+    var recipients: [IntentPerson]
+    var sentDate: Date?
+}
+```
+
 Notes:
 
-- Model participants with `IntentPerson` or schema-specific people/contact entities.
+- `IntentPerson` is available since iOS 16 and can be used immediately for participants.
 - Do not index message bodies if privacy settings or enterprise policy prohibit it.
 - Distinguish create/update/send draft actions.
 - Confirm send/delete/forward actions when ambiguity exists.
 
-## Calendar pattern
+## Calendar / tasks gap pattern
 
-Calendar apps usually need multiple entity types: calendar, event, attendee, alarm, recurrence, location, and availability state.
+The iPhoneOS 26.5 SDK does not verify Calendar or Tasks as App Schema domains. Calendar and task apps should still model durable custom entities with strong queries, indexing, OpenIntents, `IntentPerson` attendees/participants, and system search where appropriate.
 
 ```swift
-@AppEntity(schema: .calendar.event)
 struct CalendarEventEntity: IndexedEntity {
     static let defaultQuery = CalendarEventQuery()
     let id: String
@@ -278,7 +301,7 @@ struct CalendarEventEntity: IndexedEntity {
     var startDate: Date
     var endDate: Date
     var attendees: [IntentPerson]
-    var calendar: CalendarEntity?
+    var calendarName: String?
 }
 ```
 
@@ -286,8 +309,9 @@ Notes:
 
 - Optional-parameter updates must distinguish omitted from explicit clearing.
 - Deletion should confirm and disambiguate.
-- Calendar entities are strong candidates for `IndexedEntity` and onscreen annotation.
+- Calendar/task entities are strong candidates for `IndexedEntity` and primary-screen `NSUserActivity` annotation.
 - Attendee-like values can be transient if they are not durable app content.
+- Do not generate `.calendar` or `.tasks` schema conformance unless the selected SDK declares those domains.
 
 ## Browser pattern
 
@@ -398,7 +422,7 @@ struct SearchInAppIntent: ShowInAppSearchResultsIntent {
 }
 ```
 
-Use specific domain search schemas first when available. Use system search-in-app as the generic fallback. In UIKit, deliver the criteria to the selected scene through `UISceneAppIntent` or `AppIntentSceneDelegate`, then route through the scene coordinator.
+Use specific verified domain search schemas first when available. Use system search-in-app as the generic fallback. In UIKit, deliver the criteria to the selected scene through `UISceneAppIntent` or `AppIntentSceneDelegate`, then route through the scene coordinator.
 
 ## Visual Intelligence / semantic content search
 
@@ -408,7 +432,7 @@ struct SearchVisualContentIntent: AppIntent {
     static let title: LocalizedStringResource = "Search Visual Content"
 
     @Parameter(title: "Content")
-    var content: SemanticContentDescriptor
+    var content: SemanticContentDescriptor // from the VisualIntelligence framework
 
     func perform() async throws -> some ReturnsValue<[VisualSearchResult]> {
         let values = try await VisualResultQuery().values(for: content)
@@ -437,5 +461,5 @@ When no schema exists:
 6. Add onscreen annotations.
 7. Add Transferable/value representations.
 8. Donate interactions.
-9. Add RelevantEntities for dynamic context.
+9. Add selected-SDK-gated relevance APIs for dynamic context only if the SDK declares them.
 10. Test Siri behavior and adjust entity/query surfaces before adding more phrases.

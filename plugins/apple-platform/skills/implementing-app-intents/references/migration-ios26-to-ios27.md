@@ -2,7 +2,7 @@
 
 ## Goal
 
-Keep the iOS 26 integration working while adopting iOS 27 improvements that make Siri and Apple Intelligence more capable. Avoid breaking existing shortcuts, donations, indexes, and entity IDs.
+Keep the iOS 26 integration working while adopting newer selected-SDK improvements that make Siri and Apple Intelligence more capable. Avoid breaking existing shortcuts, donations, indexes, and entity IDs.
 
 ## iOS 26 baseline checklist
 
@@ -14,25 +14,27 @@ Before adopting iOS 27-specific features, ensure the app already has:
 - App Shortcuts for common zero-configuration actions.
 - Parameter summaries for discoverability.
 - IndexedEntity or CoreSpotlight association for searchable content.
-- Onscreen annotations for detail and list views.
+- Primary detail/editor screens publish `NSUserActivity.appEntityIdentifier` (iOS 18.2+). List/selection/canvas annotations are not available in iPhoneOS 26.5.
 - Transferable exports for content Siri/ChatGPT/Shortcuts can inspect.
 - Interactive snippets where useful.
 - Foreground continuation for UI-dependent actions.
 - TargetContentProvidingIntent where actions should hit active content.
-- AppIntentsPackage if intents live in Swift packages.
+- `AppIntentsPackage` if intents live in Swift packages; this raises the effective discovery floor to iOS 17 even though core App Intents are iOS 16.
 - Tests for entity queries and intent execution.
 
 ## iOS 27 adoption priorities
 
+Treat this section as selected-SDK-gated. The iPhoneOS 26.5 SDK does not declare several APIs commonly discussed as iOS 27-era. Verify before generating source.
+
 ### Priority 1: App Schemas audit
 
-Map each entity/action to available schema domains.
+Map each entity/action to verified schema domains.
 
 ```text
-Custom OpenTaskIntent -> schema if task/project/calendar domain exists
-Custom SearchIntent -> .system.searchInApp or domain search schema
+Custom OpenTaskIntent -> custom entity/intent unless a selected SDK declares a matching schema
+Custom SearchIntent -> .system search-in-app or verified domain search schema
 Custom ImportPhotoIntent -> photos/files schema if applicable
-Custom MessageAction -> messages/mail schema if applicable
+Custom MessageAction -> mail schema only when actually mail-like; no messages domain in iPhoneOS 26.5
 ```
 
 Actions:
@@ -43,17 +45,19 @@ Actions:
 - Use `isAssistantOnly` for new Siri-only schema actions.
 - Keep old public intents as wrappers/deprecated types if users may have shortcuts.
 
-### Priority 2: Strengthen entity identity
+### Priority 2: Strengthen entity identity without assuming SyncableEntity
 
-Adopt stable sync identity where needed.
+`SyncableEntity` and `SyncableEntityIdentifier` are absent from iPhoneOS 26.5. Preserve entity ID semantics today with your own resolver/mapping layer.
 
 ```swift
-@available(iOS 27, *)
-struct TaskEntity: AppEntity, SyncableEntity {
-    let id: SyncableEntityIdentifier
-    let title: String
+struct TaskIDResolver {
+    func entityID(localID: UUID, cloudID: String?) -> String {
+        cloudID.map { "cloud:\($0)" } ?? "local:\(localID.uuidString)"
+    }
 }
 ```
+
+If a selected SDK later declares `SyncableEntity`, wrap the existing mapping. Do not change the public entity ID shape casually.
 
 Actions:
 
@@ -62,29 +66,35 @@ Actions:
 - Handle offline/local-only entities.
 - Avoid changing raw ID semantics of shipped entities unless you provide compatibility.
 
-### Priority 3: Add RelevantEntities
+### Priority 3: Add selected-SDK-gated relevance APIs
 
-Use for context suggestions: current document, active project, now playing media, current workout/session, current location-specific content, currently selected item.
+`RelevantEntities` is absent from iPhoneOS 26.5. If a selected SDK supplies it or a replacement, use it for context suggestions: current document, active project, now playing media, current workout/session, current location-specific content, or currently selected item.
 
-Do not replace Spotlight indexing with RelevantEntities.
+Do not replace Spotlight indexing with relevance hints.
 
-### Priority 4: Use EntityCollection for large relationships
+### Priority 4: Model large relationships; adopt EntityCollection only if present
+
+AppIntents `EntityCollection` is absent from iPhoneOS 26.5. Use stable relationship IDs and query intents today.
 
 ```swift
 struct AlbumEntity: AppEntity {
     let id: UUID
     var name: String
-    var assets: EntityCollection<AssetEntity>
+    var assetCount: Int
 }
 ```
 
-Use for album photos, playlist tracks, project tasks, folder files, conversation messages, and calendar events in a calendar.
+If a selected SDK declares AppIntents `EntityCollection`, use it for album photos, playlist tracks, project tasks, folder files, conversation messages, and calendar events only after verifying the declaration is the AppIntents type and not a RealityKit name collision.
 
-### Priority 5: Add ValueRepresentation
+### Priority 5: Add structured value mappers now; transfer wrappers only if present
 
-Use on `Transferable` entities when they can be exported as system-known structured values, especially `PlaceDescriptor` for places and `IntentPerson` for contact-like entities. This is not arbitrary object serialization; if no system value fits, improve schemas, indexing, queries, and app-specific intents instead. See [value-representation-and-structured-transfer.md](value-representation-and-structured-transfer.md).
+`IntentPerson` (iOS 16) and `PlaceDescriptor` (`GeoToolbox`, iOS 26) can be mapped today. `ValueRepresentation` and `IntentValueRepresentation` are absent from iPhoneOS 26.5.
 
-### Priority 6: Add UnionValue parameters
+Use pure mappers on entities when they can be represented as system-known structured values, especially `PlaceDescriptor` for places and `IntentPerson` for contact-like entities. Add `ValueRepresentation` / `IntentValueRepresentation` only in source compiled with an SDK that declares those symbols. See [value-representation-and-structured-transfer.md](value-representation-and-structured-transfer.md).
+
+### Priority 6: Use @UnionValue parameters where useful
+
+`@UnionValue` is present in the iPhoneOS 26.5 SDK.
 
 ```swift
 @UnionValue
@@ -97,21 +107,21 @@ enum ShareTarget {
 
 Use when Siri or Shortcuts should accept several target types.
 
-### Priority 7: Adopt LongRunningIntent and execution targets
+### Priority 7: Use progress today; long-running/cancellable/execution-target APIs only if present
 
-Use for work that previously timed out or required clumsy foregrounding: large exports, video/image processing, local ML analysis, sync repair, and bulk migration.
+`ProgressReportingIntent` is iOS 17 and can be used today. `LongRunningIntent`, `CancellableIntent`, and `ExecutionTargets` are absent from iPhoneOS 26.5.
 
-Declare execution targets for intents that must run in a specific process or extension.
+For large exports, video/image processing, local ML analysis, sync repair, and bulk migration, ship a progress-aware, idempotent, cancellation-cooperative service now. Add long-running/execution-target protocol conformances only when the selected SDK declares them.
 
-### Priority 8: Move to AppIntentsTesting
+### Priority 8: Use XCTest/manual tests today; AppIntentsTesting only if present
 
-Add tests for intent execution, entity queries, chained intents, view annotations, Spotlight query, snippets, long-running progress, and cancellation.
+`AppIntentsTesting` is absent from iPhoneOS 26.5. Add tests for intent execution, entity queries, Spotlight query, snippets, progress, confirmation, and UIKit routing through normal XCTest/UI tests and manual system-surface checks. Add AppIntentsTesting only when the selected SDK contains the framework.
 
 ## Compatibility strategy
 
 ### Do not break shipped intents
 
-If a public iOS 26 intent exists, keep it.
+If a public iOS 26 intent exists, keep it. `DeprecatedAppIntent` and `IntentDeprecation` are iOS 17 APIs.
 
 ```swift
 struct OldCreateTaskIntent: DeprecatedAppIntent {
@@ -166,31 +176,31 @@ Optional parameters are generally safer, but schema-conforming Siri behavior may
 6. Add schema-conforming replacement intents.
 7. Bridge/deprecate old intents.
 8. Migrate indexing to IndexedEntity/CoreSpotlight association.
-9. Add onscreen annotations and Transferable exports.
-10. Add iOS 27 enhancements: RelevantEntities, SyncableEntity, EntityCollection, ValueRepresentation, LongRunningIntent, ExecutionTargets.
-11. Add AppIntentsTesting coverage.
+9. Add primary `NSUserActivity.appEntityIdentifier` annotation and Transferable exports; add list/view/canvas annotations only if the selected SDK supports them.
+10. Add selected-SDK-gated enhancements only after verification: relevance APIs, SyncableEntity, AppIntents EntityCollection, ValueRepresentation/IntentValueRepresentation, LongRunningIntent, CancellableIntent, ExecutionTargets.
+11. Add AppIntentsTesting coverage only if the selected SDK provides that framework; otherwise keep XCTest/manual coverage.
 12. Test old shortcuts from prior app versions.
 13. Release with telemetry for intent errors, without logging sensitive parameter values.
 ```
 
 ## iOS 26 feature deepening
 
-If you are not ready for iOS 27-only code, improve iOS 26 surfaces first:
+If you are not ready for selected-SDK-only code, improve iOS 26.5-compatible surfaces first:
 
 - Interactive snippets: result snippets, confirmation snippets, control intents, compact design.
-- Visual Intelligence: semantic content search, `IntentValueQuery`, `SemanticContentDescriptor`, OpenIntent for results.
-- Onscreen annotations: NSUserActivity, rows/cards/thumbnails, selections, UIKit/AppKit equivalents.
+- Visual Intelligence: semantic content search, `IntentValueQuery`, `SemanticContentDescriptor` from the `VisualIntelligence` framework, OpenIntent for results.
+- Onscreen annotations: `NSUserActivity.appEntityIdentifier` for detail/editor screens. Rows/cards/thumbnails/selections/UIKit list/canvas equivalents are selected-SDK-gated and absent from iPhoneOS 26.5.
 - Transferable: plain text, rich text, PDF, image, file, metadata redaction.
 - Foreground and target content: foreground continuation and active editor/selection targeting.
 
-## iOS 27 feature deepening
+## iOS 27 / selected-SDK feature deepening
 
-- App Schemas: use schema intents/entities/enums and test natural requests, not only exact phrases.
-- RelevantEntities: feed current context, clear stale values, keep lists small.
-- SyncableEntity: model local + stable sync IDs and test reinstall/sync.
-- LongRunningIntent: progress, cancellation, persisted job state, energy-aware scheduling.
-- ExecutionTargets: separate app-only navigation from extension-safe mutations.
-- AppIntentsTesting: test framework integration, annotations, Spotlight, and chains.
+- App Schemas: use verified schema intents/entities/enums and test natural requests, not only exact phrases.
+- Relevance APIs: if present, feed current context, clear stale values, keep lists small.
+- SyncableEntity: if present, adapt existing local/stable sync ID mapping and test reinstall/sync.
+- Long-running/cancellable APIs: if present, combine progress, cancellation, persisted job state, and energy-aware scheduling.
+- ExecutionTargets: if present, separate app-only navigation from extension-safe mutations.
+- AppIntentsTesting: if present, add framework integration tests for execution, queries, annotations, Spotlight, and chains.
 
 ## UIKit migration track
 
@@ -199,10 +209,10 @@ A UIKit codebase should migrate in this order:
 1. Adopt/verify `UISceneDelegate` and remove assumptions that the process has one window.
 2. Extract a per-scene coordinator with semantic routes.
 3. Replace intent-side global navigator/window lookup with `UISceneAppIntent` or `AppIntentSceneDelegate`; assign each scene-targeted intent exactly one navigation owner.
-4. Add a primary `NSUserActivity.appEntityIdentifier` to detail/editor screens and reuse UIKit’s existing `AppEntityAnnotatable` conformances rather than declaring new ones.
-5. Replace ad hoc per-cell annotations with `UITableViewAppIntentsDataSource` or `UICollectionViewAppIntentsDataSource` for large reusable lists.
-6. Clear annotations during cell reuse and add privacy/redaction policy.
-7. Add `appEntityUIElementProvider` to custom canvases.
+4. Add a primary `NSUserActivity.appEntityIdentifier` to detail/editor screens. Do not declare new `AppEntityAnnotatable` conformances, and do not use view/list/canvas annotation APIs unless the selected SDK declares them.
+5. Keep reusable-list selection as stable model IDs; add `UITableViewAppIntentsDataSource` / `UICollectionViewAppIntentsDataSource` only if the selected SDK declares them.
+6. Clear stable IDs and any selected-SDK-supported annotations during cell reuse; add privacy/redaction policy.
+7. Keep custom-canvas semantic geometry ready; add `appEntityUIElementProvider` only if the selected SDK declares it.
 8. Add `SiriTipUIView` using `setIntent(intent:)` and use `ShortcutsUIButton(style:)` for the app’s Shortcuts page.
 9. Audit drag delegates for iOS 27 Siri/context-menu resource loading; remove presentation and animation from `sessionWillBegin`.
 10. Add cold-launch, multiwindow, diffable snapshot, cell reuse, and drag-provider tests.

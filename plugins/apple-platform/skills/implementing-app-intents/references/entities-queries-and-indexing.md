@@ -11,9 +11,9 @@ UIKit/SwiftUI rule: entities and queries are shared semantic types. Never put `U
 | `TransientAppEntity` | Temporary values produced during a flow | No durable query. Good for ephemeral search results, generated previews, unsaved drafts. |
 | `AppEnum` | Fixed set of values | Stable raw values and strong display names. |
 | `@UnionValue` | A parameter/result can be one of several types | Useful for flexible Siri requests and Shortcuts pickers. |
-| `ValueRepresentation` / `IntentValueRepresentation` | Transfer representation from an entity to a system-known structured value | Use with `Transferable`; not arbitrary serialization and not a substitute for entity identity/querying. |
-| `EntityCollection` | Large/lazy entity collection passed by identifier | Avoid resolving every member up front. |
-| `SyncableEntity` | Entity with local and stable sync identity | Useful for cloud-synced apps and cross-device references. |
+| `PlaceDescriptor` / `IntentPerson` mappers | Convert an entity to a shipping system-known structured value | `IntentPerson` is iOS 16; `PlaceDescriptor` is iOS 26 in `GeoToolbox`. Keep mappers pure and UI-independent. |
+| AppIntents `EntityCollection` | Forward-looking large/lazy entity collection passed by identifier | Absent from iPhoneOS 26.5. Do not compile against it unless the selected SDK declares it. |
+| `SyncableEntity` | Forward-looking entity with local and stable sync identity | Absent from iPhoneOS 26.5. Use your own stable ID mapping until the selected SDK declares it. |
 
 ## AppEntity baseline
 
@@ -50,7 +50,7 @@ Good IDs:
 - Stable database UUID.
 - Stable cloud record ID represented as a string.
 - Stable integer ID if the app already uses one.
-- `SyncableEntityIdentifier` when local and synced identity differ.
+- Your own local/sync ID mapping when local and synced identity differ; use `SyncableEntityIdentifier` only if the selected SDK declares it.
 
 Weak IDs:
 
@@ -318,15 +318,20 @@ struct GeneratedSummaryEntity: TransientAppEntity {
 
 Good for unsaved drafts, search previews, temporary conversion outputs, and live sensor readings. Bad for saved content or anything the user may reference later.
 
-## SyncableEntity
+## Sync identity without assuming SyncableEntity
 
-Use when local IDs differ from stable cloud IDs or when the same entity should be referenced across devices.
+`SyncableEntity` and `SyncableEntityIdentifier` are absent from the iPhoneOS 26.5 SDK. Do not generate code that conforms to `SyncableEntity` for a 26.5-compiled target.
+
+Still design stable identity carefully:
 
 ```swift
-struct CloudTaskEntity: AppEntity, SyncableEntity {
+struct CloudTaskEntity: AppEntity {
     static let defaultQuery = CloudTaskQuery()
 
-    let id: SyncableEntityIdentifier
+    // Stable public AppEntity ID chosen by the app. It may encode or map to local/cloud IDs,
+    // but it must remain durable and non-sensitive.
+    let id: String
+
     let localID: UUID
     let cloudID: String?
     let title: String
@@ -334,9 +339,9 @@ struct CloudTaskEntity: AppEntity, SyncableEntity {
     init(model: TaskModel) {
         self.localID = model.localID
         self.cloudID = model.cloudRecordID
-        self.id = SyncableEntityIdentifier(
-            localID: model.localID.uuidString,
-            syncID: model.cloudRecordID
+        self.id = TaskIdentityMapper.entityID(
+            localID: model.localID,
+            cloudID: model.cloudRecordID
         )
         self.title = model.title
     }
@@ -349,10 +354,13 @@ Implementation notes:
 - Resolve sync IDs when local IDs change after migration/reinstall.
 - Handle local-only entities without a cloud ID.
 - Never expose sync IDs if they are sensitive or account-scoped.
+- If a future selected SDK declares `SyncableEntity`, adapt this mapping rather than changing the public entity ID semantics.
 
-## EntityCollection
+## Forward-looking EntityCollection
 
-Use for large/lazy collections that should be passed around without resolving every member.
+AppIntents `EntityCollection` is absent from the iPhoneOS 26.5 SDK. Do not confuse it with unrelated RealityKit symbols of the same name.
+
+For a 26.5-compatible app, model large relationships with stable IDs and query methods:
 
 ```swift
 struct PlaylistEntity: AppEntity {
@@ -360,37 +368,56 @@ struct PlaylistEntity: AppEntity {
     let id: UUID
     let name: String
 
-    @Property(title: "Tracks")
-    var tracks: EntityCollection<TrackEntity>
+    @Property(title: "Track Count")
+    var trackCount: Int
 }
-```
 
-Use when the collection is large, ordered, or lazily loaded. Do not use when `[Entity]` is small and already loaded.
+struct TracksInPlaylistIntent: AppIntent {
+    static let title: LocalizedStringResource = "Get Tracks in Playlist"
 
-## ValueRepresentation / IntentValueRepresentation
+    @Parameter(title: "Playlist")
+    var playlist: PlaylistEntity
 
-Use value representations for structured cross-app handoff from an entity to a system-known value. The common pattern is an `AppEntity` that also conforms to `Transferable` and exports a structured value alongside ordinary file/data representations.
-
-```swift
-import AppIntents
-import CoreTransferable
-import GeoToolbox
-
-struct LandmarkEntity: AppEntity, Transferable {
-    static let defaultQuery = LandmarkQuery()
-
-    let id: Int
-
-    @Property(title: "Place")
-    var placeDescriptor: PlaceDescriptor
-
-    static var transferRepresentation: some TransferRepresentation {
-        ValueRepresentation(exporting: \.placeDescriptor)
+    func perform() async throws -> some ReturnsValue<[TrackEntity]> {
+        let tracks = try await TrackRepository.shared.tracks(inPlaylist: playlist.id, limit: 100)
+        return .result(value: tracks)
     }
 }
 ```
 
-Use this when the destination needs semantic data such as a place or person. Do not use it for arbitrary JSON, private IDs, or values the system does not understand. Do not turn every lightweight value into an entity; entities need identity and queries, while value representations describe how an existing transferable entity can travel across apps. See [value-representation-and-structured-transfer.md](value-representation-and-structured-transfer.md).
+If a selected SDK later supplies an AppIntents collection type, wrap this existing relationship/query model rather than resolving every member eagerly.
+
+## Structured value mappers and future ValueRepresentation
+
+`ValueRepresentation` and `IntentValueRepresentation` are absent from the iPhoneOS 26.5 SDK. `PlaceDescriptor` and `IntentPerson` are available structured value types. Use mapper properties now; add transfer wrappers only if the selected SDK declares them.
+
+```swift
+import AppIntents
+import GeoToolbox
+
+struct LandmarkEntity: AppEntity {
+    static let defaultQuery = LandmarkQuery()
+
+    let id: Int
+    let name: String
+
+    var systemPlaceDescriptor: PlaceDescriptor {
+        // Use the exact initializer labels from the selected GeoToolbox SDK.
+        fatalError("Use the PlaceDescriptor initializer from the selected GeoToolbox SDK.")
+    }
+}
+```
+
+Forward-looking wrapper shape, not buildable with iPhoneOS 26.5:
+
+```swift
+// Forward-looking / selected-SDK-gated only.
+static var transferRepresentation: some TransferRepresentation {
+    ValueRepresentation(exporting: \.systemPlaceDescriptor)
+}
+```
+
+Use structured mapping when the destination needs semantic data such as a place or person. Do not use fake JSON, private IDs, or values the system does not understand. See [value-representation-and-structured-transfer.md](value-representation-and-structured-transfer.md).
 
 ## @UnionValue
 

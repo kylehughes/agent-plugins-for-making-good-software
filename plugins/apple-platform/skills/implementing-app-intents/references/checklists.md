@@ -53,16 +53,16 @@ For each intent:
 - [ ] Entity queries resolve spoken names.
 - [ ] Important entities are indexed semantically.
 - [ ] Onscreen primary detail views have entity identifiers.
-- [ ] Lists/grids/cards have per-item annotations.
-- [ ] Selections are annotated.
+- [ ] Lists/grids/cards keep stable model IDs; per-item annotations are implemented only when the selected SDK declares them.
+- [ ] Selections are modeled with stable IDs; selection annotations are implemented only when the selected SDK declares them.
 - [ ] Transferable exports exist for content Siri may inspect.
 - [ ] `IntentValueQuery` exists for visual/incoming semantic matching where relevant.
 - [ ] Dialog works on voice-only devices.
 - [ ] Snippets are compact visual aids, not required for comprehension.
 - [ ] Donations are meaningful and revocable.
-- [ ] RelevantEntities is used for current context, not bulk data.
+- [ ] Selected-SDK-gated relevance APIs are used for current context only if present; they are not used for bulk data.
 - [ ] Sensitive content is excluded or gated.
-- [ ] AppIntentsTesting covers execution, queries, indexing, annotations.
+- [ ] XCTest/manual system tests cover execution, queries, indexing, and `NSUserActivity` annotation; AppIntentsTesting is added only if the selected SDK provides it.
 
 ## App Shortcuts checklist
 
@@ -92,20 +92,20 @@ For each intent:
 ## Onscreen awareness checklist
 
 - [ ] Detail screens use NSUserActivity with app entity identifier.
-- [ ] Rows/cards/thumbnails have entity annotations.
-- [ ] Collections expose selection when applicable.
-- [ ] Custom canvas objects are annotated.
-- [ ] UIKit/AppKit cells clear stale annotations on reuse.
-- [ ] Notifications/Now Playing/AlarmKit/Live Activity annotations are added where relevant.
+- [ ] Rows/cards/thumbnails have stable IDs ready for selected-SDK-gated per-item annotations.
+- [ ] Collections maintain selection as stable model IDs; expose it only through APIs present in the selected SDK.
+- [ ] Custom canvas objects have semantic geometry/ID models; annotation providers are implemented only when the selected SDK declares them.
+- [ ] Reusable cells clear stale semantic IDs; future annotation identifiers are cleared on reuse when the selected SDK supports them.
+- [ ] Non-app surfaces are verified individually before adding entity annotations; notification `appEntityIdentifiers` is not used on iPhoneOS 26.5.
 - [ ] Annotations respect privacy/lock-screen rules.
-- [ ] Tests inspect annotations.
+- [ ] Tests inspect `NSUserActivity` primary annotations; advanced annotation tests are selected-SDK-gated.
 
 ## Transferable checklist
 
 - [ ] Plain text export exists where useful.
 - [ ] Rich text export exists for rich documents/messages.
 - [ ] PDF/image/file export exists when visual fidelity matters.
-- [ ] IntentValueRepresentation or ValueRepresentation used where a system-known structured value exists.
+- [ ] `PlaceDescriptor` / `IntentPerson` mappers exist where a system-known structured value exists; `ValueRepresentation` / `IntentValueRepresentation` wrappers are used only when the selected SDK declares them.
 - [ ] Export is permission-aware.
 - [ ] Hidden metadata is stripped.
 - [ ] Temporary files are managed.
@@ -118,10 +118,10 @@ For each intent:
 - [ ] A system-known value type exists and accurately represents the entity.
 - [ ] Places export `PlaceDescriptor` instead of fake coordinate files or strings.
 - [ ] Contact-like entities export `IntentPerson` only when semantically true.
-- [ ] `ValueRepresentation` / `IntentValueRepresentation` lives in the entity/value layer, not UIKit or SwiftUI views.
+- [ ] Structured value mappers and any future `ValueRepresentation` / `IntentValueRepresentation` wrappers live in the entity/value layer, not UIKit or SwiftUI views.
 - [ ] Data/file representations still exist for destinations that need bytes.
 - [ ] `IntentValueQuery` resolves incoming values to existing entities when appropriate.
-- [ ] Import closures create new entities only when that is the intended workflow.
+- [ ] Future import closures create new entities only when that is the intended workflow and only when the selected SDK declares the import API.
 - [ ] Exports recheck authorization, account access, and location precision.
 - [ ] Manual Siri/Shortcuts tests cover a real cross-app destination action.
 
@@ -146,8 +146,8 @@ For each intent:
 - [ ] Background work does not require UI.
 - [ ] Foreground continuation used only when necessary.
 - [ ] TargetContentProvidingIntent used for active-view actions.
-- [ ] Long-running work uses progress/cancellation.
-- [ ] ExecutionTargets declared where needed.
+- [ ] Long work uses `ProgressReportingIntent` where appropriate; long-running/cancellable protocols are used only if the selected SDK declares them.
+- [ ] Execution placement is documented; `ExecutionTargets` is declared only if the selected SDK provides it.
 - [ ] Network failure path handled.
 - [ ] Duplicate retry/idempotency handled.
 
@@ -163,15 +163,15 @@ For each intent:
 - [ ] Multiwindow scenes configure `UIScene.activationConditions` with the same target-content identifier vocabulary used by intent routing.
 - [ ] No code selects `connectedScenes.first` or a process-global “top view controller.”
 - [ ] Primary semantic screens publish and invalidate `NSUserActivity.appEntityIdentifier`.
-- [ ] Individual annotated views clear identifiers when hidden, redacted, or rebound.
-- [ ] No app-defined type declares a new `AppEntityAnnotatable` conformance; UIKit framework conformances are reused.
-- [ ] Tables use `UITableViewAppIntentsDataSource` when they expose many entities.
-- [ ] Collections use `UICollectionViewAppIntentsDataSource` when they expose many entities.
+- [ ] Individual view annotation adapters are omitted unless the selected SDK declares them; when present, identifiers clear when hidden, redacted, or rebound.
+- [ ] No app-defined type declares a new `AppEntityAnnotatable` conformance; use only framework conformances/properties present in the selected SDK.
+- [ ] Tables keep stable diffable item IDs; `UITableViewAppIntentsDataSource` is used only if the selected SDK declares it.
+- [ ] Collections keep stable diffable item IDs; `UICollectionViewAppIntentsDataSource` is used only if the selected SDK declares it.
 - [ ] Index paths map through the current data source to durable IDs.
-- [ ] Reusable cells clear `appEntityIdentifier` in `prepareForReuse()`.
+- [ ] Reusable cells clear stable IDs and, in SDKs that support it, clear `appEntityIdentifier` in `prepareForReuse()`.
 - [ ] Model-level selection survives offscreen scrolling and diffable snapshots.
-- [ ] Custom canvases use `appEntityUIElementProvider` with current bounds and selection.
-- [ ] Annotation callbacks do no network access, mutation, or presentation.
+- [ ] Custom canvases maintain current semantic bounds/selection; `appEntityUIElementProvider` is used only if the selected SDK declares it.
+- [ ] Future annotation callbacks do no network access, mutation, or presentation.
 - [ ] Entity display representations can be fetched cheaply for many onscreen IDs.
 - [ ] `SiriTipUIView.setIntent(intent:)` is called before presentation and `isPresented` is honored.
 - [ ] `ShortcutsUIButton(style:)` is used for the native UIKit link to the app’s Shortcuts page.
@@ -190,7 +190,7 @@ For each intent:
 - [ ] Snippet redacts as needed.
 - [ ] Transferable exports are sanitized.
 - [ ] Donations respect user opt-out.
-- [ ] RelevantEntities cleared when context changes.
+- [ ] Selected-SDK-gated relevance hints are cleared when context changes if that API exists.
 - [ ] Account/workspace filtering enforced.
 - [ ] Lock-screen behavior reviewed.
 - [ ] Enterprise/MDM policy considered.
@@ -202,7 +202,7 @@ For each intent:
 - [ ] Entity string query tests.
 - [ ] Property query tests.
 - [ ] Search/indexing tests.
-- [ ] View annotation tests.
+- [ ] `NSUserActivity` primary annotation tests; view/list/canvas annotation tests only when the selected SDK supports them.
 - [ ] Snippet result tests.
 - [ ] Foreground continuation tests.
 - [ ] Widget/control execution tests.

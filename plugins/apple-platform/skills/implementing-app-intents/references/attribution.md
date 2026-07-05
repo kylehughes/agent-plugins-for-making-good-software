@@ -1,40 +1,31 @@
 # Attribution and Verification Notes
 
-Verification date: 2026-07-03.
+Verification baseline: iPhoneOS 26.5 SDK, Xcode 26.5, checked on 2026-07-03 by grepping public `.swiftinterface` files under the selected SDK.
 
-This skill was rebuilt from the user-provided starter skill and cross-checked against Apple Developer documentation and Apple WWDC transcripts available as of the verification date.
+This skill was rebuilt from the user-provided starter skill, expanded for UIKit and structured-value workflows, then corrected against the supplied SDK verification brief. The verification brief is treated as ground truth for availability in this package.
 
-## Primary Apple sources consulted
+## Primary Apple sources represented
 
 - Apple Developer Documentation: App Intents framework.
-- Apple Developer Documentation: AppEntity, AppIntent, AppShortcutsProvider, EntityQuery, EntityStringQuery, EnumerableEntityQuery, EntityPropertyQuery, IndexedEntity, OpenIntent, SnippetIntent, Transferable-related App Intents integration, CoreSpotlight App Entity indexing, and App Intents testing APIs where available.
-- WWDC 2025: “Explore new advances in App Intents”.
-- WWDC 2025: “Design interactive snippets”.
-- WWDC 2025: “Develop for Shortcuts and Spotlight with App Intents”.
-- WWDC 2026: “Build intelligent Siri experiences with App Schemas”.
-- WWDC 2026: “Discover new capabilities in App Intents framework”.
-- WWDC 2026: “Explore advanced App Intents features for Siri and Apple Intelligence”.
-- WWDC 2026: “Code-along: Make your app available to Siri”.
-- WWDC 2026: “Validate your App Intents”.
-- WWDC 2026: “Modernize your UIKit app”.
-- Apple Developer Documentation: `UISceneAppIntent`, `performNavigation(forScene:)`, `AppIntentSceneDelegate`, `scene(_:willPerformAppIntent:)`, and `UIScene.ConnectionOptions.appIntent`.
+- Apple Developer Documentation: `AppEntity`, `AppIntent`, `AppShortcutsProvider`, `EntityQuery`, `EntityStringQuery`, `EnumerableEntityQuery`, `EntityPropertyQuery`, `IndexedEntity`, `OpenIntent`, `SnippetIntent`, `ProgressReportingIntent`, `DeprecatedAppIntent`, `IntentDeprecation`, `PredictableIntent`, `AppIntentsPackage`, CoreSpotlight App Entity indexing, and Transferable-related integration where available.
+- Apple Developer Documentation and Swift interfaces for `UISceneAppIntent`, `performNavigation(forScene:)`, `AppIntentSceneDelegate`, `scene(_:willPerformAppIntent:)`, `SiriTipUIView`, `ShortcutsUIButton`, and `UIScene.ConnectionOptions.appIntent` in the `_AppIntents_UIKit` cross-import overlay.
 - Apple Developer Documentation: `UIScene.activationConditions`, `UISceneActivationConditions`, `canActivateForTargetContentIdentifierPredicate`, and `prefersToActivateForTargetContentIdentifierPredicate`.
-- Apple Developer Documentation: `AppEntityAnnotatable` (including Apple’s prohibition on app-defined conformances), `UITableViewAppIntentsDataSource`, `UICollectionViewAppIntentsDataSource`, `UIView.appEntityUIElementProvider`, and `AppEntityUIElement`.
-- Apple Developer Documentation: `SiriTipUIView`, `setIntent(intent:)`, and `isPresented`.
-- Apple Developer Documentation: `ShortcutsUIButton`, `init(style:)`, and `ShortcutsLinkStyle`.
-- Apple Developer Documentation: `IntentValueRepresentation` and `AppEntity.ValueRepresentation`.
-- Apple Developer Documentation: `GeoToolbox` and `PlaceDescriptor`.
-- Apple WWDC 2026: “Discover new capabilities in the App Intents framework,” especially `ValueRepresentation` with `PlaceDescriptor`.
-- Apple WWDC 2026: “Build intelligent Siri experiences with App Schemas,” especially onscreen awareness, `Transferable`, `IntentValueRepresentation`, `IntentValueQuery`, and import/export workflows.
-- Matthew Cassinelli, “Teach Siri AI to Share Structured Types Without Known Formats Across Apps with ValueRepresentation,” July 1, 2026.
-- Apple Developer Documentation: “Providing contextual cues to Apple Intelligence and Siri”.
+- Apple Developer Documentation / SDK interfaces: `SemanticContentDescriptor` in `VisualIntelligence`; `GeoToolbox` and `PlaceDescriptor`; `_GeoToolbox_AppIntents` overlay.
+- Apple WWDC 2025/2026 App Intents, App Schemas, UIKit modernization, Spotlight/Shortcuts, snippets, Visual Intelligence, and Siri sessions, used as design context but subordinated to the selected SDK’s public interfaces.
+- Matthew Cassinelli, “Teach Siri AI to Share Structured Types Without Known Formats Across Apps with ValueRepresentation,” July 1, 2026, used as design context for the structured-value transfer mental model.
+
+## SDK correction notes
+
+The package now states that these APIs are absent from iPhoneOS 26.5 and therefore selected-SDK-gated: `ValueRepresentation`, `IntentValueRepresentation`, `RelevantEntities`, AppIntents `EntityCollection`, `SyncableEntity`, `SyncableEntityIdentifier`, `LongRunningIntent`, `ExecutionTargets`, `CancellableIntent`, `AppIntentsTesting`, `UITableViewAppIntentsDataSource`, `UICollectionViewAppIntentsDataSource`, `AppEntityUIElement`, `UIView.appEntityUIElementProvider`, SwiftUI per-view `.appEntityIdentifier(...)`, SwiftUI `.appEntityIdentifier(forSelectionType:)`, and notification-content `appEntityIdentifiers`.
+
+The package now states that the verified Assistant Schemas domains in iPhoneOS 26.5 are: `journal`, `photos`, `visualIntelligence`, `reader`, `system`, `wordProcessor`, `presentation`, `spreadsheet`, `browser`, `files`, `camera`, `mail`, `whiteboard`, and `books`. Messages, Calendar, Tasks, Audio/media, Clock, Alarm, and Timer are not described as shipping schema domains for that SDK.
 
 ## Version notes
 
-App Intents and App Schemas evolve quickly across Xcode and OS releases. The skill intentionally marks iOS 27-specific areas as SDK-sensitive where symbols, schema names, annotations, or availability may shift during beta cycles.
+App Intents and App Schemas evolve quickly across Xcode and OS releases. The selected Xcode SDK, Swift interfaces, Apple documentation for that SDK, and compiler diagnostics are the final source of truth before shipping.
 
-Use the selected Xcode SDK, Apple documentation, and compiler diagnostics as the final source of truth before shipping. The package emphasizes architecture, implementation strategy, code shapes, checklists, and failure modes that should remain useful even when exact SDK spellings change.
+Runtime availability and compile-time visibility are different. If a symbol is absent from the selected SDK, `@available` does not make source code using that symbol compile.
 
 ## Relationship to the user-provided draft
 
-The user-provided `SKILL.MD`, `REFERENCE.md`, and `ATTRIBUTION.md` were treated as seed material. This package replaces that draft with a larger multi-file skill, while preserving the original intent: comprehensive App Intents implementation guidance for Siri, Apple Intelligence, Shortcuts, Spotlight, widgets, controls, snippets, onscreen context, entity modeling, queries, schemas, and indexing. The UIKit expansion treats UIKit scene routing, onscreen annotations, collection/canvas context, Siri promotion, drag providers, Objective-C bridging, and UIKit testing as first-class concerns rather than brief equivalents to SwiftUI examples.
+The user-provided `SKILL.MD`, `REFERENCE.md`, and `ATTRIBUTION.md` were treated as seed material. This package replaces that draft with a larger multi-file skill, while preserving the original intent: comprehensive App Intents implementation guidance for Siri, Apple Intelligence, Shortcuts, Spotlight, widgets, controls, snippets, onscreen context, entity modeling, queries, schemas, and indexing. The UIKit expansion treats UIKit scene routing, current `NSUserActivity` annotation, selected-SDK-gated advanced annotations, Siri promotion, drag providers, Objective-C bridging, and UIKit testing as first-class concerns rather than brief equivalents to SwiftUI examples.

@@ -180,10 +180,14 @@ Rules:
 
 ## RelevantEntities
 
-Use for dynamic contextual suggestions.
+`RelevantEntities` is absent from the iPhoneOS 26.5 SDK. Do not generate this code for a 26.5-compiled target.
+
+If a selected SDK supplies a relevance API, use it for dynamic contextual suggestions only, such as currently playing media, active workout/session/project, current document, current route, current camera mode, or a location-relevant item. Do not use it for large search corpora; durable searchable content belongs in entity queries and Spotlight.
+
+Forward-looking shape only:
 
 ```swift
-@available(iOS 27, *)
+// Not buildable with iPhoneOS 26.5 unless the selected SDK declares RelevantEntities.
 struct NowPlayingRelevantEntitiesProvider {
     func update(track: TrackEntity?) async {
         if let track {
@@ -195,11 +199,9 @@ struct NowPlayingRelevantEntitiesProvider {
 }
 ```
 
-Use cases: currently playing media, active workout/session/project, current document, current route, current camera mode, location-relevant item. Do not use for large search corpora.
-
 ## PredictableIntent
 
-Use when the system should predict an action based on usage and context.
+`PredictableIntent` is available since iOS 16. Use it when the system should predict an action based on usage and context.
 
 ```swift
 struct StartWorkoutIntent: AppIntent, PredictableIntent {

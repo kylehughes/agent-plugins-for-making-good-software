@@ -144,35 +144,29 @@ struct CreateAndOpenProjectIntent: AppIntent {
 
 Use when creation/search should end by opening the created/found content.
 
-## LongRunningIntent
+## Long-running work and cancellation
 
-For work beyond normal intent time limits, use long-running APIs when available.
+`ProgressReportingIntent` is available since iOS 17 and is the shipping tool for bounded progress. `LongRunningIntent` and `CancellableIntent` are absent from the iPhoneOS 26.5 SDK. Do not reference them in source compiled by that SDK.
+
+For work beyond normal intent limits, design the domain service now:
+
+- Idempotent job creation.
+- Durable job state where needed.
+- Cooperative cancellation through `Task.checkCancellation()` and service-level cancellation tokens.
+- Temporary-file cleanup.
+- Retry safety.
+- Foreground continuation when the work genuinely requires app UI.
+
+Forward-looking wrapper shape, not buildable with iPhoneOS 26.5:
 
 ```swift
-@available(iOS 27, *)
+// Forward-looking / selected-SDK-gated only.
 struct ExportLargeProjectIntent: AppIntent, LongRunningIntent, ProgressReportingIntent, CancellableIntent {
-    static let title: LocalizedStringResource = "Export Project"
-
-    @Parameter var project: ProjectEntity
-
-    func perform() async throws -> some ReturnsValue<IntentFile> & ProvidesDialog {
-        try await performBackgroundTask { progress in
-            let file = try await ProjectExporter.shared.export(
-                project.id,
-                progress: progress,
-                cancellation: { Task.isCancelled }
-            )
-            return .result(value: file, dialog: "Exported \(project.name).")
-        }
-    }
-
-    func onCancel() async {
-        await ProjectExporter.shared.cancel(project.id)
-    }
+    // Use only when the selected SDK declares these protocols.
 }
 ```
 
-Use for large exports/imports, video processing, ML analysis, sync repair, file conversion, and batch operations. Report progress, support cancellation, persist job state, and avoid duplicate work after retries.
+Use long-running APIs, if present in a future selected SDK, for large exports/imports, video processing, ML analysis, sync repair, file conversion, and batch operations. Report progress, support cancellation, persist job state, and avoid duplicate work after retries.
 
 ## ProgressReportingIntent
 
@@ -195,19 +189,22 @@ struct BatchArchiveIntent: AppIntent, ProgressReportingIntent {
 
 Use bounded progress units. Do not fake progress for unknown-duration operations.
 
-## CancellableIntent
+## Cancellation without CancellableIntent
+
+`CancellableIntent` is absent from the iPhoneOS 26.5 SDK. Still make every async intent cancellation-cooperative:
 
 ```swift
-struct AnalyzeVideoIntent: AppIntent, CancellableIntent {
+struct AnalyzeVideoIntent: AppIntent {
     @Parameter var video: VideoEntity
 
     func perform() async throws -> some IntentResult {
-        try await VideoAnalyzer.shared.analyze(video.id)
+        try Task.checkCancellation()
+        try await VideoAnalyzer.shared.analyze(
+            video.id,
+            cancellation: { Task.isCancelled }
+        )
+        try Task.checkCancellation()
         return .result()
-    }
-
-    func onCancel() async {
-        await VideoAnalyzer.shared.cancel(video.id)
     }
 }
 ```
@@ -216,10 +213,10 @@ Check cancellation in loops, pass cancellation to services, clean temporary file
 
 ## Background GPU work
 
-For iOS 27-era SDKs/platforms with background GPU support:
+For selected SDKs/platforms with background GPU support:
 
 - Declare the proper capability.
-- Use long-running semantics.
+- Use long-running semantics only when the selected SDK declares them; otherwise use progress, foreground continuation, and durable jobs.
 - Keep work bounded.
 - Respect energy and thermal pressure.
 - Degrade gracefully when unavailable.
@@ -229,32 +226,35 @@ Good uses: video/image processing, local ML inference, OCR, embedding/index gene
 
 ## ExecutionTargets
 
-Declare where an intent may run.
+`ExecutionTargets` is absent from the iPhoneOS 26.5 SDK. Do not declare it for code compiled by that SDK.
+
+Until a selected SDK provides an execution-target declaration API, document the intended process boundary explicitly and enforce it through target membership and dependency design:
+
+```text
+Intent can run in app process only:
+  - may use main-actor scene router after foreground continuation/open
+  - must not be linked into WidgetKit-only extension targets
+
+Intent can run in App Intents extension:
+  - dependencies must be extension-safe
+  - no UIKit scene/router dependency
+
+Intent can run in WidgetKit extension:
+  - small, deterministic mutation only
+  - shared app group storage where required
+```
+
+Forward-looking wrapper shape, not buildable with iPhoneOS 26.5:
 
 ```swift
-@available(iOS 27, *)
-struct ToggleWidgetStateIntent: AppIntent {
-    static let title: LocalizedStringResource = "Toggle Widget State"
-
-    static var allowedExecutionTargets: ExecutionTargets {
-        ExecutionTargets {
-            .widgetKitExtension
-            .appIntentsExtension
-        }
-    }
-
-    func perform() async throws -> some IntentResult {
-        try await WidgetStateStore.shared.toggle()
-        return .result()
+// Forward-looking / selected-SDK-gated only.
+static var allowedExecutionTargets: ExecutionTargets {
+    ExecutionTargets {
+        .widgetKitExtension
+        .appIntentsExtension
     }
 }
 ```
-
-| Target | Use when | Avoid when |
-| --- | --- | --- |
-| Main app | UI/navigation, app-only state, foreground workflows | Simple headless operations |
-| App Intents extension | Headless actions, shared repositories, Siri/Shortcuts | Needs active scene or app-only singleton |
-| WidgetKit extension | Widget/control-local state | Needs full navigation or long work |
 
 ## Dependencies
 
@@ -292,6 +292,8 @@ Dependencies must be available in the process/extension where the intent runs. A
 
 ## AppIntentsPackage
 
+`AppIntentsPackage` is available since iOS 17. If the app supports iOS 16.x devices, intents defined only in Swift packages are not discoverable through `AppIntentsPackage` on those devices even though core `AppIntent`/`AppEntity` protocols exist. Keep iOS 16-critical intents in an app target or accept an effective App Intents package-discovery floor of iOS 17.
+
 ```swift
 public struct ProjectIntentPackage: AppIntentsPackage {
     public static var includedPackages: [any AppIntentsPackage.Type] {
@@ -300,7 +302,7 @@ public struct ProjectIntentPackage: AppIntentsPackage {
 }
 ```
 
-Use for intents/entities in Swift packages or static libraries. Ensure the app target imports the package and test discovery from the final app bundle.
+Use for intents/entities in Swift packages or static libraries on iOS 17+. Ensure the app target imports the package and test discovery from the final app bundle on the oldest supported OS.
 
 ## Concurrency
 
@@ -354,7 +356,7 @@ Intent execution may be retried or resumed. Design for idempotency, duplicate su
 
 Before shipping:
 
-- Run AppIntentsTesting coverage.
+- Run XCTest/manual system-surface coverage; run AppIntentsTesting only if the selected SDK provides that framework.
 - Validate manual system surfaces.
 - Test fresh install and upgrade.
 - Test account switch/sign-out.

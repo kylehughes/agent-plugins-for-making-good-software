@@ -2,9 +2,9 @@
 
 ## Testing philosophy
 
-Unit tests for repositories are not enough. App Intents need integration tests that exercise the framework boundary: generated intent definitions, parameter bridging, entity queries, result values, Spotlight indexing, view annotations, snippets, and execution in the same style used by Siri, Shortcuts, widgets, and Spotlight.
+Unit tests for repositories are not enough. App Intents need integration tests that exercise the framework boundary: generated intent definitions, parameter bridging, entity queries, result values, Spotlight indexing, `NSUserActivity` annotations, selected-SDK-gated view annotations, snippets, and execution in the same style used by Siri, Shortcuts, widgets, and Spotlight.
 
-Use AppIntentsTesting where available, plus manual validation on devices.
+Use XCTest/UI tests and manual validation on devices. `AppIntentsTesting` is absent from the iPhoneOS 26.5 SDK; use it only when the selected SDK provides that framework.
 
 ## Test layers
 
@@ -13,7 +13,7 @@ Use AppIntentsTesting where available, plus manual validation on devices.
 3. Intent execution tests.
 4. Snippet result tests.
 5. Spotlight indexing/query tests.
-6. Onscreen annotation tests.
+6. `NSUserActivity` primary-screen annotation tests; advanced view/list/canvas annotation tests only when the selected SDK supports them.
 7. App Shortcut discovery tests.
 8. Siri/Shortcuts manual tests.
 9. Widget/control execution tests.
@@ -21,14 +21,17 @@ Use AppIntentsTesting where available, plus manual validation on devices.
 
 ## AppIntentsTesting setup
 
-Use an XCUITest bundle for AppIntentsTesting integration tests.
+`AppIntentsTesting` is absent from the iPhoneOS 26.5 SDK. Do not include `import AppIntentsTesting` in code compiled by that SDK.
+
+If a selected SDK provides AppIntentsTesting, isolate those tests behind target membership or conditional compilation:
 
 ```swift
+#if canImport(AppIntentsTesting)
 import XCTest
 import AppIntents
 import AppIntentsTesting
 
-final class TaskIntentTests: XCTestCase {
+final class TaskIntentFrameworkTests: XCTestCase {
     let definitions = IntentDefinitions(bundleIdentifier: "com.example.app")
 
     override func setUp() async throws {
@@ -36,15 +39,14 @@ final class TaskIntentTests: XCTestCase {
         try await TestDataSeeder.shared.resetAndSeed()
     }
 }
+#endif
 ```
 
-Notes:
-
-- The test bundle and app must be signed with the same team.
-- Tests run outside the app process; do not import app-only internals unless shared through a testable package.
-- Use test-only intents or test data hooks only when safe and excluded from production discovery.
+For iPhoneOS 26.5, keep direct XCTest coverage around repositories, entity queries, intent `perform()` methods where constructible, Spotlight indexing, and UI behavior.
 
 ## Executing an intent in tests
+
+The `definitions.makeIntent(...).run()` style below is selected-SDK-dependent. If AppIntentsTesting is unavailable, construct the intent directly where possible and call `perform()`, or validate through UI/Shortcuts surfaces.
 
 ```swift
 func testCreateTask() async throws {
@@ -132,20 +134,24 @@ Test index add, update, delete, privacy exclusion, title/content/semantic querie
 
 ## View annotation test
 
+In the iPhoneOS 26.5 SDK, test the shipping onscreen-context path: `NSUserActivity.appEntityIdentifier` on the primary screen. Do not assume per-view/list/canvas inspection helpers exist.
+
+UIKit example:
+
 ```swift
-func testProjectDetailAnnotatesCurrentProject() async throws {
-    let app = XCUIApplication()
-    app.launchArguments += ["-UITestSeedProject", "Launch Plan"]
-    app.launch()
+func testProjectDetailPublishesCurrentProjectActivity() throws {
+    let controller = ProjectViewController()
+    controller.configure(project: seededProject)
 
-    app.buttons["Launch Plan"].tap()
-
-    let annotations = try await viewAnnotations(in: app)
-    XCTAssertTrue(annotations.containsEntity(ProjectEntity.self, id: seededProjectID))
+    let activity = try XCTUnwrap(controller.userActivity)
+    XCTAssertEqual(activity.title, "Viewing Launch Plan")
+    XCTAssertNotNil(activity.appEntityIdentifier)
 }
 ```
 
-Test detail primary entity, list rows, selection annotations, cell reuse, custom canvas annotations, and notification/Now Playing annotations if used. In UIKit, explicitly test table/collection App Intents data sources against diffable snapshot changes and verify reused cells do not retain old identifiers.
+UI tests should also verify the activity is invalidated or replaced when the screen disappears, redacts content, changes account, or changes semantic subject in place.
+
+Forward-looking, selected-SDK-gated tests may inspect per-view annotations, list selections, reusable-cell annotation reset, custom canvas elements, or notification annotations only when the selected SDK exposes those APIs.
 
 ## Snippet test
 
@@ -165,12 +171,17 @@ Test result snippet, confirmation snippet before mutation, button/toggle intents
 
 ## Long-running/cancellation test
 
-```swift
-func testExportCanBeCancelled() async throws {
-    var intent = try definitions.makeIntent(ExportLargeProjectIntent.self)
-    intent.project = seededLargeProject
+`LongRunningIntent` and `CancellableIntent` are absent from the iPhoneOS 26.5 SDK. Test cancellation at the domain service and `Task` level today.
 
-    let task = Task { try await intent.run() }
+```swift
+func testExportServiceCanBeCancelled() async throws {
+    let task = Task {
+        try await ProjectExporter.shared.export(
+            seededLargeProject.id,
+            cancellation: { Task.isCancelled }
+        )
+    }
+
     try await Task.sleep(for: .milliseconds(100))
     task.cancel()
 
@@ -180,12 +191,10 @@ func testExportCanBeCancelled() async throws {
     } catch is CancellationError {
         // Expected.
     }
-
-    XCTAssertFalse(FileManager.default.fileExists(atPath: temporaryExportPath.path))
 }
 ```
 
-Test cancellation propagation, temporary cleanup, no success after cancel, and retry idempotency.
+If a selected SDK later provides long-running/cancellable intent protocols, add framework-level tests for progress, cancellation callbacks, persisted job state, duplicate retries, and foreground continuation.
 
 ## Manual Siri matrix
 
@@ -257,21 +266,21 @@ Test at minimum:
 - Two scenes open to different accounts/workspaces; the intent reaches only a compatible scene.
 - An entity already open is focused rather than pushed twice.
 - `NSUserActivity.appEntityIdentifier` changes when the primary controller changes semantic subject and is invalidated on disappearance/privacy mode.
-- `UITableViewAppIntentsDataSource` and `UICollectionViewAppIntentsDataSource` map through stable diffable item IDs after reorder/filter/snapshot updates.
-- Reusable cells clear old `appEntityIdentifier` values.
-- Custom-canvas `appEntityUIElementProvider` updates bounds and selection and performs no I/O.
+- Stable table/collection model IDs survive reorder/filter/snapshot updates; `UITableViewAppIntentsDataSource` / `UICollectionViewAppIntentsDataSource` tests are added only if the selected SDK declares those APIs.
+- Reusable cells clear old stable IDs and, in SDKs that support it, old `appEntityIdentifier` values.
+- Custom-canvas semantic geometry updates bounds and selection; `appEntityUIElementProvider` tests are added only if the selected SDK declares it.
 - `SiriTipUIView` is configured with `setIntent(intent:)`, lays out correctly, and honors `isPresented`.
 - Drag providers load data without presenting UI from `sessionWillBegin`.
 - Storyboard and restoration paths install the scene coordinator before intent callbacks.
 
-Unit-test a pure `AppIntent → NavigationRoute` mapper separately from `UIScene`. UI-test the real route and annotation hierarchy.
+Unit-test a pure `AppIntent → NavigationRoute` mapper separately from `UIScene`. UI-test the real route and primary activity; add advanced annotation hierarchy tests only when APIs exist.
 
 ## CI recommendations
 
-- Run AppIntentsTesting in XCUITest on every PR touching intents/entities/queries/indexing.
+- Run XCTest/UI/manual system-surface tests on every PR touching intents/entities/queries/indexing; run AppIntentsTesting only when the selected SDK provides it.
 - Include deterministic seed data.
 - Run at least one Spotlight test on a clean simulator.
-- Run UI annotation tests on stable views.
+- Run primary `NSUserActivity` annotation tests on stable views; advanced annotation tests are selected-SDK-gated.
 - Add migration tests for changed definitions.
 - Capture snippet screenshots if feasible.
 - Run device smoke tests before release for Siri and Visual Intelligence.

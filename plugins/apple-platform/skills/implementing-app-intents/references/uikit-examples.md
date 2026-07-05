@@ -1,5 +1,7 @@
 # UIKit App Intents Examples
 
+Availability note: buildable iPhoneOS 26.5 UIKit onscreen context is `NSUserActivity.appEntityIdentifier` for the primary screen entity. Sections that mention per-view `appEntityIdentifier`, table/collection App Intents data sources, custom canvas providers, notification `appEntityIdentifiers`, or AppIntentsTesting are forward-looking / selected-SDK-gated unless explicitly stated otherwise.
+
 These examples focus on UIKit-specific integration. Entity/query/intent definitions remain the same as in [examples.md](examples.md).
 
 The iOS 26/iOS 27 SDKs are still evolving. Code marked **SDK-sensitive** shows the intended API shape; use Xcode autocomplete and compiler diagnostics for the selected SDK’s exact declaration.
@@ -478,9 +480,9 @@ final class ProjectDetailViewController: UIViewController {
 
 If the controller stays visible while switching among child entities, republish whenever the semantic subject changes.
 
-## Annotating an individual `UIView`
+## Forward-looking: annotating an individual `UIView`
 
-`UIView` already receives `AppEntityAnnotatable` support from UIKit. A subclass inherits it. Do not add a new conformance in app code.
+The iPhoneOS 26.5 SDK does not expose a buildable UIKit per-view annotation API beyond `NSUserActivity`. `AppEntityAnnotatable` exists as an iOS 18.2 declaration, but per-view `appEntityIdentifier` use on UIKit views must be compile-verified against the selected SDK. Do not add a new conformance in app code.
 
 ```swift
 @MainActor
@@ -508,6 +510,8 @@ final class ProjectHeaderView: UIView {
 Annotate the semantic container, not every child label/image.
 
 ## Reusable cell hygiene
+
+The stable-ID cleanup portion is buildable today. The `contentView.appEntityIdentifier` lines are forward-looking and must be removed or source-gated unless the selected SDK declares per-view annotation on UIKit views.
 
 ```swift
 @MainActor
@@ -539,7 +543,9 @@ final class TaskCell: UITableViewCell {
 
 Even when a collection data source supplies identifiers, clearing any per-cell annotation avoids stale data from earlier implementations or child views.
 
-## `UITableViewAppIntentsDataSource`
+## Forward-looking: `UITableViewAppIntentsDataSource`
+
+`UITableViewAppIntentsDataSource` and `tableView.appIntentsDataSource` are absent from iPhoneOS 26.5. This section is a selected-SDK-gated shape only.
 
 ```swift
 import AppIntents
@@ -593,7 +599,9 @@ final class TasksViewController: UITableViewController,
 
 The index path is used only to query the current diffable snapshot.
 
-## `UICollectionViewAppIntentsDataSource`
+## Forward-looking: `UICollectionViewAppIntentsDataSource`
+
+`UICollectionViewAppIntentsDataSource` and `collectionView.appIntentsDataSource` are absent from iPhoneOS 26.5. This section is a selected-SDK-gated shape only.
 
 ```swift
 import AppIntents
@@ -680,9 +688,9 @@ final class SelectionModel<ID: Hashable & Sendable> {
 
 The table/collection and App Intents annotation adapter should read from the same selection model. Do not lose semantic selection merely because a cell scrolled away.
 
-## Custom canvas with `appEntityUIElementProvider`
+## Forward-looking: custom canvas with `appEntityUIElementProvider`
 
-**SDK-sensitive initializer labels.** Apple’s current documentation shows `identifier`, `bounds`, and `state`.
+`AppEntityUIElement` and `UIView.appEntityUIElementProvider` are absent from iPhoneOS 26.5. This section is a selected-SDK-gated shape only. **SDK-sensitive initializer labels.** Verify `identifier`, `bounds`, and `state` against the selected SDK.
 
 ```swift
 import AppIntents
@@ -945,7 +953,9 @@ case let search as SearchProjectsIntent:
 
 The search intent does not find a window in `perform()`, and it does not also implement custom scene navigation. The exact schema/protocol relationship is SDK-sensitive; the durable architecture is structured criteria → selected scene → coordinator route → UIKit search controller.
 
-## Notification entity annotation
+## Forward-looking: notification entity annotation
+
+Notification-content `appEntityIdentifiers` is absent from iPhoneOS 26.5. This section is a selected-SDK-gated shape only.
 
 ```swift
 import AppIntents
@@ -1027,6 +1037,8 @@ import UIKit
 final class AppIntentUIKitBridge: NSObject {
     static let shared = AppIntentUIKitBridge()
 
+    // Forward-looking: only compile this adapter when the selected SDK exposes
+    // per-view entity annotation on UIKit views.
     func annotate(
         view: UIView,
         projectIdentifier: UUID?,
@@ -1118,9 +1130,9 @@ final class AppIntentRouteTests: XCTestCase {
 
 Expose a test-only pure mapping function rather than constructing a real `UIScene` for every routing test.
 
-## UI-test reusable-cell annotations
+## Forward-looking: UI-test reusable-cell annotations
 
-Pseudo-code because the exact AppIntentsTesting view-annotation inspection API can move across SDK seeds:
+Pseudo-code. AppIntentsTesting and reusable-view annotation inspection APIs are absent from iPhoneOS 26.5 and can move across SDK seeds.
 
 ```swift
 func testCellReuseDoesNotExposeOldTask() async throws {

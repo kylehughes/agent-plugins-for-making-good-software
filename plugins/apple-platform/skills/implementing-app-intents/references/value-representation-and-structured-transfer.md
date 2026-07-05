@@ -1,303 +1,244 @@
-# ValueRepresentation and Structured Cross-App Transfer
+# Structured Value Mapping and Future ValueRepresentation
 
-`ValueRepresentation` is the iOS 27-era bridge between your private app entity and a system-understood structured value. Use it when your entity can be represented as a semantic value that another app or Siri already understands, but that value is not naturally a file, image, PDF, plain text, or other `UTType` payload.
+## Availability correction
 
-The canonical example is a place. A travel app may have a `LandmarkEntity`. Mail can receive that landmark as text, an image, or a PDF through ordinary `Transferable` data/file representations. Maps, however, needs structured navigation input: a coordinate, address, or place descriptor. A coordinate plus common name does not have to become a fake file. Export the landmark as a system place value, such as `PlaceDescriptor` from `GeoToolbox`, using `ValueRepresentation` inside the entity’s `Transferable` conformance.
+In the iPhoneOS 26.5 SDK verified on 2026-07-03:
+
+- `IntentPerson` exists in `AppIntents` and is available since iOS 16.
+- `PlaceDescriptor` exists in `GeoToolbox` and is present in the iOS 26 SDK, with `_GeoToolbox_AppIntents` overlay support.
+- `ValueRepresentation` and `IntentValueRepresentation` are absent.
+
+That split matters. The structured value types are real and useful today. The transfer-representation plumbing described in iOS 27-era material is not available to source compiled with iPhoneOS 26.5.
+
+Do not write production code that references `ValueRepresentation` or `IntentValueRepresentation` unless the selected SDK declares those symbols. A runtime `#available` check cannot fix a missing compile-time declaration.
 
 ## Mental model
 
-`Transferable` is the transport surface. Each representation says, “Here is another way the system may carry this entity.”
+Your app entity is private app identity. A structured system value is a shape another app or system action already understands. A transfer representation is the bridge that lets the system carry your entity as that value.
 
-Use these representations together:
+For iOS 26.5-compatible code, implement the first two parts now:
 
-| Representation | Carries | Use when |
-| --- | --- | --- |
-| `DataRepresentation` | Bytes with a known content type | Plain text, JSON, RTF, images, small custom payloads. |
-| `FileRepresentation` | A file URL with a known content type | PDF, movie, large image, archive, document export. |
-| `IntentValueRepresentation` | A system intent value | Bidirectional conversion between your entity and a system-known intent value such as `IntentPerson` or `PlaceDescriptor`. |
-| `ValueRepresentation` | Convenience spelling for entity value transfer | Entity can be exported as a system-understood structured value, commonly shown in Apple examples with `PlaceDescriptor`. |
+```text
+LandmarkEntity
+  → pure mapper
+  → PlaceDescriptor
+```
 
-`DisplayRepresentation` is not a transfer representation. It controls how the entity appears to the user. It does not give Maps a coordinate, Phone a person, or another app a usable structured value.
+```text
+ContactEntity
+  → pure mapper
+  → IntentPerson
+```
 
-`@Property` is also not sufficient by itself. Properties help Siri reason about, search, filter, and speak about an entity. A receiving app still needs a value shape it understands. If the receiving system action expects `PlaceDescriptor`, `IntentPerson`, or another supported system value, expose that exact shape through a value representation.
+When a selected SDK later provides `ValueRepresentation` / `IntentValueRepresentation`, the adoption should be a thin wrapper around the mapper:
 
-## When to use it
+```text
+Transferable.transferRepresentation
+  → future ValueRepresentation wrapper
+  → existing mapper
+```
 
-Add a value representation when all of the following are true:
+Do not put this logic in UIKit view controllers, SwiftUI views, snippets, drag delegates, or share-sheet adapters. It belongs beside the entity/value layer.
 
-1. The source object is an app entity or transferable domain object.
-2. The user may reasonably ask Siri to use “this” or “that” object in another app.
-3. A system-known structured value accurately represents the object.
-4. A data/file representation would be lossy, fake, or unusable by the destination action.
-5. The app can export the value without leaking private, hidden, account-scoped, or stale information.
+## What structured values solve
 
-Good candidates:
+Use structured value mapping when your entity can be expressed as a system-known semantic value that is not naturally a file or byte payload:
 
-- A place, store, trailhead, landmark, venue, pickup point, or destination exported as `PlaceDescriptor`.
-- A contact-like entity exported as `IntentPerson`.
-- A meeting participant, message recipient, or author exported as a person value when that is semantically accurate.
-- Any app entity that conforms to a schema and also has a system value shape that another app action expects.
+- A place, store, trailhead, landmark, venue, pickup point, or destination as `PlaceDescriptor`.
+- A contact, team member, sender, attendee, author, or assignee as `IntentPerson`.
 
-Poor candidates:
+A fake coordinate JSON file is not equivalent to a `PlaceDescriptor`. A display name string is not equivalent to an `IntentPerson`. `DisplayRepresentation` is also not enough; it helps the system speak and show your entity, but it is not a cross-app value shape.
 
-- Arbitrary JSON blobs.
-- Private database rows with no system value equivalent.
-- Another app’s private identifier, such as an Apple Music ID embedded in your own album entity.
-- A URL used only because there is no better value; URLs are fine when the URL is truly the content, not when it is a workaround for missing semantic shape.
-- A screenshot of visible content when the destination needs structured data.
+## iOS 26.5-compatible place mapper
 
-## Place export example
+Keep the mapper pure, synchronous or cheaply async, and independent of UI. Verify initializer labels and supported fields against the selected `GeoToolbox` SDK.
 
-Use this shape when a landmark/place entity should work with Maps or other mapping actions.
+```swift
+import GeoToolbox
+
+extension LandmarkEntity {
+    var systemPlaceDescriptor: PlaceDescriptor {
+        // Pseudocode: use the exact initializer labels from the selected SDK.
+        fatalError("Use the PlaceDescriptor initializer from the selected GeoToolbox SDK.")
+    }
+}
+```
+
+Design rules:
+
+- Prefer precise but privacy-appropriate coordinates.
+- Include a human-readable name when available.
+- Include address components only if the user can see/disclose them.
+- Avoid exporting internal place IDs from your service as if another app could resolve them.
+- Do not synthesize misleading coordinates for approximate places.
+
+## iOS 26.5-compatible person mapper
+
+`IntentPerson` is available since iOS 16. Use it for participant-like values today. Verify initializer labels against the selected `AppIntents` SDK.
 
 ```swift
 import AppIntents
-import CoreLocation
+
+extension TeamMemberEntity {
+    var systemPerson: IntentPerson {
+        // Pseudocode: use the exact initializer labels from the selected SDK.
+        fatalError("Use the IntentPerson initializer from the selected AppIntents SDK.")
+    }
+}
+```
+
+Design rules:
+
+- Do not disclose hidden email addresses, phone numbers, handles, or directory IDs.
+- Keep account/workspace boundaries intact.
+- Use `IntentPerson` for people-like values, not for arbitrary named resources.
+- Preserve ambiguity when two people share the same display name; do not guess silently.
+
+## Future transfer wrapper shape
+
+The following illustrates the intended future shape only. It is not buildable with the iPhoneOS 26.5 SDK because `ValueRepresentation` is absent.
+
+```swift
+// Forward-looking / selected-SDK-gated; not buildable with iPhoneOS 26.5.
+import AppIntents
 import CoreTransferable
 import GeoToolbox
-import UniformTypeIdentifiers
 
-struct LandmarkEntity: AppEntity, Transferable, Sendable, Identifiable {
-    static let defaultQuery = LandmarkQuery()
-
-    let id: Int
-    let name: String
-    let coordinate: CLLocationCoordinate2D
-    let summary: String?
-
-    static var typeDisplayRepresentation: TypeDisplayRepresentation {
-        "Landmark"
-    }
-
-    var displayRepresentation: DisplayRepresentation {
-        DisplayRepresentation(
-            title: "\(name)",
-            subtitle: summary.map { "\($0)" },
-            image: .init(systemName: "mappin.and.ellipse")
-        )
-    }
-
+extension LandmarkEntity: Transferable {
     static var transferRepresentation: some TransferRepresentation {
-        // Structured value for Maps / navigation / Siri cross-app workflows.
-        ValueRepresentation(exporting: { landmark in
-            PlaceDescriptor(
-                representations: [.coordinate(landmark.coordinate)],
-                commonName: landmark.name
-            )
-        })
+        ValueRepresentation(exporting: \.systemPlaceDescriptor)
 
-        // Broad compatibility for text destinations such as Mail or Messages.
         DataRepresentation(exportedContentType: .plainText) { landmark in
-            let text = landmark.summary.map { "\(landmark.name)\n\($0)" } ?? landmark.name
-            return Data(text.utf8)
-        }
-
-        // High-fidelity export when the receiving destination wants a document/file.
-        FileRepresentation(exportedContentType: .pdf) { landmark in
-            let url = try await LandmarkExporter.shared.pdf(for: landmark.id)
-            return SentTransferredFile(url)
+            Data(landmark.name.utf8)
         }
     }
 }
 ```
 
-Use the exact initializer labels accepted by the active SDK. Apple’s WWDC sample shows `ValueRepresentation(exporting: { ... })`; prefer that spelling unless the active SDK documents another shorthand.
+When a selected SDK declares an explicit bidirectional API such as `IntentValueRepresentation`, use importing only when incoming content should create or update an entity in your app. If incoming content should match an existing entity, prefer `IntentValueQuery`.
 
-## Key-path export when the entity already stores the system value
+## Import vs query decision
 
-If the entity already exposes the system-known value as a property, prefer the key-path form. This keeps export code declarative and reduces divergence between the entity’s properties and transfer representation.
-
-```swift
-import AppIntents
-import CoreTransferable
-import GeoToolbox
-
-struct LandmarkEntity: AppEntity, Transferable, Sendable, Identifiable {
-    static let defaultQuery = LandmarkQuery()
-
-    let id: Int
-
-    @Property(title: "Name")
-    var name: String
-
-    @Property(title: "Place")
-    var placeDescriptor: PlaceDescriptor
-
-    var displayRepresentation: DisplayRepresentation {
-        DisplayRepresentation(
-            title: "\(name)",
-            image: .init(systemName: "mappin.and.ellipse")
-        )
-    }
-
-    static var transferRepresentation: some TransferRepresentation {
-        ValueRepresentation(exporting: \.placeDescriptor)
-    }
-}
-```
-
-Do not duplicate coordinate/address/name mapping in multiple places. Prefer a single domain mapper:
-
-```swift
-enum PlaceMapping {
-    static func descriptor(for landmark: Landmark) -> PlaceDescriptor {
-        PlaceDescriptor(
-            representations: [.coordinate(landmark.coordinate)],
-            commonName: landmark.name
-        )
-    }
-}
-```
-
-Then use the same mapper for entity properties, transfer export, search result previews, and tests.
-
-## Contact export and import example
-
-`IntentValueRepresentation` is the explicit name Apple shows for bidirectional conversion between an app entity and a system intent value. Use importing when incoming content should create a new entity in your app.
+Use `IntentValueQuery` when the system has semantic input and the app should resolve it to existing app entities. `IntentValueQuery` is present in the iPhoneOS 26.5 SDK. `SemanticContentDescriptor` comes from `VisualIntelligence`.
 
 ```swift
 import AppIntents
-import CoreTransferable
+import VisualIntelligence
 
-struct ContactEntity: AppEntity, Transferable, Sendable, Identifiable {
-    static let defaultQuery = ContactQuery()
+@UnionValue
+enum ExistingContentMatch {
+    case landmark(LandmarkEntity)
+    case collection(LandmarkCollectionEntity)
+}
 
-    let id: UUID
-
-    @Property(title: "Person")
-    var person: IntentPerson
-
-    static var typeDisplayRepresentation: TypeDisplayRepresentation { "Contact" }
-
-    var displayRepresentation: DisplayRepresentation {
-        DisplayRepresentation(title: "\(person.displayName)")
-    }
-
-    static var transferRepresentation: some TransferRepresentation {
-        IntentValueRepresentation(exporting: \.person, importing: { incomingPerson in
-            let contact = try await ContactImporter.shared.createContact(from: incomingPerson)
-            return contact.entity
-        })
+struct LandmarkValueQuery: IntentValueQuery {
+    func values(for input: SemanticContentDescriptor) async throws -> [ExistingContentMatch] {
+        guard let pixelBuffer = input.pixelBuffer else { return [] }
+        return try await LandmarkIndex.shared.matches(pixelBuffer).prefix(10).map { .landmark($0) }
     }
 }
 ```
 
-Use an import closure when the incoming value is new content. Use `IntentValueQuery` when the incoming value should resolve to an existing entity.
+Use a future import representation only when the app should accept a system value and create a new entity:
 
-## Resolving incoming values to existing entities
+```text
+Incoming PlaceDescriptor
+  → create a saved place / trip stop / delivery address in this app
+```
 
-If another app hands your intent a system value, decide whether it refers to an existing entity before creating anything.
+Do not import when the correct behavior is lookup:
+
+```text
+Incoming image/text/location
+  → find an existing LandmarkEntity
+```
+
+## Onscreen awareness plus structured value mapping
+
+The current shipping chain for “get directions to this landmark” should be designed like this:
+
+```text
+Visible screen
+  → NSUserActivity.appEntityIdentifier
+  → LandmarkEntity.ID
+  → LandmarkEntityQuery.entities(for:)
+  → LandmarkEntity
+  → systemPlaceDescriptor mapper
+  → future transfer wrapper when selected SDK supports it
+```
+
+The first four steps are buildable in iPhoneOS 26.5. The final transfer wrapper is selected-SDK-gated.
+
+UIKit example for the buildable part:
 
 ```swift
-import AppIntents
-
-struct ContactQuery: EntityQuery, IntentValueQuery {
-    func entities(for identifiers: [ContactEntity.ID]) async throws -> [ContactEntity] {
-        try await ContactStore.shared.entities(for: identifiers)
-    }
-
-    func values(for input: [IntentPerson]) async throws -> [ContactEntity] {
-        try await ContactStore.shared.contacts(matching: input).map(\.entity)
-    }
-}
+let activity = NSUserActivity(activityType: "com.example.landmark.view")
+activity.title = "Viewing \(landmark.name)"
+activity.appEntityIdentifier = EntityIdentifier(
+    for: LandmarkEntity.self,
+    identifier: landmark.id
+)
+viewController.userActivity = activity
+activity.becomeCurrent()
 ```
 
-Use this for commands like “message this person in my app” when “this person” may already exist in your database. Use import only when creating a new app object is the intended behavior.
+## UIKit guidance
 
-## Onscreen awareness plus value transfer
+UIKit does not change the representation model.
 
-Cross-app Siri workflows usually need both context and transfer.
-
-1. Annotate the visible object so Siri can resolve “this landmark.”
-2. Ensure the resolved entity has a query and stable ID.
-3. Add `Transferable` representations.
-4. Add `ValueRepresentation` for the system value the destination app needs.
-5. Test the full chain through Siri/Shortcuts, not only entity compilation.
-
-UIKit example:
-
-```swift
-final class LandmarkViewController: UIViewController {
-    private let landmark: Landmark
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
-        let entity = LandmarkEntity(landmark: landmark)
-        let activity = NSUserActivity(activityType: "com.example.landmarks.view")
-        activity.title = landmark.name
-        activity.appEntityIdentifier = EntityIdentifier(for: entity)
-        activity.isEligibleForSearch = true
-        activity.isEligibleForPrediction = true
-        view.window?.windowScene?.userActivity = activity
-    }
-}
-```
-
-With that annotation and the `ValueRepresentation` above, the system has a path from “this landmark” to `LandmarkEntity`, then from `LandmarkEntity` to `PlaceDescriptor`, then into a Maps-style destination action.
-
-SwiftUI uses different annotation syntax, but the entity, query, and transfer code is identical.
+- Publish the primary onscreen entity with `NSUserActivity.appEntityIdentifier`.
+- Route opens/actions through `UISceneAppIntent` or `AppIntentSceneDelegate`.
+- Keep structured value mappers in the entity/value layer.
+- Share export services between App Intents, drag/drop, and share sheets where appropriate.
+- Do not build `PlaceDescriptor` or `IntentPerson` in a cell, view controller, or context-menu delegate.
 
 ## Decision tree
 
-When exposing an entity for Siri and Apple Intelligence:
-
 ```text
-Can Siri find or resolve the entity?
-  -> Add EntityQuery / IndexedEntity / onscreen annotations.
+Can another system/app use a known file or data format?
+  → Add DataRepresentation or FileRepresentation.
 
-Can the destination act on the entity ID directly?
-  -> Return/pass the AppEntity.
+Can the entity map to a system-known structured value shipping in this SDK?
+  → Add a pure mapper, e.g. PlaceDescriptor or IntentPerson.
 
-Does the destination need bytes or a known file format?
-  -> Add DataRepresentation or FileRepresentation.
+Does the selected SDK declare ValueRepresentation / IntentValueRepresentation?
+  → Add a thin Transferable wrapper around the mapper.
 
-Does the destination need a structured system value?
-  -> Add ValueRepresentation / IntentValueRepresentation.
+Does the selected SDK lack those transfer APIs?
+  → Keep the mapper and file/data representations; do not reference absent symbols.
 
-Does incoming structured content refer to an existing entity?
-  -> Add IntentValueQuery.
+Should incoming content match an existing entity?
+  → Use IntentValueQuery.
 
-Should incoming structured content create a new entity?
-  -> Add importing: on IntentValueRepresentation / ValueRepresentation where supported.
-
-Is there no matching system value?
-  -> Do not fake one. Improve schema conformance, indexed properties, display representations,
-     onscreen annotations, and domain-specific intents instead.
+Should incoming content create a new entity?
+  → Use a future import representation only if the selected SDK declares it.
 ```
 
 ## Validation checklist
 
-- The system value is semantically true, not merely convenient.
-- The entity still has a normal query; transfer is not a substitute for resolution.
-- The entity is indexed or queryable if Siri needs to find it without onscreen context.
-- The value export works from every process that may execute the intent or transfer, including App Intents extensions and WidgetKit extensions.
-- The export rechecks authorization at export time.
-- Location precision, names, notes, and metadata are redacted according to the user’s current permission and account state.
-- File/data representations remain available for destinations that want bytes.
-- Value representations are availability-gated for the SDK/OS version that introduced them.
-- Tests cover the mapper from private model to system value.
-- Manual Siri/Shortcuts tests cover the end-to-end destination action, such as getting directions to an onscreen landmark.
+- [ ] The app compiles against the selected SDK without referencing absent symbols.
+- [ ] `IntentPerson` and `PlaceDescriptor` initializer labels are verified in the selected SDK.
+- [ ] Structured value mappers are pure, testable, and UI-independent.
+- [ ] `Transferable` file/data representations re-check authorization at export time.
+- [ ] Future `ValueRepresentation` / `IntentValueRepresentation` code is isolated from 26.5-compiled targets.
+- [ ] `NSUserActivity.appEntityIdentifier` resolves through the entity query after app relaunch.
+- [ ] Precision and privacy of exported location/person data are intentionally bounded.
 
 ## Anti-patterns
 
-- Adding a `String` property named `address` and assuming Maps will infer navigation behavior.
-- Exporting another app’s ID and expecting Siri to use it as that app’s entity.
-- Creating a throwaway file that contains coordinates just to satisfy `Transferable`.
-- Treating `ValueRepresentation` as arbitrary cross-app object serialization.
-- Returning hidden or premium data because the entity was visible in a list.
-- Letting UIKit drag export, Share sheet export, and Siri transfer use three different mappers.
-- Forgetting that the export may be invoked without the original view controller alive.
-- Compiling iOS 27 symbols into an iOS 26 deployment path without availability gates.
+- Treating `ValueRepresentation` as available in iPhoneOS 26.5.
+- Treating `PlaceDescriptor` or `IntentPerson` as unavailable merely because the transfer wrappers are absent.
+- Using fake JSON files for places or contacts when a system-known value type exists.
+- Exporting another app’s private IDs.
+- Assuming `DisplayRepresentation` or `@Property` is enough to pass structured content to another app.
+- Compiling iOS 27-era symbols into an iOS 26.5 SDK deployment path without source isolation.
+- Building structured values in UIKit/SwiftUI view code instead of the entity/value layer.
 
 ## Agent instruction
 
-When auditing a codebase, search every entity that represents a person, place, event, document, message, media item, route, payment destination, or external-world object. For each one, ask:
+When asked to add structured cross-app transfer:
 
-1. Is there a system App Schema for this object or its actions?
-2. Is there a system intent value that accurately represents it?
-3. Would another app reasonably need that value in a Siri workflow?
-4. Does the app currently export only text/PDF/image when it should export structured value too?
-5. Does UIKit/SwiftUI onscreen annotation point at the same entity that owns the transfer representation?
-
-If yes, add `Transferable` plus `ValueRepresentation`/`IntentValueRepresentation` next to the entity, not in the UI layer.
+1. Verify the selected SDK for `ValueRepresentation`, `IntentValueRepresentation`, `PlaceDescriptor`, and `IntentPerson`.
+2. If only the value types exist, create pure mappers and tests, then stop before referencing absent transfer wrappers.
+3. If transfer wrappers exist, add them beside the entity’s `Transferable` conformance.
+4. Explain the build split in generated code comments so future maintainers do not mistake SDK absence for a design decision.

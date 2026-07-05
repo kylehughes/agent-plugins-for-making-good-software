@@ -1,8 +1,8 @@
 # UIKit Integration for App Intents, Siri, and Apple Intelligence
 
-This document treats UIKit as a first-class host for App Intents on iOS 26 and iOS 27. It covers scene routing, onscreen awareness, list and canvas annotations, Siri promotion, drag and drop, interaction donations, multiwindow behavior, mixed Objective-C applications, testing, and the SwiftUI islands that remain required by system frameworks.
+This document treats UIKit as a first-class host for App Intents on iOS 26 and iOS 27. It covers scene routing, `NSUserActivity` primary-screen awareness, selected-SDK-gated list/canvas annotation strategy, Siri promotion, drag and drop, interaction donations, multiwindow behavior, mixed Objective-C applications, testing, and the SwiftUI islands that remain required by system frameworks.
 
-Exact beta-era declarations can move between Xcode seeds. Preserve the architecture and compile-check protocol names, availability, and initializer labels against the selected SDK.
+Exact declarations can move between Xcode seeds. The iPhoneOS 26.5 SDK does not include UIKit per-view/table/collection/canvas annotation APIs; only `NSUserActivity.appEntityIdentifier` is buildable for onscreen context. Preserve the architecture and compile-check protocol names, availability, and initializer labels against the selected SDK before generating code.
 
 ## 1. UIKit is not a second-class App Intents client
 
@@ -10,15 +10,15 @@ The semantic layer is identical for SwiftUI and UIKit:
 
 - App Schemas and schema-conforming intents.
 - `AppIntent`, `OpenIntent`, create/update/delete/search/control intents.
-- `AppEntity`, `IndexedEntity`, `AppEnum`, `@UnionValue`, `ValueRepresentation`, and entity ownership.
+- `AppEntity`, `IndexedEntity`, `AppEnum`, `@UnionValue`, structured value mappers, and entity ownership.
 - `EntityQuery`, `EntityStringQuery`, `EntityPropertyQuery`, `IntentValueQuery`, and indexing.
-- App Shortcuts, donations, relevance, dialog, confirmations, progress, cancellation, and extension execution.
+- App Shortcuts, donations, dialog, confirmations, progress reporting, selected-SDK-gated relevance/cancellation APIs, and extension execution.
 - `Transferable` and representations used by Siri, Shortcuts, Spotlight, Visual Intelligence, sharing, and drag and drop.
 
 UIKit-specific work is concentrated in four places:
 
 1. Selecting and navigating the correct `UIScene`.
-2. Describing visible UIKit content with App Entity annotations.
+2. Describing visible UIKit content with `NSUserActivity.appEntityIdentifier`, plus additional annotation APIs only when the selected SDK declares them.
 3. Promoting Siri/Shortcuts actions in UIKit UI.
 4. Bridging unavoidable SwiftUI system surfaces such as snippets and WidgetKit; Siri and Shortcuts promotion itself has native UIKit views.
 
@@ -329,11 +329,13 @@ An activity should express the screen’s main semantic subject. Use view annota
 
 `NSUserActivity` can participate in restoration, Handoff, search, prediction, and App Intent context. Configure only the capabilities actually intended. Adding an App Entity identifier does not require exposing the activity to every other subsystem.
 
-## 11. Annotating individual UIKit views
+## 11. Forward-looking individual UIKit view annotations
 
-UIKit framework types that already adopt `AppEntityAnnotatable` can expose `appEntityIdentifier`. `UIView` subclasses inherit that support. **Do not declare new conformances to `AppEntityAnnotatable`** on your own classes or extensions; Apple reserves conformance for framework types. Use an existing conforming UIKit object, `NSUserActivity`, a table/collection App Intents data source, or a canvas element provider instead.
+The iPhoneOS 26.5 SDK does not provide a buildable UIKit per-view App Entity annotation API beyond `NSUserActivity`. `AppEntityAnnotatable` and `NSUserActivity.appEntityIdentifier` are present as iOS 18.2 declarations, but the view/list/canvas APIs previously described in this skill are absent from the 26.5 SDK.
 
-Use this for a handful of independently meaningful objects:
+Keep this design ready, but do not compile code against it unless the selected SDK declares the relevant properties/protocols.
+
+When available, use individual view annotations for a handful of independently meaningful objects:
 
 - Header card and several child cards.
 - An album plus its artist.
@@ -341,39 +343,40 @@ Use this for a handful of independently meaningful objects:
 - A selected attachment preview.
 - Controls that visually represent a domain entity.
 
-Rules:
+Rules when the API exists:
 
 - Assign the identifier after the view is bound to a stable model ID.
 - Clear it before reuse or when the content becomes redacted.
 - Annotate the semantic container, not every label and image subview.
 - Do not annotate decorative views.
 - Keep annotations consistent with accessibility semantics.
+- Do not declare app-defined `AppEntityAnnotatable` conformances.
 
-## 12. `UITableView` collection annotations
+## 12. Forward-looking `UITableView` collection annotations
 
-For tables, set `tableView.appIntentsDataSource` and implement `UITableViewAppIntentsDataSource`.
+`UITableViewAppIntentsDataSource` and `tableView.appIntentsDataSource` are absent from the iPhoneOS 26.5 SDK. Do not generate this code for a 26.5-compiled target.
 
-The required callback maps an index path to an `EntityIdentifier`. Resolve the current item through the table’s actual data source or snapshot. Never derive identity from row number.
+When a selected SDK supplies a table annotation API, map an index path to an `EntityIdentifier` through the current table data source or diffable snapshot. Never derive identity from row number.
 
-Why collection annotations are better than per-cell annotations:
+Why collection annotations are preferable when they exist:
 
-- The system requests identifiers lazily.
+- The system can request identifiers lazily.
 - Reuse does not require hundreds of view-level annotations.
 - Selection can remain meaningful after a row scrolls offscreen.
 - Diffable snapshots can map directly from item ID to entity ID.
 
-Production requirements:
+Production requirements when available:
 
-- Return `nil` for placeholders, ads, separators, skeleton rows, redacted rows, and inaccessible content.
-- Update the table annotation data source when account/workspace changes.
+- Return no identifier for placeholders, ads, separators, skeleton rows, redacted rows, and inaccessible content.
+- Update the annotation data source when account/workspace changes.
 - Ensure selected row IDs remain stable across snapshots.
 - Test reorder, filter, section insertion, and animated snapshot updates.
 
-## 13. `UICollectionView` collection annotations
+## 13. Forward-looking `UICollectionView` collection annotations
 
-For collections, set `collectionView.appIntentsDataSource` and implement `UICollectionViewAppIntentsDataSource`.
+`UICollectionViewAppIntentsDataSource` and `collectionView.appIntentsDataSource` are absent from the iPhoneOS 26.5 SDK. Do not generate this code for a 26.5-compiled target.
 
-Use the diffable item identifier as the bridge:
+When a selected SDK supplies a collection annotation API, use the diffable item identifier as the bridge:
 
 ```text
 IndexPath
@@ -382,17 +385,17 @@ IndexPath
   → EntityIdentifier(for: Entity.self, identifier: ID)
 ```
 
-Do not instantiate a full entity just to create its identifier. `EntityIdentifier(for:identifier:)` exists for this purpose.
+Do not instantiate a full entity just to create its identifier. Use identifier-only construction when the selected SDK provides the required initializer.
 
-Collection-specific concerns:
+Collection-specific concerns when available:
 
 - Supplementary views may represent entities independently from cells.
 - Orthogonal sections can expose entities outside the obvious viewport.
 - Drag selection and multi-selection must use stable IDs.
 - Prefetch callbacks are not evidence that content is onscreen.
-- A compositional-layout decoration view should not receive an entity annotation unless it is actually semantic content.
+- A compositional-layout decoration view should not receive an entity annotation unless it is semantic content.
 
-## 14. Selection and offscreen entities
+## 14. Forward-looking selection and offscreen entities
 
 Selection is semantically important for requests such as:
 
@@ -401,36 +404,35 @@ Selection is semantically important for requests such as:
 - “Add those three to the project.”
 - “Explain the highlighted note.”
 
-Collection annotations are designed to preserve selected-entity context even when selected rows leave the view hierarchy. Keep your UIKit selection model authoritative:
+The iPhoneOS 26.5 SDK does not expose the App Intents collection-selection annotation APIs described above. Still keep your UIKit selection model authoritative and ID-based:
 
 - Maintain selected item IDs independently of visible cells.
 - Reapply visual selection after diffable snapshots.
 - Remove IDs when access is revoked or items are deleted.
 - Do not infer selection solely from `indexPathsForSelectedRows` if the app supports a model-level selection spanning filtered/offscreen content.
 
-## 15. Custom canvas and nonstandard content
+When a future selected SDK provides collection annotation APIs, expose this existing ID-based selection through the adapter.
 
-For custom drawing surfaces, maps, timelines, editors, diagrams, games, or media canvases, use `UIView.appEntityUIElementProvider`.
+## 15. Forward-looking custom canvas and nonstandard content
 
-The provider returns `AppEntityUIElement` values that combine:
+`AppEntityUIElement` and `UIView.appEntityUIElementProvider` are absent from the iPhoneOS 26.5 SDK. Do not generate canvas annotation code for a 26.5-compiled target.
 
-- A persistent `EntityIdentifier`.
+For custom drawing surfaces, maps, timelines, editors, diagrams, games, or media canvases, keep a semantic element model that can later feed a provider:
+
+- Persistent `EntityIdentifier` or durable domain ID.
 - Bounds in the annotated view’s coordinate space.
 - State such as selection.
 - Optional nested subelements where supported.
 
-Provider rules:
+Provider rules when the API exists:
 
 - Return only elements represented in the current visual state.
 - Use presentation geometry, not stale model coordinates.
 - Convert world/document coordinates to the annotated view’s coordinate system.
 - Clip or omit elements that cannot be meaningfully referenced.
-- Keep the closure fast; Siri may request context during an interaction.
+- Keep the provider fast; Siri may request context during an interaction.
 - Capture the controller/model weakly where appropriate.
 - Do not perform network requests, mutate selection, or trigger layout from the provider.
-- Invalidate/update the view after geometry or selection changes so the next query is current.
-
-The initializer labels and state type are SDK-sensitive. Current documentation includes `AppEntityUIElement(identifier:bounds:state:subelements:)`; pass nested semantic elements where appropriate or an empty array for a leaf. Compile-check the exact declaration in the selected SDK.
 
 ## 16. Cell reuse and annotation hygiene
 
@@ -439,7 +441,7 @@ Every reusable view must follow this invariant:
 ```text
 after prepareForReuse:
   represented domain ID == nil
-  entity annotation == nil
+  entity annotation == nil, if a selected SDK provides reusable-view annotations
   transferable/drag provider == nil or reset
   accessibility content == reset
 ```
@@ -448,7 +450,7 @@ Then configuration assigns all four from the same model snapshot.
 
 Common serious bug:
 
-1. Cell A represents private message X and gets an entity identifier.
+1. In a future annotation-enabled SDK, cell A represents private message X and gets an entity identifier.
 2. Cell A is reused for public message Y.
 3. Labels update, but the identifier remains X.
 4. Siri interprets the visible row as X.
@@ -469,11 +471,11 @@ Design targets:
 - Text response in tens of milliseconds for local content where feasible.
 - Respect the same authorization filters as full entity resolution.
 
-## 18. Context menus, Ask Siri, and drag providers in iOS 27
+## 18. Context menus, Ask Siri, and drag providers in selected iOS 27-era SDKs
 
-On iOS 27, UIKit menus can automatically surface an Ask Siri entry when the system finds relevant content. View annotations increase the quality of that context.
+On selected iOS 27-era SDKs, UIKit menus may surface an Ask Siri entry when the system finds relevant content. In iPhoneOS 26.5, the buildable onscreen context source is the primary `NSUserActivity.appEntityIdentifier`; per-view annotations remain selected-SDK-gated.
 
-If the app supports drag and drop, Siri can load resources through existing drag delegate methods when invoked from a context menu.
+If the selected SDK supports this flow and the app supports drag and drop, Siri may load resources through existing drag delegate methods when invoked from a context menu.
 
 Consequences:
 
@@ -492,7 +494,7 @@ This makes an existing UIKit drag implementation part of the Apple Intelligence 
 
 Recommended representations, in priority order where applicable:
 
-1. System-known structured value through `ValueRepresentation`/`IntentValueRepresentation`, such as `PlaceDescriptor` or `IntentPerson`.
+1. System-known structured value mapping, such as `PlaceDescriptor` or `IntentPerson`; use `ValueRepresentation`/`IntentValueRepresentation` wrappers only if the selected SDK declares them.
 2. Structured app-defined content type where the receiving surface actually supports that type.
 3. Plain text or attributed text.
 4. Image.
@@ -506,8 +508,8 @@ Rules:
 - Keep generated file names safe and localized where appropriate.
 - Use temporary files with cleanup.
 - Cap export size or use file representations for large data.
-- Avoid rendering a screenshot when structured text, PDF, or system value representation provides better semantic content.
-- Do not put `ValueRepresentation` in view-controller code; it belongs beside the entity’s `Transferable` conformance.
+- Avoid rendering a screenshot when structured text, PDF, or a system-known value mapper provides better semantic content.
+- Do not put structured value mapping or future transfer wrappers in view-controller code; they belong beside the entity/value layer.
 - Recheck permissions at export time; the entity may have been resolved earlier.
 
 UIKit drag and share code may also expose `NSItemProvider`. Reuse the same export service so Siri transfer, drag and drop, share sheets, and App Intents do not diverge. For details and examples, see [value-representation-and-structured-transfer.md](value-representation-and-structured-transfer.md).
@@ -516,7 +518,7 @@ UIKit drag and share code may also expose `NSItemProvider`. Reuse the same expor
 
 Visual Intelligence integration is UI-framework neutral until the result is opened:
 
-1. Implement `IntentValueQuery` for `SemanticContentDescriptor` or the relevant structured search type.
+1. Implement `IntentValueQuery` for `SemanticContentDescriptor` from the `VisualIntelligence` framework or the relevant structured search type.
 2. Return a small, relevant, ordered set of entities or a union value.
 3. Implement `OpenIntent` for every returned entity type.
 4. Route the open intent into the selected UIKit scene.
@@ -656,16 +658,16 @@ Provide deletion/revocation when account, privacy settings, or user data changes
 
 ## 26. Notifications, Now Playing, AlarmKit, and other system surfaces
 
-These annotations are independent of UIKit but often originate from UIKit app services.
+These integrations are independent of UIKit but often originate from UIKit app services. Verify each surface against the selected SDK. In the iPhoneOS 26.5 SDK, notification-content `appEntityIdentifiers` is absent; do not generate notification entity-annotation code for that SDK.
 
-- Add persistent entity identifiers to notification content.
-- Add Now Playing identifiers from most specific to least specific.
-- Add an entity identifier to alarms/timers where supported.
+General rules for surfaces that do expose entity identifiers:
+
+- Add persistent entity identifiers only through APIs that exist in the selected SDK.
 - Do not use transient entities for persistent system annotations.
 - Clear/update annotations when the underlying content changes.
 - Apply lock-screen privacy policy before including entity context.
 
-The same entity ID should resolve through the same query whether Siri receives it from a view, notification, media session, alarm, or Spotlight.
+The same entity ID should resolve through the same query whether Siri receives it from an activity, media session, alarm, Spotlight, or another supported surface.
 
 ## 27. Accessibility alignment
 
@@ -673,12 +675,12 @@ Structured context and accessibility should describe the same object.
 
 Audit:
 
-- The view annotated as an entity is also the meaningful accessibility container.
+- The primary activity’s entity matches the meaningful accessibility/navigation context; future view annotations should match their accessibility containers.
 - Accessibility labels do not contradict `DisplayRepresentation` titles.
-- Selection state matches both `UIAccessibility` traits and `AppEntityUIElement.State`.
+- Selection state matches `UIAccessibility` traits today and any future `AppEntityUIElement.State` equivalent when the selected SDK provides it.
 - Hidden/redacted accessibility elements are not still exposed as App Entities.
-- Custom canvas bounds match the visual/accessibility frame.
-- Reordered rows retain stable entity identity.
+- Custom canvas semantic bounds match the visual/accessibility frame when a future canvas annotation API is available.
+- Reordered rows retain stable model identity so future annotation adapters do not expose stale entities.
 
 Do not use accessibility labels as a substitute for App Entity modeling. They solve different problems, but inconsistency between them is a correctness signal.
 
@@ -749,27 +751,32 @@ A useful split is:
 
 ```text
 IntentKit package: entities, enums, queries, intent declarations, repository protocols
-App target: concrete repositories, scene routing, UIKit annotation adapters
+App target: concrete repositories, scene routing, `NSUserActivity` publisher, selected-SDK-gated UIKit annotation adapters
 Snippet/widget targets: SwiftUI views and extension-safe dependencies
 ```
 
 ## 32. Availability strategy
 
-Suggested buckets:
+Suggested buckets verified against iPhoneOS 26.5:
 
-- iOS 18.4+: UIKit App Entity view/list/canvas annotation APIs.
-- iOS 26+: `UISceneAppIntent`, App Intent scene routing refinements, Visual Intelligence integration, interactive snippets, and related execution improvements.
-- iOS 27+: deeper App Schemas and Apple Intelligence behavior, Ask Siri menu integration, richer entities/values/execution/testing APIs.
+- iOS 16+: core App Intents protocols, `IntentPerson`, `PredictableIntent`.
+- iOS 17+: `AppIntentsPackage`, `ProgressReportingIntent`, `DeprecatedAppIntent`, `IntentDeprecation`.
+- iOS 18+: `IndexedEntity`.
+- iOS 18.2+: `NSUserActivity.appEntityIdentifier` and `AppEntityAnnotatable`.
+- iOS 26+: `UISceneAppIntent`, `AppIntentSceneDelegate`, `SiriTipUIView`, and `ShortcutsUIButton` in the `_AppIntents_UIKit` cross-import overlay; Visual Intelligence integration through `VisualIntelligence`; `PlaceDescriptor` through `GeoToolbox`.
+
+Absent from iPhoneOS 26.5 and therefore selected-SDK-gated: UIKit per-view/table/collection/canvas annotation APIs, `ValueRepresentation`, `IntentValueRepresentation`, `RelevantEntities`, AppIntents `EntityCollection`, `SyncableEntity`, `LongRunningIntent`, `CancellableIntent`, `ExecutionTargets`, `AppIntentsTesting`, SwiftUI per-view annotation modifiers, and notification `appEntityIdentifiers`.
 
 Do not scatter `#available` checks through every controller. Hide version-specific implementation behind adapters:
 
 ```text
-OnscreenEntityAnnotating
-SceneIntentRouting
-SiriPromotionProviding
+PrimaryEntityActivityPublishing      # Shipping path: NSUserActivity.appEntityIdentifier
+AdvancedOnscreenEntityAnnotating     # No-op unless selected SDK provides view/list/canvas APIs
+SceneIntentRouting                   # UISceneAppIntent / AppIntentSceneDelegate
+SiriPromotionProviding               # SiriTipUIView / ShortcutsUIButton
 ```
 
-The no-op fallback should be safe and explicit.
+The no-op fallback should be safe and explicit. If the selected SDK lacks a symbol, do not reference it in source compiled by that SDK.
 
 ## 33. Performance targets
 
@@ -777,7 +784,7 @@ Onscreen context is requested while the user is interacting. Avoid making Siri w
 
 Targets:
 
-- View/list/canvas identifier lookup: in-memory and effectively immediate.
+- `NSUserActivity` primary-entity update: in-memory and effectively immediate. Future view/list/canvas identifier lookup: in-memory and effectively immediate when APIs exist.
 - Display representation text lookup: batched and local when possible.
 - Entity resolution: avoid N+1 operations.
 - Transfer preview: fast first representation; defer expensive generation.
@@ -840,7 +847,7 @@ Test at four levels.
 - Spotlight.
 - Shortcuts editor and automation.
 - Visual Intelligence.
-- Ask Siri context menu on iOS 27.
+- Ask Siri context menu on iOS 27/selected SDKs where available.
 - Drag resource loading without a gesture.
 - Locked device and privacy modes.
 - iPad multiwindow, external display, and iPhone Mirroring.
@@ -852,12 +859,12 @@ Reject code that:
 - Uses `connectedScenes.first` to navigate.
 - Calls an intent’s `perform()` from `AppIntentSceneDelegate`.
 - Routes the same intent in both `performNavigation(forScene:)` and `AppIntentSceneDelegate`.
-- Declares a new conformance to `AppEntityAnnotatable` instead of using a framework type that already conforms.
+- Declares a new conformance to `AppEntityAnnotatable` or references view/list/canvas annotation APIs absent from the selected SDK.
 - Stores a window/controller in `AppDependencyManager` as the general navigation strategy.
 - Uses index paths as App Entity IDs.
-- Annotates prefetched or hidden content as visible.
-- Fails to clear entity identifiers in reusable cells.
-- Does network or database writes from an annotation provider.
+- Treats prefetched or hidden content as visible context.
+- In a selected SDK with reusable-view annotations, fails to clear entity identifiers in reusable cells.
+- In a selected SDK with annotation providers, does network or database writes from an annotation provider.
 - Presents UI from drag-session startup.
 - Claims snippets can be implemented as UIKit views.
 - Duplicates entity/query logic for UIKit and SwiftUI targets.

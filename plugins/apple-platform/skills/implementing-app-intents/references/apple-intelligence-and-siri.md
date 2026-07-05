@@ -5,7 +5,7 @@
 Siri and Apple Intelligence do not need your app to parse natural language. They need a semantically complete App Intents surface:
 
 - App actions as typed `AppIntent` values.
-- App content as typed `AppEntity`, `IndexedEntity`, `TransientAppEntity`, `AppEnum`, union values, and structured value representations.
+- App content as typed `AppEntity`, `IndexedEntity`, `TransientAppEntity`, `AppEnum`, union values, structured value mappers, and selected-SDK-gated value representations.
 - App Schemas where a system domain exists.
 - Entity queries that resolve names, IDs, properties, and suggestions.
 - Semantic Spotlight indexing for durable searchable content.
@@ -43,7 +43,7 @@ The app’s job is to publish enough typed structure that this stack works witho
 6. Add Transferable/value representations for content Siri should understand or pass to another service.
 7. Add dialog and compact snippets.
 8. Donate meaningful interactions and provide relevant entities.
-9. Test through AppIntentsTesting and actual Siri/Spotlight/Shortcuts surfaces.
+9. Test through XCTest/manual Siri/Spotlight/Shortcuts surfaces, and through AppIntentsTesting only if the selected SDK includes that framework.
 
 ## App Schemas
 
@@ -155,7 +155,9 @@ Index only fields the user should be able to search. Use `@Property(indexingKey:
 
 Onscreen annotations let Siri understand pronouns and context: “summarize this,” “open the second one,” “send these,” “what can I do with this project?”
 
-Primary item:
+Shipping iPhoneOS 26.5 path: publish the primary screen entity with `NSUserActivity.appEntityIdentifier` (iOS 18.2+).
+
+SwiftUI primary item:
 
 ```swift
 ProjectDetailView(project: project)
@@ -165,26 +167,35 @@ ProjectDetailView(project: project)
     }
 ```
 
-Individual view:
+UIKit primary item:
 
 ```swift
-ProjectRow(project: project)
-    .appEntityIdentifier(EntityIdentifier(for: project.entity))
+let activity = NSUserActivity(activityType: "com.example.app.viewProject")
+activity.title = "Viewing \(project.name)"
+activity.appEntityIdentifier = EntityIdentifier(for: ProjectEntity.self, identifier: project.id)
+viewController.userActivity = activity
+activity.becomeCurrent()
 ```
 
-Selectable collections should annotate each item and expose the current selection where the SDK surface supports it.
+Forward-looking / selected-SDK-gated: per-view SwiftUI `.appEntityIdentifier(...)`, SwiftUI selection annotations, UIKit view annotations, UIKit table/collection data sources, and UIKit custom-canvas providers are absent from the iPhoneOS 26.5 SDK. Mention them as design targets, not buildable iOS 26 code, unless the selected SDK declares them.
 
-UIKit uses the same four awareness levels: `NSUserActivity` for the primary screen entity, `appEntityIdentifier` on UIKit framework views that already support `AppEntityAnnotatable`, `UITableViewAppIntentsDataSource` / `UICollectionViewAppIntentsDataSource` for reusable collections, and `UIView.appEntityUIElementProvider` for custom canvases. Do not declare app-defined `AppEntityAnnotatable` conformances. Route contextual actions through the owning `UIScene`; do not guess a global window, and assign exactly one navigation owner to each scene-targeted intent.
+UIKit context correctness still matters today: route contextual actions through the owning `UIScene`; do not guess a global window, and assign exactly one navigation owner to each scene-targeted intent.
 
 ### UIKit context menus and drag resources
 
-On iOS 27, UIKit menus can surface Ask Siri when relevant annotated content exists. Apple Intelligence may request resources through UIKit drag delegates without an ordinary gesture. Keep drag loading authorization-aware and side-effect free; do not present UI or animate from `sessionWillBegin`.
+On selected iOS 27-era SDKs, UIKit menus can surface Ask Siri when relevant context exists. Apple Intelligence may request resources through UIKit drag delegates without an ordinary gesture. Keep drag loading authorization-aware and side-effect free; do not present UI or animate from `sessionWillBegin`. Per-view annotations remain selected-SDK-dependent.
 
 ## Content transfer
 
-Use `Transferable`, `IntentValueRepresentation`, or `ValueRepresentation` when Siri, ChatGPT, Shortcuts, or another app should receive the content itself rather than only an entity ID.
+Use `Transferable` when Siri, ChatGPT, Shortcuts, or another app should receive the content itself rather than only an entity ID.
 
-For known file/data formats, export plain text, rich text, images, PDFs, or files. For system-known structured values, export a value representation. A landmark that only exports text can be mailed; a landmark that exports `PlaceDescriptor` can be routed into a Maps-style action. A contact-like entity that exports `IntentPerson` can flow into calling or messaging actions. See [value-representation-and-structured-transfer.md](value-representation-and-structured-transfer.md).
+For known file/data formats, export plain text, rich text, images, PDFs, or files. For system-known structured values, separate the value type from the transfer wrapper:
+
+- `IntentPerson` ships in `AppIntents` since iOS 16.
+- `PlaceDescriptor` ships in iOS 26 through `GeoToolbox` plus `_GeoToolbox_AppIntents` overlay support.
+- `ValueRepresentation` and `IntentValueRepresentation` are absent from the iPhoneOS 26.5 SDK.
+
+Build pure mappers from entities to `IntentPerson` or `PlaceDescriptor` now. Add future `ValueRepresentation` / `IntentValueRepresentation` wrappers only when the selected SDK declares them. A landmark that only exports text can be mailed; a landmark that can be represented as a `PlaceDescriptor` has the right semantic shape for Maps-style actions once a transfer wrapper exists. See [value-representation-and-structured-transfer.md](value-representation-and-structured-transfer.md).
 
 ```swift
 extension ProjectEntity: Transferable {
@@ -208,7 +219,7 @@ A rich export is powerful, but it is also a privacy boundary.
 
 ## Incoming content resolution
 
-Use `IntentValueQuery` when the system has external or semantic input and your app needs to resolve it to app entities or values.
+Use `IntentValueQuery` when the system has external or semantic input and your app needs to resolve it to app entities or values. `SemanticContentDescriptor` is declared in the `VisualIntelligence` framework, not `AppIntents`.
 
 ```swift
 @UnionValue
@@ -286,7 +297,7 @@ func donateOpenedProject(_ project: ProjectEntity) async {
 }
 ```
 
-For iOS 27-era interactions, include result values when that helps Siri learn entity/action relationships.
+For selected-SDK-gated iOS 27-era interactions, include result values when that helps Siri learn entity/action relationships.
 
 ```swift
 func donateCreatedTask(_ task: TaskEntity) async {
@@ -301,9 +312,9 @@ Delete donations when the underlying content is deleted, access is revoked, or a
 
 ## RelevantEntities
 
-Use RelevantEntities for dynamic context-specific suggestions: currently playing item, active workout, current document, recent camera mode, selected project, or current location-specific item.
+`RelevantEntities` is absent from the iPhoneOS 26.5 SDK. Do not generate code for it in a 26.5-compiled target.
 
-Do not use RelevantEntities as bulk indexing. It is a small contextual hint surface.
+If a selected SDK supplies a relevance API, use it for dynamic context-specific suggestions such as the current document, active workout, currently playing item, selected project, or current location-specific item. Do not use it as bulk indexing; durable corpora belong in entity queries and Spotlight.
 
 ## Search in app
 
@@ -336,10 +347,10 @@ An app is meaningfully Siri-ready when:
 - Entity IDs are stable and resolvable.
 - Entity queries support ID lookup and user naming.
 - Important content is semantically indexed.
-- Visible content and selections are annotated.
+- The primary visible entity is annotated with `NSUserActivity`; selections/per-view annotations are added only when the selected SDK supports them.
 - Transferable representations are implemented for content Siri may inspect.
 - Intent result values are meaningful and typed.
 - Dialog is clear on voice-only devices.
 - Snippets are optional compact visual aids.
-- Donations and RelevantEntities reflect real user behavior/context.
-- Tests execute intents, queries, indexing, and annotations through AppIntentsTesting.
+- Donations reflect real user behavior; selected-SDK-gated relevance APIs reflect current context only when available.
+- Tests execute intents, queries, indexing, and annotations through XCTest/manual system surfaces; add AppIntentsTesting only when the framework exists.

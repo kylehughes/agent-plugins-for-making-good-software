@@ -281,6 +281,8 @@ struct TaskCreatedSnippet: View {
 
 ## Onscreen annotations
 
+Shipping iPhoneOS 26.5 example: publish the primary screen entity with `NSUserActivity.appEntityIdentifier` through SwiftUI `.userActivity(...)`.
+
 ```swift
 struct ProjectDetailView: View {
     let project: ProjectEntity
@@ -288,25 +290,34 @@ struct ProjectDetailView: View {
     @State private var selectedTaskIDs: Set<TaskEntity.ID> = []
 
     var body: some View {
-        List(tasks, selection: $selectedTaskIDs) { task in
+        List(tasks) { task in
             TaskRow(task: task)
-                .appEntityIdentifier(EntityIdentifier(for: task))
         }
         .navigationTitle(project.name)
         .userActivity("com.example.project.view") { activity in
             activity.title = "Viewing \(project.name)"
             activity.appEntityIdentifier = EntityIdentifier(for: project)
         }
-        .appEntityIdentifier(forSelectionType: TaskEntity.self) {
-            tasks.filter { selectedTaskIDs.contains($0.id) }
-        }
     }
+}
+```
+
+Forward-looking / selected-SDK-gated shape only. The per-view and selection modifiers below are absent from the iPhoneOS 26.5 SDK:
+
+```swift
+// Not buildable with iPhoneOS 26.5 unless the selected SDK adds these modifiers.
+List(tasks, selection: $selectedTaskIDs) { task in
+    TaskRow(task: task)
+        .appEntityIdentifier(EntityIdentifier(for: task))
+}
+.appEntityIdentifier(forSelectionType: TaskEntity.self) {
+    tasks.filter { selectedTaskIDs.contains($0.id) }
 }
 ```
 
 ## UIKit onscreen and navigation equivalents
 
-The semantic entities and intents above are shared. A UIKit host should route open/search intents through the selected scene and publish visible entities through UIKit annotations.
+The semantic entities and intents above are shared. A UIKit host should route open/search intents through the selected scene. Buildable iPhoneOS 26.5 onscreen awareness is primary `NSUserActivity.appEntityIdentifier`; table/collection data-source annotations are forward-looking and absent from that SDK.
 
 ```swift
 @available(iOS 26.0, *)
@@ -328,6 +339,23 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate, AppIntentSceneDel
 ```
 
 ```swift
+final class ProjectViewController: UIViewController {
+    func configure(project: ProjectEntity) {
+        title = project.name
+
+        let activity = NSUserActivity(activityType: "com.example.project.view")
+        activity.title = "Viewing \(project.name)"
+        activity.appEntityIdentifier = EntityIdentifier(for: project)
+        userActivity = activity
+        activity.becomeCurrent()
+    }
+}
+```
+
+Forward-looking / selected-SDK-gated table annotation shape only:
+
+```swift
+// Not buildable with iPhoneOS 26.5 unless the selected SDK declares these APIs.
 final class TasksViewController: UITableViewController,
     UITableViewAppIntentsDataSource {
 
@@ -346,7 +374,7 @@ final class TasksViewController: UITableViewController,
 }
 ```
 
-See [uikit-examples.md](uikit-examples.md) for scene lifecycle, coordinators, `NSUserActivity`, individual view annotations, collection views, custom canvases, Siri tips, donations, drag providers, Objective-C bridges, and tests.
+See [uikit-examples.md](uikit-examples.md) for scene lifecycle, coordinators, `NSUserActivity`, selected-SDK-gated advanced annotations, Siri tips, donations, drag providers, Objective-C bridges, and tests.
 
 ## Spotlight indexing
 
@@ -380,6 +408,7 @@ enum VisualMatch: Sendable {
     case task(TaskEntity)
 }
 
+/// `SemanticContentDescriptor` is declared in the VisualIntelligence framework.
 struct AppVisualMatchQuery: IntentValueQuery {
     func values(for input: SemanticContentDescriptor) async throws -> [VisualMatch] {
         var output: [VisualMatch] = []
@@ -400,8 +429,10 @@ struct AppVisualMatchQuery: IntentValueQuery {
 
 ## Relevant entities
 
+`RelevantEntities` is absent from the iPhoneOS 26.5 SDK. The following is forward-looking / selected-SDK-gated only.
+
 ```swift
-@available(iOS 27, *)
+// Not buildable with iPhoneOS 26.5 unless the selected SDK declares RelevantEntities.
 actor ProjectRelevanceController {
     func updateCurrentProject(_ project: ProjectEntity?) async {
         do {
@@ -419,9 +450,12 @@ actor ProjectRelevanceController {
 
 ## Long-running export
 
+`ProgressReportingIntent` is available since iOS 17. `LongRunningIntent` and `CancellableIntent` are absent from iPhoneOS 26.5. The full protocol-conformance example is forward-looking / selected-SDK-gated.
+
+Buildable progress-oriented shape:
+
 ```swift
-@available(iOS 27, *)
-struct ExportProjectIntent: AppIntent, LongRunningIntent, ProgressReportingIntent, CancellableIntent {
+struct ExportProjectIntent: AppIntent, ProgressReportingIntent {
     static let title: LocalizedStringResource = "Export Project"
 
     @Parameter(title: "Project")
@@ -431,24 +465,30 @@ struct ExportProjectIntent: AppIntent, LongRunningIntent, ProgressReportingInten
     var format: ExportFormat
 
     func perform() async throws -> some ReturnsValue<IntentFile> & ProvidesDialog {
-        try await performBackgroundTask { progress in
-            let fileURL = try await ProjectExporter.shared.export(
-                projectID: project.id,
-                format: format,
-                progress: progress
-            )
-            return .result(
-                value: IntentFile(fileURL),
-                dialog: "Exported \(project.name)."
-            )
-        }
-    }
-
-    func onCancel() async {
-        await ProjectExporter.shared.cancel(projectID: project.id)
+        let fileURL = try await ProjectExporter.shared.export(
+            projectID: project.id,
+            format: format,
+            progress: progress,
+            cancellation: { Task.isCancelled }
+        )
+        return .result(
+            value: IntentFile(fileURL),
+            dialog: "Exported \(project.name)."
+        )
     }
 }
+```
 
+Forward-looking wrapper only:
+
+```swift
+// Not buildable with iPhoneOS 26.5 unless the selected SDK declares these protocols.
+struct FutureExportProjectIntent: AppIntent, LongRunningIntent, ProgressReportingIntent, CancellableIntent {
+    // Add long-running/cancellation hooks here only when available.
+}
+```
+
+```swift
 enum ExportFormat: String, AppEnum {
     case pdf
     case markdown
@@ -464,6 +504,8 @@ enum ExportFormat: String, AppEnum {
 ```
 
 ## Deprecated wrapper
+
+`DeprecatedAppIntent` and `IntentDeprecation` are iOS 17 APIs.
 
 ```swift
 struct LegacyAddTodoIntent: DeprecatedAppIntent {
@@ -488,11 +530,27 @@ struct LegacyAddTodoIntent: DeprecatedAppIntent {
 
 ## Test skeleton
 
+`AppIntentsTesting` is absent from the iPhoneOS 26.5 SDK. Use direct XCTest coverage for queries and services, and add AppIntentsTesting only when the selected SDK provides it.
+
 ```swift
+import XCTest
+
+final class ProjectIntentTests: XCTestCase {
+    func testTaskQuery() async throws {
+        let results = try await TaskQuery().entities(matching: "deck")
+        XCTAssertFalse(results.isEmpty)
+    }
+}
+```
+
+Forward-looking selected-SDK-gated shape:
+
+```swift
+#if canImport(AppIntentsTesting)
 import XCTest
 import AppIntentsTesting
 
-final class ProjectIntentTests: XCTestCase {
+final class ProjectIntentFrameworkTests: XCTestCase {
     let definitions = IntentDefinitions(bundleIdentifier: "com.example.productivity")
 
     func testCreateTaskIntent() async throws {
@@ -504,25 +562,20 @@ final class ProjectIntentTests: XCTestCase {
 
         XCTAssertEqual(task.title, "Prepare deck")
     }
-
-    func testTaskQuery() async throws {
-        let results = try await TaskQuery().entities(matching: "deck")
-        XCTAssertFalse(results.isEmpty)
-    }
 }
+#endif
 ```
 
+## Structured value mapping: place entity to Maps-style actions
 
-## Structured value transfer: place entity to Maps-style actions
+`PlaceDescriptor` is available in `GeoToolbox` in the iOS 26 SDK. `ValueRepresentation` is absent from iPhoneOS 26.5. Build the mapper now; add a transfer wrapper only when the selected SDK declares it.
 
 ```swift
 import AppIntents
 import CoreLocation
-import CoreTransferable
 import GeoToolbox
-import UniformTypeIdentifiers
 
-struct LandmarkEntity: AppEntity, Transferable, Sendable, Identifiable {
+struct LandmarkEntity: AppEntity, Sendable, Identifiable {
     static let defaultQuery = LandmarkQuery()
 
     let id: Int
@@ -535,13 +588,23 @@ struct LandmarkEntity: AppEntity, Transferable, Sendable, Identifiable {
         DisplayRepresentation(title: "\(name)", image: .init(systemName: "mappin.and.ellipse"))
     }
 
+    var systemPlaceDescriptor: PlaceDescriptor {
+        // Use the exact initializer labels from the selected GeoToolbox SDK.
+        fatalError("Use the PlaceDescriptor initializer from the selected GeoToolbox SDK.")
+    }
+}
+```
+
+Forward-looking transfer wrapper only:
+
+```swift
+// Not buildable with iPhoneOS 26.5 unless the selected SDK declares ValueRepresentation.
+import CoreTransferable
+import UniformTypeIdentifiers
+
+extension LandmarkEntity: Transferable {
     static var transferRepresentation: some TransferRepresentation {
-        ValueRepresentation(exporting: { landmark in
-            PlaceDescriptor(
-                representations: [.coordinate(landmark.coordinate)],
-                commonName: landmark.name
-            )
-        })
+        ValueRepresentation(exporting: \.systemPlaceDescriptor)
 
         DataRepresentation(exportedContentType: .plainText) { landmark in
             Data(landmark.name.utf8)
@@ -550,4 +613,4 @@ struct LandmarkEntity: AppEntity, Transferable, Sendable, Identifiable {
 }
 ```
 
-Use this pattern when a visible or selected entity should flow into another app as structured value, for example “get directions to this landmark.” Pair it with onscreen annotations and an `OpenIntent`; transfer alone does not make the entity discoverable.
+Use this pattern when a visible or selected entity should flow into another app as a structured value, for example “get directions to this landmark.” Pair it with primary `NSUserActivity` annotation and an `OpenIntent`; transfer alone does not make the entity discoverable.
