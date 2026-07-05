@@ -35,6 +35,8 @@ Skills and agents are stored once and serve both platforms. Do not fork content 
 ## Skill Maintenance
 
 - Every skill keeps a `SKILL.md` with `name` and `description` frontmatter.
+- The `SKILL.md` `name` must equal the skill's directory name. On import, strip any version or platform suffix (for example `-ios26-ios27`): Codex reads the frontmatter `name` while Claude Code uses the directory, so a mismatch surfaces the wrong, uglier name on Codex.
+- Keep identity fields (`name`, the `# ` H1, and the leading clause of `description`) free of specific OS or SDK version numbers; leave version-gating detail in the body where it is accurate.
 - Preserve source `REFERENCE.md`, `ATTRIBUTION.md`, and `references/` files with their skill directories.
 - Keep `description` written for implicit skill selection: describe in natural language when to use the skill. This drives Claude Code's automatic invocation and Codex's implicit selection.
 - Every skill also carries `skills/<name>/agents/openai.yaml` with Codex `interface` metadata: `display_name`, `short_description`, and a `default_prompt` (invoking the skill as `$<name>`). Claude Code ignores this file. Add MCP dependencies or `policy.allow_implicit_invocation: false` to it when a skill needs them.
