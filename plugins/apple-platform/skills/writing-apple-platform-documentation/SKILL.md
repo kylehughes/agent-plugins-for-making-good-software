@@ -1,6 +1,11 @@
-# Apple-Platform Technical Writing
+---
+name: writing-apple-platform-documentation
+description: Apple-platform companion skill for writing and reviewing developer documentation and doc comments for Swift, SwiftUI, UIKit, AppKit, DocC, and Xcode. Use with writing-technical-prose when documenting Apple APIs or platforms — Swift /// doc comments, DocC fields and callouts, Apple terminology and capitalization, availability and compatibility wording, concurrency and lifecycle documentation, and privacy/security phrasing.
+---
 
-Use this reference for Swift, SwiftUI, UIKit, AppKit, DocC, and Apple-platform documentation. Keep it subordinate to project conventions and Apple’s current terminology when verified.
+# Writing Apple Platform Documentation
+
+Run this as the Apple-platform companion to the universal `writing-technical-prose` skill. It layers Apple-specific documentation rules — terminology, doc comments, DocC fields, availability, and privacy wording — on top of the universal voice, structure, and truth rules. When this guidance conflicts with a generic prose rule for Apple-platform prose, this guidance wins. Keep it subordinate to project conventions and Apple's current terminology when verified.
 
 ## Terminology and Capitalization
 

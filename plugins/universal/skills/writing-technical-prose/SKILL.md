@@ -1,6 +1,6 @@
 ---
 name: writing-technical-prose
-description: "Writes, edits, reviews, and normalizes developer-facing technical prose: READMEs, ADRs, RFCs, design docs, API docs, Swift/DocC comments, runbooks, migration guides, release notes, PR descriptions, troubleshooting guides, and Markdown. Use for Apple-platform docs or any software/domain technical writing when correctness, clarity, voice consistency, and actionable structure matter. Do not use for marketing copy unless developer accuracy matters."
+description: "Writes, edits, reviews, and normalizes developer-facing technical prose: READMEs, ADRs, RFCs, design docs, API docs, Swift/DocC comments, runbooks, migration guides, release notes, PR descriptions, troubleshooting guides, and Markdown. Use for Apple-platform docs or any software/domain technical writing when correctness, clarity, voice consistency, and actionable structure matter. Do not use for marketing copy unless developer accuracy matters. When a platform-specific companion documentation skill is available, compose with it rather than embedding platform rules here."
 ---
 
 # Writing Technical Prose
@@ -224,7 +224,7 @@ Cover the parts that affect correct use:
 
 Do not write comments that restate the next line of code. Use implementation comments for invariants, workarounds, surprising behavior, or bug-prone constraints.
 
-For Swift, DocC, and Apple-platform specifics, read `references/apple-platform.md`.
+For platform-specific documentation conventions — for example Swift, DocC, and Apple-platform prose — compose with a platform-specific documentation skill when one is available, and let its rules win for that platform.
 
 ## Markdown Formatting
 

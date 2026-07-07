@@ -1,0 +1,4 @@
+interface:
+  display_name: "Writing Apple Platform Documentation"
+  short_description: "Apple companion to writing-technical-prose"
+  default_prompt: "Use $writing-apple-platform-documentation together with $writing-technical-prose to write or review Apple-platform developer documentation, DocC fields, and Swift doc comments with correct terminology, availability, and privacy wording."
