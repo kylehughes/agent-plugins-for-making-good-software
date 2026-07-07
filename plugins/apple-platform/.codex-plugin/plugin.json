@@ -1,39 +1,24 @@
 {
-  "name": "apple-platform",
-  "version": "1.0.0",
-  "description": "Tools for Apple platform development.",
-  "author": {
-    "name": "Kyle Hughes",
-    "email": "kyle@kylehugh.es",
-    "url": "https://github.com/kylehughes"
-  },
-  "homepage": "https://github.com/kylehughes/agent-plugins-for-making-good-software",
-  "repository": "https://github.com/kylehughes/agent-plugins-for-making-good-software",
-  "keywords": [
-    "apple",
-    "swift",
-    "ios",
-    "uikit",
-    "swift-concurrency",
-    "testing",
-    "agents",
-    "review"
-  ],
-  "skills": "./skills/",
-  "interface": {
+    "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+    "name": "apple-platform",
     "displayName": "Apple Platform",
-    "shortDescription": "Swift, iOS, concurrency, testing, and review skills",
-    "longDescription": "Reusable Codex skills and reviewer agent definitions for Apple platform development, including Swift 6 coding standards, concurrency guidance, type-driven design, localization, UIKit content configuration, Swift Testing, code review, and technical writing.",
-    "developerName": "Kyle Hughes",
-    "category": "Productivity",
-    "capabilities": [
-      "Interactive",
-      "Write"
-    ],
-    "defaultPrompt": [
-      "Use $apple-platform:writing-swift while updating this Swift code.",
-      "Use $apple-platform:reviewing-code to review this Swift diff.",
-      "Use $apple-platform:testing-swift-code to write Swift Testing tests."
+    "version": "1.1.0",
+    "description": "Swift, UIKit, App Intents, localization, testing, review, and technical-writing tools for Apple platform development.",
+    "author": {
+        "name": "Kyle Hughes",
+        "email": "kyle@kylehugh.es",
+        "url": "https://github.com/kylehughes"
+    },
+    "homepage": "https://github.com/kylehughes/agent-plugins-for-making-good-software",
+    "repository": "https://github.com/kylehughes/agent-plugins-for-making-good-software",
+    "keywords": [
+        "apple",
+        "swift",
+        "ios",
+        "uikit",
+        "swift-concurrency",
+        "testing",
+        "agents",
+        "review"
     ]
-  }
 }

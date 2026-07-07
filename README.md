@@ -49,6 +49,7 @@ Skills and agent definitions for Apple-platform codebases.
 | `simplifying-apple-platform-code` | The Apple-platform companion to `simplifying-code`: Swift, SwiftUI, UIKit, Xcode, availability, and concurrency cleanup. |
 | `testing-swift-code` | Conventions for the Swift Testing framework (`@Test`, `@Suite`, `#expect`). |
 | `using-swift-concurrency` | Swift Concurrency design, diagnostics, actor isolation, logical races, and async tests. |
+| `writing-apple-platform-documentation` | The Apple-platform companion to writing-technical-prose: DocC, Swift doc comments, terminology, availability, and privacy wording. |
 | `writing-swift` | Swift 6 standards for production code and packages. |
 
 ### Agents
@@ -76,4 +77,6 @@ Platform-agnostic tools for making good software.
 | Agent | Purpose |
 | :---- | :------ |
 | `code-reviewer` | Reviews structural design consistency and architecture fit. |
+| `code-simplifier` | Finds behavior-preserving simplification and reuse opportunities in any language. |
+| `correctness-reviewer` | Evidence-based review for concrete correctness, security, concurrency, and compatibility defects. |
 | `technical-writing-auditor` | Audits developer-facing docs and comments for voice, structure, and AI-isms. |

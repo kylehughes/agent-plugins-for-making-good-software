@@ -24,6 +24,14 @@ Keep a skill and the agents that preload it in the same plugin so agent `skills:
 
 There are no MCP servers or hooks in this repository right now.
 
+## Plugin Taxonomy and Composition
+
+- `universal` is the platform-neutral core: its skills define procedure and contract and never embed platform rules.
+- Platform plugins (`apple-platform` today; future ones such as `android-platform`) ship companion skills that layer platform specifics on a universal skill. Canonical pairs: `simplifying-code` ↔ `simplifying-apple-platform-code`, `writing-technical-prose` ↔ `writing-apple-platform-documentation`.
+- Composition direction is upward-only. A universal skill refers to companions only by what they cover ("compose with a platform companion when one is available; its rules win for that platform") and never names a platform plugin's content. A companion skill names the universal skill it extends. Downward name references from universal to platform content are forbidden.
+- Agents follow the same rule: `skills:` frontmatter references only same-plugin skills; other plugins' agents are referred to by concern ("a reviewer focused on structural design fit, when available"), never by name. A plugin must be fully useful installed alone.
+- Adding a platform plugin: create `plugins/<platform>/{.claude-plugin,.codex-plugin}/plugin.json`, register it in both marketplace manifests, add companion skills before agents, and extend `scripts/validate.py`'s version-token vocabulary if the platform has its own (for example `Android 15`, `API 35`). No universal file should need editing to add a platform.
+
 ## Single-Source Rule
 
 Skills and agents are stored once and serve both platforms. Do not fork content per platform.
@@ -40,12 +48,19 @@ Skills and agents are stored once and serve both platforms. Do not fork content 
 - Preserve source `REFERENCE.md`, `ATTRIBUTION.md`, and `references/` files with their skill directories.
 - Keep `description` written for implicit skill selection: describe in natural language when to use the skill. This drives Claude Code's automatic invocation and Codex's implicit selection.
 - Every skill also carries `skills/<name>/agents/openai.yaml` with Codex `interface` metadata: `display_name`, `short_description`, and a `default_prompt` (invoking the skill as `$<name>`). Claude Code ignores this file. Add MCP dependencies or `policy.allow_implicit_invocation: false` to it when a skill needs them.
+- Canonical SKILL.md shape: frontmatter (`name` == directory, gerund, version-free identity) → H1 → scope/assumptions including when NOT to use → decision procedure/contract → workflow → `## Reference Map` with an imperative lead-in → checklist pointer. Exemplars: `writing-swift`, `modeling-swift-types-for-correctness`.
+- Size budget: SKILL.md targets ≤ ~200 lines; exhaustive rules, tables, and examples live in `references/*.md`; every reference file must appear in the reference map (no orphans); split any reference beyond ~500 lines by topic.
+- Attribution: imported or derived skills carry top-level `ATTRIBUTION.md`; source snapshots are top-level `REFERENCE.md`; load-on-demand content lives in `references/`. Manually authored skills may omit attribution.
+- openai.yaml contract: `display_name` (Title Case of the gerund name), `short_description`, `default_prompt` beginning "Use $<skill-name> to …".
 
 ## Agent Maintenance
 
 - Agents are Markdown files with frontmatter under `plugins/<plugin>/agents/`.
 - Frontmatter is a superset: `name`, `description`, plus Claude Code fields (`tools`, `skills`, `model`, `color`). Codex ignores the fields it does not use.
-- Bodies are runtime-neutral. Reporting instructions prefer task tools (`TaskCreate`/`TaskList`) when the runtime exposes them and fall back to a prioritized follow-up list otherwise.
+- Frontmatter field order is `name, description, tools, skills, model, color`; `model: inherit` always, and a deviation requires a documented reason in the body. Reviewer agents use the read-only tool set `Bash, Glob, Grep, Read, TaskCreate, TaskList`.
+- Description formula: what it checks + "Use PROACTIVELY after/when …" + what it does not cover, with the scope boundary in the first sentence so overlapping agents don't both auto-spawn.
+- Bodies are runtime-neutral, use Markdown `##` headers only (no XML section tags), and follow standard sections: Scope with a concern-defer table, Constraints, Process with the layered scope-resolution steps, Classifications or Severity, Output Format, Reporting via TaskCreate/TaskList with a prioritized-list fallback, Final Report. Reporting instructions prefer task tools (`TaskCreate`/`TaskList`) when the runtime exposes them and fall back to a prioritized follow-up list otherwise.
+- Each reviewer agent owns exactly one concern. Current concern map: structure (`code-reviewer`), correctness (`correctness-reviewer`), codified rules (`code-standards-auditor`), types (`type-driven-design-auditor`), simplification (`code-simplifier` universally, `information-entropy-reducer` for Swift judgment), prose (`technical-writing-auditor`). A new agent claims an empty concern or explicitly splits one.
 - Codex does not automatically spawn custom agents from their descriptions. Spawn the Apple Platform reviewer agents only when the user explicitly asks for subagents, delegated review, or parallel agent work and the runtime exposes those roles. If the roles are not available, run the review directly with the relevant skills.
 
 ## Review Workflow
@@ -66,6 +81,8 @@ When agents are spawned, use the narrowest useful set, wait for their results be
 - `type-driven-design-auditor`: opportunities to make invalid states unrepresentable.
 - `information-entropy-reducer`: unnecessary complexity and cognitive load.
 - `technical-writing-auditor`: README, ADR, Markdown, and Swift doc-comment voice.
+- `code-simplifier`: behavior-preserving simplification and reuse opportunities.
+- `correctness-reviewer`: concrete correctness, security, concurrency, and compatibility defects.
 
 ## Apple Platform Defaults
 
@@ -77,9 +94,20 @@ When agents are spawned, use the narrowest useful set, wait for their results be
 - Push domain invariants into types when the safety benefit outweighs added complexity.
 - Follow existing project architecture before introducing a new pattern.
 
+## Growth Playbooks
+
+- **Adding a skill**: create the directory + SKILL.md per the skill shape + `agents/openai.yaml`; decide universal vs platform (if any rule would be wrong on another platform, it belongs in a platform plugin); add the README table row; run `python3 scripts/validate.py`; load-test on both runtimes.
+- **Adding an agent**: confirm the concern slot; same-plugin `skills:` only; update the Review Workflow list and README; validate.
+- **Adding a platform plugin**: create `plugins/<platform>/{.claude-plugin,.codex-plugin}/plugin.json`, register it in both marketplace manifests, add companion skills before agents, and extend `scripts/validate.py`'s version-token vocabulary if the platform has its own.
+
 ## Validation
 
-- Validate JSON manifests with `python3 -m json.tool`: `.claude-plugin/marketplace.json`, `.agents/plugins/marketplace.json`, `plugins/apple-platform/.claude-plugin/plugin.json`, and `plugins/apple-platform/.codex-plugin/plugin.json`.
-- Run `claude plugin validate plugins/apple-platform` for the Claude manifest.
+- Primary gate: `python3 scripts/validate.py` — the same script CI runs via `.github/workflows/validate.yml`. It checks manifest JSON validity and marketplace↔plugin.json consistency, skill `name` == directory, version-free identity fields, `agents/openai.yaml` presence with a `$<skill-name>` default prompt, SKILL.md relative links and reference-map completeness, agent `skills:` same-plugin resolution, and README table ↔ disk consistency.
+- Validate JSON manifests with `python3 -m json.tool`: `.claude-plugin/marketplace.json`, `.agents/plugins/marketplace.json`, `plugins/apple-platform/.claude-plugin/plugin.json`, `plugins/apple-platform/.codex-plugin/plugin.json`, `plugins/universal/.claude-plugin/plugin.json`, and `plugins/universal/.codex-plugin/plugin.json`.
+- Run `claude plugin validate plugins/apple-platform` and `claude plugin validate plugins/universal` for the Claude manifests; local-only, since the `claude` CLI is not guaranteed on CI runners.
 - Load the marketplace in Codex against the local path to confirm the agents and skills register.
 - Do not commit generated state such as `.claude/` worktrees, `.DS_Store`, or local logs.
+
+### Versioning
+
+Plugin `version` bumps when content changes materially: patch for fixes and consistency work, minor for new skills, agents, or references, major for removals or renames. The Claude marketplace entry and both plugin.json files move together; `validate.py` enforces the equality. Bump with `python3 scripts/bump.py <plugin> <patch|minor|major>`, which updates all three version fields atomically. `validate.py` fails when content under a plugin changes without a version bump, so releases cannot be forgotten.
