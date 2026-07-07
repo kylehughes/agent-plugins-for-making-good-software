@@ -34,7 +34,7 @@ Expose the app’s actions and data in a way the system can understand semantica
 17. [checklists.md](references/checklists.md) — production checklists.
 18. [examples.md](references/examples.md) — composable Swift skeletons.
 19. [agent-playbook.md](references/agent-playbook.md) — how an agent should apply this skill to a codebase.
-20. [attribution.md](references/attribution.md) — source list and verification notes.
+20. [ATTRIBUTION.md](ATTRIBUTION.md) — source list and verification notes.
 
 ## When to use this skill
 

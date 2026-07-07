@@ -27,6 +27,8 @@ SKIP_DIRS = {
     "node_modules",
 }
 
+CALLOUT_RE = re.compile(r"^\s*>\s*\[!(?:NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]")
+
 PATTERNS: list[tuple[str, re.Pattern[str], str]] = [
     ("filler", re.compile(r"\b(just|simply|basically|essentially|obviously|clearly)\b", re.I), "Remove filler unless it changes the technical meaning."),
     ("chatbot", re.compile(r"\b(Sure|Certainly|Great|Awesome|Let me|I'll|Here(?:'s| is)|Let's dive in)\b", re.I), "Remove chatbot scaffolding from the artifact."),
@@ -116,7 +118,8 @@ def lint_file(path: Path) -> list[Finding]:
             prose = re.sub(r"^\s*/// ?", "", prose)
             prose = re.sub(r"^\s*/?\*+ ?", "", prose)
 
-        if "!" in prose and not stripped.startswith(("#!", "<!--")):
+        exclamation_prose = CALLOUT_RE.sub("", prose)
+        if "!" in exclamation_prose and not stripped.startswith(("#!", "<!--")):
             findings.append(Finding(path, index, "exclamation", "Avoid exclamation points in technical prose unless they are part of code or required syntax.", line))
 
         for code, pattern, message in PATTERNS:

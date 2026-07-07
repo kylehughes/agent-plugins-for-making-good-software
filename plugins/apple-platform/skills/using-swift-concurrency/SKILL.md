@@ -1,6 +1,6 @@
 ---
 name: using-swift-concurrency
-description: Writes, reviews, refactors, migrates, and debugs modern Swift Concurrency code for Swift 6.3 iOS projects spanning iOS 16 through current and beta SDKs. Use when working with async/await, Task, Task.immediate, Task.detached, task groups, actors, MainActor, Sendable, sending/nonsending, @concurrent, nonisolated, default actor isolation, strict concurrency diagnostics, SwiftUI/UIKit isolation, async sequences, continuations, cancellation, protocol isolation, isolated conformances, or async tests.
+description: Writes, reviews, refactors, migrates, and debugs modern Swift Concurrency code for iOS projects spanning older deployment targets through current and beta SDKs. Use when working with async/await, Task, Task.immediate, Task.detached, task groups, actors, MainActor, Sendable, sending/nonsending, @concurrent, nonisolated, default actor isolation, strict concurrency diagnostics, SwiftUI/UIKit isolation, async sequences, continuations, cancellation, protocol isolation, isolated conformances, or async tests.
 ---
 
 # Using Swift Concurrency
@@ -43,6 +43,7 @@ Use this skill to produce Swift 6.3 concurrency code that is correct under stric
 | `references/problematic-patterns.md` | Auditing common anti-patterns: split isolation, stateless actors, detached tasks, hidden unstructured tasks, blocking async work, overbroad MainActor, and unsafe escape hatches. |
 | `references/review-playbooks.md` | Performing a systematic concurrency review, migration pass, availability pass, or PR review. |
 | `references/terminology.md` | Looking up keywords, attributes, runtime concepts, build settings, proposal-era terms, and short definitions. |
+| `references/sources.md` | Verifying guidance against primary sources and specifications, checking Swift Evolution proposal references, or refreshing the skill during maintenance. |
 
 ## Design defaults
 
