@@ -1,0 +1,4 @@
+interface:
+  display_name: "Compiling Agent Goals"
+  short_description: "Compile specs into bounded agent goals"
+  default_prompt: "Use $compiling-agent-goals to turn a spec, plan, issue, or draft goal into a finite, paste-ready /goal contract with frozen acceptance criteria, bound evidence, and explicit SUCCESS and BLOCKED exits."

@@ -2,7 +2,7 @@
   "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "universal",
   "displayName": "Universal",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Platform-agnostic tools for making good software, including evidence-based code review.",
   "author": {
     "name": "Kyle Hughes",
