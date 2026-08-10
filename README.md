@@ -68,6 +68,7 @@ Platform-agnostic tools for making good software.
 
 | Skill | Purpose |
 | :---- | :------ |
+| `compiling-agent-goals` | Turns specs and plans into finite `/goal` contracts that a persistent agent loop can actually finish. |
 | `reviewing-code` | A review frame for correctness, security, concurrency, and compatibility risks, with line-specific findings. |
 | `simplifying-code` | A behavior-preserving cleanup pass — reuse, simplify, de-duplicate, harden — for any language. |
 | `writing-technical-prose` | Conventions for direct, pragmatic developer-facing prose — READMEs, ADRs, docs, and comments. |
