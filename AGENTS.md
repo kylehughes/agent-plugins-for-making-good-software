@@ -43,7 +43,7 @@ Skills and agents are stored once and serve both platforms. Do not fork content 
 ## Skill Maintenance
 
 - Every skill keeps a `SKILL.md` with `name` and `description` frontmatter.
-- The `SKILL.md` `name` must equal the skill's directory name. On import, strip any version or platform suffix (for example `-ios26-ios27`): Codex reads the frontmatter `name` while Claude Code uses the directory, so a mismatch surfaces the wrong, uglier name on Codex.
+- The `SKILL.md` `name` must equal the skill's directory name; the Agent Skills spec requires it. On import, strip any version or platform suffix (for example `-ios26-ios27`): both runtimes derive the invocation name from the frontmatter `name` for plugin skills, falling back to the directory, so a mismatch leaves the command and the directory you navigate to under different names.
 - Keep identity fields (`name`, the `# ` H1, and the leading clause of `description`) free of specific OS or SDK version numbers; leave version-gating detail in the body where it is accurate.
 - Preserve source `REFERENCE.md`, `ATTRIBUTION.md`, and `references/` files with their skill directories.
 - Keep `description` written for implicit skill selection: describe in natural language when to use the skill. This drives Claude Code's automatic invocation and Codex's implicit selection.
