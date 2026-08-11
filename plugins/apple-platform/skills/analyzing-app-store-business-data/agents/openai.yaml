@@ -1,0 +1,4 @@
+interface:
+  display_name: "Analyzing App Store Business Data"
+  short_description: "App Store KPIs, funnel, and growth plans"
+  default_prompt: "Use $analyzing-app-store-business-data to pull this app's App Store Connect data, compute the standard KPIs and funnel, and diagnose where growth is constrained."

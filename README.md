@@ -38,6 +38,7 @@ Skills and agent definitions for Apple-platform codebases.
 
 | Skill | Purpose |
 | :---- | :------ |
+| `analyzing-app-store-business-data` | App Store Connect KPIs, funnel diagnosis, review mining, ASO, and measurable growth plans. |
 | `configuring-ios-content` | Patterns for `UIContentConfiguration`, `UIHostingConfiguration`, and `UIContentView` in UIKit cells. |
 | `designing-swift-apis` | Apple's Swift API design guidelines for naming, argument labels, and doc comments. |
 | `implementing-app-intents` | Guidance for App Intents: Siri, Apple Intelligence, entities, Spotlight, and value representations. |
