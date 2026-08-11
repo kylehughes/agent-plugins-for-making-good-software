@@ -1,0 +1,4 @@
+interface:
+  display_name: "Brainstorming Design Specs"
+  short_description: "Explore ambiguous work into a design spec"
+  default_prompt: "Use $brainstorming-design-specs to explore this feature deeply through iterative research and questions, and produce an implementation-ready design spec."
