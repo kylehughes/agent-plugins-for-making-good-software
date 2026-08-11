@@ -60,7 +60,7 @@ Skills and agents are stored once and serve both platforms. Do not fork content 
 - Frontmatter field order is `name, description, tools, skills, model, color`; `model: inherit` always, and a deviation requires a documented reason in the body. Reviewer agents use the read-only tool set `Bash, Glob, Grep, Read, TaskCreate, TaskList`.
 - Description formula: what it checks + "Use PROACTIVELY after/when …" + what it does not cover, with the scope boundary in the first sentence so overlapping agents don't both auto-spawn.
 - Bodies are runtime-neutral, use Markdown `##` headers only (no XML section tags), and follow standard sections: Scope with a concern-defer table, Constraints, Process with the layered scope-resolution steps, Classifications or Severity, Output Format, Reporting via TaskCreate/TaskList with a prioritized-list fallback, Final Report. Reporting instructions prefer task tools (`TaskCreate`/`TaskList`) when the runtime exposes them and fall back to a prioritized follow-up list otherwise.
-- Each reviewer agent owns exactly one concern. Current concern map: structure (`code-reviewer`), correctness (`correctness-reviewer`), codified rules (`code-standards-auditor`), types (`type-driven-design-auditor`), simplification (`code-simplifier` universally, `information-entropy-reducer` for Swift judgment), prose (`technical-writing-auditor`). A new agent claims an empty concern or explicitly splits one.
+- Each reviewer agent owns exactly one concern. Current concern map: structure (`code-reviewer`), correctness (`correctness-reviewer`), codified rules (`code-standards-auditor`), types (`type-driven-design-auditor`), simplification (`code-simplifier` universally, `information-entropy-reducer` for Swift judgment), async-test determinism (`async-testing-auditor`), prose (`technical-writing-auditor`). A new agent claims an empty concern or explicitly splits one.
 - Codex does not automatically spawn custom agents from their descriptions. Spawn the Apple Platform reviewer agents only when the user explicitly asks for subagents, delegated review, or parallel agent work and the runtime exposes those roles. If the roles are not available, run the review directly with the relevant skills.
 
 ## Review Workflow
@@ -69,13 +69,14 @@ When the user asks to review a PR, branch, or diff:
 
 1. Compare the current branch against the relevant base branch, usually `main`.
 2. Use the `reviewing-code` skill for the review frame.
-3. For Swift changes, consult the focused Apple Platform skills that match the code touched: `using-swift-concurrency` for concurrency, actors, protocols, logical races, and async tests; then symbol ordering, localization, API design, testing, and type modeling as needed.
+3. For Swift changes, consult the focused Apple Platform skills that match the code touched: `using-swift-concurrency` for concurrency, actors, protocols, logical races, and async tests; `testing-async-swift-code` when async tests are flaky or timing-dependent; then symbol ordering, localization, API design, testing, and type modeling as needed.
 4. Present concrete findings first, ordered by severity.
 5. Include file paths, symbols, and reproduction or verification notes where possible.
 6. Avoid style-only comments unless they hide correctness, maintainability, or platform-convention risk.
 
 When agents are spawned, use the narrowest useful set, wait for their results before finalizing, then consolidate duplicate findings instead of forwarding separate reports wholesale:
 
+- `async-testing-auditor`: deterministic synchronization edges in changed Swift async tests.
 - `code-reviewer`: structural design consistency and architecture fit.
 - `code-standards-auditor`: codified Swift and Apple Platform standards.
 - `type-driven-design-auditor`: opportunities to make invalid states unrepresentable.

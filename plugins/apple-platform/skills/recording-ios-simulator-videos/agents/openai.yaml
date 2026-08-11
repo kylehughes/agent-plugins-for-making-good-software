@@ -1,0 +1,4 @@
+interface:
+  display_name: "Recording iOS Simulator Videos"
+  short_description: "Script-backed simulator capture and compression"
+  default_prompt: "Use $recording-ios-simulator-videos to record and compress a simulator video artifact for this automation run or reproduction."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Structuring Swift Packages"
+  short_description: "Package boundaries, exports, and placement"
+  default_prompt: "Use $structuring-swift-packages to decide where Swift types belong and keep package dependency boundaries valid."

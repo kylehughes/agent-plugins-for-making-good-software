@@ -1,0 +1,4 @@
+interface:
+  display_name: "Presenting iOS Modals"
+  short_description: "Modal chrome, button roles, and sheet detents"
+  default_prompt: "Use $presenting-ios-modals to build or review modal sheets, close buttons, completion actions, and presentation detents against Apple's guidance."

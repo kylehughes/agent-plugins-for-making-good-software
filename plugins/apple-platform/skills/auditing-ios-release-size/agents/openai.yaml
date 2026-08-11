@@ -1,0 +1,4 @@
+interface:
+  display_name: "Auditing iOS Release Size"
+  short_description: "Release-path size audit with follow-up capture"
+  default_prompt: "Use $auditing-ios-release-size to audit this app's release build size along the real distribution path and capture evidence-backed follow-up work."

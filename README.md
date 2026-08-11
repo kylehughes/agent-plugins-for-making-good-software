@@ -39,6 +39,7 @@ Skills and agent definitions for Apple-platform codebases.
 | Skill | Purpose |
 | :---- | :------ |
 | `analyzing-app-store-business-data` | App Store Connect KPIs, funnel diagnosis, review mining, ASO, and measurable growth plans. |
+| `auditing-ios-release-size` | A release-path size audit: App Thinning, payload metrics, contributor attribution, and evidence-backed follow-ups. |
 | `configuring-ios-content` | Patterns for `UIContentConfiguration`, `UIHostingConfiguration`, and `UIContentView` in UIKit cells. |
 | `designing-swift-apis` | Apple's Swift API design guidelines for naming, argument labels, and doc comments. |
 | `implementing-app-intents` | Guidance for App Intents: Siri, Apple Intelligence, entities, Spotlight, and value representations. |
@@ -47,7 +48,11 @@ Skills and agent definitions for Apple-platform codebases.
 | `modeling-swift-types-for-correctness` | Patterns for modeling Swift types that make invalid states unrepresentable. |
 | `ordering-symbols` | The canonical member ordering for Swift types. |
 | `organizing-swift-types` | Conventions for Swift types, extensions, access control, and file layout. |
+| `presenting-ios-modals` | Modal chrome, button roles, sheet detents, and dismissal behavior per Apple's HIG. |
+| `recording-ios-simulator-videos` | Script-backed `simctl` capture with delayed start, compression, and validation for automation artifacts. |
 | `simplifying-apple-platform-code` | The Apple-platform companion to `simplifying-code`: Swift, SwiftUI, UIKit, Xcode, availability, and concurrency cleanup. |
+| `structuring-swift-packages` | Export vs. internal module boundaries, suffix conventions, composition roots, and factory patterns. |
+| `testing-async-swift-code` | Deterministic async-test primitives: virtual clocks, event recorders, serial executors, and timeout budgets. |
 | `testing-swift-code` | Conventions for the Swift Testing framework (`@Test`, `@Suite`, `#expect`). |
 | `using-swift-concurrency` | Swift Concurrency design, diagnostics, actor isolation, logical races, and async tests. |
 | `writing-apple-platform-documentation` | The Apple-platform companion to writing-technical-prose: DocC, Swift doc comments, terminology, availability, and privacy wording. |
@@ -57,6 +62,7 @@ Skills and agent definitions for Apple-platform codebases.
 
 | Agent | Purpose |
 | :---- | :------ |
+| `async-testing-auditor` | Audits changed Swift async tests for proven synchronization edges. |
 | `code-standards-auditor` | Audits Swift changes against the bundled coding standards. |
 | `information-entropy-reducer` | Flags unnecessary complexity and cognitive load. |
 | `type-driven-design-auditor` | Finds compile-time correctness opportunities in Swift types. |
