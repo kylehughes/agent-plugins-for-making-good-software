@@ -69,7 +69,9 @@ Platform-agnostic tools for making good software.
 
 | Skill | Purpose |
 | :---- | :------ |
+| `brainstorming-design-specs` | Iterative research-and-question rounds that turn ambiguous work into an implementation-ready design spec. |
 | `compiling-agent-goals` | Turns specs and plans into finite `/goal` contracts that a persistent agent loop can actually finish. |
+| `hardening-changes` | A convergent reviewer-agent audit-fix loop that leaves a branch whole before PR creation. |
 | `reviewing-code` | A review frame for correctness, security, concurrency, and compatibility risks, with line-specific findings. |
 | `simplifying-code` | A behavior-preserving cleanup pass — reuse, simplify, de-duplicate, harden — for any language. |
 | `writing-escalation-briefs` | A standalone handoff packet for a stuck problem — evidence, attempts, and hypotheses, with no repository access assumed. |
