@@ -1,4 +1,4 @@
 interface:
   display_name: "Writing Escalation Briefs"
   short_description: "Standalone escalation brief for a stuck problem"
-  default_prompt: "Use $writing-escalation-briefs to turn this stuck programming problem into a standalone, no-repo-access brief with embedded evidence, attempted fixes, ranked hypotheses, and verification criteria."
+  default_prompt: "Use $writing-escalation-briefs to create a standalone no-repo-access escalation brief for this problem, choosing diagnosis or judgment mode as appropriate."
