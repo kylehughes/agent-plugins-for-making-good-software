@@ -2,7 +2,7 @@
 
 A plugin marketplace for making good software, first-class on both Claude Code and Codex.
 
-It ships two plugins: `apple-platform`, with skills and agents tailored to Apple-platform development, and `universal`, with platform-agnostic tools for making good software.
+It ships two plugins: `apple-platform`, with skills and agents for Apple-platform development, and `universal`, with platform-agnostic ones.
 
 ## Install
 

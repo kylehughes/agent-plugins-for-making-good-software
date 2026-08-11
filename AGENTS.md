@@ -2,7 +2,7 @@
 
 Repository guidance for Agent Plugins for Making Good Software.
 
-This file is the canonical guidance for the repository. `CLAUDE.md` is a symlink to it, so Claude Code and Codex read the same instructions.
+This file is canonical. `CLAUDE.md` is a symlink to it, so Claude Code and Codex read the same instructions.
 
 ## Repository Shape
 
@@ -59,7 +59,7 @@ Skills and agents are stored once and serve both platforms. Do not fork content 
 - Frontmatter is a superset: `name`, `description`, plus Claude Code fields (`tools`, `skills`, `model`, `color`). Codex ignores the fields it does not use.
 - Frontmatter field order is `name, description, tools, skills, model, color`; `model: inherit` always, and a deviation requires a documented reason in the body. Reviewer agents use the read-only tool set `Bash, Glob, Grep, Read, TaskCreate, TaskList`.
 - Description formula: what it checks + "Use PROACTIVELY after/when …" + what it does not cover, with the scope boundary in the first sentence so overlapping agents don't both auto-spawn.
-- Bodies are runtime-neutral, use Markdown `##` headers only (no XML section tags), and follow standard sections: Scope with a concern-defer table, Constraints, Process with the layered scope-resolution steps, Classifications or Severity, Output Format, Reporting via TaskCreate/TaskList with a prioritized-list fallback, Final Report. Reporting instructions prefer task tools (`TaskCreate`/`TaskList`) when the runtime exposes them and fall back to a prioritized follow-up list otherwise.
+- Bodies are runtime-neutral, use Markdown `##` headers only (no XML section tags), and follow standard sections: Scope with a concern-defer table, Constraints, Process with the layered scope-resolution steps, Classifications or Severity, Output Format, Reporting, Final Report. Reporting instructions prefer task tools (`TaskCreate`/`TaskList`) when the runtime exposes them and fall back to a prioritized follow-up list otherwise.
 - Each reviewer agent owns exactly one concern. Current concern map: structure (`code-reviewer`), correctness (`correctness-reviewer`), codified rules (`code-standards-auditor`), types (`type-driven-design-auditor`), simplification (`code-simplifier` universally, `information-entropy-reducer` for Swift judgment), async-test determinism (`async-testing-auditor`), prose (`technical-writing-auditor`). A new agent claims an empty concern or explicitly splits one.
 - Codex does not automatically spawn custom agents from their descriptions. Spawn the Apple Platform reviewer agents only when the user explicitly asks for subagents, delegated review, or parallel agent work and the runtime exposes those roles. If the roles are not available, run the review directly with the relevant skills.
 
