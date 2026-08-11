@@ -1,0 +1,141 @@
+# Primitive Contracts
+
+The API contract each primitive must satisfy, with minimal reference implementations for the ones worth writing yourself. Use your project's existing primitives when they satisfy the contract; adopt the named ecosystem package when one exists; write from the sketch only when neither holds. Keep test primitives in a dedicated test-support module so production code cannot import them.
+
+## Virtual Clock
+
+Contract:
+
+- Conforms to Swift's `Clock` protocol so production code can accept `some Clock` and never know it is under test.
+- Time progresses only when the test calls `advance(by:)`; sleeps scheduled at or before the new deadline resume.
+- Exposes enough state to prove a sleep was *armed* before advancing — a scheduled-sleep count with a bounded wait — so a test can distinguish "the operator scheduled its delay, then I advanced" from "I advanced before the operator got there." Use that wait only to sequence arm-then-advance, never as proof the operator observed a value.
+
+[swift-clocks](https://github.com/pointfreeco/swift-clocks) `TestClock` satisfies the core contract, and its `advance(by:)` is `async` and awaits its sleepers, which subsumes the armed-sleep wait for most tests. A hand-rolled manual clock needs: a lock-protected schedule of `(deadline, continuation)` pairs, `sleep(until:tolerance:)` registering into it, `advance(by:)` snapshotting due entries atomically before resuming them, and an `Instant: InstantProtocol` measured as a `Duration` offset from zero.
+
+## Event Recorder
+
+Contract:
+
+- `consuming(_ source: some AsyncSequence)` — spawn one collection task that appends every element, in order, to a transcript.
+- `recording()` — no collection task; callback-shaped APIs call `await record(_:)` directly, avoiding a scheduler hop.
+- `waitFor(_ predicate:since:timeout:)` — resume when a matching event lands at or after a transcript baseline index; throw on timeout.
+- `waitForEventCount(_:timeout:)` — resume when the transcript reaches a count.
+- `detach()` — cancel the collection task **and await its termination**. Post-condition: no element is appended after `detach()` returns. This is the property everything else leans on.
+- `expectNoEvents(for:since:)` — after detach, assert the transcript did not grow past the baseline over a bounded window.
+- Every wait spends its deadline through the timeout budget below, not a single wall-clock sleep.
+
+Reference sketch (actor; waits shown for one method, the rest follow the same shape):
+
+```swift
+actor EventRecorder<Event: Sendable> {
+    private var transcript: [Event] = []
+    private var collection: Task<Void, Never>?
+    private var revision = 0
+
+    static func consuming<S: AsyncSequence & Sendable>(
+        _ source: S
+    ) async -> EventRecorder<Event> where S.Element == Event {
+        let recorder = EventRecorder<Event>()
+        await recorder.beginCollecting(from: source)
+        return recorder
+    }
+
+    var events: [Event] { transcript }
+
+    func record(_ event: Event) {
+        transcript.append(event)
+        revision += 1
+    }
+
+    func detach() async {
+        collection?.cancel()
+        await collection?.value   // the barrier: awaits termination
+        collection = nil
+    }
+
+    func waitFor(
+        _ predicate: @Sendable (Event) -> Bool,
+        since baseline: Int = 0,
+        timeout: Duration = .seconds(2)
+    ) async throws -> Event {
+        let budget = TimeoutBudget(timeout: timeout)
+        while true {
+            if let match = transcript[min(baseline, transcript.count)...].first(where: predicate) {
+                return match
+            }
+            guard await budget.spendSlice() else { throw RecorderFailure.waitTimedOut }
+        }
+    }
+
+    private func beginCollecting<S: AsyncSequence & Sendable>(
+        from source: S
+    ) where S.Element == Event {
+        collection = Task {
+            do {
+                for try await event in source { self.record(event) }
+            } catch { /* record or surface upstream errors per project need */ }
+        }
+    }
+}
+```
+
+A production-grade version replaces the polling loop with registered continuation waiters woken on every `record` (each waiter under a unique token; whoever wakes first — event, timeout, or cancellation — atomically removes the token so the continuation never double-resumes). The polling form above is correct and CI-safe because the slices go through the budget; start there and upgrade if wait latency matters.
+
+## Timeout Budget
+
+Contract: a deadline paid out in short sleep slices, so each slice resumption pays the same per-suspension scheduling debt as the emission chain it is racing. `isExhausted` after the nominal duration on a healthy scheduler; proportionally later on a starved one.
+
+```swift
+final class TimeoutBudget: @unchecked Sendable {
+    private let slice: Duration = .milliseconds(10)
+    private var remaining: Duration
+    private let lock = NSLock()
+
+    init(timeout: Duration) { remaining = timeout }
+
+    /// Sleeps one slice and debits it. Returns false once the budget is spent.
+    func spendSlice() async -> Bool {
+        lock.lock()
+        let spent = remaining <= .zero
+        if !spent { remaining -= slice }
+        lock.unlock()
+        guard !spent else { return false }
+        try? await Task.sleep(for: slice)
+        return true
+    }
+}
+```
+
+The point is not the constant; it is that *N* short suspensions experience contention the way the system under test does, where one long suspension does not.
+
+## Awaited Cleanup
+
+Contract: run an operation, then run async cleanup whether the operation returned or threw. Swift `defer` cannot `await`, and duplicating cleanup in `do`/`catch` is easy to get wrong.
+
+```swift
+func withAsyncCleanup<T>(
+    operation: () async throws -> T,
+    cleanup: () async -> Void
+) async throws -> T {
+    do {
+        let value = try await operation()
+        await cleanup()
+        return value
+    } catch {
+        await cleanup()
+        throw error
+    }
+}
+```
+
+Add a `@MainActor` overload if suites are main-actor-isolated. Typical cleanup order in a test: open any gates the operation is blocked on, await outstanding tasks, stop the harness, `await recorder.detach()`.
+
+## Serial Main Executor
+
+Contract: while installed, `MainActor` task scheduling is FIFO, so `await Task.yield()` deterministically hands control to the next scheduled task.
+
+Do not write this one — the runtime hook is provided by [swift-concurrency-extras](https://github.com/pointfreeco/swift-concurrency-extras) (`withMainSerialExecutor`). What a project should add around it is a **scope guard**: the hook is process-global and parallel suites clobber each other, so expose it through a serializing wrapper or a Swift Testing trait that leases the hook to one scope at a time, and keep scopes short.
+
+## Bounded Polling
+
+For state that has no event surface at all (`waitUntil(_:)` / `waitForValue(_:)` helpers): poll a predicate through the timeout budget, sleeping one slice between checks. Polling is the last resort — prefer an event surface — but budgeted polling is sound where an unbudgeted spin or one-shot sleep is not.
