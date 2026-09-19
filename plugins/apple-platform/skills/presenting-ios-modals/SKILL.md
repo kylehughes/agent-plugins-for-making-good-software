@@ -1,12 +1,6 @@
 ---
 name: presenting-ios-modals
-description: >
-  Applies iOS modal presentation rules for navigation chrome, close/cancel/done/back
-  placement, sheet detents, grabbers, and dismissal behavior, grounded in Apple's Human
-  Interface Guidelines. Use when building or reviewing sheets, form sheets, modal flows,
-  close buttons, cancellation actions, confirmation actions, or presentation detents in
-  SwiftUI or UIKit. Do not use for non-modal navigation structure or for visual styling
-  beyond the presentation surface.
+description: "Build or review SwiftUI and UIKit modal sheets: navigation chrome, close/cancel/done actions, detents, and dismissal. Use for modal presentation, not ordinary navigation or general visual styling."
 ---
 
 # Presenting iOS Modals

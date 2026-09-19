@@ -1,15 +1,6 @@
 ---
 name: writing-escalation-briefs
-description: >
-  Creates a fully standalone escalation brief that hands a problem to a stronger model,
-  senior engineer, teammate, maintainer, or outside expert with no repo access and no
-  conversation history. Two modes: diagnosis (agent is stuck, repeated fixes have failed,
-  root cause is unclear) and judgment (design, architecture, or UI critique, plan
-  validation, "get a second opinion," "have the best problem-solver weigh in"). Produces a
-  self-contained packet with goal, embedded code, config, and evidence, attempts or
-  alternatives considered, constraints, prioritized questions with decision forks, and a
-  response-format contract, plus guidance for applying the expert's answer. Do not use for
-  ordinary first-pass debugging or direct implementation.
+description: "Prepare a standalone expert handoff for a stuck problem or a requested second opinion on a design, plan, or UI. Include the evidence an expert without repo access needs; not routine first-pass debugging."
 ---
 
 # Writing Escalation Briefs

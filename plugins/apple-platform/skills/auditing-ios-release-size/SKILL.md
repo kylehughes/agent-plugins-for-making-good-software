@@ -1,12 +1,6 @@
 ---
 name: auditing-ios-release-size
-description: >
-  Audits iOS release build size using the real distribution path, App Thinning, local
-  binary and resource breakdowns, baseline comparison, optional size-analysis service
-  reports, and issue-tracker follow-up capture. Use when investigating IPA size, install
-  size, release binary size, App Thinning reports, embedded framework or resource bloat,
-  size regressions, or recurring iOS size-budget work. Do not use for Debug or simulator
-  build size except as an explicitly requested comparison.
+description: "Audit iOS IPA, download, and install size through release builds and App Thinning. Use for size regressions or binary and resource bloat; not routine Debug or simulator build sizing."
 ---
 
 # Auditing iOS Release Size

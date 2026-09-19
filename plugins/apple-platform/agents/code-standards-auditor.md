@@ -1,9 +1,7 @@
 ---
 name: code-standards-auditor
-description: Audits Swift code changes against coding standards. Use PROACTIVELY after any Edit/Write operations on Swift files to ensure compliance with Swift 6 concurrency (including protocol conformances, logical races, and actor isolation), symbol ordering, localization patterns, extension usage, and API design conventions before considering work complete.
+description: "Audit Swift changes against documented coding standards. Use PROACTIVELY after Swift edits for applicable naming, ordering, localization, and concurrency rules. Defer architecture judgment and type-design opportunities."
 tools: Bash, Glob, Grep, Read, TaskCreate, TaskList
-skills: configuring-ios-content, designing-swift-apis, localizing-strings, ordering-symbols, organizing-swift-types, testing-swift-code, using-swift-concurrency, writing-swift
-model: inherit
 color: orange
 ---
 
@@ -52,13 +50,19 @@ Use progressive disclosure—layer your understanding before judging.
 
 **Layer 2: Context** (just-in-time)
 6. For each file, read the change with the matching command for the scope: parent-provided diff, `git diff <base>...HEAD -- path`, `git diff --cached -- path`, `git diff -- path`, or the full file for untracked files.
-7. Load relevant skills based on what the code contains:
-   - Concurrency code → `using-swift-concurrency`
-   - Type definitions → `organizing-swift-types`, `designing-swift-apis`
-   - User-facing strings → `localizing-strings`
-   - Symbol declarations → `ordering-symbols`
-   - Tests → `testing-swift-code`
-   - General Swift → `writing-swift`
+7. Before asserting a rule, conditionally load the relevant same-plugin guide for the changed concern. Use these routes:
+   - concurrency → [using-swift-concurrency](../skills/using-swift-concurrency/SKILL.md)
+   - type declarations → [organizing-swift-types](../skills/organizing-swift-types/SKILL.md)
+   - API naming or signatures → [designing-swift-apis](../skills/designing-swift-apis/SKILL.md)
+   - member placement → [ordering-symbols](../skills/ordering-symbols/SKILL.md)
+   - user-facing text → [localizing-strings](../skills/localizing-strings/SKILL.md)
+   - test structure → [testing-swift-code](../skills/testing-swift-code/SKILL.md)
+   - async synchronization → [testing-async-swift-code](../skills/testing-async-swift-code/SKILL.md)
+   - UIKit cell content → [configuring-ios-content](../skills/configuring-ios-content/SKILL.md)
+   - package boundaries → [structuring-swift-packages](../skills/structuring-swift-packages/SKILL.md)
+   - broad Swift build or migration questions → [writing-swift](../skills/writing-swift/SKILL.md)
+
+   Do not load unrelated guides.
 
 **Layer 3: Analysis** (focused)
 8. Review changes against loaded standards

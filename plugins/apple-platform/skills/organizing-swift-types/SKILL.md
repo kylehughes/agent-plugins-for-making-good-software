@@ -1,6 +1,6 @@
 ---
 name: organizing-swift-types
-description: Defines conventions for organizing iOS Swift types across a deployment span from older minimum targets through current and beta SDKs. Use when writing or editing Swift type declarations, choosing access control, ordering modifiers, deciding whether an extension is legitimate, placing protocol conformances, organizing nested types, handling file-scoped constants, applying availability guards, placing previews, or removing prohibited organizational patterns such as MARK comments, organizational extensions, unnecessary self, global constants, and Constants namespaces.
+description: "Organize Swift declarations, extensions, conformances, access control, and file layout. Use when adding or restructuring types; member sorting belongs to ordering-symbols."
 ---
 
 # Swift Type Organization Conventions

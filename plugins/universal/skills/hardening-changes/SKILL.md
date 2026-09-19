@@ -1,13 +1,6 @@
 ---
 name: hardening-changes
-description: >
-  Runs a reviewer-agent hardening loop against branch or working-tree changes, completes
-  every thread the branch owns, and leaves the work ready for pull request creation. Use
-  when preparing work for review, PR prep, or hardening a change set before merge. Do not
-  use for implementing new features, for reviewing someone else's PR, or as a substitute
-  for the project's own verification gate.
-disable-model-invocation: true
-allowed-tools: Agent, AskUserQuestion, Bash, Read, Write, Edit, Grep, Glob, TaskCreate, TaskList, TaskGet, TaskUpdate
+description: "Harden an owned branch or working tree for a PR through an audit-and-fix loop. Use for PR preparation or requested change-set hardening, not a read-only review of someone else's work."
 ---
 
 # Hardening Changes

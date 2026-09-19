@@ -1,6 +1,6 @@
 ---
 name: simplifying-code
-description: Universally reviews and simplifies existing code while preserving behavior. Use when the user asks to simplify, clean up, harden, reduce, reuse, recycle, de-duplicate, refactor locally, or review a code diff in any language or platform. This skill is platform-neutral; when a platform-specific companion skill is available for the target stack, compose with it rather than embedding platform rules here.
+description: "Simplify existing code while preserving behavior. Use for requested cleanup, deduplication, local refactoring, or a simplification review; ordinary defect review belongs to reviewing-code."
 ---
 
 # Simplify Code

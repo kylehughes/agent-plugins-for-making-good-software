@@ -1,13 +1,6 @@
 ---
 name: structuring-swift-packages
-description: >
-  Applies Swift package and module structure rules with correct dependency boundaries:
-  export vs. internal module classification, suffix conventions, composition roots,
-  factory patterns in interface modules, and promotion recipes for crossing boundaries.
-  Use when creating packages or modules, resolving circular dependencies, promoting types
-  across package boundaries, wiring cross-package dependencies, or deciding where new
-  code belongs. Do not use for app-level architecture questions that do not involve
-  package or module boundaries.
+description: "Structure Swift packages and modules, dependency direction, exported interfaces, composition roots, and cross-module type promotion. Use for package boundaries or dependency cycles, not feature architecture within one module."
 ---
 
 # Structuring Swift Packages

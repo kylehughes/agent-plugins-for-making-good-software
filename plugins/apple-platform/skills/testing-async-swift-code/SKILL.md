@@ -1,13 +1,6 @@
 ---
 name: testing-async-swift-code
-description: >
-  Provides deterministic synchronization primitives and idioms for async Swift tests:
-  virtual clocks, event recorders with an awaited-detach barrier, serial-executor
-  scheduling, and contention-scaled timeout budgets. Use when testing timing operators,
-  observer lifecycles, refresh flows, NotificationCenter async sequences, cancellation,
-  non-occurrence, or when fixing flaky or CI-only async test failures. Do not use for
-  synchronous tests, general test structure, or concurrency implementation work outside
-  tests.
+description: "Make Swift async tests deterministic. Use for flaky tests, clocks, observer attachment, completion, cancellation, cleanup, and proving non-occurrence; not general test organization or production concurrency design."
 ---
 
 # Testing Async Swift Code

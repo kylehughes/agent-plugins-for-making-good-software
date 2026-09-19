@@ -1,12 +1,6 @@
 ---
 name: analyzing-app-store-business-data
-description: >
-  Pulls and analyzes App Store business data — sales, subscriptions, App Analytics,
-  reviews, ratings, and ASO or competitive position — for the app in the current
-  project, computes KPIs, and designs measurable revenue-growth plans. Use when asked
-  about revenue, sales, downloads, subscribers, churn, conversion, review sentiment,
-  ASO, keywords, competitors, pricing, or growth strategy for an app. Do not use for
-  in-app engineering work or for storefronts outside the App Store.
+description: "Analyze App Store revenue, subscriptions, downloads, reviews, ASO, pricing, and growth using App Store Connect data. Use for business performance questions about an app, not in-app engineering."
 ---
 
 # Analyzing App Store Business Data

@@ -1,220 +1,75 @@
 ---
 name: writing-swift
-description: >-
-  Write, edit, debug, review, migrate, and test production Swift code and Swift packages. Use for .swift or
-  Package.swift changes; Swift 6 concurrency, actors, Sendable, async/await, Swift Testing or XCTest, API design,
-  SwiftPM, Xcode builds, compiler diagnostics, performance, C/C++ interop, formatting, and documentation. Inspect
-  and preserve the repository's toolchain, deployment targets, architecture, and conventions; use Swift 6.3.2 for
-  greenfield work or explicit upgrades. Do not use for non-Swift work or product discussion without implementation.
+description: "Write, debug, review, or migrate Swift code and packages. Use for .swift or Package.swift changes, Xcode builds, and compiler diagnostics; apply focused companion skills only for the concerns touched."
 ---
 
 # Writing Swift
 
-Produce correct, idiomatic, maintainable Swift while respecting the repository's actual compatibility contract. Treat
-this skill as engineering guidance, not a license to rewrite unrelated code.
+Write correct, idiomatic Swift while respecting the repository's compatibility contract. This skill is an implementation hub: load only the focused companion skill or reference required by the request.
 
-## Resolve Conflicts in This Order
+## Resolve conflicts and gather evidence
 
-1. Follow the user's explicit request.
-2. Follow repository instructions and checked-in configuration.
-3. Preserve public behavior, source compatibility, deployment targets, and architecture unless change is requested.
-4. Match nearby code when it is internally consistent and safe.
-5. Apply this skill's defaults.
+1. Follow the user's request, repository instructions, and checked-in configuration in that order.
+2. Inspect the smallest useful context: package/project/workspace, target or scheme, CI, formatter/linter, analogous code and tests, and generated-code boundaries.
+3. Keep toolchain version, language mode, SwiftPM tools version, deployment target, dependency versions, and Xcode requirements separate. Never raise them silently.
+4. Preserve user changes and public behavior. Inspect `git status --short`; never discard edits, create commits, or run broad migrations unless requested.
 
-Never silently raise a Swift tools version, language mode, deployment target, dependency version, or Xcode requirement.
+For greenfield work or an explicitly requested upgrade, use the Swift 6.3.2 baseline in [Swift compatibility](references/swift-6.3.2.md).
 
-## Work from Evidence
+For broad orientation, run [the project-context script](scripts/swift-project-context.sh). Resolve bundled paths relative to this skill directory.
 
-Before editing, inspect the smallest useful set of repository context:
+## Implementation loop
 
-- Read applicable `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `CONTRIBUTING.md`, README, host-specific instructions, and
-  nested instruction files.
-- Identify whether the project uses SwiftPM, an Xcode project/workspace, or both.
-- Inspect `Package.swift`, build settings, CI, formatter/linter configuration, and an analogous implementation and test.
-- Determine the selected target or scheme, supported platforms, Swift language mode, default actor isolation, enabled
-  upcoming/experimental features, test framework, and generated-code boundaries.
-- Run the bundled [project-context script](scripts/swift-project-context.sh) when broad orientation is useful.
+State the behavior or diagnostic, identify the owning layer, make the narrowest coherent edit, and compile early. Add focused tests for changed behavior, then run proportional validation and required repository checks. Inspect `git diff --check`, `git diff --stat`, and the final diff; report commands and gaps. Review-only requests produce findings without edits; explanation-only requests do not mutate the repository.
 
-Resolve bundled script and reference paths relative to this skill directory, not the repository under repair. Pass the
-repository path to scripts that accept one.
+## Core defaults
 
-Before editing, inspect `git status --short` when available. Preserve all user changes. Never use destructive Git
-commands, discard unrelated edits, create commits, or amend history unless explicitly requested.
+- Prefer clear value semantics, immutable bindings, concrete types, and narrow access control.
+- Model invalid states with types when that simplifies callers; use typed values instead of stringly typed state.
+- Use optionals for legitimate absence and throwing APIs for recoverable failures. Preserve cancellation and error context.
+- Avoid force unwraps, force casts, and `try!` except for explicit, documented invariants.
+- Choose protocols, generics, `some`, `any`, type erasure, macros, wrappers, and compiler attributes only for a real boundary or measured benefit.
+- Follow repository formatting and the Swift API Design Guidelines. For API naming, types, errors, access, docs, and source organization, read [API design and style](references/api-design-and-style.md) or the focused designing-swift-apis skill.
 
-Keep these concepts separate:
+## Focused routing
 
-- **Toolchain version:** the compiler and tools installed, such as Swift 6.3.2.
-- **Language mode:** usually Swift 5 or Swift 6 semantics.
-- **SwiftPM tools version:** manifest API compatibility, such as `// swift-tools-version: 6.3`.
-- **Deployment target:** the oldest OS/runtime on which the product must run.
+Load only the concern-specific guidance needed for the task. Use repository instructions first, then the focused companion skill, then this hub's defaults. Prefer the focused sibling skill when available; otherwise use the matching bundled reference. Do not load both by default.
 
-A newer compiler does not imply a newer language mode or runtime. See
-[Swift 6.3.2 and compatibility](references/swift-6.3.2.md).
+- Swift version, language mode, availability, or compatibility: [Swift compatibility](references/swift-6.3.2.md).
+- Concurrency, isolation, `Sendable`, tasks, actors, cancellation, or async sequences: `using-swift-concurrency`; if unavailable, use [Concurrency](references/concurrency.md) for repair patterns or consult it only for an unresolved detail.
+- Test structure and assertions: `testing-swift-code`; if unavailable, use [Testing Swift](references/testing.md) or consult it only for an unresolved detail.
+- Timing, observers, cancellation, or async-test determinism: `testing-async-swift-code`; if unavailable, use the async portions of [Testing Swift](references/testing.md) or consult them only for an unresolved detail.
+- Invariants, typed IDs, state, ownership, or legal transitions: `modeling-swift-types-for-correctness`.
+- API design: `designing-swift-apis`; type and file layout: `organizing-swift-types`; member placement: `ordering-symbols`.
+- User-facing UI text: `localizing-strings`; UIKit cell content: `configuring-ios-content`; sheets: `presenting-ios-modals`.
+- Package/module boundaries: `structuring-swift-packages`.
+- Swift developer documentation: `writing-apple-platform-documentation`.
+- SwiftPM, Xcode, availability, interop, generated sources, and CI: [Packages, builds, and platforms](references/packages-builds-and-platforms.md).
+- Review or debugging evidence and severity: [Review and debugging](references/review-and-debugging.md).
 
-## Use a Tight Implementation Loop
+## Concurrency and tests
 
-Honor the requested mode: implementation requests require edits and validation; review-only requests require findings
-without changing files; explanation-only requests should not mutate the repository.
+Treat concurrency as architecture. Identify mutable-state ownership, check default actor isolation, use structured child tasks, retain and cancel unstructured tasks when lifetime matters, and use detached tasks or unchecked escape hatches only with a concrete safety argument. Account for actor reentrancy and cancellation; never suspend while holding a lock.
 
-1. State the behavior or diagnostic being changed.
-2. Find the owning layer and the narrowest coherent edit.
-3. Preserve existing APIs and concurrency semantics unless the task calls for migration.
-4. Implement with compiler-enforced invariants where practical.
-5. Compile the affected target early; do not accumulate speculative edits.
-6. Add or update focused tests that would fail without the change.
-7. Run narrow validation, then the repository's broader required checks.
-8. Inspect the final diff for accidental formatting, generated files, dependency churn, and compatibility changes.
-9. Report exactly what ran and any validation that could not run.
+Preserve the repository's test framework. Prefer Swift Testing for new unit or integration tests when supported; keep XCTest for UI, performance, existing, or framework-specific suites. Avoid sleeps, shared mutable globals, live network dependencies, and order dependence. Test error, cancellation, isolation, and boundary behavior, not only success.
 
-Do not run dependency updates, mass formatting, project regeneration, or automated migrations unless required by the task.
+## Build and validate
 
-## Core Swift Defaults
+For SwiftPM, discover and use the repository's standard commands; the usual sequence is `swift package dump-package`, `swift build`, and `swift test`, with [the SwiftPM check script](scripts/swiftpm-check.sh) when applicable. For Xcode, discover the workspace/project, scheme, and destination before using `xcodebuild`; preserve CI signing and derived-data conventions. Run configured formatters and linters, plus [the changed-file lint script](scripts/lint-changed-swift.sh) when appropriate. Do not update dependencies, regenerate projects, or mass-format without a task requirement.
 
-- Prefer clear value semantics and immutable bindings, but choose reference identity when the domain requires it.
-- Model invalid states out of the type system where doing so simplifies callers.
-- Start with concrete types. Introduce protocols for a real abstraction boundary, multiple conformers, or a useful test seam.
-- Use the narrowest practical access level. Treat every `public` or `open` declaration as an API commitment.
-- Prefer typed values over stringly typed identifiers, flags, notifications, and state machines.
-- Use optionals for legitimate absence. Use throwing APIs for failures callers may need to understand or recover from.
-- Preserve cancellation and meaningful error context. Do not catch and discard errors merely to simplify control flow.
-- Avoid force unwraps, force casts, and `try!` in ordinary paths. They are acceptable only for an intentional invariant
-  that cannot reasonably be represented in the type system; make the invariant obvious and fail with useful context.
-- Use `precondition` for programmer-contract violations, `assert` for debug-only checking, and errors for recoverable input
-  or environmental failures.
-- Choose `some`, `any`, generics, and type erasure deliberately. Do not add abstraction solely to make code look generic.
-- Add macros, property wrappers, result builders, ownership features, or compiler attributes only when they materially
-  improve the design or measured behavior.
-- Follow the Swift API Design Guidelines and the repository formatter. See
-  [API design and style](references/api-design-and-style.md).
+## Review and completion
 
-## Treat Concurrency as Architecture
+Prioritize crashes, data loss, races, security/privacy, incorrect behavior, cancellation/lifetime bugs, compatibility, availability, and demonstrated performance regressions. Give file and line evidence; do not manufacture findings.
 
-Do not silence Swift 6 diagnostics mechanically. Identify which domain owns mutable state and where values cross isolation
-boundaries.
-
-- Check the module's default actor isolation before adding annotations.
-- Use `@MainActor` for UI state and main-thread framework contracts, not as a blanket compiler-error suppressor.
-- Prefer structured child tasks (`async let`, task groups) whose lifetime is tied to their parent.
-- Create an unstructured `Task` only at a synchronous boundary or for an independently managed operation; retain and
-  cancel it when lifetime matters.
-- Use `Task.detached` only when non-inheritance of actor context, priority, and task-local values is specifically intended.
-- Make crossing values `Sendable` by design. Treat `@unchecked Sendable`, `nonisolated(unsafe)`, and `@preconcurrency` as
-  audited escape hatches requiring a concrete safety argument.
-- Account for actor reentrancy: values observed before an `await` may be stale afterward.
-- Use an actor for asynchronously accessed mutable state. Use `Synchronization.Mutex` for small synchronous critical
-  sections when deployment constraints permit. Never suspend while holding a lock.
-- Check and propagate cancellation in long-running or iterative work.
-
-Use [Concurrency](references/concurrency.md) for diagnostic repair patterns and design guidance.
-
-## Test According to the Repository
-
-Preserve the existing framework unless migration is part of the task.
-
-- Prefer Swift Testing for new unit and integration tests when the supported toolchain and target permit it.
-- Keep XCTest for UI tests, performance tests, existing suites, or framework-specific integration where it remains the
-  appropriate tool.
-- Write deterministic, isolated tests that can run in parallel. Avoid arbitrary sleeps, shared mutable globals, live
-  network dependencies, and reliance on test order.
-- Use `#require` when a failed prerequisite must stop a Swift Testing test; use `#expect` for independent expectations.
-- Prefer parameterized tests for repeated behavior and focused test names or descriptions that state the proved behavior.
-- Test error, cancellation, isolation, and boundary cases, not only the happy path.
-
-See [Testing Swift](references/testing.md).
-
-## Respect Style without Creating Churn
-
-- Repository formatter and linter configuration wins over personal preferences.
-- Format touched code only unless the task explicitly requests a wider cleanup.
-- Preserve established file headers; do not invent copyright or boilerplate headers.
-- Use `// MARK:` when it improves navigation and matches the repository. Do not add empty organizational ceremony.
-- Prefer one primary type per file, but keep small tightly coupled helpers nearby when separation would harm comprehension.
-- Group declarations semantically. Do not alphabetize code when order communicates lifecycle, protocol flow, or usage.
-- Document public library API and non-obvious contracts. Explain why, invariants, ownership, isolation, complexity, and
-  workarounds; do not narrate obvious syntax.
-- Keep comments synchronized with behavior and remove dead commented-out code.
-
-## Build and Validate
-
-Start with the narrowest command that exercises the edit.
-
-For SwiftPM packages:
-
-```bash
-swift package dump-package
-swift build
-swift test
-```
-
-Use the bundled [SwiftPM check script](scripts/swiftpm-check.sh) for the standard sequence. Add `--configuration release` only when release optimization is
-relevant. Use `--filter` to shorten iteration, then run the required broader suite.
-
-For Xcode projects or workspaces:
-
-```bash
-xcodebuild -list -project Project.xcodeproj
-xcodebuild -showdestinations -scheme Scheme -project Project.xcodeproj
-xcodebuild build -scheme Scheme -project Project.xcodeproj -destination '...'
-xcodebuild test -scheme Scheme -project Project.xcodeproj -destination '...'
-```
-
-Prefer a workspace when the repository uses one. Never guess a scheme or destination when it can be discovered. Preserve
-code-signing and derived-data conventions from CI or repository scripts.
-
-Run `swift-format`, SwiftLint, or other tools only when installed or configured by the repository. Use the bundled
-[changed-file lint script](scripts/lint-changed-swift.sh) for a non-mutating `swift-format` check of changed Swift files.
-
-Always inspect:
-
-```bash
-git diff --check
-git diff --stat
-git diff
-```
-
-For package, Xcode, platform, interop, and CI details, see
-[Packages, builds, and platforms](references/packages-builds-and-platforms.md).
-
-## Review and Debug with Priorities
-
-When reviewing, report concrete findings in descending impact:
-
-1. Crashes, data corruption, data races, security or privacy faults.
-2. Incorrect behavior, cancellation or lifetime bugs, broken compatibility, and availability failures.
-3. API design and maintainability issues that create plausible future defects.
-4. Measured or clearly demonstrated performance regressions.
-5. Style only when it violates repository rules or materially impairs readability.
-
-Give a file and line, explain the failure mode, and propose the smallest sound fix. Do not manufacture findings to fill a
-review. If no actionable issue is found, say so and identify residual validation gaps.
-
-When debugging, reproduce first, reduce the failing path, form one falsifiable hypothesis at a time, and use compiler
-messages, tests, logs, sanitizers, and profiling evidence before redesigning. See
-[Review and debugging](references/review-and-debugging.md).
-
-## Completion Criteria
-
-Before finishing, verify that:
-
-- The implementation satisfies the requested behavior and repository instructions.
-- Toolchain, language mode, tools version, deployment target, and public API changed only intentionally.
-- Concurrency isolation and cancellation behavior are explicit and defensible.
-- Tests cover the changed behavior and are deterministic.
-- Applicable builds, tests, formatters, and linters pass, or failures are reported precisely.
-- The final diff contains no unrelated churn, generated artifacts, secrets, or dependency updates.
+Before finishing, confirm requested behavior, repository instructions, compatibility and public API stability, defensible isolation/cancellation, proportional deterministic tests, required checks, and a clean diff without generated artifacts, secrets, or dependency churn.
 
 ## Reference Map
 
-Load only the reference relevant to the task:
+Read only the references relevant to the requested work. The focused companion skills above are preferred routers.
 
-- [Swift 6.3.2 and compatibility](references/swift-6.3.2.md): version model, manifest settings, language and runtime gates,
-  and notable Swift 6.2/6.3 capabilities.
-- [Concurrency](references/concurrency.md): isolation, `Sendable`, tasks, actors, cancellation, continuations, streams,
-  synchronization, and diagnostic repairs.
-- [Testing Swift](references/testing.md): Swift Testing, XCTest, deterministic async tests, migration, and test review.
-- [API design and style](references/api-design-and-style.md): naming, types, errors, access control, docs, formatting,
-  performance, and source organization.
-- [Packages, builds, and platforms](references/packages-builds-and-platforms.md): SwiftPM, Xcode, availability,
-  cross-platform code, interop, generated sources, and CI.
-- [Review and debugging](references/review-and-debugging.md): investigation workflow, review severity, compatibility,
-  performance evidence, and reporting templates.
+- [Swift compatibility](references/swift-6.3.2.md): version model, manifest settings, language/runtime gates.
+- [Concurrency](references/concurrency.md): isolation, `Sendable`, tasks, actors, cancellation, continuations, streams, and repairs.
+- [Testing Swift](references/testing.md): Swift Testing, XCTest, deterministic async tests, migration, and review.
+- [API design and style](references/api-design-and-style.md): naming, types, errors, access, docs, formatting, and organization.
+- [Packages, builds, and platforms](references/packages-builds-and-platforms.md): SwiftPM, Xcode, availability, platforms, interop, generated sources, and CI.
+- [Review and debugging](references/review-and-debugging.md): investigation, severity, compatibility, evidence, and reporting.

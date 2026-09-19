@@ -1,6 +1,6 @@
 ---
 name: implementing-app-intents
-description: Implements modern App Intents with emphasis on Siri, Apple Intelligence, App Schemas, App Entities, entity queries, semantic Spotlight indexing, UIKit scene routing, NSUserActivity-level onscreen awareness, Visual Intelligence, Transferable content, Shortcuts, widgets, controls, snippets, progress reporting, package discovery, and SDK availability verification.
+description: "Build or debug App Intents for Siri, Shortcuts, Apple Intelligence, Spotlight, widgets, and controls. Use for entities, queries, schemas, intent routing, and system integrations."
 ---
 
 # Implementing App Intents
@@ -11,30 +11,33 @@ This is a production implementation skill, not a short reference card. It assume
 
 ## Primary objective
 
-Expose the app’s actions and data in a way the system can understand semantically. Do not merely add a few Shortcuts actions. Model the app as a graph of entities, properties, relationships, queries, and actions, then make that graph available to Siri and Apple Intelligence through App Schemas, semantic indexing, onscreen annotations, content transfer, donations, and relevance signals that actually exist in the selected SDK.
+Expose the requested actions and data in a way the system can understand semantically. For a broad Siri or Apple Intelligence integration, model the app as a graph of entities, properties, relationships, queries, and actions, then expose the relevant surfaces through App Schemas, indexing, onscreen annotations, content transfer, donations, and relevance signals supported by the selected SDK. For a narrow fix, preserve the existing semantic model and change only the surfaces the request requires.
 
-## Read order
+## Reference Map
 
-1. [architecture-and-model.md](references/architecture-and-model.md) — architecture, design order, availability buckets, package placement, and host boundaries.
-2. [reference.md](references/reference.md) — expanded mental model, implementation reference, and anti-patterns.
-3. [apple-intelligence-and-siri.md](references/apple-intelligence-and-siri.md) — Siri/Apple Intelligence integration strategy.
-4. [assistant-schema-domains.md](references/assistant-schema-domains.md) — schema adoption, domain mapping, and constraints.
-5. [entities-queries-and-indexing.md](references/entities-queries-and-indexing.md) — entities, queries, property queries, identity, indexing, Spotlight.
-6. [intents-dialog-snippets-and-confirmation.md](references/intents-dialog-snippets-and-confirmation.md) — AppIntent design, results, dialog, snippets, confirmation, choices, undo.
-7. [onscreen-awareness-and-content-transfer.md](references/onscreen-awareness-and-content-transfer.md) — screen context, annotations, Transferable, visual intelligence, incoming content.
-8. [value-representation-and-structured-transfer.md](references/value-representation-and-structured-transfer.md) — `PlaceDescriptor`, `IntentPerson`, structured-value mapping seams, future transfer representations, import, and handoff failure modes.
-9. [sdk-availability-and-verification.md](references/sdk-availability-and-verification.md) — iPhoneOS 26.5 availability facts, absent-symbol list, schema domains, module locations, and grep procedure for the selected SDK.
-10. [uikit-integration.md](references/uikit-integration.md) — full UIKit architecture, scene routing, onscreen awareness, drag/drop, promotion, privacy, and lifecycle guidance.
-11. [uikit-examples.md](references/uikit-examples.md) — UIKit code patterns.
-12. [ui-framework-crosswalk.md](references/ui-framework-crosswalk.md) — SwiftUI/UIKit equivalence and intentional SwiftUI-only system surfaces.
-13. [shortcuts-spotlight-widgets-and-controls.md](references/shortcuts-spotlight-widgets-and-controls.md) — discovery surfaces and system integrations.
-14. [execution-packaging-performance-and-privacy.md](references/execution-packaging-performance-and-privacy.md) — foreground/background execution, progress reporting, selected-SDK-gated long-running work, extensions, packages, privacy.
-15. [testing-and-debugging.md](references/testing-and-debugging.md) — XCTest/UI tests, selected-SDK-gated AppIntentsTesting, manual validation, failure diagnosis.
-16. [migration-ios26-to-ios27.md](references/migration-ios26-to-ios27.md) — migration and adoption plan.
-17. [checklists.md](references/checklists.md) — production checklists.
-18. [examples.md](references/examples.md) — composable Swift skeletons.
-19. [agent-playbook.md](references/agent-playbook.md) — how an agent should apply this skill to a codebase.
-20. [ATTRIBUTION.md](ATTRIBUTION.md) — source list and verification notes.
+Read only the references needed for the requested integration; do not read the whole map. Use architecture and the agent playbook for broad integration work, migration guidance for an upgrade, examples for a concrete implementation pattern, and attribution for provenance. For other tasks, select the matching concern below.
+
+- [Architecture and model](references/architecture-and-model.md): semantic model, design order, availability buckets, package placement, and host boundaries.
+- [Entities, queries, and indexing](references/entities-queries-and-indexing.md): entities, queries, identity, indexing, and Spotlight.
+- [Intents, dialog, snippets, and confirmation](references/intents-dialog-snippets-and-confirmation.md): actions, results, dialogs, snippets, choices, confirmation, and undo.
+- [Onscreen awareness and content transfer](references/onscreen-awareness-and-content-transfer.md): screen context, annotations, Transferable, visual intelligence, and incoming content.
+- [SDK availability and verification](references/sdk-availability-and-verification.md): selected-SDK facts, absent symbols, module locations, and verification.
+- [UIKit integration](references/uikit-integration.md): scene routing, onscreen awareness, drag/drop, promotion, privacy, and lifecycle.
+- [UI framework crosswalk](references/ui-framework-crosswalk.md): SwiftUI/UIKit equivalence and SwiftUI-only system surfaces.
+- [Shortcuts, Spotlight, widgets, and controls](references/shortcuts-spotlight-widgets-and-controls.md): discovery surfaces and system integrations.
+- [Execution, packaging, performance, and privacy](references/execution-packaging-performance-and-privacy.md): execution, progress, extensions, packages, and privacy.
+- [Testing and debugging](references/testing-and-debugging.md): XCTest, selected-SDK-gated AppIntentsTesting, manual validation, and diagnosis.
+- [Checklists](references/checklists.md): production checklists.
+- [Minimal modern skeleton](references/minimal-skeleton.md): composable Swift entity, query, intent, and shortcut example; read when implementing the basic shape.
+- [Agent playbook](references/agent-playbook.md): applying this skill to a codebase.
+- [ATTRIBUTION.md](ATTRIBUTION.md): provenance and verification notes.
+- [Reference](references/reference.md): expanded mental model, implementation reference, and anti-patterns.
+- [Apple Intelligence and Siri](references/apple-intelligence-and-siri.md): Siri and Apple Intelligence integration strategy.
+- [Assistant schema domains](references/assistant-schema-domains.md): schema adoption, domain mapping, and constraints.
+- [Value representation and structured transfer](references/value-representation-and-structured-transfer.md): structured-value mapping seams and transfer handoff failure modes.
+- [UIKit examples](references/uikit-examples.md): focused UIKit code patterns.
+- [Migration](references/migration-ios26-to-ios27.md): migration and adoption plan.
+- [Examples](references/examples.md): additional composable Swift skeletons.
 
 ## When to use this skill
 
@@ -53,6 +56,8 @@ Use this skill when the user asks to:
 - Migrate older SiriKit, Intent Definition, or earlier App Intents code to iOS 26/iOS 27 patterns.
 
 ## Operating algorithm
+
+Apply only the steps relevant to the requested integration surface. A narrow entity-query fix does not require implementing every App Intents surface; keep analysis, edits, and output proportional to scope.
 
 1. Inventory the app’s semantic nouns. These become App Entities, App Enums, union values, transient entities, or value representations.
 2. Inventory the app’s atomic verbs. These become App Intents, usually one user-observable operation each.
@@ -98,7 +103,7 @@ Entities, queries, schemas, indexing, donations, transfer, and domain services a
 
 ## Output expectations when using this skill
 
-When asked to implement App Intents, produce:
+For a broad implementation, cover the applicable items below. For a narrow change, provide only the affected code, design decisions, and validation; do not expand the assignment to fill this list.
 
 - Semantic model: entities, properties, relationships, queries, indexing, schemas, screen context, and transfer semantics.
 - Intent catalog: Open/Create/Update/Delete/Search/Export/Share/Control actions with protocols, parameters, result types, snippets, confirmation, execution target, and tests.
@@ -107,105 +112,6 @@ When asked to implement App Intents, produce:
 - Siri/Apple Intelligence plan: App Schemas, current onscreen annotation, `Transferable`, structured-value mappers for `PlaceDescriptor`/`IntentPerson`, selected-SDK-gated transfer representations, `IntentValueQuery`, donations, optional relevance APIs, and semantic search.
 - Discoverability plan: App Shortcuts, parameter summaries, Spotlight, widgets, controls, Live Activities, Action button.
 - Testing plan: XCTest/UI coverage, manual system surfaces, selected-SDK-gated AppIntentsTesting, and failure-mode checks.
-
-## Minimal modern skeleton
-
-```swift
-import AppIntents
-import CoreSpotlight
-import CoreTransferable
-
-struct ItemEntity: IndexedEntity, Identifiable, Sendable {
-    static let defaultQuery = ItemEntityQuery()
-
-    let id: UUID
-
-    @Property(title: "Name", indexingKey: \.displayName)
-    var name: String
-
-    @Property(title: "Description", indexingKey: \.contentDescription)
-    var details: String?
-
-    var displayRepresentation: DisplayRepresentation {
-        DisplayRepresentation(
-            title: "\(name)",
-            subtitle: details.map { "\($0)" },
-            image: .init(systemName: "doc.text")
-        )
-    }
-
-    static var typeDisplayRepresentation: TypeDisplayRepresentation {
-        TypeDisplayRepresentation(name: "Item", numericFormat: "\(placeholder: .int) items")
-    }
-}
-
-struct ItemEntityQuery: EntityStringQuery, EntityPropertyQuery {
-    typealias Entity = ItemEntity
-
-    func entities(for identifiers: [ItemEntity.ID]) async throws -> [ItemEntity] {
-        try await ItemRepository.shared.entities(ids: identifiers)
-    }
-
-    func entities(matching string: String) async throws -> [ItemEntity] {
-        try await ItemRepository.shared.searchEntities(text: string)
-    }
-
-    func suggestedEntities() async throws -> [ItemEntity] {
-        try await ItemRepository.shared.recentEntities(limit: 10)
-    }
-
-    static var properties = QueryProperties {
-        Property(\.name) {
-            EqualToComparator { $0 }
-            ContainsComparator { $0 }
-        }
-        Property(\.details) {
-            ContainsComparator { $0 }
-        }
-    }
-
-    static var sortingOptions = SortingOptions {
-        SortableBy(\.name)
-    }
-
-    func entities(
-        matching comparators: [QueryComparator<ItemEntity>],
-        mode: ComparatorMode,
-        sortedBy: [Sort<ItemEntity>],
-        limit: Int?
-    ) async throws -> [ItemEntity] {
-        try await ItemRepository.shared.query(
-            comparators: comparators,
-            mode: mode,
-            sortedBy: sortedBy,
-            limit: limit
-        )
-    }
-}
-
-struct OpenItemIntent: OpenIntent {
-    static let title: LocalizedStringResource = "Open Item"
-
-    @Parameter(title: "Item")
-    var target: ItemEntity
-
-    func perform() async throws -> some IntentResult {
-        // Bind navigation in the host UI: SwiftUI view control or UIKit scene routing.
-        return .result()
-    }
-}
-
-struct ItemShortcuts: AppShortcutsProvider {
-    static var appShortcuts: [AppShortcut] {
-        AppShortcut(
-            intent: OpenItemIntent(),
-            phrases: ["Open \(\.$target) in \(.applicationName)"],
-            shortTitle: "Open Item",
-            systemImageName: "doc.text"
-        )
-    }
-}
-```
 
 ## Availability guidance
 

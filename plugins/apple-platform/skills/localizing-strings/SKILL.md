@@ -1,6 +1,6 @@
 ---
 name: localizing-strings
-description: Localizes user-facing strings in Apple-platform software using String(localized:) extensions, bundle configuration, and Localizable.xcstrings string catalogs. Use when writing UI code with user-facing strings, extracting hardcoded strings, implementing string extensions, working with text displayed to users in SwiftUI/UIKit, migrating from NSLocalizedString, setting up pluralization, or managing i18n/l10n in Swift packages.
+description: "Localize Apple-platform UI strings with String(localized:) and string catalogs. Use for new user-facing text, hardcoded-string extraction, plurals, or localization bundles."
 ---
 
 # String Localization
@@ -88,174 +88,6 @@ Only localize strings displayed to end users. Developer-facing text should remai
    - Use proper grammar (incomplete sentences allowed for terseness)
    - Maintain lexicographic ordering
 
-## Examples
-
-### Simple strings
-
-#### Before
-```swift
-label.text = "Failed to send"
-textField.placeholder = "Enter message…"
-```
-
-#### After
-```swift
-label.text = .messageStatusFailed
-textField.placeholder = .messageComposerInputPlaceholder
-
-// At appropriate place in the file:
-extension String {
-    fileprivate static let messageComposerInputPlaceholder = String(
-        localized: "Enter message…",
-        bundle: .module,
-        comment: "Placeholder text for the message composer text field, before a message has been entered."
-    )
-
-    fileprivate static let messageStatusFailed = String(
-        localized: "Failed to send",
-        bundle: .module,
-        comment: "Error message displayed when a message fails to send to the server."
-    )
-}
-```
-
-### Strings with parameters
-
-#### Before
-```swift
-label.text = "Seen by \(count) people"
-titleLabel.text = "\(userName) sent a message"
-```
-
-#### After
-```swift
-label.text = .messageSeenBy(count: count)
-titleLabel.text = .userSentMessage(userName: userName)
-
-// At appropriate place in the file:
-extension String {
-    fileprivate static func messageSeenBy(count: Int) -> String {
-        String(
-            localized: "Seen by \(count) people",
-            bundle: .module,
-            comment: "Label showing how many people have seen a message; count is the number of people who have seen it."
-        )
-    }
-
-    fileprivate static func userSentMessage(userName: String) -> String {
-        String(
-            localized: "\(userName) sent a message",
-            bundle: .module,
-            comment: "Notification text indicating a user sent a message; userName is the name of the user who sent it."
-        )
-    }
-}
-```
-
-### Mixed properties and functions
-
-#### Before
-```swift
-label.text = "Failed to send"
-statusLabel.text = "Sent \(timeAgo) ago"
-```
-
-#### After
-```swift
-label.text = .messageStatusFailed
-statusLabel.text = .messageSentTime(timeAgo: timeAgo)
-
-// At appropriate place in the file:
-extension String {
-    // Properties come first, sorted lexicographically
-    fileprivate static let messageStatusFailed = String(
-        localized: "Failed to send",
-        bundle: .module,
-        comment: "Error message displayed when a message fails to send to the server."
-    )
-
-    // Functions come after properties, sorted lexicographically
-    fileprivate static func messageSentTime(timeAgo: String) -> String {
-        String(
-            localized: "Sent \(timeAgo) ago",
-            bundle: .module,
-            comment: "Label showing when a message was sent; timeAgo is a relative time string like '5 minutes'."
-        )
-    }
-}
-```
-
-### Strings with plurality
-
-When dealing with plurality (e.g., "1 person" or "2 people"), **use the singular variant** in the localized string, then automatically configure the plural variations in the string catalog.
-
-#### Before
-```swift
-label.text = "\(count) people"
-```
-
-#### After - Step 1: Add localized string with singular variant
-```swift
-label.text = .messageSeenByCount(count: count)
-
-// At appropriate place in the file:
-extension String {
-    fileprivate static func messageSeenByCount(count: Int) -> String {
-        String(
-            localized: "\(count) person",
-            bundle: .module,
-            comment: "Label showing how many people have seen a message; count is the number of people."
-        )
-    }
-}
-```
-
-#### Step 2: Build the package to auto-generate catalog entry
-```bash
-make build/package PACKAGE=<PackageName>
-```
-
-If the package build doesn't generate the entry, try building the full app:
-```bash
-make build/app
-```
-
-This creates the base entry in `Localizable.xcstrings` with the singular variant.
-
-#### Step 3: Add plural variations to Localizable.xcstrings
-
-Find the newly created entry and add plural variations:
-
-```json
-"%lld person" : {
-  "comment" : "Label showing how many people have seen a message; count is the number of people.",
-  "localizations" : {
-    "en" : {
-      "variations" : {
-        "plural" : {
-          "one" : {
-            "stringUnit" : {
-              "state" : "translated",
-              "value" : "%lld person"
-            }
-          },
-          "other" : {
-            "stringUnit" : {
-              "state" : "translated",
-              "value" : "%lld people"
-            }
-          }
-        }
-      }
-    }
-  }
-}
-```
-
-**Important**: After adding the localized string to Swift code, ALWAYS:
-1. Build the package (or app if needed) to generate the catalog entry
-2. Edit `Localizable.xcstrings` directly to add plural variations
-
 ## Rules
 
 - Only localize user-facing application strings; do not localize logs, assertions, fatal errors, or developer-facing diagnostics
@@ -271,24 +103,14 @@ Find the newly created entry and add plural variations:
 - One empty line between each property/function definition
 - **For strings with plurality**: extract using the singular variant in Swift code, build to auto-generate the catalog entry, then edit `Localizable.xcstrings` directly to add plural variations (one, other, etc.)
 
-## Legacy Pattern
+## Reference Map
 
-You may encounter older code using `NSLocalizedString`. When refactoring, convert to the modern pattern:
+Read only the examples needed for the requested localization change:
 
-```swift
-// ❌ Legacy — NSLocalizedString
-let text = NSLocalizedString(
-    "Failed to send",
-    bundle: .module,
-    comment: "Error message when sending fails"
-)
+- [Simple strings](references/implementation-examples.md#simple-strings): extract fixed UI text.
+- [Strings with parameters](references/implementation-examples.md#strings-with-parameters): preserve interpolation.
+- [Mixed properties and functions](references/implementation-examples.md#mixed-properties-and-functions): order reusable members.
+- [Strings with plurality](references/implementation-examples.md#strings-with-plurality): build and edit plural catalog entries.
+- [Legacy pattern](references/implementation-examples.md#legacy-pattern): migrate NSLocalizedString.
 
-// ✅ Modern — String(localized:) in fileprivate extension
-extension String {
-    fileprivate static let messageStatusFailed = String(
-        localized: "Failed to send",
-        bundle: .module,
-        comment: "Error message when sending fails."
-    )
-}
-```
+Before finishing, check the extraction and catalog changes against the Rules above.

@@ -1,6 +1,6 @@
 ---
 name: writing-technical-prose
-description: "Writes, edits, reviews, and normalizes developer-facing technical prose: READMEs, ADRs, RFCs, design docs, API docs, Swift/DocC comments, runbooks, migration guides, release notes, PR descriptions, troubleshooting guides, and Markdown. Use for Apple-platform docs or any software/domain technical writing when correctness, clarity, voice consistency, and actionable structure matter. Do not use for marketing copy unless developer accuracy matters. When a platform-specific companion documentation skill is available, compose with it rather than embedding platform rules here."
+description: "Writes, edits, reviews, and normalizes developer-facing technical prose: READMEs, ADRs, RFCs, design docs, API docs, comments, runbooks, migration guides, release notes, PR descriptions, and Markdown. Use when correctness, clarity, voice consistency, and actionable structure matter."
 ---
 
 # Writing Technical Prose
@@ -72,33 +72,13 @@ Use pronouns based on document type:
 - **External developer docs:** `you` is acceptable when speaking to the developer using an API.
 - **Reference docs:** prefer third person or declaration-focused prose.
 
-```markdown
-<!-- Good: internal convention -->
-We keep generated sources out of review unless the generator changed.
-
-<!-- Good: task instruction -->
-Run `make bootstrap` before opening the workspace.
-
-<!-- Good: external developer doc -->
-Use `ImagePipeline` when you need request coalescing and memory-backed caching.
-
-<!-- Weak -->
-Users should simply leverage the image system to do caching.
-```
+Read [the pronouns example](references/style-examples.md#pronouns) when this pattern is needed.
 
 ### Tense
 
 Use present tense for current behavior and decisions.
 
-```markdown
-<!-- Good -->
-This package owns session persistence.
-The adapter converts delegate callbacks into `AsyncSequence` values.
-
-<!-- Weak -->
-This package will own session persistence.
-The adapter would convert delegate callbacks into `AsyncSequence` values.
-```
+Read [the tense example](references/style-examples.md#tense) when this pattern is needed.
 
 Use future tense only for planned work, roadmap items, or explicitly time-bound changes.
 
@@ -141,71 +121,13 @@ For full templates, read `references/document-patterns.md`.
 
 ### README Baseline
 
-```markdown
-# Package Name
-
-One sentence describing what the package does and who it serves.
-
-## When to Use This
-
-Name the concrete scenarios this package handles.
-
-## Non-Goals
-
-Name what this package intentionally does not handle.
-
-## Getting Started
-
-Prerequisites, installation, and a minimal working example.
-
-## Core Concepts
-
-Explain the small set of ideas needed to read or modify the code.
-
-## Configuration
-
-List required and optional settings with defaults.
-
-## Testing
-
-Show the commands that verify local changes.
-
-## Trade-Offs and Constraints
-
-Name the limits, failure modes, and design costs.
-```
+Read the README pattern in [document-patterns.md](references/document-patterns.md#readme).
 
 ### ADR Baseline
 
 Use the repository’s ADR location if one exists. Otherwise prefer `docs/decisions/YYYY-MM-DD-title.md`.
 
-```markdown
-# Title
-
-Status: Proposed | Accepted | Superseded
-Date: YYYY-MM-DD
-
-## Context
-
-Describe the current situation and the forces that make the decision necessary.
-
-## Decision
-
-We chose [option], because [reason tied to the context].
-
-## Considered Options
-
-| Option | Benefits | Costs | Why not |
-|--------|----------|-------|---------|
-| A      |          |       |         |
-| B      |          |       |         |
-
-## Consequences
-
-- Good: [benefit].
-- Bad: [cost, risk, or constraint].
-- Follow-up: [work needed to make the decision safe or complete].
-```
+Read the ADR pattern in [document-patterns.md](references/document-patterns.md#adr).
 
 Every decision statement needs a reason. If there is no downside, state the residual risk or explain why the trade-off is negligible.
 
@@ -237,13 +159,7 @@ For platform-specific documentation conventions — for example Swift, DocC, and
 - Use tables for dense comparisons or configuration matrices. Do not use tables for prose that would be easier to scan as headings or bullets.
 - Use GitHub callouts for warnings and operational hazards:
 
-```markdown
-> [!NOTE]
-> Simulator builds do not require push notification entitlements.
-
-> [!WARNING]
-> This command deletes local derived data and cannot be undone.
-```
+Read [the Markdown formatting example](references/style-examples.md#markdown-formatting) when this pattern is needed.
 
 ## Links and References
 
@@ -262,3 +178,11 @@ For platform-specific documentation conventions — for example Swift, DocC, and
 ## Output Rules
 
 When asked to write or rewrite a document, output the finished artifact unless the user asked for analysis. When asked for a review, output findings plus concrete replacements. When facts are missing, include the smallest possible `TODO:` markers instead of inventing details.
+
+## Reference Map
+
+Read the reference that matches the deliverable or unresolved writing decision:
+
+- [Document patterns](references/document-patterns.md): README, ADR, RFC, runbook, migration, troubleshooting, PR, and release-note structure.
+- [Style examples](references/style-examples.md): examples of pronouns, tense, and Markdown callouts.
+- [Review checklist](references/review-checklist.md): final checks for a substantial draft or requested review.

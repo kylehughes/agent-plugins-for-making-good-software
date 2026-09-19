@@ -1,0 +1,633 @@
+{
+  "date": "2026-09-18",
+  "baseline_commit": "f84580d",
+  "versions": {
+    "codex_cli": "0.155.1",
+    "claude_code": "2.1.277",
+    "apple-platform": "1.4.0",
+    "universal": "1.6.0"
+  },
+  "measurements": {
+    "unit": "Unicode characters, not tokens",
+    "baseline": {
+      "skill_count": 26,
+      "skill_description_chars": 12586,
+      "skill_body_chars": 257181,
+      "skill_body_lines": 4252,
+      "agent_count": 8,
+      "agent_description_chars": 3358,
+      "agent_preloaded_body_chars": 195355
+    },
+    "final": {
+      "skill_count": 26,
+      "skill_description_chars": 5022,
+      "skill_body_chars": 243044,
+      "skill_body_lines": 3661,
+      "agent_count": 8,
+      "agent_description_chars": 1630,
+      "agent_preloaded_body_chars": 73196
+    }
+  },
+  "description_selection": {
+    "cases": "skill-routing.json",
+    "reasoning_effort": "medium",
+    "runs_per_catalog": 1,
+    "models": {
+      "gpt-6-astra": {
+        "baseline": {
+          "score": 0.9722222222222222,
+          "correct": 35,
+          "total": 36,
+          "missing": [],
+          "forbidden": [
+            {
+              "id": "case-030",
+              "skills": [
+                "simplifying-code"
+              ]
+            }
+          ],
+          "errors": []
+        },
+        "final": {
+          "score": 1.0,
+          "correct": 36,
+          "total": 36,
+          "missing": [],
+          "forbidden": [],
+          "errors": []
+        }
+      },
+      "gpt-5.6-sol": {
+        "baseline": {
+          "score": 1.0,
+          "correct": 36,
+          "total": 36,
+          "missing": [],
+          "forbidden": [],
+          "errors": []
+        },
+        "final": {
+          "score": 1.0,
+          "correct": 36,
+          "total": 36,
+          "missing": [],
+          "forbidden": [],
+          "errors": []
+        }
+      },
+      "gpt-5.6-terra": {
+        "baseline": {
+          "score": 1.0,
+          "correct": 36,
+          "total": 36,
+          "missing": [],
+          "forbidden": [],
+          "errors": []
+        },
+        "final": {
+          "score": 1.0,
+          "correct": 36,
+          "total": 36,
+          "missing": [],
+          "forbidden": [],
+          "errors": []
+        }
+      },
+      "gpt-5.6-luna": {
+        "baseline": {
+          "score": 1.0,
+          "correct": 36,
+          "total": 36,
+          "missing": [],
+          "forbidden": [],
+          "errors": []
+        },
+        "final": {
+          "score": 1.0,
+          "correct": 36,
+          "total": 36,
+          "missing": [],
+          "forbidden": [],
+          "errors": []
+        }
+      }
+    }
+  },
+  "claude_smoke": {
+    "suite": "plugins/<plugin>/evals/discovery-smoke",
+    "models": {
+      "claude-sonnet-5": {
+        "baseline": {
+          "modal-review": {
+            "runs": 3,
+            "output_checks_passed": 3,
+            "graders": {
+              "content": {
+                "passed": 3,
+                "total": 3
+              },
+              "skill": {
+                "passed": 3,
+                "total": 3
+              }
+            }
+          },
+          "swift-test": {
+            "runs": 3,
+            "output_checks_passed": 3,
+            "graders": {
+              "content": {
+                "passed": 3,
+                "total": 3
+              },
+              "outcome": {
+                "passed": 3,
+                "total": 3
+              },
+              "skill": {
+                "passed": 3,
+                "total": 3
+              }
+            }
+          },
+          "arithmetic": {
+            "runs": 3,
+            "output_checks_passed": 3,
+            "graders": {
+              "answer": {
+                "passed": 3,
+                "total": 3
+              },
+              "no-skill": {
+                "passed": 3,
+                "total": 3
+              }
+            }
+          },
+          "code-review": {
+            "runs": 3,
+            "output_checks_passed": 3,
+            "graders": {
+              "content": {
+                "passed": 3,
+                "total": 3
+              },
+              "no-write": {
+                "passed": 3,
+                "total": 3
+              },
+              "skill": {
+                "passed": 0,
+                "total": 3
+              }
+            }
+          },
+          "prose-revise": {
+            "runs": 3,
+            "output_checks_passed": 3,
+            "graders": {
+              "content": {
+                "passed": 3,
+                "total": 3
+              },
+              "skill": {
+                "passed": 0,
+                "total": 3
+              }
+            }
+          }
+        },
+        "final": {
+          "modal-review": {
+            "runs": 3,
+            "output_checks_passed": 3,
+            "graders": {
+              "content": {
+                "passed": 3,
+                "total": 3
+              },
+              "skill": {
+                "passed": 3,
+                "total": 3
+              }
+            }
+          },
+          "swift-test": {
+            "runs": 3,
+            "output_checks_passed": 3,
+            "graders": {
+              "content": {
+                "passed": 3,
+                "total": 3
+              },
+              "outcome": {
+                "passed": 3,
+                "total": 3
+              },
+              "skill": {
+                "passed": 3,
+                "total": 3
+              }
+            }
+          },
+          "arithmetic": {
+            "runs": 3,
+            "output_checks_passed": 3,
+            "graders": {
+              "answer": {
+                "passed": 3,
+                "total": 3
+              },
+              "no-skill": {
+                "passed": 3,
+                "total": 3
+              }
+            }
+          },
+          "code-review": {
+            "runs": 3,
+            "output_checks_passed": 3,
+            "graders": {
+              "content": {
+                "passed": 3,
+                "total": 3
+              },
+              "no-write": {
+                "passed": 3,
+                "total": 3
+              },
+              "skill": {
+                "passed": 0,
+                "total": 3
+              }
+            }
+          },
+          "prose-revise": {
+            "runs": 3,
+            "output_checks_passed": 3,
+            "graders": {
+              "content": {
+                "passed": 3,
+                "total": 3
+              },
+              "skill": {
+                "passed": 0,
+                "total": 3
+              }
+            }
+          }
+        }
+      },
+      "claude-opus-5": {
+        "baseline": {
+          "modal-review": {
+            "runs": 3,
+            "output_checks_passed": 3,
+            "graders": {
+              "content": {
+                "passed": 3,
+                "total": 3
+              },
+              "skill": {
+                "passed": 3,
+                "total": 3
+              }
+            }
+          },
+          "swift-test": {
+            "runs": 3,
+            "output_checks_passed": 3,
+            "graders": {
+              "content": {
+                "passed": 3,
+                "total": 3
+              },
+              "outcome": {
+                "passed": 3,
+                "total": 3
+              },
+              "skill": {
+                "passed": 3,
+                "total": 3
+              }
+            }
+          },
+          "arithmetic": {
+            "runs": 3,
+            "output_checks_passed": 3,
+            "graders": {
+              "answer": {
+                "passed": 3,
+                "total": 3
+              },
+              "no-skill": {
+                "passed": 3,
+                "total": 3
+              }
+            }
+          },
+          "code-review": {
+            "runs": 3,
+            "output_checks_passed": 3,
+            "graders": {
+              "content": {
+                "passed": 3,
+                "total": 3
+              },
+              "no-write": {
+                "passed": 3,
+                "total": 3
+              },
+              "skill": {
+                "passed": 0,
+                "total": 3
+              }
+            }
+          },
+          "prose-revise": {
+            "runs": 3,
+            "output_checks_passed": 3,
+            "graders": {
+              "content": {
+                "passed": 3,
+                "total": 3
+              },
+              "skill": {
+                "passed": 3,
+                "total": 3
+              }
+            }
+          }
+        },
+        "final": {
+          "modal-review": {
+            "runs": 3,
+            "output_checks_passed": 3,
+            "graders": {
+              "content": {
+                "passed": 3,
+                "total": 3
+              },
+              "skill": {
+                "passed": 3,
+                "total": 3
+              }
+            }
+          },
+          "swift-test": {
+            "runs": 3,
+            "output_checks_passed": 3,
+            "graders": {
+              "content": {
+                "passed": 3,
+                "total": 3
+              },
+              "outcome": {
+                "passed": 3,
+                "total": 3
+              },
+              "skill": {
+                "passed": 3,
+                "total": 3
+              }
+            }
+          },
+          "arithmetic": {
+            "runs": 3,
+            "output_checks_passed": 3,
+            "graders": {
+              "answer": {
+                "passed": 3,
+                "total": 3
+              },
+              "no-skill": {
+                "passed": 3,
+                "total": 3
+              }
+            }
+          },
+          "code-review": {
+            "runs": 3,
+            "output_checks_passed": 3,
+            "graders": {
+              "content": {
+                "passed": 3,
+                "total": 3
+              },
+              "no-write": {
+                "passed": 3,
+                "total": 3
+              },
+              "skill": {
+                "passed": 0,
+                "total": 3
+              }
+            }
+          },
+          "prose-revise": {
+            "runs": 3,
+            "output_checks_passed": 3,
+            "graders": {
+              "content": {
+                "passed": 3,
+                "total": 3
+              },
+              "skill": {
+                "passed": 3,
+                "total": 3
+              }
+            }
+          }
+        }
+      },
+      "claude-fable-5-1": {
+        "baseline": {
+          "modal-review": {
+            "runs": 3,
+            "output_checks_passed": 3,
+            "graders": {
+              "content": {
+                "passed": 3,
+                "total": 3
+              },
+              "skill": {
+                "passed": 3,
+                "total": 3
+              }
+            }
+          },
+          "swift-test": {
+            "runs": 3,
+            "output_checks_passed": 3,
+            "graders": {
+              "content": {
+                "passed": 3,
+                "total": 3
+              },
+              "outcome": {
+                "passed": 3,
+                "total": 3
+              },
+              "skill": {
+                "passed": 3,
+                "total": 3
+              }
+            }
+          },
+          "arithmetic": {
+            "runs": 3,
+            "output_checks_passed": 3,
+            "graders": {
+              "answer": {
+                "passed": 3,
+                "total": 3
+              },
+              "no-skill": {
+                "passed": 3,
+                "total": 3
+              }
+            }
+          },
+          "code-review": {
+            "runs": 3,
+            "output_checks_passed": 3,
+            "graders": {
+              "content": {
+                "passed": 3,
+                "total": 3
+              },
+              "no-write": {
+                "passed": 3,
+                "total": 3
+              },
+              "skill": {
+                "passed": 0,
+                "total": 3
+              }
+            }
+          },
+          "prose-revise": {
+            "runs": 9,
+            "output_checks_passed": 9,
+            "graders": {
+              "content": {
+                "passed": 9,
+                "total": 9
+              },
+              "skill": {
+                "passed": 8,
+                "total": 9
+              }
+            }
+          }
+        },
+        "final": {
+          "modal-review": {
+            "runs": 3,
+            "output_checks_passed": 3,
+            "graders": {
+              "content": {
+                "passed": 3,
+                "total": 3
+              },
+              "skill": {
+                "passed": 3,
+                "total": 3
+              }
+            }
+          },
+          "swift-test": {
+            "runs": 3,
+            "output_checks_passed": 3,
+            "graders": {
+              "content": {
+                "passed": 3,
+                "total": 3
+              },
+              "outcome": {
+                "passed": 3,
+                "total": 3
+              },
+              "skill": {
+                "passed": 3,
+                "total": 3
+              }
+            }
+          },
+          "arithmetic": {
+            "runs": 3,
+            "output_checks_passed": 3,
+            "graders": {
+              "answer": {
+                "passed": 3,
+                "total": 3
+              },
+              "no-skill": {
+                "passed": 3,
+                "total": 3
+              }
+            }
+          },
+          "code-review": {
+            "runs": 3,
+            "output_checks_passed": 3,
+            "graders": {
+              "content": {
+                "passed": 3,
+                "total": 3
+              },
+              "no-write": {
+                "passed": 3,
+                "total": 3
+              },
+              "skill": {
+                "passed": 0,
+                "total": 3
+              }
+            }
+          },
+          "prose-revise": {
+            "runs": 9,
+            "output_checks_passed": 9,
+            "graders": {
+              "content": {
+                "passed": 9,
+                "total": 9
+              },
+              "skill": {
+                "passed": 8,
+                "total": 9
+              }
+            }
+          }
+        }
+      }
+    },
+    "comparison_runs": 102,
+    "initial_prose_description_experiment": {
+      "description_characters": 175,
+      "fable_activation_baseline": {
+        "passed": 8,
+        "runs": 9
+      },
+      "fable_activation_initial_candidate": {
+        "passed": 3,
+        "runs": 9
+      },
+      "final_description_characters": 283,
+      "fable_activation_final": {
+        "passed": 8,
+        "runs": 9
+      }
+    }
+  },
+  "limitations": [
+    "Small description-selection probes do not measure native invocation or full-task quality.",
+    "Claude output graders check basic properties, not complete correctness.",
+    "No crowded work-machine catalog was available.",
+    "The Fable prose case informed the revision and is not a held-out estimate.",
+    "Initial Terra probe selected a personal skill outside the supplied catalog; both arms were rerun with that skill disabled.",
+    "The native Codex loader protocol does not expose agent registration."
+  ]
+}

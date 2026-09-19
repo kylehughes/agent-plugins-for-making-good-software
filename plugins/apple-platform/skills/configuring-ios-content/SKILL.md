@@ -1,6 +1,6 @@
 ---
 name: configuring-ios-content
-description: Implement modern UIKit content configuration for iOS projects. Use when configuring UITableViewCell or UICollectionViewCell content, UICollectionView.CellRegistration, UITableView.CellRegistration, UIListContentConfiguration, UIBackgroundConfiguration, UIHostingConfiguration, UIContentUnavailableConfiguration, custom UIContentConfiguration/UIContentView pairs, cell state updates, diffable-data-source reconfiguration, or migration away from legacy cell.textLabel/imageView/detailTextLabel code.
+description: "Configure UIKit cell content, backgrounds, empty states, and SwiftUI hosting. Use for UIContentConfiguration, cell registration, state updates, and migration from legacy cell labels."
 ---
 
 # Configuring iOS Content

@@ -1,6 +1,6 @@
 ---
 name: testing-swift-code
-description: Write tests using the Swift Testing framework with @Test, @Suite, #expect, and #require macros. Use when creating unit tests, writing assertions, testing error throwing, parameterized tests, async test confirmations, migrating from XCTest to Swift Testing, or running swift test. Covers Swift 6 / Xcode 16+ testing patterns.
+description: "Write or migrate unit tests using Swift Testing: @Test, @Suite, #expect, #require, traits, and parameterized tests. Use for test structure and assertions; UI tests remain XCTest."
 ---
 
 # Testing Swift Code

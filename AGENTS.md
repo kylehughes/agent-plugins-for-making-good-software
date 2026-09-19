@@ -42,22 +42,29 @@ Skills and agents are stored once and serve both platforms. Do not fork content 
 
 ## Skill Maintenance
 
+- Author every discovery `description` as one line in a JSON-compatible double-quoted scalar. This prevents YAML comment parsing from truncating terms such as `#expect`.
+- Put the distinctive task or intent first. Keep supporting detail in the skill body or references; use exclusions only for real near-miss tasks that would otherwise trigger the skill.
+- Keep descriptions within the repository editorial budgets: each skill ≤320 characters and all skill descriptions ≤7000; each agent ≤300 and all agent descriptions ≤2200. These are context-cost targets, not runtime or vendor guarantees.
 - Every skill keeps a `SKILL.md` with `name` and `description` frontmatter.
 - The `SKILL.md` `name` must equal the skill's directory name; the Agent Skills spec requires it. On import, strip any version or platform suffix (for example `-ios26-ios27`): both runtimes derive the invocation name from the frontmatter `name` for plugin skills, falling back to the directory, so a mismatch leaves the command and the directory you navigate to under different names.
 - Keep identity fields (`name`, the `# ` H1, and the leading clause of `description`) free of specific OS or SDK version numbers; leave version-gating detail in the body where it is accurate.
 - Preserve source `REFERENCE.md`, `ATTRIBUTION.md`, and `references/` files with their skill directories.
 - Keep `description` written for implicit skill selection: describe in natural language when to use the skill. This drives Claude Code's automatic invocation and Codex's implicit selection.
+- Preserve implicit invocation unless a skill has a documented reason to opt out; use `policy.allow_implicit_invocation: false` only when automatic selection would be unsafe or misleading.
 - Every skill also carries `skills/<name>/agents/openai.yaml` with Codex `interface` metadata: `display_name`, `short_description`, and a `default_prompt` (invoking the skill as `$<name>`). Claude Code ignores this file. Add MCP dependencies or `policy.allow_implicit_invocation: false` to it when a skill needs them.
 - Canonical SKILL.md shape: frontmatter (`name` == directory, gerund, version-free identity) → H1 → scope/assumptions including when NOT to use → decision procedure/contract → workflow → `## Reference Map` with an imperative lead-in → checklist pointer. Exemplars: `writing-swift`, `modeling-swift-types-for-correctness`.
 - Size budget: SKILL.md targets ≤ ~200 lines; exhaustive rules, tables, and examples live in `references/*.md`; every reference file must appear in the reference map (no orphans); split any reference beyond ~500 lines by topic.
 - Attribution: imported or derived skills carry top-level `ATTRIBUTION.md`; source snapshots are top-level `REFERENCE.md`; load-on-demand content lives in `references/`. Manually authored skills may omit attribution.
 - openai.yaml contract: `display_name` (Title Case of the gerund name), `short_description`, `default_prompt` beginning "Use $<skill-name> to …".
+- Keep conditional reference selection narrow: preload only guides needed for every invocation, then link to the focused companion or reference to load after the changed concern is known.
 
 ## Agent Maintenance
 
+- Agent `skills:` frontmatter preloads full skill bodies at startup. List only guides the agent always needs; conditionally read other same-plugin guides through relative links when a changed concern requires their rules. The field may be omitted when no guide is always needed.
+- Keep conditional reference maps narrow: do not load a companion and a same-topic fallback by default when one guide answers the concern.
 - Agents are Markdown files with frontmatter under `plugins/<plugin>/agents/`.
-- Frontmatter is a superset: `name`, `description`, plus Claude Code fields (`tools`, `skills`, `model`, `color`). Codex ignores the fields it does not use.
-- Frontmatter field order is `name, description, tools, skills, model, color`; `model: inherit` always, and a deviation requires a documented reason in the body. Reviewer agents use the read-only tool set `Bash, Glob, Grep, Read, TaskCreate, TaskList`.
+- Frontmatter is a superset: `name`, `description`, plus Claude Code fields (`tools`, `skills`, `model`, `effort`, `color`). Codex ignores the fields it does not use.
+- Frontmatter field order is `name, description, tools, skills, model, effort, color`; omit `model` and `effort` by default so the caller or runtime can choose. Any explicit override, including `model: inherit`, requires a non-empty `## Model Selection` section documenting evidence, effort compatibility, runtime behavior, user-override impact, and a revisit condition. Reviewer agents use the read-only tool set `Bash, Glob, Grep, Read, TaskCreate, TaskList`. See [docs/agent-model-selection.md](docs/agent-model-selection.md).
 - Description formula: what it checks + "Use PROACTIVELY after/when …" + what it does not cover, with the scope boundary in the first sentence so overlapping agents don't both auto-spawn.
 - Bodies are runtime-neutral, use Markdown `##` headers only (no XML section tags), and follow standard sections: Scope with a concern-defer table, Constraints, Process with the layered scope-resolution steps, Classifications or Severity, Output Format, Reporting, Final Report. Reporting instructions prefer task tools (`TaskCreate`/`TaskList`) when the runtime exposes them and fall back to a prioritized follow-up list otherwise.
 - Each reviewer agent owns exactly one concern. Current concern map: structure (`code-reviewer`), correctness (`correctness-reviewer`), codified rules (`code-standards-auditor`), types (`type-driven-design-auditor`), simplification (`code-simplifier` universally, `information-entropy-reducer` for Swift judgment), async-test determinism (`async-testing-auditor`), prose (`technical-writing-auditor`). A new agent claims an empty concern or explicitly splits one.
@@ -104,6 +111,7 @@ When agents are spawned, use the narrowest useful set, wait for their results be
 ## Validation
 
 - Primary gate: `python3 scripts/validate.py` — the same script CI runs via `.github/workflows/validate.yml`. It checks manifest JSON validity and marketplace↔plugin.json consistency, skill `name` == directory, version-free identity fields, `agents/openai.yaml` presence with a `$<skill-name>` default prompt, SKILL.md relative links and reference-map completeness, agent `skills:` same-plugin resolution, and README table ↔ disk consistency.
+- Run `python3 -m unittest discover -s scripts -p 'test_*.py'` before the validator, then inspect context costs with `python3 scripts/skill_catalog.py --base HEAD` (add `--json` for tooling). See [docs/skill-context.md](docs/skill-context.md) for the discovery/activation model and evaluation procedure.
 - Validate JSON manifests with `python3 -m json.tool`: `.claude-plugin/marketplace.json`, `.agents/plugins/marketplace.json`, `plugins/apple-platform/.claude-plugin/plugin.json`, `plugins/apple-platform/.codex-plugin/plugin.json`, `plugins/universal/.claude-plugin/plugin.json`, and `plugins/universal/.codex-plugin/plugin.json`.
 - Run `claude plugin validate plugins/apple-platform` and `claude plugin validate plugins/universal` for the Claude manifests; local-only, since the `claude` CLI is not guaranteed on CI runners.
 - Load the marketplace in Codex against the local path to confirm the agents and skills register.

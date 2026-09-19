@@ -1,6 +1,6 @@
 ---
 name: writing-apple-platform-documentation
-description: Apple-platform companion skill for writing and reviewing developer documentation and doc comments for Swift, SwiftUI, UIKit, AppKit, DocC, and Xcode. Use with writing-technical-prose when documenting Apple APIs or platforms — Swift /// doc comments, DocC fields and callouts, Apple terminology and capitalization, availability and compatibility wording, concurrency and lifecycle documentation, and privacy/security phrasing.
+description: "Write or review Swift doc comments, DocC, and Apple-platform developer docs. Use for API contracts, terminology, availability, and lifecycle wording; compose with writing-technical-prose when available."
 ---
 
 # Writing Apple Platform Documentation

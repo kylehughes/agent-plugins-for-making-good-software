@@ -1,12 +1,6 @@
 ---
 name: brainstorming-design-specs
-description: >
-  Explores ambiguous product or engineering work through iterative, research-backed
-  brainstorming dialogue and produces an implementation-ready design spec. Use when a
-  feature or change is too complex, underspecified, or contested for direct planning or
-  implementation — when scope, intent, constraints, or the design itself still need to be
-  discovered with the user. Do not use for well-specified work that can be planned
-  directly, or for producing permanent documentation.
+description: "Develop an implementation-ready design through research and dialogue when scope, requirements, or tradeoffs are unresolved. Use for ambiguous product or engineering work, not a specified change ready to implement."
 ---
 
 # Brainstorming Design Specs

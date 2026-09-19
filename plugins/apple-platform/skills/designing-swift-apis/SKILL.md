@@ -1,6 +1,6 @@
 ---
 name: designing-swift-apis
-description: Apply Apple's Swift API design guidelines for naming, documentation comments, argument labels, and conventions. Use when writing or reviewing Swift APIs, choosing method or property names, designing function signatures, picking between mutating and nonmutating variants, naming protocols, writing doc comments, deciding when to use argument labels, or ensuring call sites read as grammatical English phrases.
+description: "Design and review Swift API names, argument labels, signatures, and documentation contracts using Apple's API Design Guidelines."
 ---
 
 # Designing Swift APIs
@@ -23,35 +23,13 @@ Write a documentation comment for every declaration. If describing functionality
 - For initializers: describe what they **create**
 - For properties/types: describe what they **are**
 
-```swift
-/// Returns a "view" of `self` containing the same elements in reverse order.
-func reversed() -> ReverseCollection
-
-/// Inserts `newHead` at the beginning of `self`.
-mutating func prepend(_ newHead: Int)
-
-/// Accesses the `index`th element.
-subscript(index: Int) -> Element { get set }
-
-/// Creates an instance containing `n` repetitions of `x`.
-init(count n: Int, repeatedElement x: Element)
-```
+For a worked example, read [summary format](references/examples.md#summary-format).
 
 ### Documentation Markup
 
 Use recognized symbol documentation commands to provide structured information beyond the summary:
 
-```swift
-/// Returns the element at the specified position.
-///
-/// - Parameter index: The position of the element to access. `index`
-///   must be a valid index of the collection that is not equal to the
-///   `endIndex` property.
-/// - Returns: The element at the specified index.
-/// - Throws: `CollectionError.outOfBounds` if the index is invalid.
-/// - Complexity: O(1)
-subscript(index: Int) -> Element { get }
-```
+For a worked example, read [documentation markup](references/examples.md#documentation-markup).
 
 Key commands: `Parameter(s)`, `Returns`, `Throws`, `Complexity`, `Precondition`, `Postcondition`, `Note`, `Important`, `SeeAlso`.
 
@@ -61,51 +39,25 @@ Key commands: `Parameter(s)`, `Returns`, `Throws`, `Complexity`, `Precondition`,
 
 Include all words needed to avoid ambiguity at the use site:
 
-```swift
-// Good: clear what 'at' means
-employees.remove(at: x)
-
-// Bad: unclear if removing x or element at x
-employees.remove(x)
-```
+For a worked example, read [include necessary words](references/examples.md#include-necessary-words).
 
 ### Omit Needless Words
 
 Remove words that repeat type information:
 
-```swift
-// Bad: Element is redundant
-func removeElement(_ member: Element) -> Element?
-
-// Good: role is clear from context
-func remove(_ member: Element) -> Element?
-```
+For a worked example, read [omit needless words](references/examples.md#omit-needless-words).
 
 ### Name by Role, Not Type
 
 Name variables and parameters by their role, not their type constraints:
 
-```swift
-// Bad: type names as variable names
-var string = "Hello"
-func restock(from widgetFactory: WidgetFactory)
-
-// Good: role-based names
-var greeting = "Hello"
-func restock(from supplier: WidgetFactory)
-```
+For a worked example, read [name by role, not type](references/examples.md#name-by-role-not-type).
 
 ### Compensate for Weak Types
 
 When using `Any`, `AnyObject`, `Int`, or `String`, add nouns describing the role:
 
-```swift
-// Bad: vague with NSObject parameter
-func add(_ observer: NSObject, for keyPath: String)
-
-// Good: role is explicit
-func addObserver(_ observer: NSObject, forKeyPath path: String)
-```
+For a worked example, read [compensate for weak types](references/examples.md#compensate-for-weak-types).
 
 ## Fluent Usage
 
@@ -113,38 +65,19 @@ func addObserver(_ observer: NSObject, forKeyPath path: String)
 
 Method names should form grammatical English phrases:
 
-```swift
-// Good: reads naturally
-x.insert(y, at: z)          // "x, insert y at z"
-x.subviews(havingColor: y)  // "x's subviews having color y"
-x.capitalizingNouns()       // "x, capitalizing nouns"
-
-// Bad: awkward reading
-x.insert(y, position: z)
-x.subviews(color: y)
-```
+For a worked example, read [grammatical phrases](references/examples.md#grammatical-phrases).
 
 ### Factory Methods
 
 Begin factory methods with `make`:
 
-```swift
-x.makeIterator()
-factory.makeWidget(gears: 42, spindles: 14)
-```
+For a worked example, read [factory methods](references/examples.md#factory-methods).
 
 ### Initializers
 
 First argument should not form a phrase with the base name:
 
-```swift
-// Good: arguments don't continue the name
-let foreground = Color(red: 32, green: 64, blue: 128)
-let ref = Link(target: destination)
-
-// Bad: forced grammatical continuity
-let foreground = Color(havingRGBValuesRed: 32, green: 64, andBlue: 128)
-```
+For a worked example, read [initializers](references/examples.md#initializers).
 
 ## Side Effects and Naming
 
@@ -177,10 +110,7 @@ When a noun describes the operation:
 
 Should read as assertions about the receiver:
 
-```swift
-x.isEmpty
-line1.intersects(line2)
-```
+For a worked example, read [boolean properties and methods](references/examples.md#boolean-properties-and-methods).
 
 ## Protocol Naming
 
@@ -202,11 +132,7 @@ line1.intersects(line2)
 - Everything else: `lowerCamelCase`
 - Acronyms follow case conventions uniformly:
 
-```swift
-var utf8Bytes: [UTF8.CodeUnit]
-var isRepresentableAsASCII = true
-var userSMTPServer: SecureSMTPServer
-```
+For a worked example, read [case conventions](references/examples.md#case-conventions).
 
 ### Computed Property Complexity
 
@@ -216,13 +142,7 @@ Document the complexity of computed properties that are not O(1).
 
 Methods may share a base name when they have the same basic meaning and operate in distinct domains:
 
-```swift
-// Good: same concept, distinct domains
-extension Shape {
-    func contains(_ other: Shape) -> Bool { ... }
-    func contains(_ point: CGPoint) -> Bool { ... }
-}
-```
+For a worked example, read [method overloading](references/examples.md#method-overloading).
 
 Avoid overloading on return type alone — it causes ambiguities with type inference.
 
@@ -232,14 +152,7 @@ Avoid overloading on return type alone — it causes ambiguities with type infer
 
 Choose names that make documentation read naturally:
 
-```swift
-// Good: reads well in docs
-func filter(_ predicate: (Element) -> Bool) -> [Element]
-mutating func replaceRange(_ subRange: Range, with newElements: [E])
-
-// Bad: awkward in docs
-func filter(_ includedInResult: (Element) -> Bool) -> [Element]
-```
+For a worked example, read [parameter names for documentation](references/examples.md#parameter-names-for-documentation).
 
 ### Default Parameters
 
@@ -264,14 +177,7 @@ func filter(_ includedInResult: (Element) -> Bool) -> [Element]
 
 Start label at the preposition, except when arguments represent a single abstraction:
 
-```swift
-// Good: single abstraction
-a.moveTo(x: b, y: c)
-a.fadeFrom(red: b, green: c, blue: d)
-
-// Not: broken abstraction
-a.move(toX: b, y: c)
-```
+For a worked example, read [prepositional phrases](references/examples.md#prepositional-phrases).
 
 ## Special Cases
 
@@ -279,23 +185,14 @@ a.move(toX: b, y: c)
 
 Label tuple members and name closure parameters for clarity:
 
-```swift
-mutating func ensureUniqueStorage(
-  minimumCapacity requestedCapacity: Int,
-  allocate: (_ byteCount: Int) -> UnsafePointer<Void>
-) -> (reallocated: Bool, capacityChanged: Bool)
-```
+For a worked example, read [tuple members and closure parameters](references/examples.md#tuple-members-and-closure-parameters).
 
 ### Unconstrained Polymorphism
 
 When using `Any` or unconstrained generics, be explicit to avoid ambiguity:
 
-```swift
-// Ambiguous when Element is Any
-func append(_ newElement: Element)
-func append(_ newElements: S) where S.Element == Element
+For a worked example, read [unconstrained polymorphism](references/examples.md#unconstrained-polymorphism).
 
-// Clear: explicit naming
-func append(_ newElement: Element)
-func append(contentsOf newElements: S) where S.Element == Element
-```
+## Reference Map
+
+Read the relevant section of [examples](references/examples.md) when a naming, argument-label, or documentation rule needs a concrete call site. Before finishing, check the changed API against the rules above.

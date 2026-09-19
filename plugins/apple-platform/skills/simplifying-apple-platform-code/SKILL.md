@@ -1,6 +1,6 @@
 ---
 name: simplifying-apple-platform-code
-description: Apple-platform companion skill for simplifying and hardening Swift, SwiftUI, UIKit, AppKit, Foundation, Xcode, and SwiftPM code across iOS, iPadOS, macOS, watchOS, tvOS, and visionOS. Use with simplifying-code when code touches Apple SDKs, Swift concurrency, platform availability, UI lifecycle, Apple build settings, resources, or Apple deployment targets.
+description: "Simplify Swift and Apple-platform code while preserving SDK, lifecycle, concurrency, and deployment contracts. Use for cleanup or hardening with simplifying-code when available."
 ---
 
 # Simplify Apple-Platform Code

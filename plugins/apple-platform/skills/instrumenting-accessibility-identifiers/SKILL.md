@@ -1,6 +1,6 @@
 ---
 name: instrumenting-accessibility-identifiers
-description: Use this skill when adding, migrating, reviewing, or testing type-safe iOS accessibility identifiers and XCUITest selectors in SwiftUI, UIKit, or mixed apps. Apply it for raw accessibilityIdentifier strings, screen-scoped element enums, reusable identifier modules, strict identifier-only XCTest lookup, screenshot automation, identifier catalogs, duplicate checks, or linting. Do not use it as a substitute for a broader VoiceOver or accessibility audit.
+description: "Add or audit type-safe accessibility identifiers and XCUITest selectors in SwiftUI or UIKit, including screenshot automation. Use for identifier structure and lookup, not a general VoiceOver audit."
 ---
 
 # Type-safe iOS accessibility identifiers

@@ -1,9 +1,8 @@
 ---
 name: async-testing-auditor
-description: Audits changed Swift async tests for deterministic synchronization edges — attachment, completion, cleanup, isolation, and timeout proof. Use PROACTIVELY after Edit/Write operations on Swift test files that involve async sequences, tasks, clocks, observers, refreshes, cancellation, NotificationCenter, polling, or CI flakes. Does not cover general test structure, production-code correctness, or codified standards compliance.
+description: "Audit synchronization in Swift async tests. Use PROACTIVELY after changes involving observers, tasks, clocks, cancellation, or CI flakes. Defer general test style and production-code defects."
 tools: Bash, Glob, Grep, Read, TaskCreate, TaskList
-skills: testing-async-swift-code, using-swift-concurrency, testing-swift-code
-model: inherit
+skills: testing-async-swift-code
 color: cyan
 ---
 
@@ -57,17 +56,18 @@ Use progressive disclosure — layer your understanding before judging.
 4. Grep the changed tests for smell markers — `Task.sleep`, yield loops, `ContinuousClock` deadlines, inline collector classes, `AsyncStream` wrappers around synchronous callbacks, non-default timeouts — as prompts for where to look, not as findings in themselves.
 5. Read each changed async test in full. Do not rely on the grep alone.
 6. Identify the project's primitives (test clock, event recorder, serial-executor helper, polling helpers) so fixes reference what actually exists.
+7. If isolation or cancellation semantics are unclear, conditionally load [using-swift-concurrency](../skills/using-swift-concurrency/SKILL.md). If assertion or confirmation behavior is unclear, conditionally load [testing-swift-code](../skills/testing-swift-code/SKILL.md). Do not load either guide for unrelated concerns.
 
 **Layer 3: Analysis** (focused)
 
-7. For each changed async test, reconstruct the determinism contract:
+8. For each changed async test, reconstruct the determinism contract:
    - What proves the observer/listener/task is attached before the trigger?
    - What proves the expected behavior completed?
    - What cleanup barrier runs if an assertion throws?
    - Does the test use shared or process-global state that requires `.serialized` or unique IDs?
    - Is any non-default timeout justified by real work or CI evidence?
-8. Prioritize these risks: triggering before attachment is proven; polling state after a trigger when an event stream could attach first; sleeps or yield loops to let work "settle"; clock advances without a post-advance event wait; transcript reads before an awaited detach where a final snapshot is required; serial-executor suites that are not `.serialized`; gated or blocked tasks whose release/stop/detach cleanup is not guaranteed on failure; non-default timeouts without a local reason; custom collectors or inline `AsyncStream` wrappers where a direct-recording seam would remove a scheduler hop.
-9. Report only findings where the code lacks a proven edge, cleanup barrier, or isolation story.
+9. Prioritize these risks: triggering before attachment is proven; polling state after a trigger when an event stream could attach first; sleeps or yield loops to let work "settle"; clock advances without a post-advance event wait; transcript reads before an awaited detach where a final snapshot is required; serial-executor suites that are not `.serialized`; gated or blocked tasks whose release/stop/detach cleanup is not guaranteed on failure; non-default timeouts without a local reason; custom collectors or inline `AsyncStream` wrappers where a direct-recording seam would remove a scheduler hop.
+10. Report only findings where the code lacks a proven edge, cleanup barrier, or isolation story.
 
 ## Severity
 

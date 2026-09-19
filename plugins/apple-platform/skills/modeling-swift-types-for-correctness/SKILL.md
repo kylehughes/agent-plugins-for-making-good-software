@@ -1,15 +1,6 @@
 ---
 name: modeling-swift-types-for-correctness
-description: >-
-  Design or refactor Swift models so invalid states, swapped identifiers, unchecked boundary values,
-  illegal transitions, unsafe ownership, and concurrency misuse are difficult or impossible to express.
-  Use for SwiftUI feature state, forms, navigation and effect identity; boolean or optional state
-  explosions; enums with associated values; validated newtypes; phantom IDs; units or trust states;
-  typestate and staged builders; capability tokens; generic/protocol relationships; typed errors;
-  Sendable or actor isolation; ~Copyable or ~Escapable; security/resource boundaries; Codable,
-  persistence, Objective-C or C interop; and version-aware APIs that deploy to iOS 16 with newer SDKs.
-  Also use to audit whether a type invariant is bypassable or a design is overengineered. Do not use for
-  cosmetic naming-only refactors with no meaningful invariant.
+description: "Model Swift invariants so invalid states are hard to express. Use for state models, typed IDs, validated values, legal transitions, ownership, and concurrency boundaries; not cosmetic naming changes."
 ---
 
 # Model Swift Types for Correctness

@@ -1,11 +1,6 @@
 ---
 name: recording-ios-simulator-videos
-description: >
-  Records iOS simulator videos around UI automation, XCTest, XCUITest, simulator
-  reproduction, or visual debugging runs, then saves and compresses artifacts for review
-  or handoff. Use when a task needs a simulator video artifact: UI automation runs,
-  explicit XCUITest filters, short manual reproductions, flaky visual states, or PR demo
-  handoff. Do not use for device recordings, screenshots, or non-Apple platforms.
+description: "Record and compress iOS Simulator video for UI tests, bug reproductions, or PR demos. Use when a video artifact is needed; not for screenshots or physical-device capture."
 ---
 
 # Recording iOS Simulator Videos

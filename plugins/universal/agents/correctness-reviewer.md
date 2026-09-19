@@ -1,9 +1,8 @@
 ---
 name: correctness-reviewer
-description: Reviews code changes for concrete correctness, security, concurrency, data-loss, compatibility, and performance defects, any language. Use PROACTIVELY after code changes or when assessing a diff, PR, branch, or generated code for merge readiness. Produces evidence-based, line-specific findings with severity, impact, and repair direction. Checks defects, not structural design fit, codified standards, or documentation.
+description: "Review correctness, security, concurrency, compatibility, and performance defects. Use PROACTIVELY when assessing a diff, PR, or branch for merge readiness. Defer structural design, codified style, and prose."
 tools: Bash, Glob, Grep, Read, TaskCreate, TaskList
 skills: reviewing-code
-model: inherit
 color: blue
 ---
 

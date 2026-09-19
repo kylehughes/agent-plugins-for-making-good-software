@@ -1,9 +1,8 @@
 ---
 name: technical-writing-auditor
-description: "Audits developer-facing technical prose for correctness, reader usefulness, repository voice, structure, formatting, and AI-sounding language. Use PROACTIVELY after writing or editing Markdown, READMEs, ADRs, RFCs, design docs, API docs, Swift/DocC comments, runbooks, migration guides, release notes, PR descriptions, troubleshooting docs, or other documentation-like comments. References the writing-technical-prose skill when available and reports concrete findings without modifying files."
+description: "Audit developer documentation for accuracy, reader usefulness, structure, and voice. Use PROACTIVELY after docs or API-comment changes. Defer architecture and code defects; report without editing."
 tools: Bash, Glob, Grep, Read, TaskCreate, TaskList
 skills: writing-technical-prose
-model: inherit
 color: yellow
 ---
 

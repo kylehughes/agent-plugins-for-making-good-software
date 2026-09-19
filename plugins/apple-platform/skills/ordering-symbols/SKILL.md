@@ -1,6 +1,6 @@
 ---
 name: ordering-symbols
-description: Defines the canonical order for Swift symbols in iOS projects — type aliases, nested types, enum cases, stored properties, initializers, lazy/computed properties, subscripts, and methods — using access-level grouping and lexicographic sorting wherever reordering is semantics-preserving. Use when writing new Swift types, adding members to existing structs/classes/actors/enums/protocols/extensions, reorganizing or refactoring Swift code, deciding where to place a new property or method, or reviewing member ordering in pull requests.
+description: "Order members within Swift types by declaration kind, access level, and name. Use when adding or moving members or reviewing their order; preserve order-dependent behavior."
 ---
 
 # Swift Lexicographic Symbol Ordering

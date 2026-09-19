@@ -91,3 +91,23 @@ Platform-agnostic tools for making good software.
 | `code-simplifier` | Finds behavior-preserving simplification and reuse opportunities in any language. |
 | `correctness-reviewer` | Evidence-based review for concrete correctness, security, concurrency, and compatibility defects. |
 | `technical-writing-auditor` | Audits developer-facing docs and comments for voice, structure, and AI-isms. |
+
+## Agent model selection
+
+Agent definitions omit model and effort by default so callers and runtimes can
+choose appropriately. An explicit model or effort override needs evidence, a
+documented reason, and a revisit condition. See
+[model selection](docs/agent-model-selection.md) for runtime precedence,
+workload guidance, and evaluation criteria.
+
+## Maintaining skills
+
+The marketplace contains 26 skills shared by Claude Code and Codex; it does not fork skills per model. Discovery metadata is kept short so a crowded work-machine catalog has room to select the right skill, while the selected skill still provides its full body and references. See [docs/skill-context.md](docs/skill-context.md) for the cost model and evaluation notes.
+
+Run the focused tests, repository validator, and context-cost report before opening a change:
+
+```shell
+python3 -m unittest discover -s scripts -p 'test_*.py'
+python3 scripts/validate.py
+python3 scripts/skill_catalog.py --base HEAD
+```

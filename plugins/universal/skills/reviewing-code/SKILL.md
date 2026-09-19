@@ -1,13 +1,6 @@
 ---
 name: reviewing-code
-description: >
-  Use when the user asks to review, audit, inspect, or assess code changes, a pull request,
-  diff, patch, commit, branch, generated code, or repository for merge readiness. Reviews
-  any language or platform for concrete correctness regressions, security and privacy flaws,
-  concurrency hazards, contract and compatibility breaks, data loss, performance problems,
-  test weaknesses, and maintainability risks. Produces evidence-based, line-specific findings.
-  Do not invoke for ordinary implementation, refactoring, or debugging unless a review or audit
-  is requested.
+description: "Review a PR, diff, branch, or repository for concrete correctness, security, concurrency, and compatibility defects. Use for requested code review or audit; report findings without editing unless fixes are also requested."
 ---
 
 # Reviewing Code

@@ -1,6 +1,6 @@
 ---
 name: using-swift-concurrency
-description: Writes, reviews, refactors, migrates, and debugs modern Swift Concurrency code for iOS projects spanning older deployment targets through current and beta SDKs. Use when working with async/await, Task, Task.immediate, Task.detached, task groups, actors, MainActor, Sendable, sending/nonsending, @concurrent, nonisolated, default actor isolation, strict concurrency diagnostics, SwiftUI/UIKit isolation, async sequences, continuations, cancellation, protocol isolation, isolated conformances, or async tests.
+description: "Design, debug, or review Swift concurrency: async/await, tasks, actors, Sendable, isolation, cancellation, and async sequences. Use for concurrency behavior, migrations, and compiler diagnostics."
 ---
 
 # Using Swift Concurrency

@@ -1,9 +1,8 @@
 ---
 name: code-reviewer
-description: Reviews code changes for structural design consistency. Use after code changes, when reviewing PRs, or when auditing AI-generated code to catch implicit architecture drift — patterns that conflict with existing ones, design changes without acknowledgment, or isolation boundary violations. Checks structural design fit, not codified rules, type modeling, correctness bug-hunting, or documentation.
+description: "Review structural design and architecture fit. Use PROACTIVELY when reviewing changes for pattern drift or misplaced responsibilities. Defer correctness defects, codified rules, and prose."
 tools: Bash, Glob, Grep, Read, TaskCreate, TaskList
 skills: reviewing-code
-model: inherit
 color: red
 ---
 

@@ -9,7 +9,7 @@ This script checks, across the whole repository:
    that the referenced source directories exist).
 3. That every non-empty `plugins/*/skills/*/` directory has a `SKILL.md`
    whose frontmatter `name` matches the directory name and whose
-   `description` is non-empty.
+   `description` is a valid, one-line JSON-compatible double-quoted scalar.
 4. That a skill's identity fields (frontmatter `name`, the body's `# ` H1,
    and the leading clause of `description`) stay free of OS/SDK version
    numbers, per AGENTS.md's "Version-free identity" rule.
@@ -19,7 +19,9 @@ This script checks, across the whole repository:
    references/scripts/examples/assets/evals paths inside each SKILL.md.
 7. That every agent under `plugins/<p>/agents/*.md` has frontmatter whose
    `name` matches its filename stem, whose `skills:` entries exist as
-   sibling skill directories, and whose `model:` is `inherit`.
+   sibling skill directories, and whose optional `model:`/`effort:` values
+   are non-empty and documented by a non-empty `## Model Selection` section
+   when either is present.
 8. That every file under a skill's `references/` directory is mentioned
    somewhere in that skill's SKILL.md (no orphan reference files).
 9. That each plugin's skill and agent names appear in the top-level
@@ -28,6 +30,8 @@ This script checks, across the whole repository:
 10. That any plugin whose content changed since the git base ref also had
     its `version` bumped, and that the new version did not go backwards or
     sideways.
+11. That skill and agent descriptions use one-line JSON-compatible strings
+    and stay within the repository's editorial character budgets.
 
 Caveat: this repository intentionally avoids third-party dependencies, so
 there is no PyYAML available. Frontmatter (in SKILL.md and agent files) and
@@ -117,11 +121,45 @@ def _parse_frontmatter_fields(frontmatter_lines: list[str]) -> dict[str, str]:
                     break
             fields[key] = " ".join(block_lines) if folded else "\n".join(block_lines)
             continue
-        if len(value) >= 2 and value[0] == value[-1] and value[0] in "\"'":
-            value = value[1:-1]
+        if value.startswith('"'):
+            # Descriptions are validated separately, but parsing must still
+            # decode JSON escapes so catalog measurements reflect authored text.
+            try:
+                decoded = json.loads(value)
+            except json.JSONDecodeError:
+                decoded = value[1:-1] if value.endswith('"') else value[1:]
+            if isinstance(decoded, str):
+                value = decoded
+        elif len(value) >= 2 and value[0] == value[-1] and value[0] == "'":
+            value = value[1:-1].replace("''", "'")
+        else:
+            # In YAML, an unquoted `#` starts a comment only at a whitespace
+            # boundary. An embedded hash such as `C#` stays in the scalar.
+            value = re.split(r"(?:^|\s+)#", value, maxsplit=1)[0].rstrip()
         fields[key] = value
         index += 1
     return fields
+
+
+def _description_format_issue(frontmatter_lines: list[str]) -> str | None:
+    """Return why a description is not an authored one-line JSON string."""
+    for line in frontmatter_lines:
+        match = re.match(r"^description:\s*(.*)$", line)
+        if not match:
+            continue
+        value = match.group(1).strip()
+        if value == "" or value in (">", ">-", ">+", "|", "|-", "|+"):
+            return "description must be a one-line double-quoted JSON string"
+        if not value.startswith('"'):
+            return "description must be a one-line double-quoted JSON string"
+        try:
+            decoded = json.loads(value)
+        except json.JSONDecodeError:
+            return "description is not a valid JSON string"
+        if not isinstance(decoded, str) or "\n" in decoded or "\r" in decoded:
+            return "description must be a one-line double-quoted JSON string"
+        return None
+    return "description must be a one-line double-quoted JSON string"
 
 
 def check_json_validity() -> list[Finding]:
@@ -276,6 +314,9 @@ def check_skill_shape() -> list[Finding]:
         description = fields.get("description", "")
         if not description.strip():
             findings.append((_rel(skill_md), "frontmatter 'description' is empty or missing"))
+        format_issue = _description_format_issue(frontmatter_lines)
+        if format_issue:
+            findings.append((_rel(skill_md), format_issue))
     return findings
 
 
@@ -375,8 +416,14 @@ def check_agent_frontmatter() -> list[Finding]:
             if split is None:
                 findings.append((_rel(agent_md), "missing or malformed '---' frontmatter block"))
                 continue
-            frontmatter_lines, _body = split
+            frontmatter_lines, body = split
             fields = _parse_frontmatter_fields(frontmatter_lines)
+
+            format_issue = _description_format_issue(frontmatter_lines)
+            if format_issue:
+                findings.append((_rel(agent_md), format_issue))
+            if not fields.get("description", "").strip():
+                findings.append((_rel(agent_md), "frontmatter 'description' is empty or missing"))
 
             name = fields.get("name", "")
             if name != agent_md.stem:
@@ -387,9 +434,68 @@ def check_agent_frontmatter() -> list[Finding]:
                 if not (skills_dir / skill_name).is_dir():
                     findings.append((_rel(agent_md), f"skills entry {skill_name!r} has no matching plugins/{plugin_dir.name}/skills/{skill_name} directory"))
 
-            model = fields.get("model", "")
-            if model != "inherit":
-                findings.append((_rel(agent_md), f"'model' is {model!r}, but AGENTS.md requires 'inherit' unless a documented reason justifies otherwise"))
+            for message in _agent_model_selection_issues(frontmatter_lines, fields, body):
+                findings.append((_rel(agent_md), message))
+    return findings
+
+
+def _agent_model_selection_issues(
+    frontmatter_lines: list[str], fields: dict[str, str], body: str
+) -> list[str]:
+    """Validate optional model/effort overrides and their shared rationale."""
+    declared = {
+        key: any(re.match(rf"^\s*{key}\s*:", line) for line in frontmatter_lines)
+        for key in ("model", "effort")
+    }
+    issues = [
+        f"frontmatter '{key}' is empty"
+        for key, present in declared.items()
+        if present and not fields.get(key, "").strip()
+    ]
+    if any(declared.values()):
+        section = re.search(r"(?ms)^##\s+Model Selection\s*$\n(.*?)(?=^##\s|\Z)", body)
+        if section is None or not section.group(1).strip():
+            issues.append("explicit 'model' or 'effort' requires a non-empty '## Model Selection' section")
+    return issues
+
+
+# These are repository editorial budgets for keeping discovery metadata useful
+# in crowded host context windows. They are character counts, not vendor token
+# or window limits, and do not claim that a host's budget will fit.
+MAX_SKILL_DESCRIPTION_CHARS = 320
+MAX_TOTAL_SKILL_DESCRIPTION_CHARS = 7000
+MAX_AGENT_DESCRIPTION_CHARS = 300
+MAX_TOTAL_AGENT_DESCRIPTION_CHARS = 2200
+
+
+def check_description_budgets() -> list[Finding]:
+    findings: list[Finding] = []
+    skill_total = 0
+    agent_total = 0
+    for skill_dir in _iter_skill_dirs():
+        _path, fields, _body = _skill_frontmatter(skill_dir)
+        if fields is None:
+            continue
+        description = fields.get("description", "")
+        skill_total += len(description)
+        if len(description) > MAX_SKILL_DESCRIPTION_CHARS:
+            findings.append((_rel(skill_dir / "SKILL.md"), f"description is {len(description)} characters; limit is {MAX_SKILL_DESCRIPTION_CHARS}"))
+
+    for plugin_dir in sorted((REPO_ROOT / "plugins").glob("*")):
+        for agent_md in sorted((plugin_dir / "agents").glob("*.md")):
+            split = _split_frontmatter(agent_md.read_text(encoding="utf-8"))
+            if split is None:
+                continue
+            fields = _parse_frontmatter_fields(split[0])
+            description = fields.get("description", "")
+            agent_total += len(description)
+            if len(description) > MAX_AGENT_DESCRIPTION_CHARS:
+                findings.append((_rel(agent_md), f"description is {len(description)} characters; limit is {MAX_AGENT_DESCRIPTION_CHARS}"))
+
+    if skill_total > MAX_TOTAL_SKILL_DESCRIPTION_CHARS:
+        findings.append((_rel(REPO_ROOT / "plugins"), f"skill descriptions total {skill_total} characters; limit is {MAX_TOTAL_SKILL_DESCRIPTION_CHARS}"))
+    if agent_total > MAX_TOTAL_AGENT_DESCRIPTION_CHARS:
+        findings.append((_rel(REPO_ROOT / "plugins"), f"agent descriptions total {agent_total} characters; limit is {MAX_TOTAL_AGENT_DESCRIPTION_CHARS}"))
     return findings
 
 
@@ -571,6 +677,7 @@ CHECKS = [
     ("openai.yaml metadata", check_openai_yaml),
     ("Link integrity", check_link_integrity),
     ("Agent frontmatter", check_agent_frontmatter),
+    ("Description budgets", check_description_budgets),
     ("Reference-map completeness", check_reference_map_completeness),
     ("README consistency", check_readme_consistency),
     ("Version bumped on change", check_version_bumped_on_change),

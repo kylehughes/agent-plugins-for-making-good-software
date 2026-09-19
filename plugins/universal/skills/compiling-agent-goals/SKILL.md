@@ -1,14 +1,6 @@
 ---
 name: compiling-agent-goals
-description: >
-  Turns implementation specs, plans, issues, and large coding requests into bounded,
-  paste-ready goal contracts for Claude Code, Codex, and similar programming-agent harnesses.
-  Use when asked to write, refine, audit, shorten, or split a `/goal`, goal document,
-  persistent objective, stopping condition, or spec-to-goal handoff. Prevents endless
-  loops by freezing finite
-  acceptance criteria, exact evidence, scope boundaries, baseline policy, and explicit
-  SUCCESS and BLOCKED exits. Do not use to implement the underlying feature unless
-  separately asked.
+description: "Write or refine bounded /goal contracts from specs, plans, or issues, with acceptance evidence and stopping conditions. Use for persistent-agent task handoffs, not implementing the underlying feature."
 ---
 
 # Compiling Agent Goals

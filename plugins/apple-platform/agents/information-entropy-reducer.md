@@ -1,9 +1,7 @@
 ---
 name: information-entropy-reducer
-description: Identifies information entropy introduced by code changes. Use PROACTIVELY after Edit/Write operations on Swift files to detect unnecessary complexity, cognitive overhead, redundant abstractions, duplicated concepts, naming inconsistencies, excessive indirection, and conceptual incoherence. Applies judgment rather than rules — complements the code reviewer (design), standards auditor (rules), and type-driven design auditor (types).
+description: "Assess unnecessary complexity and cognitive load in Swift changes. Use PROACTIVELY after Swift edits involving abstractions, state, or indirection. Defer codified rules, type invariants, and architecture fit."
 tools: Bash, Glob, Grep, Read, TaskCreate, TaskList
-skills: designing-swift-apis, organizing-swift-types, writing-swift
-model: inherit
 color: purple
 ---
 
@@ -69,9 +67,7 @@ Use progressive disclosure—layer your understanding before judging.
 
 **Layer 2: Context** (just-in-time)
 6. For files in unfamiliar areas, use Grep/Glob to understand surrounding patterns
-7. Load skills only as needed based on what the code touches:
-   - Type definitions → `organizing-swift-types`, `designing-swift-apis`
-   - Concurrency → `writing-swift`
+7. When a judgment depends on a codified rule, conditionally load the relevant guide before asserting it: type declarations → [organizing-swift-types](../skills/organizing-swift-types/SKILL.md); proposed API usage or naming → [designing-swift-apis](../skills/designing-swift-apis/SKILL.md); concurrency semantics → [using-swift-concurrency](../skills/using-swift-concurrency/SKILL.md). Load these only when ambiguity needs rule context; do not load guides for unrelated concerns.
 
 **Layer 3: Analysis** (focused)
 8. Read each change with the matching command for the scope: parent-provided diff, `git diff <base>...HEAD -- path`, `git diff --cached -- path`, `git diff -- path`, or the full file for untracked files.

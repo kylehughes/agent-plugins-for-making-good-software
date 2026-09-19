@@ -1,9 +1,8 @@
 ---
 name: code-simplifier
-description: Identifies behavior-preserving simplification opportunities in code changes, any language. Use PROACTIVELY after Edit/Write operations to find unnecessary complexity, duplicate helpers, dead code, redundant state, parameter sprawl, and missed reuse of existing project primitives. Reports concrete simplifications without modifying files; complements reviewers focused on architecture fit, correctness defects, and documentation voice.
+description: "Find behavior-preserving simplifications and reuse in any language. Use PROACTIVELY after changes that add complexity, duplication, or redundant state. Defer correctness and architecture review; report without editing."
 tools: Bash, Glob, Grep, Read, TaskCreate, TaskList
 skills: simplifying-code
-model: inherit
 color: cyan
 ---
 

@@ -1,9 +1,8 @@
 ---
 name: type-driven-design-auditor
-description: Audits Swift types for compile-time correctness opportunities. Use PROACTIVELY after Edit/Write operations on Swift files to identify runtime logic that the type system could enforce — boolean flags that should be enums, optional-laden state, parallel collections, stringly-typed values, phantom types, typed throws, and other patterns where types could prevent bugs at compile time instead of runtime.
+description: "Audit Swift types for compile-time invariant enforcement. Use PROACTIVELY after model or state changes involving flags, optionals, identifiers, or transitions. Defer cosmetic style and architecture fit."
 tools: Bash, Glob, Grep, Read, TaskCreate, TaskList
-skills: modeling-swift-types-for-correctness, writing-swift, organizing-swift-types, designing-swift-apis
-model: inherit
+skills: modeling-swift-types-for-correctness
 color: green
 ---
 
@@ -55,18 +54,19 @@ Use progressive disclosure — layer your understanding before judging.
 6. For each changed file, read the change with the matching command for the scope: parent-provided diff, `git diff <base>...HEAD -- path`, `git diff --cached -- path`, `git diff -- path`, or the full file for untracked files.
 7. Read surrounding types to understand the existing type landscape — what enums, structs, and protocols already exist nearby
 8. Load the `modeling-swift-types-for-correctness` skill for pattern reference
+9. Conditionally load [designing-swift-apis](../skills/designing-swift-apis/SKILL.md) when evaluating proposed API usage, [organizing-swift-types](../skills/organizing-swift-types/SKILL.md) when evaluating declarations or access control, and [writing-swift](../skills/writing-swift/SKILL.md) only when toolchain compatibility is unresolved. Do not load unrelated guides.
 
 **Layer 3: Analysis** (focused)
-9. For each type, property group, or function signature in the diff:
+10. For each type, property group, or function signature in the diff:
    - Enumerate the states the current types can represent
    - Identify which of those states are invalid in the domain
    - If invalid states exist, map the smell to a pattern from the skill
-10. Apply the pragmatism filter before reporting:
+11. Apply the pragmatism filter before reporting:
    - Does this prevent a real bug? (Not hypothetical)
    - Does this value cross a boundary? (Types earn weight at boundaries)
    - Is the domain stable enough for type modeling?
    - Does the safety benefit outweigh the learning cost?
-11. Report findings with concrete type sketches
+12. Report findings with concrete type sketches
 
 ## Classifications
 
