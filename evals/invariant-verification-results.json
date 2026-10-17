@@ -1,0 +1,148 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-17",
+  "source_snapshot": {
+    "base_revision": "c3d5df70a554ef806bf77be4f1add536caa9c48c",
+    "includes_uncommitted_changes": true,
+    "input_selection": "Git-visible files under plugins/ and scripts/, plus evals/skill-routing.json",
+    "file_count": 297,
+    "sha256": "61f9c1b11373ac216e8f3a93ccf5a467139c29fde36a6f02f5468b08778c4911",
+    "digest_algorithm": "SHA-256 of compact sorted-key JSON mapping repository-relative paths to file SHA-256 digests"
+  },
+  "versions": {
+    "universal": "1.7.0",
+    "apple-platform": "1.5.0",
+    "claude": "2.1.282",
+    "codex": "0.160.0",
+    "swift": "Apple Swift 6.3.3"
+  },
+  "deterministic_checks": {
+    "unit_tests": {
+      "passed": 55,
+      "failed": 0
+    },
+    "manifest_validator": "pass",
+    "plugin_repository_validator": "pass",
+    "claude_plugin_validation": "both pass",
+    "swift_skill_validation": "pass; optional skills-ref unavailable",
+    "required_real_swift_fixtures": "all positive controls, intended rejections, runtime build and runtime assertions pass",
+    "keyed_decoding_documentation": "compiled and checked valid historical payload, round trip, and predicate-specific invalid input",
+    "whitespace": "pass"
+  },
+  "context": {
+    "skills": 27,
+    "agents": 8,
+    "skill_description_chars": 5338,
+    "skill_body_chars": 253016,
+    "agent_preloaded_body_chars": 74190,
+    "baseline": {
+      "skills": 26,
+      "agents": 8,
+      "skill_description_chars": 5022,
+      "skill_body_chars": 243044,
+      "agent_preloaded_body_chars": 73196
+    }
+  },
+  "description_selection_probe": {
+    "runtime": "Claude Code",
+    "model": "claude-sonnet-5",
+    "effort": "medium",
+    "runs": 1,
+    "cases": 44,
+    "correct": 43,
+    "missing": [
+      {
+        "case": "case-040",
+        "skill": "modeling-swift-types-for-correctness"
+      }
+    ],
+    "forbidden_selections": 0,
+    "limits": [
+      "Measures initial selection from names/descriptions only, not deferred companion loading.",
+      "An earlier unstructured response was invalid JSON and excluded; the scored run used structured output."
+    ]
+  },
+  "native_codex": {
+    "model": "gpt-5.6-sol",
+    "effort": "medium",
+    "accepted_unique_cases": 11,
+    "universal_only": {
+      "activation": 5,
+      "behavior": 5,
+      "cases": 5
+    },
+    "apple_only": {
+      "activation": 1,
+      "behavior": 1,
+      "cases": 1
+    },
+    "combined": {
+      "both_skills_loaded": 1,
+      "behavior": 1,
+      "cases": 1
+    },
+    "near_misses": {
+      "expected_owner_loaded": 4,
+      "verifier_loaded": 0,
+      "behavior": 4,
+      "cases": 4
+    },
+    "writes_or_registry_changes": 0,
+    "limits": [
+      "One accepted sample per case/configuration; 14 sessions including preliminary/rerun attempts.",
+      "An incomplete async response amid temporary state-database warnings was excluded and rerun successfully.",
+      "Account-managed remote plugins were enumerated even in temporary homes; activation required reads from the locally installed temporary cache.",
+      "These runs preceded the final wording-only changes to preserve keyed wire formats and avoid assumed exploration exhaustion."
+    ]
+  },
+  "native_claude_smoke": {
+    "model": "claude-sonnet-5",
+    "runs_per_case": 3,
+    "cases": 5,
+    "basic_content_checks_passed": 15,
+    "verifier_activations": 12,
+    "missed_activation": {
+      "nested-mutation": 3
+    },
+    "writes_or_registry_changes": 0,
+    "limits": [
+      "Smoke graders check regexes and tool calls, not full behavioral correctness.",
+      "Raw traces were not retained for this initial harness run; separate native sessions retained full traces for behavioral review."
+    ]
+  },
+  "native_claude_behavior": {
+    "model": "claude-sonnet-5",
+    "effort": "medium",
+    "initial_retained_cases": 11,
+    "initial_content_passed": 8,
+    "initial_universal_activations": 5,
+    "initial_combined_composition": "missed Universal",
+    "initial_near_miss_owner_activations": 3,
+    "near_miss_verifier_activations": 0,
+    "writes_or_registry_changes": 0,
+    "observed_defects": [
+      "Assumed bounded exploration was exhaustive without evidence of frontier exhaustion.",
+      "Suggested a scalar decoder for an existing keyed representation.",
+      "Omitted the companion on the combined verification request."
+    ],
+    "response": "Strengthened evidence reporting, preserved keyed decoding in the reference example, and made the conditional companion invocation explicit.",
+    "latest_retests": {
+      "cases": 3,
+      "content_passed": 2,
+      "activation_passed": 2,
+      "bounded-claim": "pass: conclusion remains conditional on exhaustion and no truncation",
+      "apple-alone": "pass: preserves keyed shape and proposes valid predicate-reaching checks",
+      "combined": "fail: only Apple skill activated; scalar-decoder suggestion breaks known keyed shape",
+      "all_read_only": true,
+      "remaining_failure_is_acceptance_failure": true
+    },
+    "limits": [
+      "One retained sample per configuration plus focused retests, not a reliability estimate.",
+      "Combined content and composition failure remains; correct diagnosis alone does not pass the rubric."
+    ]
+  },
+  "limitations": [
+    "Small local samples are not a guarantee of automatic skill invocation, generated-code correctness, or whole-program correctness.",
+    "No installed user plugin cache was updated and no release was published."
+  ]
+}

@@ -82,6 +82,8 @@ Launch the implicated auditors in parallel against the surface. The roster is a 
 
 Platform plugins and projects commonly add reviewers for concerns such as codified standards compliance, type-system enforcement, complexity and cognitive load, and async-test determinism. Launch every installed reviewer agent whose concern the surface implicates; record the concerns you had no reviewer for.
 
+When the work explicitly requests invariant proof, or changes an enforcement model or state transition, use [verifying-invariants](../verifying-invariants/SKILL.md) to define the bounded evidence. This does not add an auditor, a registry, or another build/test gate: audit workers remain read-only, the one compile checkpoint stays in Phase 4, and the project's test gate remains separate.
+
 Pass this contract to every auditor:
 
 ```text

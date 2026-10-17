@@ -80,6 +80,7 @@ Platform-agnostic tools for making good software.
 | `hardening-changes` | A convergent reviewer-agent audit-fix loop that leaves a branch whole before PR creation. |
 | `reviewing-code` | A review frame for correctness, security, concurrency, and compatibility risks, with line-specific findings. |
 | `simplifying-code` | A behavior-preserving cleanup pass — reuse, simplify, de-duplicate, harden — for any language. |
+| `verifying-invariants` | Scoped invariant checks, evidence limits, and an optional manifest validator; composes with language-specific enforcement guidance. |
 | `writing-escalation-briefs` | A standalone handoff packet for a stuck problem — evidence, attempts, and hypotheses, with no repository access assumed. |
 | `writing-technical-prose` | Conventions for direct, pragmatic developer-facing prose — READMEs, ADRs, docs, and comments. |
 
@@ -102,7 +103,9 @@ workload guidance, and evaluation criteria.
 
 ## Maintaining skills
 
-The marketplace contains 26 skills shared by Claude Code and Codex; it does not fork skills per model. Discovery metadata is kept short so a crowded work-machine catalog has room to select the right skill, while the selected skill still provides its full body and references. See [docs/skill-context.md](docs/skill-context.md) for the cost model and evaluation notes.
+The marketplace contains 27 skills shared by Claude Code and Codex; it does not fork skills per model. Discovery metadata is kept short so a crowded work-machine catalog has room to select the right skill, while the selected skill still provides its full body and references. See [docs/skill-context.md](docs/skill-context.md) for the cost model and evaluation notes.
+
+For explicit invariant claims or changes to their enforcement, `verifying-invariants` identifies the relevant boundaries and checks. The Swift modeling skill supplies Swift representations and compiler fixtures. Ordinary work uses a scoped report; a maintained invariant registry is optional. See [invariant verification](docs/invariant-verification.md) for tooling and evaluation commands.
 
 Run the focused tests, repository validator, and context-cost report before opening a change:
 

@@ -107,6 +107,8 @@ For each acceptance criterion, name the proof the worker must surface in the con
 
 Do not rely on an evaluator to open files or run commands. Require the worker to expose the decisive evidence in its final turn. For bug fixes, prefer a named reproduction that fails before the change and passes afterward when practical.
 
+For an explicit invariant or proof criterion, use [verifying-invariants](../verifying-invariants/SKILL.md) to scope the boundary and choose the lightest adequate evidence. Name the claim accurately: compiler restrictions, checked constructors, sampled tests, exhaustive finite exploration, and formal proof differ; repeatability does not imply completeness. Use a durable registry only when the user requests a lasting contract or CI needs it; ordinary goals carry a scoped report instead.
+
 For stochastic or performance work, specify the dataset or workload, number of runs, aggregation method, threshold, and failure tolerance. "Looks better" and "performance improves" are not closure conditions.
 
 ### 5. Set Baseline and Regression Policy

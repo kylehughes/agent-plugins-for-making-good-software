@@ -33,6 +33,10 @@ struct NonEmptyString: Hashable, Sendable {
         storage = canonical
     }
 
+    private init(uncheckedStorage: String) {
+        storage = uncheckedStorage
+    }
+
     var value: String { storage }
 }
 

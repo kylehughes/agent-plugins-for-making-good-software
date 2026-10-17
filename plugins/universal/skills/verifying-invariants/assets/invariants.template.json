@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "invariants": [
+    {
+      "id": "replace-with-invariant-id",
+      "statement": "Replace with a precise property that remains true.",
+      "kind": "structural",
+      "scope": {
+        "references": [
+          { "path": "." }
+        ]
+      },
+      "authority": {
+        "description": "Replace with the source that defines this invariant.",
+        "references": [
+          { "path": "." }
+        ]
+      },
+      "boundaries": {
+        "surfaces": ["construction"],
+        "exclusions": ["Replace with what this invariant does not establish."]
+      },
+      "assumptions": [],
+      "checks": [
+        {
+          "id": "replace-with-check-id",
+          "method": "manual-review",
+          "artifact": { "path": "." },
+          "limitations": []
+        }
+      ]
+    }
+  ]
+}

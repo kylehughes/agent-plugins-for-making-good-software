@@ -80,6 +80,8 @@ Before editing, identify the contracts the changed code appears to rely on:
 
 Use this map to distinguish safe simplification from behavior change.
 
+When a requested proof names an invariant, or a simplification changes an enforcement model or state transition, use [verifying-invariants](../verifying-invariants/SKILL.md) to preserve the relevant boundary with the lightest adequate evidence. Do not turn ordinary cleanup into a proof exercise, refactor, or test-infrastructure project.
+
 ### 4. Run Independent Review Passes
 
 Run these passes independently. If the environment supports parallel reviewers or subagents, give each the full frozen surface and ask for separate findings. Otherwise, perform the passes yourself and keep findings separated until all passes are complete.

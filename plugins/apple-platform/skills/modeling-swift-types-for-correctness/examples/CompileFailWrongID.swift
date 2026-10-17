@@ -1,19 +1,5 @@
-import Foundation
-
-struct Identifier<Domain>: RawRepresentable {
-    let rawValue: UUID
-}
-
-enum UserDomain {}
-enum WorkspaceDomain {}
-
-typealias UserID = Identifier<UserDomain>
-typealias WorkspaceID = Identifier<WorkspaceDomain>
-
-func loadUser(_ id: UserID) {}
-
-func demonstrateWrongIdentifierDomain() {
-    let workspaceID = WorkspaceID(rawValue: UUID())
-    // expected-error: cannot convert value of type
-    loadUser(workspaceID)
+func demonstrateWrongIdentifierDomain() throws {
+    let workspaceID = WorkspaceID(rawValue: .init())
+    let displayName = try NonEmptyString("Taylor")
+    _ = User(id: workspaceID, displayName: displayName)
 }

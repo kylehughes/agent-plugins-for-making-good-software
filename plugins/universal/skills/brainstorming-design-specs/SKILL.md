@@ -12,7 +12,7 @@ Structured brainstorming dialogue that explores a problem space deeply enough to
 Every brainstorming session should produce a spec where:
 
 - **Every design choice is deliberate** — no "this seemed fine" defaults. Every meaningful decision has a rationale and considered alternatives.
-- **Invalid states are identified and eliminated** — the spec calls out what the type system should prevent, what invariants must hold, what error states exist.
+- **Invalid states are identified and bounded** — the spec calls out what the type system should prevent, what invariants must hold, what error states exist, and which boundary enforces each one.
 - **Edge cases are surfaced, not deferred** — concurrency implications, failure modes, migration paths, backward compatibility. If it matters, it's in the spec.
 - **Nothing is assumed** — you research the codebase, sibling implementations on other platforms when the project has them, and platform APIs rather than guessing. The user articulates intent rather than leaving it implicit.
 
@@ -30,6 +30,8 @@ The workflow leans on four capabilities. Use the runtime's native mechanism for 
 - **Research dispatch** — send read-only explore subagents to search the codebase, sibling implementations, and platform APIs when the runtime supports subagents; otherwise research inline. Do not guess when you can look.
 - **Skills** — load the platform and language skills relevant to the problem space, proactively at the start and again as the domain clarifies.
 - **Prose review** — before saving the spec, review it with `writing-technical-prose`, or a prose-focused auditor agent when one is available.
+
+When the requested design requires an explicit invariant or proof, or changes an enforcement model or state transition, use [verifying-invariants](../verifying-invariants/SKILL.md) to choose bounded evidence. Do not add it to ordinary brainstorming or preload it for every design.
 
 ## The Session
 

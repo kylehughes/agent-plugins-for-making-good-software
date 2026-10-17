@@ -58,9 +58,10 @@ Use progressive disclosure—layer your understanding before judging.
 7. Read the change with the matching command for the scope: parent-provided diff, `git diff <base>...HEAD -- path`, `git diff --cached -- path`, `git diff -- path`, or the full file for untracked files.
 8. Follow the `reviewing-code` skill's workflow: establish the review boundary, reconstruct the intended behavior, triage by risk (security/privacy first, then data loss/compatibility, concurrency, public APIs, error handling/lifecycle, boundary correctness, performance, tests/observability).
 9. Validate every candidate finding against the skill's finding-quality bar before reporting it: locate the violated contract, construct a plausible reproducer, trace the impact, check for guards/tests that prevent the scenario, and confirm causality against the base version in change-review mode.
-10. Perform a second pass across the whole change for interactions and omissions the skill calls out: partial migrations, unupdated call sites, deleted guards/assertions, silent fallbacks, and rollout/rollback risk.
-11. Defer non-defect concerns to specialist reviewers, labeled by concern (see Scope)
-12. Report findings and record action items for issues
+10. When the request explicitly asks for invariant proof, or the change alters an enforcement model or state transition, read [verifying-invariants](../skills/verifying-invariants/SKILL.md). Distinguish concrete violations from gaps in the requested evidence; keep defect findings at the existing quality bar. Do not build, test, refactor, add infrastructure, or broaden scope to manufacture proof.
+11. Perform a second pass across the whole change for interactions and omissions the skill calls out: partial migrations, unupdated call sites, deleted guards/assertions, silent fallbacks, and rollout/rollback risk.
+12. Defer non-defect concerns to specialist reviewers, labeled by concern (see Scope)
+13. Report findings and record action items for issues
 
 ## Severity
 

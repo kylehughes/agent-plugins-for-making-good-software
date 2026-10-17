@@ -3,7 +3,7 @@
 Maintainer note, 2026-09-18.
 
 This repository serves one shared skill catalog to Claude Code and Codex. It
-has 26 skills and 8 review agents; model-specific forks would multiply upkeep
+has 27 skills and 8 review agents; model-specific forks would multiply upkeep
 without improving the underlying guidance. The design separates two costs:
 
 | Layer | What it contains | How it is controlled |
@@ -16,17 +16,17 @@ measurements for comparison, not claims about fitting a particular host
 window. Paths in this document refer to this repository; other plugins and a
 crowded work machine are outside the measurement boundary.
 
-## Current shape
+## Context reduction baseline
 
 The baseline commit `f84580d` contained 26 skills with 12,586 description
-characters and 8 agents with 3,358 description characters. The current catalog
+characters and 8 agents with 3,358 description characters. The catalog at `c3d5df7`
 contains 5,022 skill-description characters and 1,630 agent-description
 characters: reductions of 60% and 51%. The largest skill description fell
 from 848 to 283 characters. Skill entry-point bodies total 243,044 characters,
 versus 257,181 in the baseline; examples remain available in references.
 Agent preloads total 73,196 characters, versus 195,355 in the baseline, a 63%
 reduction. These preload totals are summed across agents, not the cost of one
-session. Plugin versions are `apple-platform` 1.4.0 and `universal` 1.6.0.
+session. That snapshot used `apple-platform` 1.4.0 and `universal` 1.6.0.
 These figures come from `scripts/skill_catalog.py`; they measure authored
 Unicode characters and are not token estimates.
 
@@ -52,13 +52,29 @@ names distinct while avoiding a second catalog of descriptions.
 | --- | --- |
 | General Swift implementation | `writing-swift`, `using-swift-concurrency` |
 | Focused Swift conventions | `designing-swift-apis`, `ordering-symbols`, `organizing-swift-types`, `localizing-strings`, `writing-apple-platform-documentation` |
-| Typed invariants and boundaries | `modeling-swift-types-for-correctness`, `structuring-swift-packages` |
+| Invariant obligations and evidence | `verifying-invariants` |
+| Swift invariant representations and boundaries | `modeling-swift-types-for-correctness`, `structuring-swift-packages` |
 | Test structure and determinism | `testing-swift-code`, `testing-async-swift-code`, `recording-ios-simulator-videos` |
 | Apple platform surfaces | `configuring-ios-content`, `presenting-ios-modals`, `instrumenting-accessibility-identifiers`, `implementing-app-intents`, `simplifying-apple-platform-code` |
 | Business and release evidence | `analyzing-app-store-business-data`, `auditing-ios-release-size` |
 | Workflow: review and repair | `reviewing-code`, `simplifying-code`, `hardening-changes` |
 | Workflow: ambiguity and handoff | `brainstorming-design-specs`, `compiling-agent-goals`, `writing-escalation-briefs` |
 | Technical prose | `writing-technical-prose` |
+
+`verifying-invariants` owns the cross-language procedure for scoped obligations,
+method selection, and evidence limits. Language companions own representation,
+construction, access, and compiler details. Testing skills retain assertions and
+synchronization; reviewers retain their existing concerns. Conditional workflow
+links cover invariant claims and enforcement changes without preloading the new
+skill into every agent. See [invariant verification](invariant-verification.md)
+for the tooling and acceptance matrix.
+
+The invariant-verification addition brings the catalog to 27 skills with 5,338
+description characters and keeps 8 agents. Entry-point bodies total 253,016
+characters; summed agent preloads total 74,190, up 994 from `c3d5df7`. The new
+verifier is conditionally loaded rather than added to agent preloads. The
+[validation results](invariant-verification.md#validation-results) distinguish
+deterministic tooling checks from runtime activation and response-quality limits.
 
 ## Authoring rules
 

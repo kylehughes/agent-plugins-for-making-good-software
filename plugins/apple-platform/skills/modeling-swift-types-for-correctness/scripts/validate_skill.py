@@ -24,6 +24,7 @@ REQUIRED_PATHS = (
     "SKILL.md",
     "agents/openai.yaml",
     "references/decision-guide.md",
+    "references/compile-check-runner.md",
     "references/algebraic-and-refined-values.md",
     "references/identity-typestate-capabilities.md",
     "references/ui-state-navigation-and-effects.md",
@@ -37,6 +38,8 @@ REQUIRED_PATHS = (
     "examples/CorePatterns.swift",
     "examples/CorePatternsRuntimeChecks.swift",
     "examples/CurrentSwiftPatterns.swift",
+    "examples/TrustStatePatterns.swift",
+    "examples/compile-checks.json",
     "examples/CompileFailWrongID.swift",
     "examples/CompileFailBypassValidation.swift",
     "examples/CompileFailUseAfterConsume.swift",
@@ -44,6 +47,7 @@ REQUIRED_PATHS = (
     "examples/CompileFailWrongTrustState.swift",
     "scripts/audit_project.py",
     "scripts/check_examples.sh",
+    "scripts/swift_compile_checks.py",
     "scripts/validate_skill.py",
     "evals/trigger-evals.json",
     "evals/quality-evals.md",
@@ -268,18 +272,72 @@ def validate_quality_evals(root: Path, validation: Validation) -> None:
             validation.error(f"quality-evals.md is missing required section marker: {required}")
 
 
-def validate_fixture_markers(root: Path, validation: Validation) -> None:
-    examples = root / "examples"
-    if not examples.is_dir():
+def validate_compile_manifest(root: Path, validation: Validation) -> None:
+    path = root / "examples/compile-checks.json"
+    if not path.exists():
         return
-    for fixture in sorted(examples.glob("CompileFail*.swift")):
-        text = fixture.read_text(encoding="utf-8")
-        if not re.search(r"^\s*//\s*expected-error:\s*\S", text, flags=re.MULTILINE):
-            validation.error(f"compile-fail fixture has no expected-error marker: {fixture.relative_to(root)}")
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as error:
+        validation.error(f"invalid compile-check manifest: {error}")
+        return
+    if not isinstance(data, dict):
+        validation.error("compile-check manifest root must be an object")
+        return
+    arguments = data.get("compiler_arguments")
+    support_sources = data.get("support_sources")
+    if not isinstance(arguments, list) or "-emit-module" not in arguments:
+        validation.error("compile-check manifest must use the emit-module ownership-checking phase")
+    if data.get("minimum_swift_version") != "6.3":
+        validation.error("compile-check manifest must require the current Swift 6.3 baseline")
+    if not isinstance(support_sources, list) or not support_sources:
+        validation.error("compile-check manifest must compile fixtures with shared production sources")
+    if not isinstance(arguments, list) or not all(
+        required in arguments for required in ("-swift-version", "6", "-strict-concurrency=complete")
+    ):
+        validation.error("compile-check manifest must compile fixtures in Swift 6 strict-concurrency mode")
+
+    controls = data.get("positive_controls")
+    negatives = data.get("negative_fixtures")
+    if not isinstance(controls, list) or not isinstance(negatives, list):
+        validation.error("compile-check manifest must declare positive_controls and negative_fixtures")
+        return
+    control_names = {
+        item.get("name") for item in controls if isinstance(item, dict) and isinstance(item.get("name"), str)
+    }
+    declared_negative_sources: set[str] = set()
+    for fixture in negatives:
+        if not isinstance(fixture, dict):
+            validation.error("each negative fixture must be an object")
+            continue
+        sources = fixture.get("sources")
+        if not isinstance(sources, list) or not sources:
+            validation.error(f"negative fixture {fixture.get('name')!r} must declare its misuse source")
+            continue
+        declared_negative_sources.update(
+            source for source in sources if isinstance(source, str) and Path(source).name.startswith("CompileFail")
+        )
+        markers = fixture.get("diagnostic_markers")
+        if not isinstance(markers, list) or not markers or not all(isinstance(item, str) and item for item in markers):
+            validation.error(f"negative fixture {fixture.get('name')!r} must declare diagnostic markers")
+        if fixture.get("positive_control") not in control_names:
+            validation.error(f"negative fixture {fixture.get('name')!r} has no valid paired positive control")
+
+    disk_sources = {path.name for path in (root / "examples").glob("CompileFail*.swift")}
+    if declared_negative_sources != disk_sources:
+        validation.error(
+            "compile-check manifest fixture set differs from disk: "
+            f"declared={sorted(declared_negative_sources)}, disk={sorted(disk_sources)}"
+        )
 
 
 def validate_script_permissions(root: Path, validation: Validation) -> None:
-    for relative in ("scripts/check_examples.sh", "scripts/audit_project.py", "scripts/validate_skill.py"):
+    for relative in (
+        "scripts/check_examples.sh",
+        "scripts/audit_project.py",
+        "scripts/swift_compile_checks.py",
+        "scripts/validate_skill.py",
+    ):
         path = root / relative
         if path.exists() and not (path.stat().st_mode & 0o111):
             validation.warn(f"script is not executable: {relative}")
@@ -458,12 +516,8 @@ def validate_current_swift_policy(root: Path, validation: Validation) -> None:
             validation.error(f"{label} in {path.relative_to(root)}:{line}")
 
     check_script = root / "scripts/check_examples.sh"
-    if check_script.exists():
-        text = check_script.read_text(encoding="utf-8")
-        if "-swift-version 6" not in text:
-            validation.error("scripts/check_examples.sh must compile fixtures in Swift 6 language mode")
-        if "6.3 or newer" not in text:
-            validation.error("scripts/check_examples.sh must enforce the current Swift 6.3+ baseline")
+    if check_script.exists() and "swift_compile_checks.py" not in check_script.read_text(encoding="utf-8"):
+        validation.error("scripts/check_examples.sh must delegate compiler checks to swift_compile_checks.py")
 
 
 def validate_package_hygiene(root: Path, validation: Validation) -> None:
@@ -548,7 +602,7 @@ def main() -> int:
     validate_reference_structure(root, validation)
     validate_trigger_evals(root, validation)
     validate_quality_evals(root, validation)
-    validate_fixture_markers(root, validation)
+    validate_compile_manifest(root, validation)
     validate_script_permissions(root, validation)
     validate_audit_script(root, validation)
     validate_current_swift_policy(root, validation)

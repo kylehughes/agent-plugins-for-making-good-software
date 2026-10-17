@@ -53,6 +53,7 @@ Read beyond the changed lines:
 - Trace important callers, callees, data flow, control flow, state transitions, and error paths.
 - Inspect tests, interfaces, schemas, protocol definitions, configuration, and documentation that define the contract.
 - Compare old and new behavior. Identify inputs, outputs, invariants, ownership, lifecycle, trust boundaries, ordering, compatibility, and failure semantics.
+- When the request explicitly asks to prove an invariant, or the change alters an enforcement model or state transition, use [verifying-invariants](../verifying-invariants/SKILL.md) for the bounded proof surface and evidence vocabulary. Do not invoke it for ordinary reviews.
 - Treat an architectural change as a defect only when it violates a real contract, creates harmful inconsistency, leaves a migration incomplete, or introduces unjustified operational risk. “Different from the old pattern” is not sufficient.
 
 ### 3. Triage by Risk
@@ -89,6 +90,7 @@ Discard the candidate when the scenario is unreachable, already prevented, purel
 - Prefer the project's existing commands and the narrowest relevant test, type-check, lint, build, or analyzer first; broaden only when useful.
 - Do not alter dependencies or tracked files merely to run validation. Use temporary locations for experiments when possible.
 - Distinguish tests that passed, tests that failed, and checks not run. A passing suite is evidence, not proof that no defect exists.
+- Describe evidence precisely: compiler restrictions, checked constructors, sampled tests, exhaustive finite exploration, and formal proof establish different claims. Repeatability alone does not establish completeness.
 - Inspect failures rather than assuming they were caused by the change.
 - If validation is impractical, continue with static review and state the limitation.
 
@@ -121,7 +123,7 @@ Do not report:
 - Formatting, import order, subjective naming, comment style, or ecosystem preferences not established by the project.
 - Blanket bans on language features, test frameworks, dependencies, or architectural patterns without a concrete failure mode.
 - Refactoring wishes, optional abstractions, or “could be cleaner” observations without material impact.
-- Hypothetical future requirements, unreachable edge cases, or generic “add validation/tests/docs” requests.
+- Hypothetical future requirements, unreachable edge cases, or generic “add validation/tests/docs” requests. Missing invariant evidence does not authorize a refactor, new test infrastructure, or a broader review scope.
 - Pre-existing defects in a change review unless the change materially implicates them.
 - Multiple comments for the same root cause.
 

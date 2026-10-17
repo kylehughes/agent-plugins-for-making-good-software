@@ -1,0 +1,4 @@
+interface:
+  display_name: "Verifying Invariants"
+  short_description: "Check invariant claims and bound their evidence"
+  default_prompt: "Use $verifying-invariants to identify the scoped invariants, check their enforcement, and report the evidence and remaining limits."

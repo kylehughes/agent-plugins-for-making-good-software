@@ -48,9 +48,11 @@ Use compile-fail tests for high-value guarantees that ordinary runtime tests can
 - A borrowed view cannot escape when nonescapability and its owner dependency are compiler-visible.
 - A non-Sendable value cannot cross an isolation boundary under strict concurrency.
 
-Do not expect compile-fail coverage from pointer closures alone: copyable unsafe pointers may escape unless the type system expresses the lifetime relationship. A basic harness invokes a compiler pipeline that performs ownership and concurrency checking, then expects a nonzero exit status. `swiftc -typecheck` alone may omit some ownership-flow diagnostics; `scripts/check_examples.sh` uses `-emit-module -parse-as-library` for that reason. Use Swift 6 mode and the same strictness settings as the selected current build.
+Do not expect compile-fail coverage from pointer closures alone: copyable unsafe pointers may escape unless the type system expresses the lifetime relationship. Use a compiler pipeline that performs ownership and concurrency checking; `swiftc -typecheck` alone may omit ownership-flow diagnostics. The included manifest uses `-emit-module -parse-as-library`, Swift 6 language mode, and complete strict concurrency for that reason.
 
-Give every fixture one intended error and verify a stable diagnostic fragment from an `expected-error` marker. Avoid matching the entire diagnostic string because compiler wording changes. Keep fixtures small and self-contained so an unrelated diagnostic cannot satisfy the test accidentally.
+Compile the production module or shared production sources together with each misuse fixture. Pair it with a valid control under identical compiler arguments so an unrelated source failure cannot masquerade as enforcement. Give each negative fixture one intended error and declare a stable diagnostic fragment in `examples/compile-checks.json`; reject any additional source error. Avoid matching the entire diagnostic because compiler wording changes.
+
+Run `python3 scripts/swift_compile_checks.py examples/compile-checks.json` for the human report or add `--json` for toolchain, manifest digest, resolved inputs, per-fixture results, and limitations. Missing and unsupported compilers are unavailable evidence. The legacy `scripts/check_examples.sh` permits a clearly reported skip unless `REQUIRE_SWIFTC=1` is set.
 
 ## API Surface Tests
 
@@ -276,7 +278,7 @@ A high-cost model needs a high-value invariant.
 
 Use precise labels:
 
-- **Proven:** ordinary Swift APIs cannot represent the invalid state or operation.
+- **Enforced:** ordinary Swift APIs cannot represent the invalid state or operation within the inspected boundary.
 - **Boundary-checked:** raw input is validated at one controlled entry point.
 - **Convention-only:** names, comments, or call-site discipline carry the rule.
 - **Bypassable:** an initializer, decoder, mutation, bridge, or unchecked API violates the claimed proof.

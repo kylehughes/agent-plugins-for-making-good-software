@@ -61,9 +61,9 @@ If misuse still compiles throughout the core and each caller must remember a che
 | `URL.absoluteString.hasPrefix(allowedBase)` | Parsed-component policy and trusted-root resolution | String prefixes do not establish URL or path authority |
 | Protocol-extension helper expected to dispatch dynamically | Declare it as a protocol requirement or avoid existential erasure | Extension-only members are statically selected through an existential |
 
-## Proof-Strength Ladder
+## Swift Representation Strength
 
-Each step carries more enforcement and usually more complexity.
+This sequence compares how strongly common Swift representations restrict ordinary callers. It is not an evidence-confidence ladder: tests and compiler fixtures verify a representation against a recorded boundary, but do not make the representation itself stronger.
 
 1. **Comment or documentation:** no compiler enforcement.
 2. **Name or argument label:** improves readability; same-type swaps remain possible.
@@ -76,9 +76,8 @@ Each step carries more enforcement and usually more complexity.
 9. **Capability restriction:** ordinary clients inside the intended access-control boundary cannot produce the argument needed for an operation; only the trusted issuer path can.
 10. **Ownership restriction:** consuming and noncopyable APIs prevent reuse or copying.
 11. **Lifetime restriction:** nonescapable values plus lifetime dependencies prevent escape beyond the owner.
-12. **Compiler mode and fixtures:** strict concurrency, warnings, and compile-fail tests preserve the proof over time.
 
-Do not jump to a stronger rung merely because it is available. Stronger proofs are useful when the prevented failure is likely or costly and the API remains understandable.
+Do not jump to a stronger representation merely because it is available. Stronger restrictions are useful when the prevented failure is likely or costly and the API remains understandable.
 
 ## State-Space Arithmetic
 
@@ -169,7 +168,7 @@ Typed throws is not automatically “more correct.” It is a source-compatibili
 4. Use noncopyable/nonescapable types only when copies or escape are genuinely invalid and the compiler can see the owner dependency.
 5. Specify close failure, partial transition, callback, suspension, and asynchronous cleanup behavior before claiming ownership safety.
 
-## Proof-Closure Checklist
+## Construction-Closure Checklist
 
 A claimed invariant is closed only when all answers are satisfactory:
 

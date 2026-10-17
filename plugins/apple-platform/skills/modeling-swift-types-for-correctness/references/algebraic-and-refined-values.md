@@ -406,17 +406,22 @@ Do not derive identity from a formatted localized string. Inject calendar, local
 
 Synthesized `Decodable` is safe only when synthesized initialization cannot bypass the invariant. Private stored properties do not by themselves guarantee this; synthesis has access inside the type.
 
-Prefer explicit decoding:
+Choose the container from the existing wire contract, not from the number of stored properties. For an existing synthesized keyed shape such as `{"storage":"name"}`, preserve that shape while adding validation:
 
 ```swift
 extension NonEmptyString: Codable {
+    private enum CodingKeys: String, CodingKey {
+        case storage
+    }
+
     init(from decoder: Decoder) throws {
-        let container = try decoder.singleValueContainer()
-        let raw = try container.decode(String.self)
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let raw = try container.decode(String.self, forKey: .storage)
         do {
             try self.init(raw)
         } catch {
             throw DecodingError.dataCorruptedError(
+                forKey: .storage,
                 in: container,
                 debugDescription: "Expected a nonempty string within the type's fixed maximum length."
             )
@@ -424,11 +429,13 @@ extension NonEmptyString: Codable {
     }
 
     func encode(to encoder: Encoder) throws {
-        var container = encoder.singleValueContainer()
-        try container.encode(storage)
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(storage, forKey: .storage)
     }
 }
 ```
+
+Use `singleValueContainer()` only when the established format is a scalar, with matching encoding. Changing keyed data to a scalar is a schema migration, not a validation fix. Exercise historical valid payloads, round trips, and syntactically valid invalid values that fail at the intended predicate.
 
 When server payloads need field-specific errors, decode a DTO first and map into the domain model with context. Do not leak `DecodingError` or raw backend strings through every domain layer unless that is intentional.
 

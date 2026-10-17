@@ -11,6 +11,8 @@ This skill assumes the base doctrine — event-driven waits over scheduler guess
 
 When the behavior under test is synchronous, don't add async machinery just to observe it; assert it synchronously and keep the recorder for real async boundaries.
 
+For an explicit invariant or proof request, or when changed async code alters an enforcement model or transition, use `verifying-invariants` when available to scope the claim and select the lightest adequate evidence. This skill remains independently useful for deterministic async-test design.
+
 ## The Four Primitives
 
 Each primitive owns one synchronization problem. No two overlap. These are contracts: use your project's implementations when it has them, adopt the named ecosystem implementations when it doesn't, or write the small ones from [the contracts reference](references/primitive-contracts.md).

@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "minimum_swift_version": "6.3",
+  "compiler_arguments": [
+    "-emit-module",
+    "-parse-as-library",
+    "-swift-version",
+    "6",
+    "-strict-concurrency=complete",
+    "-warnings-as-errors"
+  ],
+  "support_sources": [
+    "CorePatterns.swift",
+    "CurrentSwiftPatterns.swift",
+    "TrustStatePatterns.swift"
+  ],
+  "positive_controls": [
+    {
+      "name": "CorrectIdentifierDomain",
+      "sources": ["CompilePassCorrectID.swift"]
+    },
+    {
+      "name": "ValidatedConstruction",
+      "sources": ["CompilePassValidatedConstruction.swift"]
+    },
+    {
+      "name": "SingleConsumption",
+      "sources": ["CompilePassSingleConsumption.swift"]
+    },
+    {
+      "name": "ValidTypestate",
+      "sources": ["CompilePassValidTypestate.swift"]
+    },
+    {
+      "name": "CorrectTrustState",
+      "sources": ["CompilePassCorrectTrustState.swift"]
+    }
+  ],
+  "negative_fixtures": [
+    {
+      "name": "WrongIdentifierDomain",
+      "sources": ["CompileFailWrongID.swift"],
+      "positive_control": "CorrectIdentifierDomain",
+      "diagnostic_markers": ["cannot convert value of type"]
+    },
+    {
+      "name": "BypassValidation",
+      "sources": ["CompileFailBypassValidation.swift"],
+      "positive_control": "ValidatedConstruction",
+      "diagnostic_markers": ["extraneous argument label 'uncheckedStorage:' in call"]
+    },
+    {
+      "name": "UseAfterConsume",
+      "sources": ["CompileFailUseAfterConsume.swift"],
+      "positive_control": "SingleConsumption",
+      "diagnostic_markers": ["consumed more than once"]
+    },
+    {
+      "name": "WrongTypestate",
+      "sources": ["CompileFailWrongTypestate.swift"],
+      "positive_control": "ValidTypestate",
+      "diagnostic_markers": ["requires the types 'ReadyRegistration' and 'DraftRegistration' be equivalent"]
+    },
+    {
+      "name": "WrongTrustState",
+      "sources": ["CompileFailWrongTrustState.swift"],
+      "positive_control": "CorrectTrustState",
+      "diagnostic_markers": ["cannot convert value of type"]
+    }
+  ],
+  "runtime_checks": [
+    {
+      "name": "CorePatternsRuntimeChecks",
+      "sources": ["CorePatternsRuntimeChecks.swift"],
+      "compiler_arguments": [
+        "-parse-as-library",
+        "-swift-version",
+        "6",
+        "-strict-concurrency=complete",
+        "-warnings-as-errors"
+      ]
+    }
+  ]
+}

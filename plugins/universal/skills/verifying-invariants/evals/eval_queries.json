@@ -1,0 +1,42 @@
+[
+  {
+    "query": "We require every domain quantity to be positive. Verify whether invalid quantities are impossible in this implementation and tell me what deterministic evidence would support the claim. Keep this assessment read-only.",
+    "should_trigger": true
+  },
+  {
+    "query": "Our rule is that a confirmed batch always contains at least one item. Verify whether this representation makes an empty confirmed batch impossible. Assess it without editing anything.",
+    "should_trigger": true
+  },
+  {
+    "query": "Only the newest refresh may replace the displayed value. Verify this transition invariant and propose a deterministic check. Keep the answer read-only.",
+    "should_trigger": true
+  },
+  {
+    "query": "Our explorer checks a queue model with up to three pending jobs, two workers, and action sequences of at most six steps. Every run is repeatable and all explored states pass. Can we now claim our production queue can never lose a job? Evaluate the evidence and the narrowest next checks. Do not change files.\n",
+    "should_trigger": true
+  },
+  {
+    "query": "We require every imported quantity to be positive. The original suite passes. In a temporary copy we removed the import validation, and the same suite still passes; its fixtures all contain positive quantities. What does this evidence establish about the invariant and the checks? Keep the review read-only.\n",
+    "should_trigger": true
+  },
+  {
+    "query": "Organize these Swift unit tests into suites and improve their assertions.",
+    "should_trigger": false
+  },
+  {
+    "query": "Make this flaky Swift observer test wait reliably for subscription and cleanup.",
+    "should_trigger": false
+  },
+  {
+    "query": "Rename these Swift API arguments to follow platform conventions.",
+    "should_trigger": false
+  },
+  {
+    "query": "Review this small diff for an off-by-one error and report the concrete defect.",
+    "should_trigger": false
+  },
+  {
+    "query": "Format the new README table and fix its relative links.",
+    "should_trigger": false
+  }
+]
