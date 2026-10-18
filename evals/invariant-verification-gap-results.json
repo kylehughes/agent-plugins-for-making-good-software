@@ -1,0 +1,1058 @@
+{
+  "context": {
+    "baseline": {
+      "agent_count": 8,
+      "agent_description_chars": 1630,
+      "agent_preloaded_body_chars": 74190,
+      "skill_body_chars": 253016,
+      "skill_body_lines": 3718,
+      "skill_count": 27,
+      "skill_description_chars": 5338
+    },
+    "current": {
+      "agent_count": 8,
+      "agent_description_chars": 1630,
+      "agent_preloaded_body_chars": 74297,
+      "skill_body_chars": 253123,
+      "skill_body_lines": 3718,
+      "skill_count": 27,
+      "skill_description_chars": 5356
+    }
+  },
+  "date": "2026-10-17",
+  "deterministic_checks": {
+    "claude_plugin_manifests": "both pass",
+    "repository_validator": "pass",
+    "required_swift_fixtures": "5 positive controls, 5 intended rejections, runtime build and assertions pass",
+    "swift_skill_validator": "pass; optional skills-ref unavailable",
+    "unit_tests": {
+      "failed": 0,
+      "passed": 92
+    },
+    "whitespace": "pass"
+  },
+  "fable_behavior": {
+    "cases": 3,
+    "model": "claude-fable-5-1",
+    "results": [
+      {
+        "artifact_directory": "fable-final/combined-decoded-value-readonly",
+        "behavior": "pass",
+        "case": "combined-decoded-value-readonly",
+        "composition": "pass",
+        "deterministic": "passed",
+        "evidence_honesty": "pass",
+        "execution": "completed",
+        "failures": [],
+        "identities": {
+          "bundle_sha256": "1bd7a03119bcc9b74769c4e3e476dfb5b2b0142acd95e2feec0d6276d7f55f42",
+          "plugin_snapshot_sha256": "3f4931df4566017694beffb75e081dddb57fb29c97a24f6cd19c2a4940741264",
+          "prompt_sha256": "3ed650ef3d59199f3afd52403118cca1e7c1ddea0a66d3c50606a79ffa7a9808",
+          "response_sha256": "5972d29d88b9c9299bdd50045ea018e3e70f91e11acf80ca35b6b869e2656bf8",
+          "reviewed_evidence_sha256": "cf2b54361f0ab4a839a252d698d31cef5d036714dd9d662b1c45b58cf261f4d8",
+          "rubric_sha256": "6032f1e85d98b5998699e676dd05c204b537598640ca638e14ff409a2b60450f",
+          "transcript_sha256": "0af1d3acee0d39a2e0d4ff8f5ecc58afa534a9f24bba6b23325f6e21aec9e4c0"
+        },
+        "overall_status": "accepted",
+        "scope": "pass"
+      },
+      {
+        "artifact_directory": "fable-final/swift-decoding-write-combined",
+        "behavior": "pass",
+        "case": "swift-decoding-write-combined",
+        "composition": "fail",
+        "deterministic": "passed",
+        "evidence_honesty": "pass",
+        "execution": "completed",
+        "failures": [
+          "Neither required skill was loaded."
+        ],
+        "identities": {
+          "bundle_sha256": "2e458a1e575228f67f969eb07ea0c37224ba6e9db3f19f82308c93beea3d0fa5",
+          "plugin_snapshot_sha256": "3f4931df4566017694beffb75e081dddb57fb29c97a24f6cd19c2a4940741264",
+          "prompt_sha256": "013331cb23ab39da58adda7adabd724d272dc4b2e0300ad0db88d0c8f7498743",
+          "response_sha256": "eb89be001ec5831d20b4d8f13dc74bf2c3261ae9edb6854604a466c4efeac64e",
+          "reviewed_evidence_sha256": "3ad9da73a8dda75a2284b739d97dd3ec35e35c901e7047d1e628ee98d55fe7c8",
+          "rubric_sha256": "8ff84c96bd230c1f4c238e8272ea9178984f395ae9961e544c6fd37ccf3b56df",
+          "transcript_sha256": "3d2b4530687b15eb5652c85ed4545d2fe2917a178ada34d2a6ee89f25b93a620"
+        },
+        "overall_status": "failed",
+        "scope": "pass"
+      },
+      {
+        "artifact_directory": "durable-final-claude-fable-5-1/universal-durable-invariant-write",
+        "behavior": "fail",
+        "case": "universal-durable-invariant-write",
+        "composition": "pass",
+        "deterministic": "passed",
+        "evidence_honesty": "pass",
+        "execution": "completed",
+        "failures": [
+          "The production guard, manifest, and tests are substantively connected and pass independent artifact checks, but the committed CI test command cannot discover this fixture because Tests is not an importable package when unittest discovery is given '-t .'. Therefore CI does not actually connect the behavior tests to future changes as required."
+        ],
+        "identities": {
+          "bundle_sha256": "3929ac14ccc62241f5c498d521b51ef2188f293da2e55077dcc5ca203aacdef3",
+          "plugin_snapshot_sha256": "8e0ef1e3180bba02fdf04e7106651a49959245466ceb0ddb4e3d9fc90eb5e029",
+          "prompt_sha256": "7ad8cd5212bf44f448db7ccf68f49fafc28809c1ff0f6bcadf57ce7ee4eaa682",
+          "response_sha256": "d9b7ffa08c2372d09c0c0c895937e7f2c509a6b95472ca090a3ef4b81d753097",
+          "reviewed_evidence_sha256": "aeccdb43613a2e0e8cd2946b832aea410eb6b0a7ed13028692f7b1bfa36e86de",
+          "rubric_sha256": "a0b5344c54b7181c8ab2c11dee437a7ae002a4414b55ae64b92f74f06cee7d32",
+          "transcript_sha256": "a8e0238b9a87c2efba8c6cbf71f666980631fcfdd91794caa059d045396455e4"
+        },
+        "overall_status": "failed",
+        "scope": "pass"
+      }
+    ]
+  },
+  "fable_consultation": {
+    "advice_applied": [
+      "Read/hash/parse the same manifest bytes and compile captured source bytes.",
+      "Add executable generated-code acceptance and write-enabled scope checks.",
+      "Separate behavior and composition metrics and retain the original composition gate.",
+      "Add a durable registry/CI positive control and compare stronger-model behavior."
+    ],
+    "confirmed_by": "native modelUsage",
+    "model": "claude-fable-5-1",
+    "not_adopted": [
+      "No model floor inferred from these few samples.",
+      "No broad mandatory skill preload or brittle negative-regex substitution for semantic review."
+    ],
+    "response_sha256": "f889db83d0546967fdee177c2b45fd6df7a58d84346fe2582b963621cb33a519"
+  },
+  "historical_attempts": [
+    {
+      "acceptance": "historical only; not pooled into final matrix",
+      "execution_statuses": {
+        "completed": 1
+      },
+      "group": "claude-acceptance",
+      "review_observations": {},
+      "runs": 1
+    },
+    {
+      "acceptance": "historical only; not pooled into final matrix",
+      "execution_statuses": {
+        "completed": 1
+      },
+      "group": "claude-combined-1",
+      "review_observations": {},
+      "runs": 1
+    },
+    {
+      "acceptance": "historical only; not pooled into final matrix",
+      "execution_statuses": {
+        "completed": 16
+      },
+      "group": "claude-final",
+      "review_observations": {
+        "behavior_pass": 13,
+        "composition_pass": 10,
+        "reviewed": 16
+      },
+      "runs": 16
+    },
+    {
+      "acceptance": "historical only; not pooled into final matrix",
+      "execution_statuses": {
+        "completed": 16
+      },
+      "group": "claude-matrix",
+      "review_observations": {
+        "behavior_pass": 8,
+        "composition_pass": 7,
+        "reviewed": 9
+      },
+      "runs": 16
+    },
+    {
+      "acceptance": "historical only; not pooled into final matrix",
+      "execution_statuses": {
+        "completed": 1
+      },
+      "group": "codex-acceptance",
+      "review_observations": {},
+      "runs": 1
+    },
+    {
+      "acceptance": "historical only; not pooled into final matrix",
+      "execution_statuses": {
+        "completed": 1
+      },
+      "group": "codex-combined-1",
+      "review_observations": {},
+      "runs": 1
+    },
+    {
+      "acceptance": "historical only; not pooled into final matrix",
+      "execution_statuses": {
+        "failed": 1
+      },
+      "group": "codex-combined-2",
+      "review_observations": {},
+      "runs": 1
+    },
+    {
+      "acceptance": "historical only; not pooled into final matrix",
+      "execution_statuses": {
+        "completed": 1
+      },
+      "group": "codex-combined-3",
+      "review_observations": {},
+      "runs": 1
+    },
+    {
+      "acceptance": "historical only; not pooled into final matrix",
+      "execution_statuses": {
+        "completed": 16
+      },
+      "group": "codex-final",
+      "review_observations": {
+        "behavior_pass": 16,
+        "composition_pass": 13,
+        "reviewed": 16
+      },
+      "runs": 16
+    },
+    {
+      "acceptance": "historical only; not pooled into final matrix",
+      "execution_statuses": {
+        "completed": 16
+      },
+      "group": "codex-matrix",
+      "review_observations": {
+        "behavior_pass": 6,
+        "composition_pass": 6,
+        "reviewed": 6
+      },
+      "runs": 16
+    },
+    {
+      "acceptance": "historical only; not pooled into final matrix",
+      "execution_statuses": {
+        "completed": 1
+      },
+      "group": "corrected-claude-fable-5-1",
+      "review_observations": {},
+      "runs": 1
+    },
+    {
+      "acceptance": "historical only; not pooled into final matrix",
+      "execution_statuses": {
+        "completed": 1
+      },
+      "group": "corrected-claude-sonnet-5",
+      "review_observations": {},
+      "runs": 1
+    },
+    {
+      "acceptance": "historical only; not pooled into final matrix",
+      "execution_statuses": {
+        "completed": 1
+      },
+      "group": "corrected-gpt-5.6-sol",
+      "review_observations": {},
+      "runs": 1
+    },
+    {
+      "acceptance": "historical only; not pooled into final matrix",
+      "execution_statuses": {
+        "completed": 1
+      },
+      "group": "fable-final",
+      "review_observations": {
+        "behavior_pass": 0,
+        "composition_pass": 1,
+        "reviewed": 1
+      },
+      "runs": 1
+    }
+  ],
+  "historical_setup_corrections": [
+    "Early Codex CLI argument/setup failures retained.",
+    "A write-tests near-miss initially lacked an explicit no-edit request; clarified before final acceptance.",
+    "Early Claude restricted runs could load skills but supporting references were inaccessible; added access only to the copied eval-free snapshot.",
+    "Durable fixture directory allowlists wrongly rejected legitimate helper locations; final durable scope is judged semantically.",
+    "Early evidence lacked captured workspace/grader bindings and is not promoted to current acceptance.",
+    "Async grading now accepts the existing owner\u2019s bounded repeated-stimulus fallback with observed completion and awaited cleanup."
+  ],
+  "limitations": [
+    "The full native matrix does not satisfy all acceptance gates; failures are retained, not repaired by successful skill calls.",
+    "Small samples do not estimate reliability or prove whole-program correctness.",
+    "Semantic judgments are fallible; executable acceptance covers only the declared fixture boundaries.",
+    "Compiler-argument dependencies such as binary modules and SDKs are outside the source-byte digest.",
+    "No installed user plugin cache was updated, no release published, and no source-wide invariant discovery or CI mutation added."
+  ],
+  "native": {
+    "claude": {
+      "cases": 16,
+      "effort": "medium",
+      "model": "claude-sonnet-5",
+      "passed": {
+        "behavior": 12,
+        "composition": 10,
+        "deterministic": 15,
+        "evidence_honesty": 16,
+        "execution": 16,
+        "overall_status": 9,
+        "scope": 16
+      },
+      "results": [
+        {
+          "artifact_directory": "claude-acceptance/universal-bounded-claim-readonly",
+          "behavior": "pass",
+          "case": "universal-bounded-claim-readonly",
+          "composition": "pass",
+          "deterministic": "passed",
+          "evidence_honesty": "pass",
+          "execution": "completed",
+          "failures": [],
+          "identities": {
+            "bundle_sha256": "9134909285cd4a596bce365ff84f8aad239113a1bd3ec85012d9ed8e9b5762eb",
+            "plugin_snapshot_sha256": "8e0ef1e3180bba02fdf04e7106651a49959245466ceb0ddb4e3d9fc90eb5e029",
+            "prompt_sha256": "5016f881784dc65a3b538a3ec6dd04ce51d00a34e82c229ca40366c6947574ee",
+            "response_sha256": "20014ad39debc7391dbe6708c910c53ae5b80137bde1d34ecccb6d53002b0680",
+            "reviewed_evidence_sha256": "5a143c144b8642a5217a05e424c40e6a20bcf09a23babee2abe08ef06a18495d",
+            "rubric_sha256": "d475719a0ad7baa9610b0311be9cc059dedfb93c4036b6d4fa090b767bc933ef",
+            "transcript_sha256": "e26e2eb0da96a7891aae8f9b889a8d7073f89ee1601aa0d94de812d3784c3f20"
+          },
+          "overall_status": "accepted",
+          "scope": "pass"
+        },
+        {
+          "artifact_directory": "claude-acceptance/universal-decoder-boundary-readonly",
+          "behavior": "pass",
+          "case": "universal-decoder-boundary-readonly",
+          "composition": "pass",
+          "deterministic": "passed",
+          "evidence_honesty": "pass",
+          "execution": "completed",
+          "failures": [],
+          "identities": {
+            "bundle_sha256": "de99bd91a05d7fdcc37dbc12b756bee33aac037b60604c88aab643a0b7ef6445",
+            "plugin_snapshot_sha256": "8e0ef1e3180bba02fdf04e7106651a49959245466ceb0ddb4e3d9fc90eb5e029",
+            "prompt_sha256": "dbec468ef7f957fa5b7a4b6444e2f82e730de7bd61acdf4395777dec7bcc0648",
+            "response_sha256": "e0df3b5f6eead8692860b7c1f0efefa1c59ac78d0025c0803639708ccc7a41f2",
+            "reviewed_evidence_sha256": "475ed75267cd484a6f4ccb7951aaa7b4ba1a9716d4350e7ed01a365f0bcb1052",
+            "rubric_sha256": "0783413582b74222b34172c12f6de4b09db803979fe7f6dc789348a369ed6c94",
+            "transcript_sha256": "1d4b34aeed889436ec23d8f1e051c1097dd4664b8350a4f5628c14a0c9d4d42d"
+          },
+          "overall_status": "accepted",
+          "scope": "pass"
+        },
+        {
+          "artifact_directory": "claude-acceptance/universal-missed-mutation-readonly",
+          "behavior": "pass",
+          "case": "universal-missed-mutation-readonly",
+          "composition": "pass",
+          "deterministic": "passed",
+          "evidence_honesty": "pass",
+          "execution": "completed",
+          "failures": [],
+          "identities": {
+            "bundle_sha256": "b64f898605d6949f3f6a92c75b6a3745ba0473ac944d5388414290a8fe300cfd",
+            "plugin_snapshot_sha256": "8e0ef1e3180bba02fdf04e7106651a49959245466ceb0ddb4e3d9fc90eb5e029",
+            "prompt_sha256": "9d656d0d5396752031e45f609f64822cf83c9d4bcf2bc2542d0d2be4d9e68a2e",
+            "response_sha256": "22f6f6a275ad44fdc3633f78d5c233d62b7dd1be005294db950d3a030524cf83",
+            "reviewed_evidence_sha256": "929b717d8acd76b1b1c605b51b5ae0578768ccdbcafbc3f995207f9682df4922",
+            "rubric_sha256": "8ae5f2f292db8e233fe6fc83be4686fe33c2182004d8eb82075d4cb5b2fcb0e5",
+            "transcript_sha256": "e0c13e2bb890474a4a2ddb325205fd46e654a877936c4b6227c9b62f76dce3de"
+          },
+          "overall_status": "accepted",
+          "scope": "pass"
+        },
+        {
+          "artifact_directory": "claude-acceptance/universal-nested-mutation-readonly",
+          "behavior": "pass",
+          "case": "universal-nested-mutation-readonly",
+          "composition": "pass",
+          "deterministic": "passed",
+          "evidence_honesty": "pass",
+          "execution": "completed",
+          "failures": [],
+          "identities": {
+            "bundle_sha256": "3e9426d9656d2386cc351b17c490620278fa39de0befe209d5aca29683c5e118",
+            "plugin_snapshot_sha256": "8e0ef1e3180bba02fdf04e7106651a49959245466ceb0ddb4e3d9fc90eb5e029",
+            "prompt_sha256": "36a5eacc1f12fdc7e4b0b0e3633cb1ff082e00582aa27b4da542e959354ed3a9",
+            "response_sha256": "f505abb6f0d2123a1a0803b54982cdba219627394a96a69fc32caa6c0396e23f",
+            "reviewed_evidence_sha256": "965815a4fe73a35ebfc222028d1577fdd9efc08959535144c007bff6cf0fb800",
+            "rubric_sha256": "0af7127d25381f9551bc75d0caaa8a19d38faf4eb5031d205bd0446089f4ecce",
+            "transcript_sha256": "a83a18f801ee807287c1a667784737012eb365b39d3d21e4f96a0991ea6f39e8"
+          },
+          "overall_status": "accepted",
+          "scope": "pass"
+        },
+        {
+          "artifact_directory": "claude-acceptance/universal-stale-completion-readonly",
+          "behavior": "pass",
+          "case": "universal-stale-completion-readonly",
+          "composition": "pass",
+          "deterministic": "passed",
+          "evidence_honesty": "pass",
+          "execution": "completed",
+          "failures": [],
+          "identities": {
+            "bundle_sha256": "2596737721662fdf5530e1aa1715059ae9e6364da646aa56f918bd56827e49d2",
+            "plugin_snapshot_sha256": "8e0ef1e3180bba02fdf04e7106651a49959245466ceb0ddb4e3d9fc90eb5e029",
+            "prompt_sha256": "2db44f5521c0a2cd4888a1e84bd4b35b33e09d85cb4ae50a2e002abe6dbf177c",
+            "response_sha256": "2f86be6feb8aa9add2450e507c9222fef6014318bd50d83d936b31f3553e337c",
+            "reviewed_evidence_sha256": "d24c4c85310d3e38a9cb4d535d29de3e1fd35d676f39ecdf454e698a33a954e5",
+            "rubric_sha256": "43761ba4f2888cdb19769a3a81372096d600634f9b0cfc5a19021ff4c0c81dcb",
+            "transcript_sha256": "74f27fc9fe2b3f9a4393d4fbdb4af96a4edabed39d397f373395b4ffd96fba34"
+          },
+          "overall_status": "accepted",
+          "scope": "pass"
+        },
+        {
+          "artifact_directory": "claude-acceptance/swift-decoding-readonly-apple",
+          "behavior": "fail",
+          "case": "swift-decoding-readonly-apple",
+          "composition": "fail",
+          "deterministic": "passed",
+          "evidence_honesty": "pass",
+          "execution": "completed",
+          "failures": [
+            "The response correctly identifies synthesized decoding as the invariant bypass and gives keyed invalid payloads, but it explicitly dismisses the required historical-valid and keyed round-trip controls instead of explaining them.",
+            "The expected modeling-swift-types-for-correctness skill was not invoked or consulted in the retained trace."
+          ],
+          "identities": {
+            "bundle_sha256": "cdf94da95be0031eff7f47128d1c7e8905efd1fea8c61360f01f7df0aae6c9aa",
+            "plugin_snapshot_sha256": "ce6741b2e1f94f4777724bf38f86ec05eda0023fd96cc5c666aed70e329d1ae3",
+            "prompt_sha256": "bc0a2cca199f6b2e2ab358150a60002dba09ec5bce6493e6f1fcb353954ad5a6",
+            "response_sha256": "503bfe3d57c6ef29ac90bd21bfac5b31ace77e32ad7ee9f80ff92b7af672927f",
+            "reviewed_evidence_sha256": "9002e79859718f40a6eb428a066bd17b56ed025828d4bd983da9d8f5ee884212",
+            "rubric_sha256": "b707fef36635e32bffaa90d1257cc6f2d513a4d1198aed6bd059d461306a9ed9",
+            "transcript_sha256": "72a5b217bbe3dfe6f0deb53a917171efe83075898831cc3dc8f57510150932d5"
+          },
+          "overall_status": "failed",
+          "scope": "pass"
+        },
+        {
+          "artifact_directory": "claude-acceptance/apple-decoded-value-readonly",
+          "behavior": "pass",
+          "case": "apple-decoded-value-readonly",
+          "composition": "pass",
+          "deterministic": "passed",
+          "evidence_honesty": "pass",
+          "execution": "completed",
+          "failures": [],
+          "identities": {
+            "bundle_sha256": "6047ff1876044268cebd943ac7b45538b63d085fc236a6893188dfb000103017",
+            "plugin_snapshot_sha256": "ce6741b2e1f94f4777724bf38f86ec05eda0023fd96cc5c666aed70e329d1ae3",
+            "prompt_sha256": "3ed650ef3d59199f3afd52403118cca1e7c1ddea0a66d3c50606a79ffa7a9808",
+            "response_sha256": "6f08655d52938a80cf925fd8e2144330ee0faa38a063ce97802e87c8b6c9f9b9",
+            "reviewed_evidence_sha256": "95f0d117fc8c3b772e2f96563a9bbd9cec3f52984efe9bc507c5b8d7f1cf58e3",
+            "rubric_sha256": "6032f1e85d98b5998699e676dd05c204b537598640ca638e14ff409a2b60450f",
+            "transcript_sha256": "0c3559dcf5d0b832da3150fbc639912626319f1e32496ae57bdfcb7fd2ea9816"
+          },
+          "overall_status": "accepted",
+          "scope": "pass"
+        },
+        {
+          "artifact_directory": "claude-acceptance/combined-decoded-value-readonly",
+          "behavior": "pass",
+          "case": "combined-decoded-value-readonly",
+          "composition": "pass",
+          "deterministic": "passed",
+          "evidence_honesty": "pass",
+          "execution": "completed",
+          "failures": [],
+          "identities": {
+            "bundle_sha256": "94475b758e61c962a3663672b23efc898b57f26756368489342f098ab7f6ea6b",
+            "plugin_snapshot_sha256": "3f4931df4566017694beffb75e081dddb57fb29c97a24f6cd19c2a4940741264",
+            "prompt_sha256": "3ed650ef3d59199f3afd52403118cca1e7c1ddea0a66d3c50606a79ffa7a9808",
+            "response_sha256": "90d90c4c7d207031bff435271b46c3849c155c9d03c6f53c3857ee388c63e940",
+            "reviewed_evidence_sha256": "b408ef6cf28acbc50b0f09290f3dad9653befaf252345291e4f28db4c722555c",
+            "rubric_sha256": "6032f1e85d98b5998699e676dd05c204b537598640ca638e14ff409a2b60450f",
+            "transcript_sha256": "f200b41eacea3e13e40dc5dafcd6396e9c7aa4e3ee1e782481bf137192a3ea80"
+          },
+          "overall_status": "accepted",
+          "scope": "pass"
+        },
+        {
+          "artifact_directory": "claude-acceptance/swift-decoding-readonly-combined",
+          "behavior": "fail",
+          "case": "swift-decoding-readonly-combined",
+          "composition": "fail",
+          "deterministic": "passed",
+          "evidence_honesty": "pass",
+          "execution": "completed",
+          "failures": [
+            "The diagnosis and keyed invalid fixtures are correct, but the proposed evidence omits the required compatible encoding/decoding round-trip check that guards the established wire shape.",
+            "The combined configuration expected both invariant verification and Swift type-modeling guidance, but only the invariant skill was invoked."
+          ],
+          "identities": {
+            "bundle_sha256": "a7c8ab7db6aee2148f44cbecf7095fc5ea16df93d361c7b90b8c29ca299c7763",
+            "plugin_snapshot_sha256": "3f4931df4566017694beffb75e081dddb57fb29c97a24f6cd19c2a4940741264",
+            "prompt_sha256": "bc0a2cca199f6b2e2ab358150a60002dba09ec5bce6493e6f1fcb353954ad5a6",
+            "response_sha256": "a54c0aa2817ca604faf23074bbf64bb1f46bc430f466c157a9f3bb2fdf92371c",
+            "reviewed_evidence_sha256": "609288f3006d70a8361b9357f33dce8c6c82830567facdbd77cd0a6215df71ad",
+            "rubric_sha256": "b707fef36635e32bffaa90d1257cc6f2d513a4d1198aed6bd059d461306a9ed9",
+            "transcript_sha256": "5b1c021e32af09c49441f3f9fcce9fda0c42cf8e88203051d5841ddb31be4434"
+          },
+          "overall_status": "failed",
+          "scope": "pass"
+        },
+        {
+          "artifact_directory": "claude-acceptance/swift-decoding-write-apple",
+          "behavior": "pass",
+          "case": "swift-decoding-write-apple",
+          "composition": "fail",
+          "deterministic": "passed",
+          "evidence_honesty": "pass",
+          "execution": "completed",
+          "failures": [
+            "The expected type-modeling skill was not invoked; the trace used writing-swift instead."
+          ],
+          "identities": {
+            "bundle_sha256": "ff5cc5e0a4b9b7f85e864c3104a918cbf2c8922ac387f1cafb1985d520cd5349",
+            "plugin_snapshot_sha256": "ce6741b2e1f94f4777724bf38f86ec05eda0023fd96cc5c666aed70e329d1ae3",
+            "prompt_sha256": "013331cb23ab39da58adda7adabd724d272dc4b2e0300ad0db88d0c8f7498743",
+            "response_sha256": "8862bc59836108bde69c0be38c0789f9ad6924bd7c1a1a6a8e1400b8ace20109",
+            "reviewed_evidence_sha256": "96ef802fb72eacaeeb841f1a6697bde13f6a8fe1a495b1fb43dfa7fb783cfb80",
+            "rubric_sha256": "8ff84c96bd230c1f4c238e8272ea9178984f395ae9961e544c6fd37ccf3b56df",
+            "transcript_sha256": "e64bc15cd93889555d787b419fda5e75bf9ec36fc87d723c41c9878577f5bdaa"
+          },
+          "overall_status": "failed",
+          "scope": "pass"
+        },
+        {
+          "artifact_directory": "claude-acceptance/swift-decoding-write-combined",
+          "behavior": "fail",
+          "case": "swift-decoding-write-combined",
+          "composition": "fail",
+          "deterministic": "failed",
+          "evidence_honesty": "pass",
+          "execution": "completed",
+          "failures": [
+            "independent artifact validation failed",
+            "The custom decoder switches to a scalar container while synthesized encoding remains keyed, breaking valid round trips and the historical keyed wire format. The independent project test crashed on the round-trip assertion.",
+            "Neither expected substantive skill was invoked; the trace used only the generic run skill."
+          ],
+          "identities": {
+            "bundle_sha256": "b63e1fed93acedcd5dce33c526d60b04fc041182cfbf391eea1281a8abedb126",
+            "plugin_snapshot_sha256": "3f4931df4566017694beffb75e081dddb57fb29c97a24f6cd19c2a4940741264",
+            "prompt_sha256": "013331cb23ab39da58adda7adabd724d272dc4b2e0300ad0db88d0c8f7498743",
+            "response_sha256": "b423fb57e2b2a2893ba47deb747836b0fcfbfc60a281204ebb46357031d4a475",
+            "reviewed_evidence_sha256": "115fd78d2fe7c25a816ddd556aef2fd165e48823f199549eceddcf1019d84020",
+            "rubric_sha256": "8ff84c96bd230c1f4c238e8272ea9178984f395ae9961e544c6fd37ccf3b56df",
+            "transcript_sha256": "a335c354e5d3bdb211199131a841ce5a62820a40b5caa054e3a0f7f696adb99c"
+          },
+          "overall_status": "failed",
+          "scope": "pass"
+        },
+        {
+          "artifact_directory": "claude-acceptance/near-miss-swift-test-readonly",
+          "behavior": "pass",
+          "case": "near-miss-swift-test-readonly",
+          "composition": "fail",
+          "deterministic": "passed",
+          "evidence_honesty": "pass",
+          "execution": "completed",
+          "failures": [
+            "The required Swift-testing owner was not activated."
+          ],
+          "identities": {
+            "bundle_sha256": "af5c098df6dd55a7782091402429060e6e1b75f546f8750d7afb6e10d690d315",
+            "plugin_snapshot_sha256": "3f4931df4566017694beffb75e081dddb57fb29c97a24f6cd19c2a4940741264",
+            "prompt_sha256": "0619a1a0b52296271ff984bb17b0ed80b5b4e4a0155ec27c1f5c5892844fc0d8",
+            "response_sha256": "87161a1d2a249d6088bbc5ead87ac13b2b994567a7a2cedfdaf3ed5ff6f9ef4e",
+            "reviewed_evidence_sha256": "eba310512abf01bc73b298f1ad88825febdfc9ab1d9f3741c112f67c12ff3460",
+            "rubric_sha256": "417698bcf5faf102c586b575a6fb6cb5e2a37cf003847a4c72ec6d02d372228a",
+            "transcript_sha256": "e8ddfa3a537529af79adfba3c0fa88e321a4f285ba610118367a976323c466e9"
+          },
+          "overall_status": "failed",
+          "scope": "pass"
+        },
+        {
+          "artifact_directory": "claude-acceptance/near-miss-async-readiness-readonly",
+          "behavior": "fail",
+          "case": "near-miss-async-readiness-readonly",
+          "composition": "pass",
+          "deterministic": "passed",
+          "evidence_honesty": "pass",
+          "execution": "completed",
+          "failures": [
+            "The proposed retry condition is not an actual observed completion: it relies on `task.isFinished`, which is not a Task completion API, while the alternative `await task.value` is only mentioned rather than integrated into a non-blocking completion signal. The bounded retry is therefore not demonstrably able to keep posting after a missed notification until completion is observed."
+          ],
+          "identities": {
+            "bundle_sha256": "f1509a36fb8af22c27c3dcab0685b5e77363eeabdd5f15372f2711433b20f827",
+            "plugin_snapshot_sha256": "3f4931df4566017694beffb75e081dddb57fb29c97a24f6cd19c2a4940741264",
+            "prompt_sha256": "b146bad0968de95485d11c79976f4b681ed013ab3789598d8ae28be111f5079b",
+            "response_sha256": "48a4743fe8ebbe46ea72bfb464f2e2fcb6a3229dceeb3ff5f5c54db0b6778fa2",
+            "reviewed_evidence_sha256": "d49b36d8789e84f1bf9933ca1f53b1633da4e88e8bd797c6ca9be6ac18e81499",
+            "rubric_sha256": "d4cbdfaf2a10efc15fb5eff72481a9c7a16ebd863f263d3ff2142e71c3fa8c59",
+            "transcript_sha256": "411556fdd7dbd137b7693f367c58ddf25806ae057b31075079f6720048dbf458"
+          },
+          "overall_status": "failed",
+          "scope": "pass"
+        },
+        {
+          "artifact_directory": "claude-acceptance/near-miss-api-naming-readonly",
+          "behavior": "pass",
+          "case": "near-miss-api-naming-readonly",
+          "composition": "pass",
+          "deterministic": "passed",
+          "evidence_honesty": "pass",
+          "execution": "completed",
+          "failures": [],
+          "identities": {
+            "bundle_sha256": "8fbe5174fb432949b3e85723f54673b63532abacdc7cc15ded487818cae9475b",
+            "plugin_snapshot_sha256": "3f4931df4566017694beffb75e081dddb57fb29c97a24f6cd19c2a4940741264",
+            "prompt_sha256": "d03c895290c7602fe6a28a2d61272ac92c5467deb58a6d7d1a282159dbc0fc04",
+            "response_sha256": "f1601d998f624d0469caf883c2dee033200f65c6e91d770512cea80ace30607d",
+            "reviewed_evidence_sha256": "9bacc041b1bfc7bab8119201b6c56765e11e1775a5f4507b45218eb048137966",
+            "rubric_sha256": "d10dec0f77055a4fa916bdb2b88057188c0abc7348787b69bb755b2512d43c18",
+            "transcript_sha256": "e0e886458f272f29cc57a04e4956416d12a5fd19d2e7eb2fd3b8b323375beeba"
+          },
+          "overall_status": "accepted",
+          "scope": "pass"
+        },
+        {
+          "artifact_directory": "claude-acceptance/near-miss-code-review-readonly",
+          "behavior": "pass",
+          "case": "near-miss-code-review-readonly",
+          "composition": "fail",
+          "deterministic": "passed",
+          "evidence_honesty": "pass",
+          "execution": "completed",
+          "failures": [
+            "The required reviewing-code owner was not activated."
+          ],
+          "identities": {
+            "bundle_sha256": "1f8ea6331439d7b6b552bd0eeee99073ec005f7bceb299d6029ff03de66b0e51",
+            "plugin_snapshot_sha256": "3f4931df4566017694beffb75e081dddb57fb29c97a24f6cd19c2a4940741264",
+            "prompt_sha256": "495cfa5afd7a4aab194e3e97e4b993f97f6236e00418ddcef0e40ad227eee299",
+            "response_sha256": "9d481df0d314536c5537b8fcf59b2640e6a4146044df6169788e210ed9f48e46",
+            "reviewed_evidence_sha256": "8a0aae7bcc3deff9b456fbc37840d22d43d2b3c9db452bc0f2a7506492680b6c",
+            "rubric_sha256": "b73d53586a62740b499818276310b7fdbbe22730a96910ba225f389f583bdb7c",
+            "transcript_sha256": "5ce34ead9defb8d0f3874dde406b6a7cf79c065ededb1588aa6c4bf3d0829e8b"
+          },
+          "overall_status": "failed",
+          "scope": "pass"
+        },
+        {
+          "artifact_directory": "durable-final-claude-sonnet-5/universal-durable-invariant-write",
+          "behavior": "pass",
+          "case": "universal-durable-invariant-write",
+          "composition": "pass",
+          "deterministic": "passed",
+          "evidence_honesty": "pass",
+          "execution": "completed",
+          "failures": [],
+          "identities": {
+            "bundle_sha256": "6732c072c18ee826f061db9aee0ae85c922ded7ab9be726dcd8ee0e81ebbe497",
+            "plugin_snapshot_sha256": "8e0ef1e3180bba02fdf04e7106651a49959245466ceb0ddb4e3d9fc90eb5e029",
+            "prompt_sha256": "7ad8cd5212bf44f448db7ccf68f49fafc28809c1ff0f6bcadf57ce7ee4eaa682",
+            "response_sha256": "e0049f1ab2502aa9a047db3c3bfc17aae61bb1c2868624aca1832024775a062d",
+            "reviewed_evidence_sha256": "602e0c3197d0f7077e3c1a1b6cdbce056e8cfd48cbd8f1ab3e3b9cdcb7e9b587",
+            "rubric_sha256": "a0b5344c54b7181c8ab2c11dee437a7ae002a4414b55ae64b92f74f06cee7d32",
+            "transcript_sha256": "7670125f3378e4c35be2209d8924a10daa6aa2dfb05e9a1453667885ea2d195d"
+          },
+          "overall_status": "accepted",
+          "scope": "pass"
+        }
+      ]
+    },
+    "codex": {
+      "cases": 16,
+      "effort": "medium",
+      "model": "gpt-5.6-sol",
+      "passed": {
+        "behavior": 12,
+        "composition": 14,
+        "deterministic": 16,
+        "evidence_honesty": 16,
+        "execution": 16,
+        "overall_status": 10,
+        "scope": 16
+      },
+      "results": [
+        {
+          "artifact_directory": "codex-acceptance/universal-bounded-claim-readonly",
+          "behavior": "pass",
+          "case": "universal-bounded-claim-readonly",
+          "composition": "pass",
+          "deterministic": "passed",
+          "evidence_honesty": "pass",
+          "execution": "completed",
+          "failures": [],
+          "identities": {
+            "bundle_sha256": "a22bdad0505e505f0d6d369769c8450c3357d66889da70a05fbb044ece016ad2",
+            "plugin_snapshot_sha256": "8e0ef1e3180bba02fdf04e7106651a49959245466ceb0ddb4e3d9fc90eb5e029",
+            "prompt_sha256": "5016f881784dc65a3b538a3ec6dd04ce51d00a34e82c229ca40366c6947574ee",
+            "response_sha256": "60c7ebd4db5377f44eeed12bc317d91ef11d210a4e0520de35a3ced10713b4a3",
+            "reviewed_evidence_sha256": "57f1dfe804535951df93c8cfb7c3f25f294770403193790220e892d7840767a2",
+            "rubric_sha256": "d475719a0ad7baa9610b0311be9cc059dedfb93c4036b6d4fa090b767bc933ef",
+            "transcript_sha256": "48fffaeef81c9d66267590a9dee561bc71048728b7e0997328456d0e533ffd97"
+          },
+          "overall_status": "accepted",
+          "scope": "pass"
+        },
+        {
+          "artifact_directory": "codex-acceptance/universal-decoder-boundary-readonly",
+          "behavior": "pass",
+          "case": "universal-decoder-boundary-readonly",
+          "composition": "pass",
+          "deterministic": "passed",
+          "evidence_honesty": "pass",
+          "execution": "completed",
+          "failures": [],
+          "identities": {
+            "bundle_sha256": "a99b85cde1cfffa1907f50475cfc31e246959f400ca92c1d6d2a0561b49510ec",
+            "plugin_snapshot_sha256": "8e0ef1e3180bba02fdf04e7106651a49959245466ceb0ddb4e3d9fc90eb5e029",
+            "prompt_sha256": "dbec468ef7f957fa5b7a4b6444e2f82e730de7bd61acdf4395777dec7bcc0648",
+            "response_sha256": "2b890c6caca900756ae0fd90b49f072021f42742542e9b070a98fde45e3ea72e",
+            "reviewed_evidence_sha256": "169e01a8323baefe2b33e29d7d70c871698cec8b0133013bc80551c852f41e99",
+            "rubric_sha256": "0783413582b74222b34172c12f6de4b09db803979fe7f6dc789348a369ed6c94",
+            "transcript_sha256": "d86c34eee6aeb7736db7d49edcc7b7c296dd4fdf6d5102ed8232acbe0fbfdeec"
+          },
+          "overall_status": "accepted",
+          "scope": "pass"
+        },
+        {
+          "artifact_directory": "codex-acceptance/universal-missed-mutation-readonly",
+          "behavior": "pass",
+          "case": "universal-missed-mutation-readonly",
+          "composition": "pass",
+          "deterministic": "passed",
+          "evidence_honesty": "pass",
+          "execution": "completed",
+          "failures": [],
+          "identities": {
+            "bundle_sha256": "d53604aa6b693185893f4e2b54d93cf2b7dbd06efa74d006ea83c833311e8c03",
+            "plugin_snapshot_sha256": "8e0ef1e3180bba02fdf04e7106651a49959245466ceb0ddb4e3d9fc90eb5e029",
+            "prompt_sha256": "9d656d0d5396752031e45f609f64822cf83c9d4bcf2bc2542d0d2be4d9e68a2e",
+            "response_sha256": "12f7b0283689c61291c181be698ea71e7e09057350c6168f24c021223eebcbfa",
+            "reviewed_evidence_sha256": "a0e0e6ae3361393f678dc1c6185aa70abb2be948f323d82b507af7bf8a9e342e",
+            "rubric_sha256": "8ae5f2f292db8e233fe6fc83be4686fe33c2182004d8eb82075d4cb5b2fcb0e5",
+            "transcript_sha256": "6730240b50755b869d29f7b74a8682fc4e60238b4c063a21abcc1dca80bdb41e"
+          },
+          "overall_status": "accepted",
+          "scope": "pass"
+        },
+        {
+          "artifact_directory": "codex-acceptance/universal-nested-mutation-readonly",
+          "behavior": "pass",
+          "case": "universal-nested-mutation-readonly",
+          "composition": "pass",
+          "deterministic": "passed",
+          "evidence_honesty": "pass",
+          "execution": "completed",
+          "failures": [],
+          "identities": {
+            "bundle_sha256": "d1ed8e78c7edb8424ea357676fd23e6464046e47b715eb63b661af7aad1e4ec8",
+            "plugin_snapshot_sha256": "8e0ef1e3180bba02fdf04e7106651a49959245466ceb0ddb4e3d9fc90eb5e029",
+            "prompt_sha256": "36a5eacc1f12fdc7e4b0b0e3633cb1ff082e00582aa27b4da542e959354ed3a9",
+            "response_sha256": "05c715f4d5a8de5bc7ab1e52ba1fd39b1656acd8850e74a9c5d4476507b4c876",
+            "reviewed_evidence_sha256": "c8dfaa878213d299500a908611bc3c9cecccf7f86cc413744cff34958b5c373f",
+            "rubric_sha256": "0af7127d25381f9551bc75d0caaa8a19d38faf4eb5031d205bd0446089f4ecce",
+            "transcript_sha256": "4c395cd570fe55c6955d267e7e8b609c0419b7c9c256434650eddcb40e3a7aff"
+          },
+          "overall_status": "accepted",
+          "scope": "pass"
+        },
+        {
+          "artifact_directory": "codex-acceptance/universal-stale-completion-readonly",
+          "behavior": "pass",
+          "case": "universal-stale-completion-readonly",
+          "composition": "pass",
+          "deterministic": "passed",
+          "evidence_honesty": "pass",
+          "execution": "completed",
+          "failures": [],
+          "identities": {
+            "bundle_sha256": "14cfd927b27c7609ca5b93f5d53f03a84e6b094478522637d18985cd592b699b",
+            "plugin_snapshot_sha256": "8e0ef1e3180bba02fdf04e7106651a49959245466ceb0ddb4e3d9fc90eb5e029",
+            "prompt_sha256": "2db44f5521c0a2cd4888a1e84bd4b35b33e09d85cb4ae50a2e002abe6dbf177c",
+            "response_sha256": "91982fd6922db64b4f1f5de86f3ded7f93e522bc747bbb7e740b5628001364fc",
+            "reviewed_evidence_sha256": "3a6cccd01871308de969f652d2424457da7b92b6e2b9f2d628a4c7ab332075f8",
+            "rubric_sha256": "43761ba4f2888cdb19769a3a81372096d600634f9b0cfc5a19021ff4c0c81dcb",
+            "transcript_sha256": "7f19dec661379c33b101a6e0e211904eb4d6329935f891cff1eecb9f218ffbc1"
+          },
+          "overall_status": "accepted",
+          "scope": "pass"
+        },
+        {
+          "artifact_directory": "codex-acceptance/swift-decoding-readonly-apple",
+          "behavior": "fail",
+          "case": "swift-decoding-readonly-apple",
+          "composition": "pass",
+          "deterministic": "passed",
+          "evidence_honesty": "pass",
+          "execution": "completed",
+          "failures": [
+            "The response correctly proves the synthesized-decoder bypass with keyed controls, but its proposed checks omit a valid encode/decode round trip, so they do not guard compatibility of the established keyed representation."
+          ],
+          "identities": {
+            "bundle_sha256": "61fc7ebc97bfb9fcd9694b3e446c74f2407540632807f1093054f509acc19deb",
+            "plugin_snapshot_sha256": "ce6741b2e1f94f4777724bf38f86ec05eda0023fd96cc5c666aed70e329d1ae3",
+            "prompt_sha256": "bc0a2cca199f6b2e2ab358150a60002dba09ec5bce6493e6f1fcb353954ad5a6",
+            "response_sha256": "d342f70634477709d9e3a5ac583f00b5e271b9d000879c1c592f96573c867c31",
+            "reviewed_evidence_sha256": "c861dea04dc867a840cecb15f306df9be5cd06c91fe7fc3b76ace1b315f0d88e",
+            "rubric_sha256": "b707fef36635e32bffaa90d1257cc6f2d513a4d1198aed6bd059d461306a9ed9",
+            "transcript_sha256": "1ae07806531e5c5882eac7af29b448acfc6de1ff0a00022fe036cbc9e3172255"
+          },
+          "overall_status": "failed",
+          "scope": "pass"
+        },
+        {
+          "artifact_directory": "codex-acceptance/apple-decoded-value-readonly",
+          "behavior": "fail",
+          "case": "apple-decoded-value-readonly",
+          "composition": "pass",
+          "deterministic": "passed",
+          "evidence_honesty": "pass",
+          "execution": "completed",
+          "failures": [
+            "The diagnosis, keyed payloads, and keyed repair are correct, but the proposed evidence omits the rubric-required compatible encoding/decoding round-trip check."
+          ],
+          "identities": {
+            "bundle_sha256": "b82e93124b9fb5974e01fd9b76f1473f615179f92674a1092c8bf641db7c25a2",
+            "plugin_snapshot_sha256": "ce6741b2e1f94f4777724bf38f86ec05eda0023fd96cc5c666aed70e329d1ae3",
+            "prompt_sha256": "3ed650ef3d59199f3afd52403118cca1e7c1ddea0a66d3c50606a79ffa7a9808",
+            "response_sha256": "5515d6dcf1467d69474b017cd3427ddb7a890a79fdbe435d0b8876898542db62",
+            "reviewed_evidence_sha256": "0e19c02c068a68bc325afdaf15fca41fcda3591e21a81687336034283701ef5c",
+            "rubric_sha256": "6032f1e85d98b5998699e676dd05c204b537598640ca638e14ff409a2b60450f",
+            "transcript_sha256": "8214a91bd71d7a99515b07ebc6d3c4669b4b073cc408a91fe58692c435804117"
+          },
+          "overall_status": "failed",
+          "scope": "pass"
+        },
+        {
+          "artifact_directory": "codex-acceptance/combined-decoded-value-readonly",
+          "behavior": "fail",
+          "case": "combined-decoded-value-readonly",
+          "composition": "pass",
+          "deterministic": "passed",
+          "evidence_honesty": "pass",
+          "execution": "completed",
+          "failures": [
+            "The assessment correctly identifies and executes the keyed decoding counterexample and proposes a keyed repair, but its proposed checks omit compatible encode/decode round-trip coverage."
+          ],
+          "identities": {
+            "bundle_sha256": "7771ba7d5d1a32afbd344bbd80e4b01379928e08308d142e2aee9a766e9bc7d5",
+            "plugin_snapshot_sha256": "3f4931df4566017694beffb75e081dddb57fb29c97a24f6cd19c2a4940741264",
+            "prompt_sha256": "3ed650ef3d59199f3afd52403118cca1e7c1ddea0a66d3c50606a79ffa7a9808",
+            "response_sha256": "524715f703dc32858db3dec54379be58b90fe24aba6d5dc0b4a832250a76ad1f",
+            "reviewed_evidence_sha256": "b08f578bd49d8348ce95d7b81a8cd01a178703032974a31c6a0b0c75a0e0f05f",
+            "rubric_sha256": "6032f1e85d98b5998699e676dd05c204b537598640ca638e14ff409a2b60450f",
+            "transcript_sha256": "ddbccdea9a6ad4be75bbfd37b8fb0adbe2fdd7981284df9d2ecc8cb252e604fd"
+          },
+          "overall_status": "failed",
+          "scope": "pass"
+        },
+        {
+          "artifact_directory": "codex-acceptance/swift-decoding-readonly-combined",
+          "behavior": "fail",
+          "case": "swift-decoding-readonly-combined",
+          "composition": "pass",
+          "deterministic": "passed",
+          "evidence_honesty": "pass",
+          "execution": "completed",
+          "failures": [
+            "The synthesized-decoder diagnosis and keyed runtime counterexample are correct, but the proposed evidence omits a valid encode/decode round trip to protect the established keyed format."
+          ],
+          "identities": {
+            "bundle_sha256": "a15a54406ba496c298a1a2d49574dc44adaaa3656b06932e7f7285fde6130a22",
+            "plugin_snapshot_sha256": "3f4931df4566017694beffb75e081dddb57fb29c97a24f6cd19c2a4940741264",
+            "prompt_sha256": "bc0a2cca199f6b2e2ab358150a60002dba09ec5bce6493e6f1fcb353954ad5a6",
+            "response_sha256": "9bd0d68ef26297620c3be82b1a813d884ba7d8768586896ea10ef0d21b68f84b",
+            "reviewed_evidence_sha256": "73eee1689cfb9f461c8f02b76a10155c765a46ce707e1e0cc4a2752a507aa7d5",
+            "rubric_sha256": "b707fef36635e32bffaa90d1257cc6f2d513a4d1198aed6bd059d461306a9ed9",
+            "transcript_sha256": "91d65055dcb3395c828c5194017398f05d88a12ca855ff02432ccb26a315dd50"
+          },
+          "overall_status": "failed",
+          "scope": "pass"
+        },
+        {
+          "artifact_directory": "codex-acceptance/swift-decoding-write-apple",
+          "behavior": "pass",
+          "case": "swift-decoding-write-apple",
+          "composition": "pass",
+          "deterministic": "passed",
+          "evidence_honesty": "pass",
+          "execution": "completed",
+          "failures": [],
+          "identities": {
+            "bundle_sha256": "65d023ba7cb7aad25e509f93b4137f3384d43033ad97eb0c8baf2204fbe03e7f",
+            "plugin_snapshot_sha256": "ce6741b2e1f94f4777724bf38f86ec05eda0023fd96cc5c666aed70e329d1ae3",
+            "prompt_sha256": "013331cb23ab39da58adda7adabd724d272dc4b2e0300ad0db88d0c8f7498743",
+            "response_sha256": "92253910d1f442bff6179bc624c5b2e97c3c4d4c3e6d30e9eb4f2dd34d0eabdf",
+            "reviewed_evidence_sha256": "0abc00f321f7e37d88c4178c29142ac18a2f6f1ca5be831e69f9e82baa6c26ea",
+            "rubric_sha256": "8ff84c96bd230c1f4c238e8272ea9178984f395ae9961e544c6fd37ccf3b56df",
+            "transcript_sha256": "7a1f2066440788bad4b687ed8d7108d1a32575e81117c38e639e7784082d8f10"
+          },
+          "overall_status": "accepted",
+          "scope": "pass"
+        },
+        {
+          "artifact_directory": "codex-acceptance/swift-decoding-write-combined",
+          "behavior": "pass",
+          "case": "swift-decoding-write-combined",
+          "composition": "fail",
+          "deterministic": "passed",
+          "evidence_honesty": "pass",
+          "execution": "completed",
+          "failures": [
+            "The combined case expected both type modeling and invariant verification, but the trace did not read or invoke verifying-invariants."
+          ],
+          "identities": {
+            "bundle_sha256": "ca001110c9bbed518b6e75a8b703c0306f7843e91cdc8c6d0726f686d8e06963",
+            "plugin_snapshot_sha256": "3f4931df4566017694beffb75e081dddb57fb29c97a24f6cd19c2a4940741264",
+            "prompt_sha256": "013331cb23ab39da58adda7adabd724d272dc4b2e0300ad0db88d0c8f7498743",
+            "response_sha256": "fdeb092edaa4a78ed16df155c695a5c7626ec1ea3d3f319b84dd07a51526e914",
+            "reviewed_evidence_sha256": "0dffdb36ea2f748aa5284ff87acf13daa27177f6b32af35a359bec743ff7cf2d",
+            "rubric_sha256": "8ff84c96bd230c1f4c238e8272ea9178984f395ae9961e544c6fd37ccf3b56df",
+            "transcript_sha256": "306be956887d0e56bbb0d75c7a0a8c12cb75b10ed89e836d52de3a09c98ea71b"
+          },
+          "overall_status": "failed",
+          "scope": "pass"
+        },
+        {
+          "artifact_directory": "codex-acceptance/near-miss-swift-test-readonly",
+          "behavior": "pass",
+          "case": "near-miss-swift-test-readonly",
+          "composition": "pass",
+          "deterministic": "passed",
+          "evidence_honesty": "pass",
+          "execution": "completed",
+          "failures": [],
+          "identities": {
+            "bundle_sha256": "aae8dfaa9b3ed4201e6d3ed0f9da31caa04edd3c8c20796b076ffc18eda4823c",
+            "plugin_snapshot_sha256": "3f4931df4566017694beffb75e081dddb57fb29c97a24f6cd19c2a4940741264",
+            "prompt_sha256": "0619a1a0b52296271ff984bb17b0ed80b5b4e4a0155ec27c1f5c5892844fc0d8",
+            "response_sha256": "f24697cf8fc97031583fec3967ebe441fc7f2da2bc27b1f09763b1b0290af42b",
+            "reviewed_evidence_sha256": "fb55f3f47ae3c2a1e2b7717111fdfd60510f056aa6d8264446f5780a91855d15",
+            "rubric_sha256": "417698bcf5faf102c586b575a6fb6cb5e2a37cf003847a4c72ec6d02d372228a",
+            "transcript_sha256": "6774abe319a06410c77fcdf206d8e09b61ba9fca001327665c41c4fc54c6127c"
+          },
+          "overall_status": "accepted",
+          "scope": "pass"
+        },
+        {
+          "artifact_directory": "codex-acceptance/near-miss-async-readiness-readonly",
+          "behavior": "pass",
+          "case": "near-miss-async-readiness-readonly",
+          "composition": "pass",
+          "deterministic": "passed",
+          "evidence_honesty": "pass",
+          "execution": "completed",
+          "failures": [],
+          "identities": {
+            "bundle_sha256": "3a7404e128f484ab2e1ea1f6a58df9e73e23ee68258c795b579a1833321925db",
+            "plugin_snapshot_sha256": "3f4931df4566017694beffb75e081dddb57fb29c97a24f6cd19c2a4940741264",
+            "prompt_sha256": "b146bad0968de95485d11c79976f4b681ed013ab3789598d8ae28be111f5079b",
+            "response_sha256": "366a3197d7d540775e07b4e547bf6f42ae9f8b10cf6c6687dd375c163270a019",
+            "reviewed_evidence_sha256": "a194bcd1436713c6e562eb02bd0e410071229fba4b5010504216cbda900a1e5e",
+            "rubric_sha256": "d4cbdfaf2a10efc15fb5eff72481a9c7a16ebd863f263d3ff2142e71c3fa8c59",
+            "transcript_sha256": "ea26046c106882123668de3a6c205d2a814856f760a626eec103b0f7601876ae"
+          },
+          "overall_status": "accepted",
+          "scope": "pass"
+        },
+        {
+          "artifact_directory": "codex-acceptance/near-miss-api-naming-readonly",
+          "behavior": "pass",
+          "case": "near-miss-api-naming-readonly",
+          "composition": "pass",
+          "deterministic": "passed",
+          "evidence_honesty": "pass",
+          "execution": "completed",
+          "failures": [],
+          "identities": {
+            "bundle_sha256": "6b3b36d5da26f7cddb7ed6d41d190db4897ee47ec531a480ae6ccfcfafd2c257",
+            "plugin_snapshot_sha256": "3f4931df4566017694beffb75e081dddb57fb29c97a24f6cd19c2a4940741264",
+            "prompt_sha256": "d03c895290c7602fe6a28a2d61272ac92c5467deb58a6d7d1a282159dbc0fc04",
+            "response_sha256": "6f405cd64deb59d0cc2e17ceada67cd2a8e49d6d155b8e95c335b38f46096584",
+            "reviewed_evidence_sha256": "97ff83b41abce3f9cf6defa030340442defb1f3aece744211efe4074a73da82f",
+            "rubric_sha256": "d10dec0f77055a4fa916bdb2b88057188c0abc7348787b69bb755b2512d43c18",
+            "transcript_sha256": "ff67b7bd89be64ed27df6ddd3d7807ef8acf52b64c14a9c0426e0a2f80737da5"
+          },
+          "overall_status": "accepted",
+          "scope": "pass"
+        },
+        {
+          "artifact_directory": "codex-acceptance/near-miss-code-review-readonly",
+          "behavior": "pass",
+          "case": "near-miss-code-review-readonly",
+          "composition": "fail",
+          "deterministic": "passed",
+          "evidence_honesty": "pass",
+          "execution": "completed",
+          "failures": [
+            "The forbidden invariant-verification owner was loaded despite the required code-review owner also being loaded."
+          ],
+          "identities": {
+            "bundle_sha256": "da55582eab7176acb74d5a0daf9b7b125dc9bc792d8495025ab4faa7a964dd95",
+            "plugin_snapshot_sha256": "3f4931df4566017694beffb75e081dddb57fb29c97a24f6cd19c2a4940741264",
+            "prompt_sha256": "495cfa5afd7a4aab194e3e97e4b993f97f6236e00418ddcef0e40ad227eee299",
+            "response_sha256": "17209d9f1fe1a1b4d3f8cf708e848f26d227db13db34cbfe9a6579f555119b40",
+            "reviewed_evidence_sha256": "8227976c20f6202808664f29b2719ba26345d425205e6f3c2ce4a7c76598dafd",
+            "rubric_sha256": "b73d53586a62740b499818276310b7fdbbe22730a96910ba225f389f583bdb7c",
+            "transcript_sha256": "400f52b92153d47621e1507799ebac59706ec73f99c2f54ee620db2fb47887a6"
+          },
+          "overall_status": "failed",
+          "scope": "pass"
+        },
+        {
+          "artifact_directory": "durable-final-gpt-5.6-sol/universal-durable-invariant-write",
+          "behavior": "pass",
+          "case": "universal-durable-invariant-write",
+          "composition": "pass",
+          "deterministic": "passed",
+          "evidence_honesty": "pass",
+          "execution": "completed",
+          "failures": [],
+          "identities": {
+            "bundle_sha256": "a5c14460f4bbe95f347e6098333477b6fd014c13d65866f08f66867cea1c4c55",
+            "plugin_snapshot_sha256": "8e0ef1e3180bba02fdf04e7106651a49959245466ceb0ddb4e3d9fc90eb5e029",
+            "prompt_sha256": "7ad8cd5212bf44f448db7ccf68f49fafc28809c1ff0f6bcadf57ce7ee4eaa682",
+            "response_sha256": "8def8123a4ab0d3bdc132982bd587a397be0b69b5584ca80cfe1f128a524e577",
+            "reviewed_evidence_sha256": "0cb75f887deb4528f32b01d7e1909eeec61778939d71cdf128209974f8e56160",
+            "rubric_sha256": "a0b5344c54b7181c8ab2c11dee437a7ae002a4414b55ae64b92f74f06cee7d32",
+            "transcript_sha256": "479af5966658fb885337f32cd038ab75520426f9b2d0b746554f518d26f40efb"
+          },
+          "overall_status": "accepted",
+          "scope": "pass"
+        }
+      ]
+    }
+  },
+  "native_llm_smoke": {
+    "behavior_judge_votes": "all pass",
+    "behavior_judge_votes_per_case": 3,
+    "cases": [
+      "apple decoded-value",
+      "universal bounded-claim"
+    ],
+    "limitation": "Restricted smoke tools; separate from write-capable native matrix.",
+    "model": "claude-sonnet-5",
+    "runs_per_case": 1
+  },
+  "overall_acceptance": "failed",
+  "protocol": {
+    "final_assessment": "All selected native outputs re-assessed with final harness; original deterministic records preserved beside final provenance.",
+    "native_claude_tools": "Read, Glob, Grep, Skill, Edit, Write; selected eval-free plugin snapshot accessible; no shell",
+    "native_codex_tools": "workspace-write shell and file tools; temporary plugin registration; account-managed plugins may enumerate, only local snapshot loads credited",
+    "raw_artifacts": "Retained outside Git in the local mgs-invariant-gaps-5jhnpmdp temporary directory. Per-run hashes identify records; credentials were removed after runs.",
+    "review": "full response and completed tool traces, independent executable assertions for writes, explicit behavior/scope/evidence-honesty/composition verdicts",
+    "runs_per_selected_case": 1,
+    "scope": "16 declared cases per standard runtime; durable setup corrected separately"
+  },
+  "schema_version": 1,
+  "source_snapshot": {
+    "algorithm": "SHA-256 of compact sorted-key JSON mapping repository-relative paths to file SHA-256 digests",
+    "base_revision": "ad72b902328c4aa332cc5ce5a0054bd435095653",
+    "file_count": 326,
+    "includes_uncommitted_changes": true,
+    "input_selection": "Files under plugins/, scripts/, evals/invariant-behavior/ plus evals/skill-routing.json, excluding interpreter caches and .DS_Store",
+    "sha256": "fd4a9f8cb05f521594a59caf8056f73cdc5d724cddf5385e9f0e85bb3a529499"
+  },
+  "versions": {
+    "apple-platform": "1.5.1",
+    "claude": "2.1.282",
+    "codex": "0.160.0",
+    "swift": "Apple Swift 6.3.3",
+    "universal": "1.7.1"
+  }
+}

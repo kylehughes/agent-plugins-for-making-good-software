@@ -1,0 +1,1 @@
+Fix the saved quantity implementation so it cannot restore a nonpositive value. Preserve existing saved data and round-trip behavior, add focused deterministic coverage, and keep the change scoped to this issue.

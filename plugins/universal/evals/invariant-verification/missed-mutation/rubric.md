@@ -1,5 +1,3 @@
 # Behavioral acceptance
 
-Explains that surviving the mutation exposes a check-sensitivity gap, not by itself a defect in the unmodified implementation. Proposes an invalid value entering through the import boundary and controls for intended failure; does not claim universal proof from mutation scores.
-
-Review the full response and tool trace. Regex graders are smoke checks only. Require a scoped conclusion, honest execution status, no edits, and no unsolicited registry or CI changes.
+Apply the criteria in [the behavior grader](graders/behavior.md) to the full response and tool trace. Record a rationale anchored to the response for every pass or failure. Regex and invocation graders are smoke signals only; an LLM grade also needs review when it conflicts with the actual diagnosis, suggested code, or trace.

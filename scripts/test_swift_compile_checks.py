@@ -1,3 +1,4 @@
+import hashlib
 import importlib.util
 import json
 import os
@@ -8,6 +9,7 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -22,7 +24,9 @@ REAL_MANIFEST = (
 SPEC = importlib.util.spec_from_file_location("swift_compile_checks", RUNNER)
 assert SPEC is not None and SPEC.loader is not None
 swift_compile_checks = importlib.util.module_from_spec(SPEC)
-SPEC.loader.exec_module(swift_compile_checks)
+# Import the shipped runner without adding generated files to its plugin bundle.
+with mock.patch.object(sys, "dont_write_bytecode", True):
+    SPEC.loader.exec_module(swift_compile_checks)
 
 
 FAKE_COMPILER = r'''#!/usr/bin/env python3
@@ -45,8 +49,19 @@ if "--version" in sys.argv:
     print("Swift version 6.3.0 (fake)")
     raise SystemExit(0)
 
-sources = [Path(arg).name for arg in sys.argv if arg.endswith(".swift")]
+source_paths = [Path(arg) for arg in sys.argv if arg.endswith(".swift")]
+sources = [path.name for path in source_paths]
 is_negative = "Reject.swift" in sources
+reject_source = next((path for path in source_paths if path.name == "Reject.swift"), None)
+if mode == "mutate-originals" and not is_negative:
+    Path(os.environ["FAKE_ORIGINAL_REJECT"]).write_text("MUTATED_FOR_PASS\n", encoding="utf-8")
+    Path(os.environ["FAKE_MANIFEST"]).write_text("{}\n", encoding="utf-8")
+if mode == "mutate-original-away-from-pass" and not is_negative:
+    Path(os.environ["FAKE_ORIGINAL_REJECT"]).write_text("MUTATED_TO_FAIL\n", encoding="utf-8")
+if mode == "retarget-original-symlink" and not is_negative:
+    original = Path(os.environ["FAKE_ORIGINAL_REJECT"])
+    original.unlink()
+    original.symlink_to(Path(os.environ["FAKE_SYMLINK_TARGET"]))
 if mode == "timeout":
     time.sleep(2)
 if mode == "crash":
@@ -59,9 +74,24 @@ if mode == "broken-control" and not is_negative:
     print("Pass.swift:1:1: error: control broke", file=sys.stderr)
     raise SystemExit(1)
 if is_negative:
+    if mode == "mutate-staged":
+        reject_source.write_text("changed during compilation\n", encoding="utf-8")
+    if mode == "mutate-staged-crash":
+        reject_source.write_text("changed before compiler crash\n", encoding="utf-8")
+        print("Stack dump:", file=sys.stderr)
+        raise SystemExit(1)
+    if mode == "delete-staged":
+        reject_source.unlink()
+    if mode == "rename-staged":
+        reject_source.rename(reject_source.with_name("Renamed.swift"))
     if mode == "accept":
         raise SystemExit(0)
-    diagnostic = "different diagnostic" if mode in {"wrong-diagnostic", "echoed-marker"} else "intended diagnostic"
+    if mode in {"mutate-originals", "retarget-original-symlink"}:
+        diagnostic = "intended diagnostic" if "MUTATED_FOR_PASS" in reject_source.read_text() else "different diagnostic"
+    elif mode == "mutate-original-away-from-pass":
+        diagnostic = "different diagnostic" if "MUTATED_TO_FAIL" in reject_source.read_text() else "intended diagnostic"
+    else:
+        diagnostic = "different diagnostic" if mode in {"wrong-diagnostic", "echoed-marker"} else "intended diagnostic"
     print(f"Reject.swift:1:1: error: {diagnostic}", file=sys.stderr)
     if mode == "echoed-marker":
         print("1 | // intended diagnostic", file=sys.stderr)
@@ -120,11 +150,90 @@ class SwiftCompileChecksTests(unittest.TestCase):
     def run_runner(self, mode="good", *extra):
         environment = os.environ.copy()
         environment["FAKE_SWIFTC_MODE"] = mode
+        environment["FAKE_MANIFEST"] = str(self.manifest)
+        environment["FAKE_ORIGINAL_REJECT"] = str(self.root / "Reject.swift")
         return subprocess.run(
             [sys.executable, str(RUNNER), str(self.manifest), "--swiftc", str(self.compiler), "--json", *extra],
             capture_output=True,
             text=True,
             env=environment,
+        )
+
+    def test_checkout_mutation_cannot_change_compiled_source_snapshot(self):
+        manifest_bytes = self.manifest.read_bytes()
+        reject_bytes = (self.root / "Reject.swift").read_bytes()
+        result = self.run_runner("mutate-originals")
+        self.assertEqual(result.returncode, 1, result.stderr)
+        report = json.loads(result.stdout)
+        self.assertEqual(report["status"], "fail")
+        self.assertIn("missing diagnostic marker", report["results"][1]["reason"])
+        self.assertEqual(report["snapshot"]["sha256"], hashlib.sha256(manifest_bytes).hexdigest())
+        self.assertEqual(
+            report["snapshot"]["sources"]["Reject.swift"],
+            hashlib.sha256(reject_bytes).hexdigest(),
+        )
+        self.assertEqual(
+            report["inputs"]["negative_fixtures"][0]["diagnostic_markers"],
+            ["intended diagnostic"],
+        )
+
+    def test_checkout_mutation_away_from_passing_snapshot_does_not_invalidate_evidence(self):
+        reject_bytes = (self.root / "Reject.swift").read_bytes()
+        result = self.run_runner("mutate-original-away-from-pass")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        report = json.loads(result.stdout)
+        self.assertEqual(report["status"], "pass")
+        self.assertEqual(
+            report["snapshot"]["sources"]["Reject.swift"],
+            hashlib.sha256(reject_bytes).hexdigest(),
+        )
+        self.assertTrue(
+            any("Prebuilt modules" in limitation for limitation in report["limitations"]),
+            report["limitations"],
+        )
+
+    def test_staged_source_mutation_deletion_and_rename_fail_closed(self):
+        for mode in ("mutate-staged", "delete-staged", "rename-staged"):
+            with self.subTest(mode=mode):
+                report = json.loads(self.run_runner(mode).stdout)
+                self.assertEqual(report["status"], "fail")
+                self.assertIn("staged source changed during compilation", report["results"][1]["reason"])
+                self.assertIn("Reject.swift", report["results"][1]["reason"])
+
+    def test_compiler_crash_remains_primary_when_staged_source_also_changes(self):
+        report = json.loads(self.run_runner("mutate-staged-crash").stdout)
+        self.assertEqual(report["status"], "fail")
+        self.assertEqual(report["results"][1]["reason"], "compiler crashed")
+
+    def test_symlink_target_is_resolved_into_the_source_snapshot(self):
+        original_target = self.root / "OriginalReject.swift"
+        changed_target = self.root / "ChangedReject.swift"
+        original_target.write_text("ORIGINAL_REJECTION\n", encoding="utf-8")
+        changed_target.write_text("MUTATED_FOR_PASS\n", encoding="utf-8")
+        reject = self.root / "Reject.swift"
+        reject.unlink()
+        reject.symlink_to(original_target)
+        environment = os.environ.copy()
+        environment.update(
+            {
+                "FAKE_SWIFTC_MODE": "retarget-original-symlink",
+                "FAKE_MANIFEST": str(self.manifest),
+                "FAKE_ORIGINAL_REJECT": str(reject),
+                "FAKE_SYMLINK_TARGET": str(changed_target),
+            }
+        )
+        result = subprocess.run(
+            [sys.executable, str(RUNNER), str(self.manifest), "--swiftc", str(self.compiler), "--json"],
+            capture_output=True,
+            text=True,
+            env=environment,
+        )
+        report = json.loads(result.stdout)
+        self.assertEqual(report["status"], "fail")
+        self.assertIn("missing diagnostic marker", report["results"][1]["reason"])
+        self.assertEqual(
+            report["snapshot"]["sources"]["Reject.swift"],
+            hashlib.sha256(b"ORIGINAL_REJECTION\n").hexdigest(),
         )
 
     def test_expected_rejection_and_paired_control_pass(self):

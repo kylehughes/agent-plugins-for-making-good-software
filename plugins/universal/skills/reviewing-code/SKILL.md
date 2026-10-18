@@ -1,6 +1,6 @@
 ---
 name: reviewing-code
-description: "Review a PR, diff, branch, or repository for concrete correctness, security, concurrency, and compatibility defects. Use for requested code review or audit; report findings without editing unless fixes are also requested."
+description: "Required for requested code review, including a single short function or an obvious defect. Load before reporting correctness, security, concurrency, or compatibility findings. Review-only requests stay read-only; fixes require authorization."
 ---
 
 # Reviewing Code
@@ -53,7 +53,7 @@ Read beyond the changed lines:
 - Trace important callers, callees, data flow, control flow, state transitions, and error paths.
 - Inspect tests, interfaces, schemas, protocol definitions, configuration, and documentation that define the contract.
 - Compare old and new behavior. Identify inputs, outputs, invariants, ownership, lifecycle, trust boundaries, ordering, compatibility, and failure semantics.
-- When the request explicitly asks to prove an invariant, or the change alters an enforcement model or state transition, use [verifying-invariants](../verifying-invariants/SKILL.md) for the bounded proof surface and evidence vocabulary. Do not invoke it for ordinary reviews.
+- Use [verifying-invariants](../verifying-invariants/SKILL.md) only for an explicit invariant/proof assessment or a change to a construction boundary, validated representation, or legal-transition model. A function contract, expected output, or ordinary defect alone does not trigger that procedure; review those here.
 - Treat an architectural change as a defect only when it violates a real contract, creates harmful inconsistency, leaves a migration incomplete, or introduces unjustified operational risk. “Different from the old pattern” is not sufficient.
 
 ### 3. Triage by Risk
@@ -143,6 +143,8 @@ Report high-confidence findings directly. Label medium-confidence findings and s
 Read [finding quality](references/finding-quality.md) before finalizing a review that contains findings or whenever severity, evidence, anchoring, or wording is uncertain.
 
 ## Output
+
+Apply this evidence bar throughout the report, including summaries and optional advice. Before claiming a compiler, type system, linter, or rule would catch a defect, confirm that it covers the actual construct under the relevant settings with a focused reproducer or authoritative definition. If applicability is unconfirmed, omit it unless the user asks for prevention options; then label both applicability and availability or settings unverified.
 
 Put findings first, ordered by severity and then confidence. Anchor each finding to the smallest useful line range, preferably changed lines.
 

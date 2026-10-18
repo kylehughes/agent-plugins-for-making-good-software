@@ -143,15 +143,31 @@ The production side must keep the contract too: an outer refreshable awaits the 
 
 ## NotificationCenter async sequences — "notification observed"
 
-Posting once after `Task.sleep` is not a subscription handshake. If production listens through `NotificationCenter`'s async sequence and exposes no readiness signal, drive the notification under a real-time deadline until the state transition is observed:
+Posting once after `Task.sleep` is not a subscription handshake. If production listens through `NotificationCenter`'s async sequence and exposes no readiness signal, make the listener's completion observable, then post under a real-time deadline until that observation arrives:
 
 ```swift
-try await postUntilObserved(notificationCenter, name: .protectedDataDidBecomeAvailable) {
-    authenticationState.value == .unauthenticated
+let observed = await EventRecorder<Void>.recording()
+let listener = Task {
+    for await _ in notificationCenter.notifications(named: .protectedDataDidBecomeAvailable) {
+        await observed.record(())
+        return
+    }
 }
+
+try await withAsyncCleanup(
+    operation: {
+        try await postUntilObserved(notificationCenter, name: .protectedDataDidBecomeAvailable) {
+            await observed.events.count == 1
+        }
+    },
+    cleanup: {
+        listener.cancel()
+        await listener.value
+    }
+)
 ```
 
-The helper posts, polls the expected state through the timeout budget, sleeps a slice, and stops at the budget's exhaustion — failing with a local timeout error rather than hanging in a `for await` loop that missed the one post. Prefer adding a readiness seam when the production type can expose one without weakening the API.
+`postUntilObserved` posts, checks the supplied observable completion, and spends a timeout-budget slice before trying again. It fails locally when the budget is exhausted. Do not infer completion from `Task` state or await `listener.value` inside the retry loop: either can leave the loop waiting forever after the only event was missed. The awaited cleanup cancels and joins the listener on every path. Prefer a readiness seam when production can expose one without weakening the API.
 
 ## Non-occurrence — "after stop, no more X"
 

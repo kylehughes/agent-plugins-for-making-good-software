@@ -1,0 +1,1 @@
+Fix imported quantities so nonpositive values are rejected while current positive inputs keep working. Add focused deterministic coverage. We want this contract to remain visible across future changes, so add a project invariant manifest and a CI workflow that validates it on every change.

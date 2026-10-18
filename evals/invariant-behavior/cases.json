@@ -1,0 +1,345 @@
+{
+  "schema_version": 1,
+  "cases": [
+    {
+      "id": "universal-bounded-claim-readonly",
+      "mode": "read-only",
+      "configuration": "universal",
+      "prompt": "../../plugins/universal/evals/invariant-verification/bounded-claim/prompt.md",
+      "plugin_paths": [
+        "plugins/universal"
+      ],
+      "write_tools_available": true,
+      "allowed_change_paths": [],
+      "rubric": "../../plugins/universal/evals/invariant-verification/bounded-claim/graders/behavior.md",
+      "expected_skills": [
+        "verifying-invariants"
+      ],
+      "forbidden_skills": []
+    },
+    {
+      "id": "universal-decoder-boundary-readonly",
+      "mode": "read-only",
+      "configuration": "universal",
+      "prompt": "../../plugins/universal/evals/invariant-verification/decoder-boundary/prompt.md",
+      "plugin_paths": [
+        "plugins/universal"
+      ],
+      "write_tools_available": true,
+      "allowed_change_paths": [],
+      "rubric": "../../plugins/universal/evals/invariant-verification/decoder-boundary/graders/behavior.md",
+      "expected_skills": [
+        "verifying-invariants"
+      ],
+      "forbidden_skills": []
+    },
+    {
+      "id": "universal-missed-mutation-readonly",
+      "mode": "read-only",
+      "configuration": "universal",
+      "prompt": "../../plugins/universal/evals/invariant-verification/missed-mutation/prompt.md",
+      "plugin_paths": [
+        "plugins/universal"
+      ],
+      "write_tools_available": true,
+      "allowed_change_paths": [],
+      "rubric": "../../plugins/universal/evals/invariant-verification/missed-mutation/graders/behavior.md",
+      "expected_skills": [
+        "verifying-invariants"
+      ],
+      "forbidden_skills": []
+    },
+    {
+      "id": "universal-nested-mutation-readonly",
+      "mode": "read-only",
+      "configuration": "universal",
+      "prompt": "../../plugins/universal/evals/invariant-verification/nested-mutation/prompt.md",
+      "plugin_paths": [
+        "plugins/universal"
+      ],
+      "write_tools_available": true,
+      "allowed_change_paths": [],
+      "rubric": "../../plugins/universal/evals/invariant-verification/nested-mutation/graders/behavior.md",
+      "expected_skills": [
+        "verifying-invariants"
+      ],
+      "forbidden_skills": []
+    },
+    {
+      "id": "universal-stale-completion-readonly",
+      "mode": "read-only",
+      "configuration": "universal",
+      "prompt": "../../plugins/universal/evals/invariant-verification/stale-completion/prompt.md",
+      "plugin_paths": [
+        "plugins/universal"
+      ],
+      "write_tools_available": true,
+      "allowed_change_paths": [],
+      "rubric": "../../plugins/universal/evals/invariant-verification/stale-completion/graders/behavior.md",
+      "expected_skills": [
+        "verifying-invariants"
+      ],
+      "forbidden_skills": []
+    },
+    {
+      "id": "swift-decoding-readonly-apple",
+      "mode": "read-only",
+      "configuration": "apple",
+      "prompt": "swift-decoding/read-only-prompt.md",
+      "workspace_fixture": "swift-decoding/workspace",
+      "plugin_paths": [
+        "plugins/apple-platform"
+      ],
+      "write_tools_available": true,
+      "allowed_change_paths": [],
+      "rubric": "swift-decoding/read-only-rubric.md",
+      "expected_skills": [
+        "modeling-swift-types-for-correctness"
+      ],
+      "forbidden_skills": []
+    },
+    {
+      "id": "apple-decoded-value-readonly",
+      "mode": "read-only",
+      "configuration": "apple",
+      "prompt": "../../plugins/apple-platform/evals/invariant-verification/decoded-value/prompt.md",
+      "plugin_paths": [
+        "plugins/apple-platform"
+      ],
+      "write_tools_available": true,
+      "allowed_change_paths": [],
+      "rubric": "../../plugins/apple-platform/evals/invariant-verification/decoded-value/graders/behavior.md",
+      "expected_skills": [
+        "modeling-swift-types-for-correctness"
+      ],
+      "forbidden_skills": []
+    },
+    {
+      "id": "combined-decoded-value-readonly",
+      "mode": "read-only",
+      "configuration": "combined",
+      "prompt": "../../plugins/apple-platform/evals/invariant-verification/decoded-value/prompt.md",
+      "plugin_paths": [
+        "plugins/apple-platform",
+        "plugins/universal"
+      ],
+      "write_tools_available": true,
+      "allowed_change_paths": [],
+      "rubric": "../../plugins/apple-platform/evals/invariant-verification/decoded-value/graders/behavior.md",
+      "expected_skills": [
+        "modeling-swift-types-for-correctness",
+        "verifying-invariants"
+      ],
+      "forbidden_skills": []
+    },
+    {
+      "id": "swift-decoding-readonly-combined",
+      "mode": "read-only",
+      "configuration": "combined",
+      "prompt": "swift-decoding/read-only-prompt.md",
+      "workspace_fixture": "swift-decoding/workspace",
+      "plugin_paths": [
+        "plugins/apple-platform",
+        "plugins/universal"
+      ],
+      "write_tools_available": true,
+      "allowed_change_paths": [],
+      "rubric": "swift-decoding/read-only-rubric.md",
+      "expected_skills": [
+        "modeling-swift-types-for-correctness",
+        "verifying-invariants"
+      ],
+      "forbidden_skills": []
+    },
+    {
+      "id": "swift-decoding-write-apple",
+      "mode": "write",
+      "configuration": "apple",
+      "prompt": "swift-decoding/write-prompt.md",
+      "workspace_fixture": "swift-decoding/workspace",
+      "plugin_paths": [
+        "plugins/apple-platform"
+      ],
+      "write_tools_available": true,
+      "allowed_change_paths": [
+        "Sources",
+        "Tests"
+      ],
+      "artifact_checker": "swift-decoding/acceptance/Assertions.swift",
+      "rubric": "swift-decoding/write-rubric.md",
+      "expected_skills": [
+        "modeling-swift-types-for-correctness"
+      ],
+      "forbidden_skills": [],
+      "required_change_paths": [
+        "Sources/Quantity.swift",
+        "Tests"
+      ]
+    },
+    {
+      "id": "swift-decoding-write-combined",
+      "mode": "write",
+      "configuration": "combined",
+      "prompt": "swift-decoding/write-prompt.md",
+      "workspace_fixture": "swift-decoding/workspace",
+      "plugin_paths": [
+        "plugins/apple-platform",
+        "plugins/universal"
+      ],
+      "write_tools_available": true,
+      "allowed_change_paths": [
+        "Sources",
+        "Tests"
+      ],
+      "artifact_checker": "swift-decoding/acceptance/Assertions.swift",
+      "rubric": "swift-decoding/write-rubric.md",
+      "expected_skills": [
+        "modeling-swift-types-for-correctness",
+        "verifying-invariants"
+      ],
+      "forbidden_skills": [],
+      "required_change_paths": [
+        "Sources/Quantity.swift",
+        "Tests"
+      ]
+    },
+    {
+      "id": "near-miss-swift-test-readonly",
+      "mode": "read-only",
+      "configuration": "combined",
+      "prompt": "../../plugins/apple-platform/evals/discovery-smoke/swift-test/prompt.md",
+      "plugin_paths": [
+        "plugins/apple-platform",
+        "plugins/universal"
+      ],
+      "write_tools_available": true,
+      "allowed_change_paths": [],
+      "rubric": "near-misses/swift-test.md",
+      "expected_skills": [
+        "testing-swift-code"
+      ],
+      "forbidden_skills": [
+        "verifying-invariants"
+      ]
+    },
+    {
+      "id": "near-miss-async-readiness-readonly",
+      "mode": "read-only",
+      "configuration": "combined",
+      "prompt": "../../plugins/apple-platform/evals/discovery-smoke/async-readiness/prompt.md",
+      "plugin_paths": [
+        "plugins/apple-platform",
+        "plugins/universal"
+      ],
+      "write_tools_available": true,
+      "allowed_change_paths": [],
+      "rubric": "near-misses/async-readiness.md",
+      "expected_skills": [
+        "testing-async-swift-code"
+      ],
+      "forbidden_skills": [
+        "verifying-invariants"
+      ]
+    },
+    {
+      "id": "near-miss-api-naming-readonly",
+      "mode": "read-only",
+      "configuration": "combined",
+      "prompt": "../../plugins/apple-platform/evals/discovery-smoke/api-naming/prompt.md",
+      "plugin_paths": [
+        "plugins/apple-platform",
+        "plugins/universal"
+      ],
+      "write_tools_available": true,
+      "allowed_change_paths": [],
+      "rubric": "near-misses/api-naming.md",
+      "expected_skills": [
+        "designing-swift-apis"
+      ],
+      "forbidden_skills": [
+        "verifying-invariants"
+      ]
+    },
+    {
+      "id": "near-miss-code-review-readonly",
+      "mode": "read-only",
+      "configuration": "combined",
+      "prompt": "../../plugins/universal/evals/discovery-smoke/code-review/prompt.md",
+      "plugin_paths": [
+        "plugins/apple-platform",
+        "plugins/universal"
+      ],
+      "write_tools_available": true,
+      "allowed_change_paths": [],
+      "rubric": "near-misses/code-review.md",
+      "expected_skills": [
+        "reviewing-code"
+      ],
+      "forbidden_skills": [
+        "verifying-invariants"
+      ]
+    },
+    {
+      "id": "universal-durable-invariant-write",
+      "mode": "write",
+      "configuration": "universal",
+      "prompt": "durable-invariant/write-prompt.md",
+      "workspace_fixture": "durable-invariant/workspace",
+      "plugin_paths": [
+        "plugins/universal"
+      ],
+      "write_tools_available": true,
+      "allowed_change_paths": [
+        "**"
+      ],
+      "required_change_paths": [
+        "Sources/quantity.py",
+        "invariants.json",
+        ".github/workflows"
+      ],
+      "artifact_checker": {
+        "kind": "python",
+        "path": "durable-invariant/acceptance/assertions.py",
+        "support": [
+          {
+            "name": "validate_invariants.py",
+            "plugin_path": "plugins/universal/skills/verifying-invariants/scripts/validate_invariants.py"
+          }
+        ]
+      },
+      "rubric": "durable-invariant/write-rubric.md",
+      "expected_skills": [
+        "verifying-invariants"
+      ],
+      "forbidden_skills": []
+    },
+    {
+      "id": "universal-ordinary-invariant-write",
+      "mode": "write",
+      "configuration": "universal",
+      "prompt": "ordinary-invariant/write-prompt.md",
+      "workspace_fixture": "durable-invariant/workspace",
+      "plugin_paths": [
+        "plugins/universal"
+      ],
+      "write_tools_available": true,
+      "allowed_change_paths": [
+        "Sources/quantity.py",
+        "Tests"
+      ],
+      "required_change_paths": [
+        "Sources/quantity.py",
+        "Tests"
+      ],
+      "artifact_checker": {
+        "kind": "python",
+        "path": "durable-invariant/acceptance/assertions.py"
+      },
+      "rubric": "ordinary-invariant/write-rubric.md",
+      "expected_skills": [
+        "verifying-invariants"
+      ],
+      "forbidden_skills": []
+    }
+  ]
+}

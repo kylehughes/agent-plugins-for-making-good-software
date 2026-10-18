@@ -39,6 +39,8 @@ Owns: "make Swift Concurrency scheduling deterministic for the duration of a tes
 
 Point-Free's [swift-concurrency-extras](https://github.com/pointfreeco/swift-concurrency-extras) provides `withMainSerialExecutor`: with the hook installed, `await Task.yield()` hands control to the next scheduled task on `MainActor`'s queue in FIFO order, making ordering-dependent tests deterministic for the portions of the system Swift Concurrency controls.
 
+Use a single yield only to hand off one known Swift-task hop whose suspension is under test control and has no stronger observable barrier. This does not prove readiness inside an opaque framework API, including `NotificationCenter` async-sequence observer registration. Use its readiness seam or the bounded observation idiom instead; awaiting a listener after one possibly missed post can hang before cleanup runs.
+
 The hook is **process-global**, and Swift Testing can run unrelated suites concurrently. Guard the scope — wrap it in a serializing helper or apply a suite trait rather than calling the raw hook from parallel suites — and keep it short. Use it only for tests whose assertions depend on Swift task ordering.
 
 The hook captures only Swift Concurrency task scheduling. `DispatchQueue` work (cache-observer callbacks, Combine `schedule(after:)`, `URLSession` completions) is unaffected — those races need the recorder's awaited detach barrier — and it doesn't fully constrain AsyncAlgorithms operators' internal `TaskGroup` hops.
@@ -87,7 +89,7 @@ Apply the category through [the canonical idioms](references/idioms.md) — timi
 
 | Pattern | Why it's wrong | What to use instead |
 |---|---|---|
-| `for _ in 0 ..< N { await Task.yield() }` in a test body | Fixed-count yield budgets hide the actual happens-before edge. | A recorder wait; a marble harness for timing operators. A single `Task.yield()` under the serial executor is acceptable only when deliberately handing off one known Swift-task hop with no stronger observable barrier. |
+| `for _ in 0 ..< N { await Task.yield() }` in a test body | Fixed-count yield budgets hide the actual happens-before edge. | A recorder wait; a marble harness for timing operators. Controlled single-hop handoff follows the serial executor's narrow scope above. |
 | `Task.sleep` to "let the system settle" | Wall-clock sleeps are slow and still race under CI load. | Virtual clock + recorder handshake. |
 | Custom inline "recorder" / "collector" classes per test file | Re-invents the recorder without the detach barrier. | One shared recorder with `detach()`. |
 | Wrapping a synchronous `@MainActor` callback in `AsyncStream` + recorder | Adds a collector-task hop and can time out even though the callback ran. | Append to local main-actor state; assert after the awaited operation returns. |

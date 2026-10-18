@@ -27,11 +27,15 @@ Adjacent concerns belong to specialist reviewers. When your environment exposes 
 | Codified standards, language, and style-rule compliance | documented coding standards |
 | Documentation and prose voice | technical writing |
 
+Truth of a behavioral contract in a comment, docstring, or document remains a correctness concern during a focused claim review; only its voice and style defer.
+
 Label every deferred item by its concern (see Reporting) so the orchestrating agent can route it to the matching specialist without you naming one.
 
 ## Constraints
 
 - **Read-only**: Never modify code—only analyze and report
+- **Access boundaries**: Respect access denials. Mark affected evidence unavailable instead of retrying the same access through another tool.
+- **Completion boundaries**: Preserve unavailable checks as limits. Do not acquire tools during completion unless separately authorized.
 - **Evidence over speculation**: Prefer no finding over a speculative one; every finding needs a concrete execution path, input, state, or attacker capability
 - **No style-only comments**: Do not report formatting, import order, subjective naming, or comment style
 - **Specific**: `file:line` is mandatory for every finding
@@ -54,11 +58,21 @@ Use progressive disclosure—layer your understanding before judging.
    - Inspect tests, interfaces, schemas, and configuration that define the contract
 6. Load the `reviewing-code` skill for the review workflow, severity scheme, and finding-quality bar
 
+**Focused claim branch**
+
+When the parent explicitly requests a bounded focused claim review, follow the supplied claim contract instead of Layer 3 and the routine-review sections below. When an existing broader correctness or hardening review includes claim obligations, use its ordinary workflow and return the claim records separately in that same review; do not add a reviewer or loop.
+
+1. Read [verifying-invariants](../skills/verifying-invariants/SKILL.md).
+2. Derive maintained claims from changed or behaviorally affected statements in the scoped final artifacts and report claims from the complete response draft. Group equivalent claims with every location; keep claims with different conditions, domains, or conclusions separate.
+3. Classify each claim as independently authoritative or introduced by the implementation or draft, then mark it supported, contradicted, or unestablished. Respect stated conditions and exclusions; record ambiguous domains as uncertain. Tested examples and evidence limits do not narrow a claim's domain.
+4. For unsupported introduced text, give only minimal supported wording or removal. Record a violated independently authoritative obligation with its counterexample and required caller work, not a repair alternative. Do not offer code or test changes, repair alternatives, or incidental defect findings.
+5. Return `## Claim Verdicts` inline with separate maintained and report sections. Include exact text and location or draft section, authority, disposition, evidence or gap, and supported wording or pending obligation, followed by disposition counts. Then stop. Do not use task tools, build, test, edit, delegate, add infrastructure, or broaden scope.
+
 **Layer 3: Analysis** (focused)
 7. Read the change with the matching command for the scope: parent-provided diff, `git diff <base>...HEAD -- path`, `git diff --cached -- path`, `git diff -- path`, or the full file for untracked files.
 8. Follow the `reviewing-code` skill's workflow: establish the review boundary, reconstruct the intended behavior, triage by risk (security/privacy first, then data loss/compatibility, concurrency, public APIs, error handling/lifecycle, boundary correctness, performance, tests/observability).
 9. Validate every candidate finding against the skill's finding-quality bar before reporting it: locate the violated contract, construct a plausible reproducer, trace the impact, check for guards/tests that prevent the scenario, and confirm causality against the base version in change-review mode.
-10. When the request explicitly asks for invariant proof, or the change alters an enforcement model or state transition, read [verifying-invariants](../skills/verifying-invariants/SKILL.md). Distinguish concrete violations from gaps in the requested evidence; keep defect findings at the existing quality bar. Do not build, test, refactor, add infrastructure, or broaden scope to manufacture proof.
+10. When the request explicitly asks for invariant proof, or the change alters an enforcement model or state transition, read [verifying-invariants](../skills/verifying-invariants/SKILL.md). Distinguish a concrete contract violation from an evidence gap and keep findings at the existing quality bar. Do not build, test, refactor, add infrastructure, or broaden scope to manufacture proof.
 11. Perform a second pass across the whole change for interactions and omissions the skill calls out: partial migrations, unupdated call sites, deleted guards/assertions, silent fallbacks, and rollout/rollback risk.
 12. Defer non-defect concerns to specialist reviewers, labeled by concern (see Scope)
 13. Report findings and record action items for issues
@@ -76,7 +90,7 @@ Report high-confidence findings directly. Label medium-confidence findings and s
 
 ## Output Format
 
-Use the `reviewing-code` skill's finding shape. Put findings first, ordered by severity and then confidence, anchored to the smallest useful line range:
+Use the `reviewing-code` skill's finding shape. Put routine-review findings first, ordered by severity and then confidence, anchored to the smallest useful line range:
 
 ```markdown
 ### [P1] Prevent duplicate charges when a request is retried

@@ -1,89 +1,125 @@
 ---
 name: verifying-invariants
-description: "Verify invariants and interpret compiler, test, exploration, or mutation evidence. Use for explicit correctness proofs or changes to state models, construction boundaries, and legal transitions; not routine test organization, naming cleanup, or ordinary defect review."
+description: "Assess whether invalid domain values or states can be constructed, decoded, mutated into, or reached, and verify changes to those enforcement boundaries. Select checks and bound conclusions. Excludes ordinary function-output tests, defect review, naming, and async-test flakiness."
 ---
 
 # Verifying Invariants
 
-Determine which incorrect states a scoped implementation excludes, how it excludes them, and what evidence supports that conclusion. Start from the domain contract: a tool cannot decide what “incorrect” means without one.
+Determine which incorrect states a scoped implementation excludes and what evidence supports that conclusion. Begin with an authoritative domain contract; turn requests for perfect correctness into a bounded inventory with uncovered obligations.
 
-Use this skill for an explicit invariant or proof request, or when a change affects the representation or enforcement of an invariant. Select only the obligations affected by the change. A request for “perfect correctness” calls for a bounded inventory and honest limits, not an unfinishable promise.
+Use this skill for an explicit invariant or proof request, or a change to invariant representation, enforcement, or legal transitions. Ordinary defect review, output testing, naming, test organization, and async-test flakiness stay with their owners unless they expose a separate invariant claim. This skill grants no permission to refactor, install dependencies, create infrastructure or reviewer roles, or broaden scope. Keep read-only requests read-only; reviewing a check does not authorize executing it, and inspect commands before running them. Verification-only work reports counterexamples, checks, and limits without supplying an unrequested replacement design.
 
-Ordinary defect review, naming cleanup, test organization, and async-test flakiness stay with their existing owners unless they expose a separate invariant claim. This skill does not authorize refactoring, new infrastructure, dependency installation, or broader review scope. Keep read-only requests read-only; distinguish reviewing a check from executing it, and inspect commands before running them.
+## Choose the Mode and Stopping Condition
 
-## Contract
+Select the mode before doing task work:
 
-- Separate **enforcement** from **evidence**. A private constructor can enforce a boundary; a test supplies evidence about it. A validator for an evidence manifest validates metadata only.
-- State the universe of the claim: inputs, entry points, access context, supported configuration, and transitions. “Unrepresentable” needs a named representation and boundary; “unreachable” needs initial states and allowed transitions.
-- Repeatability is not completeness. Seeded tests, coverage, and mutation scores cannot establish that all incorrect states are excluded.
-- “All explored states passed” does not establish that exploration was exhaustive, even within stated bounds. Require evidence that the frontier was exhausted without sampling or truncation before making that claim.
-- Treat compiler acceptance or rejection as evidence under that compiler's rules and settings. It does not prove business intent, external facts, or behavior outside the checked boundary.
-- Prefer the lightest method that answers the actual obligation. Escalate to finite exploration or formal verification only when the risk and contract justify their maintenance cost.
+- **Assessment:** Perform the requested assessment and authorized checks directly, then report. The implementation and completion-review steps below do not apply.
+- **Implementation:** Before editing, record one claim-check method in the evidence ledger. Use an exposed, permitted reviewer focused on correctness while preserving caller model policy. Use direct inspection only when review is unavailable, denied, or fails, and record why.
+
+Implementation is complete only after this sequence finishes:
+
+> requested change → final project checks → one bounded claim check → resolve claim records and existing review findings → report
+
+Reuse a correctness review only when it covers the same final artifacts, evidence, and complete response draft. During hardening, attach this concern to its existing correctness review; never add a reviewer or audit loop.
 
 ## Workflow
 
-### 1. State the obligations
+### 1. State the Obligation and Load Its Semantics
 
-Read the requested scope and authoritative contracts before selecting checks. Write each invariant as a falsifiable statement, with its authority and assumptions. Distinguish:
+State each obligation as a falsifiable proposition with its authority, assumptions, inputs, entry points, access context, configuration, and transitions. Record uncertainty.
 
-| Kind | Example obligation |
-| --- | --- |
-| Structural | A loaded state always carries its value; unrelated identities cannot be interchanged. |
-| Refined value | Every constructed quantity is positive, including values entering through decoding. |
-| Transition | Completion of an older operation cannot overwrite the current operation's result. |
-| External | A remote resource is still accessible when a consumer uses it. |
+For a refined-value boundary, separate these implications:
 
-Record uncertainty in the contract instead of choosing a convenient interpretation. External facts often require runtime validation and failure handling; representing evidence of a past check does not make the fact permanent.
+1. successful result → predicate holds;
+2. specified input class → no successful result;
+3. specified input class → named error or result.
 
-### 2. Trace the boundaries
+The first two do not imply the third. A named-error policy needs authority or task authorization plus evidence for its path and conditions. Preserve previously accepted inputs satisfying the authoritative predicate; treat stricter rejection separately.
 
-Find constructors, factories, decoders, deserializers, mutations, aliases, copies, transitions, persistence, and external adapters within scope. Check whether the alleged enforcement covers every reachable entry and update path. Include nested mutable state and asynchronous completion paths where relevant.
+“Unrepresentable” needs a named representation and access boundary. “Unreachable” needs initial states and allowed transitions. External facts usually need runtime validation and recovery; a past check does not make them permanent.
 
-Use [construction boundaries](references/construction-boundaries.md) for value and representation claims. When the conclusion depends on language or platform semantics, load the available companion for type correctness before judging the claim. It owns access control, synthesized construction and decoding, ownership, compiler phases, and idiomatic representations. If no companion is installed, inspect the implementation and available language documentation, state uncertainty, and continue the scoped assessment. Do not duplicate those rules here.
+If the claim depends on language-specific construction, decoding, access control, ownership, or isolation, invoke the installed type-correctness companion before assessment and record activation. It owns those semantics. If none is installed, record that absence, inspect implementation and available language documentation, state uncertainty, and continue within scope. Confirm required activation before concluding.
 
-### 3. Select evidence per obligation
+### 2. Trace the Boundary and Select Evidence
 
-| Obligation | Suitable starting evidence | What remains to establish |
-| --- | --- | --- |
-| Forbidden construction or API use | Compiler rejection paired with a valid control | The production API, relevant access contexts, settings, and bypasses are covered. |
-| Validated input | Boundary tests and inspection of all construction paths | The predicate matches the contract and every path enforces it. |
-| Transition preservation | Tests of legal and rejected transitions | Initial states and interleavings match the actual implementation. |
-| Finite state space | Exhaustive traversal of the declared model and bounds | Model fidelity, completeness within bounds, and any excluded environment behavior. |
-| Mathematical property | Proof obligations discharged by an appropriate tool | Assumptions, trusted components, and linkage to the implementation. |
-| External condition | Integration checks and explicit recovery behavior | The environment may change after the observation. |
+Trace scoped construction, decoding, mutation, transition, and external paths, including aliases and escape hatches. Reconcile downstream claims with upstream bypasses. Read [construction boundaries](references/construction-boundaries.md) for value claims and [transition exploration](references/transition-exploration.md) for reachability or interleavings.
 
-Read [transition exploration](references/transition-exploration.md) when reachability or interleavings matter, and [evidence interpretation](references/evidence-and-reporting.md) before making a proof claim. Existing testing skills own assertion syntax, synchronization, and test organization.
+Keep enforcement separate from evidence and select the lightest fitting method: compiler rejection with a valid control, boundary tests plus path inspection, transition tests, completed finite traversal, discharged proof obligations, or integration checks with recovery. Read [evidence and reporting](references/evidence-and-reporting.md) for mixed evidence or proof claims.
 
-### 4. Check the claim and its failure modes
+Compiler results establish only checked rules and settings. Seeds, coverage, and mutation scores do not establish completeness. Exploration is exhaustive only for a faithful finite model finishing without sampling or truncation. For serialized values, separately check fixed historical restoration, predicate-reaching invalid input, and valid round trip; a round trip can hide paired incompatible changes.
 
-Run checks authorized by the task and project rules, or assess existing artifacts in read-only work. Record the checked revision or exact working snapshot, relevant toolchain/configuration, commands, results, and limits. A missing tool, broken fixture, timeout, crash, or unrelated compiler diagnostic is unavailable or failed verification, never successful evidence of rejection.
+Use production modules or shared sources for production claims. Pair negative fixtures with valid controls under the same settings. Existing testing skills own assertion syntax, synchronization, and organization.
 
-Use actual production modules or shared production sources for claims about production. Demonstration types prove only their own behavior. Positive controls must exercise the corresponding valid operation under the same relevant settings.
+For each counterexample, identify a same-boundary regression and valid control. Reapply demonstrated bypasses to a repair and name remaining paths. Establish uncertain language mechanisms through the companion, primary documentation, or an executable misuse check; otherwise leave the mechanism open.
 
-For consequential claims, consider a small [targeted mutation check](references/targeted-mutations.md): deliberately reopen the exact forbidden path in an isolated copy and confirm the intended check fails. A surviving mutation exposes a gap in that check; it does not, by itself, show the original implementation is wrong.
+When warranted, select one isolated [targeted mutation](references/targeted-mutations.md) in the evidence plan. A survivor shows the check missed that change, not necessarily an implementation defect. Mutation is evidence, never a completion step.
 
-### 5. Report a bounded conclusion
+### 3. Implement, Check, and Account
 
-For each obligation, report the enforcement mechanism, evidence observed, assumptions and limits, and remaining gaps. Identify counterexamples first. Say what was checked and what the result supports; do not collapse compiler restrictions, runtime validation, sampled tests, finite exploration, and formal proof into a single “verified” label.
+Keep a temporary ledger of obligation, provenance, artifact or command, result, supported conclusion, and limits. Mark requester assertions **supplied**, inspected artifacts and completed results **observed**, and unperformed checks **proposed**. Include the claim-check method.
 
-Normally keep this inventory in the task report. Create or update a maintained registry only when the project already uses one or the task calls for durable CI or a lasting verification contract. Follow project location conventions. Missing evidence alone does not authorize a registry, CI edits, or extra implementation work.
+Run only authorized checks. Record the exact working snapshot, toolchain, configuration, command or artifact, result, and limits. A missing tool, malformed fixture, unrelated diagnostic, crash, or timeout is failed or unavailable evidence, never successful rejection.
 
-For that durable case, start from [the manifest template](assets/invariants.template.json) and follow [the manifest format](references/manifest-format.md). Validate it with:
+For implementation, make the scoped change and run appropriate final checks, including any preselected mutation. Once artifacts and results are stable, preserve unavailable checks as limits; do not acquire tools during completion unless separately authorized. Then prepare the complete final response draft and execute the already selected claim check.
+
+### 4. Execute the Claim Check
+
+Check changed or behaviorally affected maintained claims and every behavioral claim in the complete final response draft.
+
+Give the reviewer the complete response draft rather than a selected claim list. The reviewer derives maintained claims from changed or behaviorally affected statements in the final changed artifacts within task scope, and report claims from the draft. Each record includes exact text and a source location or draft section. Group equivalent repeated claims in one record with every occurrence and location; separate claims with different conditions, domains, or conclusions. Test names and implementation labels are evidence unless they independently assert a contract. It does not audit unchanged artifacts outside that scope.
+
+For every derived maintained claim and report claim, produce a record and disposition of **supported**, **contradicted**, or **unestablished**:
+
+> authority and logical form → boundary and input domain → final outcome and evidence → baseline outcome and evidence for compatibility → supported wording
+
+Classify authority before correction. Introduced text is a claim, not authority for broader behavior: narrow or remove it unless an independent task or contract obligation requires the behavior, then assess that behavior over the obligation's domain.
+
+Respect a claim's stated conditions and exclusions. If its domain is ambiguous, mark the domain uncertainty rather than silently choosing a broader reading. Tested examples and evidence limits do not silently narrow a maintained claim's domain: if only narrower wording is supported, disposition the exact claim accordingly. A counterexample inside the established domain contradicts the claim without separate evidence that current callers exercise that case.
+
+For independent review, give the existing correctness reviewer the response draft, obligations, exact changed paths and final contents, results, limits, and baseline evidence for compatibility. Require separate dispositions for derived maintained and report claims. A violated independently authoritative obligation is a claim record with its counterexample and required caller work, not a repair proposal. A claim-only focused review stops after these records; it does not run the ordinary defect workflow or offer optional repair alternatives. In that mode, keep claim records inline and do not create task items for them. When an existing broader correctness or hardening review reuses claim obligations, return the claim records separately and retain that review's authorized ordinary defect workflow and finding reporting in the same review. The claim-only reviewer remains read-only and must not build, test, edit, delegate, create tasks, add infrastructure, or audit unrelated concerns. Require a completed result, not merely a tool call.
+
+For fallback, record why review was unavailable, denied, or failed, then perform the same bounded check:
+
+1. Read the changed inventory and final diff, then any changed behavior-bearing file whose full content was omitted, truncated, or untracked. Derive maintained claims from changed or behaviorally affected statements in those scoped final artifacts, and report claims from the complete response draft.
+2. Keep successful-result, non-success, and named-error obligations separate. Document a named error only when authorized and only for its established path and conditions. Leave incidental outcomes in the ledger or report.
+3. Assess every derived maintained and report claim from the scoped evidence using the same record shape.
+
+The caller owns corrections. Correct, narrow, or remove unsupported assertions about present behavior. Do not change production behavior or add tests solely to preserve introduced text. Do not erase an authoritative required obligation merely because it is unestablished; retain it as a normative obligation and mark its verification or implementation pending.
+
+Post-review edits to behavior-bearing final artifacts must use the record's minimal supported wording. If an edit adds or materially broadens a behavioral statement, derive and disposition that affected maintained claim against the same evidence before completion; this does not start another review cycle.
+
+A behavior-changing correction requires independent task or contract authority, affected applicable checks to run again, and affected records and draft wording to use their actual results; it does not require another reviewer or audit cycle.
+
+Apply supported report corrections to the reviewed draft, then reconcile affected records against the same evidence without another review. Emit that corrected draft instead of recomposing its behavioral content. After review, add only formatting or completion metadata copied from the completed review receipt or required follow-up check results; omit any new or materially broadened behavioral claim.
+
+Completion requires these resolutions and explicit pending obligations. Do not add tests for optional prose, audit unchanged files, expand the invariant inventory, or restart implementation except for an in-scope contradiction.
+
+### 5. Report and Persist Proportionally
+
+Report only after the claim check and corrections complete. Emit the corrected reviewed draft; use the ledger and tool trace when applying corrections rather than generating new behavioral wording.
+
+Before claiming preservation or change, pair baseline and final outcomes for the same representation and boundary. Claim only the exact respect that matches or differs; if either side is unavailable, omit the temporal claim or mark it unestablished.
+
+Account for each obligation as observed, supplied, or pending. Put counterexamples first and separate conclusions from assumptions, limits, and unavailable checks. Actions need completed results; content identity needs byte or digest comparison. Do not collapse compiler restrictions, runtime validation, samples, finite exploration, and proof into “verified.”
+
+Normally keep the inventory in the task report. Create or update a registry only when the project already uses one or the user requests durable CI or a lasting contract. Missing evidence does not authorize a registry, CI change, or extra implementation.
+
+For an authorized durable contract, use the [manifest template](assets/invariants.template.json), [manifest format](references/manifest-format.md), and [execution-report requirements](references/evidence-and-reporting.md#execution-report). Keep results separate. CI must obtain its checker reproducibly and run its exact command. Validate metadata with:
 
 ```sh
 python3 <skill-dir>/scripts/validate_invariants.py <manifest.json> --root <project> --json
 ```
 
-This command checks schema and local references. It never executes stored commands, proves invariants, or stores a cached verified verdict. Keep execution reports separate and invalidate stale evidence when its implementation, configuration, assumptions, or toolchain changes.
+This checks schema and references only; it does not run commands or prove an invariant. Invalidate evidence when implementation, configuration, assumptions, or toolchain changes.
 
 ## Reference Map
 
-Read only the reference needed for the current obligation:
+Read only what the current obligation needs:
 
-- [Construction boundaries](references/construction-boundaries.md): inventory creation and mutation paths and distinguish structural exclusion from checked values.
-- [Transition exploration](references/transition-exploration.md): define the model, traverse finite states, handle interleavings, and state bounds.
-- [Evidence and reporting](references/evidence-and-reporting.md): interpret evidence strength, report limits, and decide when formal methods are justified.
-- [Targeted mutations](references/targeted-mutations.md): test whether a check detects a deliberately reopened invariant violation.
-- [Manifest format](references/manifest-format.md): maintain optional obligations and validate their metadata without executing commands.
+- [Construction boundaries](references/construction-boundaries.md): value paths, logical forms, and enforcement.
+- [Transition exploration](references/transition-exploration.md): interleavings, traversal, exhaustion, and bounds.
+- [Evidence and reporting](references/evidence-and-reporting.md): evidence, ledger, reports, persistence, and checklist.
+- [Targeted mutations](references/targeted-mutations.md): sensitivity to a reopened path.
+- [Manifest format](references/manifest-format.md): durable obligation metadata.
 
 Use the [completion checklist](references/evidence-and-reporting.md#completion-checklist) before finishing.

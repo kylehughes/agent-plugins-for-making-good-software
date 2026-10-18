@@ -39,7 +39,7 @@ Load only the concern-specific guidance needed for the task. Use repository inst
 - Concurrency, isolation, `Sendable`, tasks, actors, cancellation, or async sequences: `using-swift-concurrency`; if unavailable, use [Concurrency](references/concurrency.md) for repair patterns or consult it only for an unresolved detail.
 - Test structure and assertions: `testing-swift-code`; if unavailable, use [Testing Swift](references/testing.md) or consult it only for an unresolved detail.
 - Timing, observers, cancellation, or async-test determinism: `testing-async-swift-code`; if unavailable, use the async portions of [Testing Swift](references/testing.md) or consult them only for an unresolved detail.
-- Invariants, typed IDs, state, ownership, or legal transitions: `modeling-swift-types-for-correctness`.
+- Validated values, initializer or decoding validation, persisted-data compatibility, impossible-state claims, typed IDs, ownership, or legal transitions: [modeling-swift-types-for-correctness](../modeling-swift-types-for-correctness/SKILL.md). Load it before changing or assessing those boundaries; it composes with the shared invariant procedure when needed.
 - API design: `designing-swift-apis`; type and file layout: `organizing-swift-types`; member placement: `ordering-symbols`.
 - User-facing UI text: `localizing-strings`; UIKit cell content: `configuring-ios-content`; sheets: `presenting-ios-modals`.
 - Package/module boundaries: `structuring-swift-packages`.

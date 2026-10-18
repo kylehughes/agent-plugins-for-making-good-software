@@ -7,6 +7,8 @@ description: "Design and review Swift API names, argument labels, signatures, an
 
 This skill provides guidance on designing clear, idiomatic Swift APIs following Apple's official design guidelines.
 
+Match the requested design scope. For naming-only work, preserve types and behavior and confine recommendations to names, argument labels, and call sites. Clarify weakly typed parameters with role nouns; reserve type-modeling or architectural recommendations for a request that includes those concerns.
+
 ## Core Principle
 
 **Clarity at the point of use** is the most important goal. APIs are declared once but used repeatedly—optimize for the reader at the call site.

@@ -16,6 +16,15 @@ measurements for comparison, not claims about fitting a particular host
 window. Paths in this document refer to this repository; other plugins and a
 crowded work machine are outside the measurement boundary.
 
+The host's listing budget is a separate constraint. Claude Code may retain a
+skill's name while dropping its description when the combined metadata exceeds
+that budget. Registration alone therefore cannot establish discovery exposure.
+The [invariant acceptance launcher](invariant-verification.md#behavioral-acceptance)
+sets a supported per-process budget and checks the native diagnostic log for
+truncation. It does not preload skill bodies or change user settings. See
+[Claude Code's loading model](https://code.claude.com/docs/en/features-overview#understand-how-features-load)
+for the distinction between discovery metadata and activated content.
+
 ## Context reduction baseline
 
 The baseline commit `f84580d` contained 26 skills with 12,586 description
@@ -69,10 +78,13 @@ links cover invariant claims and enforcement changes without preloading the new
 skill into every agent. See [invariant verification](invariant-verification.md)
 for the tooling and acceptance matrix.
 
-The invariant-verification addition brings the catalog to 27 skills with 5,338
-description characters and keeps 8 agents. Entry-point bodies total 253,016
-characters; summed agent preloads total 74,190, up 994 from `c3d5df7`. The new
-verifier is conditionally loaded rather than added to agent preloads. The
+The initial invariant-verification addition at `ad72b90` brought the catalog to
+27 skills with 5,338 description characters and kept 8 agents. Its entry-point
+bodies totaled 253,016 characters and summed agent preloads totaled 74,190.
+The follow-up fixes use 5,464 description characters, 264,000 body characters,
+and 79,561 summed preload characters. No preload entries were added; the increase
+comes from guidance in existing owner skills. The new verifier remains
+conditionally loaded, with a 121-line entry point; Swift modeling has 199 lines. The
 [validation results](invariant-verification.md#validation-results) distinguish
 deterministic tooling checks from runtime activation and response-quality limits.
 
@@ -155,7 +167,8 @@ For native Claude discovery smoke tests, use the reviewed local repository and
 the plugin evaluation command documented at [plugin evals](https://code.claude.com/docs/en/plugin-evals):
 
 ```shell
-claude plugin eval plugins/<plugin> --eval-dir evals/discovery-smoke --ablation none --runs 3 --model claude-sonnet-5 --no-publish --no-scaffold --trust-plugin --output-dir /tmp/plugin-eval
+SLASH_COMMAND_TOOL_CHAR_BUDGET=24000 \
+claude plugin eval plugins/<plugin> --eval-dir evals/discovery-smoke --ablation none --runs 3 --model claude-sonnet-5-5 --no-publish --no-scaffold --trust-plugin --output-dir /tmp/plugin-eval
 ```
 
 Compare old and new versions from isolated temporary copies using the same

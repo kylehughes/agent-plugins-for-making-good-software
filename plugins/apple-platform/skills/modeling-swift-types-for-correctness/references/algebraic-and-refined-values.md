@@ -145,7 +145,9 @@ struct NonEmptyString: Hashable, Sendable {
 
 The bound is part of this type's fixed meaning, so callers cannot select a weaker policy than decoding uses. State the unit of every string bound: `String.count` measures extended grapheme clusters, while protocols and storage systems may constrain Unicode scalars, UTF-8 bytes, or another encoded representation. Canonicalize first, then measure the representation the external contract actually limits. If limits differ by field, define separate domain types/policies or make the policy explicit in the surrounding validator rather than pretending one type has one guarantee. The current Swift 6 baseline supports the typed-throws spelling; use it only when the closed failure set improves callers.
 
-The checked initializer proves only what its implementation and access control preserve. Audit:
+The checked initializer proves only what its implementation and access control preserve. For a struct, a custom initializer declared in the primary type body suppresses the synthesized memberwise initializer; an initializer declared only in an extension preserves memberwise synthesis. Confirm which declarations exist before reporting a memberwise bypass. A visible `let` property permits reading, not post-initialization assignment. These rules do not suppress synthesized `Decodable`, which is a separate construction path.
+
+Audit:
 
 - Stored properties are not publicly writable.
 - No memberwise or alternate initializer bypasses validation.
@@ -426,11 +428,6 @@ extension NonEmptyString: Codable {
                 debugDescription: "Expected a nonempty string within the type's fixed maximum length."
             )
         }
-    }
-
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(storage, forKey: .storage)
     }
 }
 ```

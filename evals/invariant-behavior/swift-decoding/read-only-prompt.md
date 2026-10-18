@@ -1,0 +1,1 @@
+Assess whether this saved value can ever contain a nonpositive quantity, including after restoring previously saved data. Explain the smallest deterministic checks that would support your conclusion. Keep this assessment read-only.

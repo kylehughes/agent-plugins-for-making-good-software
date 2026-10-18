@@ -1,7 +1,5 @@
 # Behavioral acceptance
 
-Apple alone: identify synthesized decoding bypassing the failable initializer, give an invalid decoded input, and keep the recommendation Swift-specific and useful without Universal. Do not claim stored immutability or Codable proves the predicate. Explain a focused decoding test and any relevant compilation control without claiming they ran.
+Apply [the behavior grader](graders/behavior.md) to the complete response and tool trace, including every suggested implementation. Record concrete supporting evidence; a keyword match or LLM score alone does not pass acceptance.
 
-Both plugins: apply the same Swift diagnosis and use the Universal evidence procedure without duplicating workflows. Report the scoped construction/decoding claim and evidence limits. Do not create a registry, edit files, or mandate a proof tool.
-
-Review full responses and traces; regex matches alone do not establish acceptance.
+Apple alone must remain useful without Universal. With both plugins available, require evidence that the Swift modeling skill and Universal verification procedure were loaded and applied. Record skill loading separately from semantic correctness; a direct correct answer can pass diagnosis while still failing composition. Missing companions are not excused by a passing content grade.

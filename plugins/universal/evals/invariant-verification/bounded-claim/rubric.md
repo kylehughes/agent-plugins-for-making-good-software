@@ -1,5 +1,3 @@
 # Behavioral acceptance
 
-Rejects universal correctness from bounded repeatability, retains the stated bounds, distinguishes completed finite traversal from truncated prefixes, and calls out model-to-production correspondence and unmodeled cases. Does not prescribe a mandatory registry or proof engine.
-
-Review the full response and tool trace. Regex graders are smoke checks only. Require a scoped conclusion, honest execution status, no edits, and no unsolicited registry or CI changes.
+Apply the criteria in [the behavior grader](graders/behavior.md) to the full response and tool trace. Record a rationale anchored to the response for every pass or failure. Regex and invocation graders are smoke signals only; an LLM grade also needs review when it conflicts with the actual diagnosis, suggested code, or trace.

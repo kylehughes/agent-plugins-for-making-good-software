@@ -19,6 +19,59 @@ Coverage measures exercised code or obligations according to its definition. Mut
 
 Do not call a rejected fixture a compiler restriction until its positive control compiles and the expected diagnostic matches. A malformed fixture is a harness failure. Keep “failed check,” “counterexample,” and “unavailable evidence” distinct: a tool crash is not a counterexample to the domain invariant.
 
+## Evidence ledger
+
+Keep a temporary accounting of the obligations and their evidence. A short assessment can use a few sentences; use a table when sources or evidence strengths differ:
+
+| Obligation | Provenance | Artifact or command | Result | Supports | Pending or limits |
+| --- | --- | --- | --- | --- | --- |
+| The scoped predicate holds over the explored states. | Supplied | Requester's run description | Reported passing states | No violation was reported among explored states. | Inspect completion and truncation evidence before claiming exhaustive traversal. |
+| A required boundary check rejects a forbidden input. | Proposed | Planned boundary test | Not run | No execution conclusion yet. | Run against the recorded implementation and check its valid control. |
+
+**Supplied** means stated by the requester without independent inspection. **Observed** requires an inspected artifact or completed tool result. **Proposed** checks have no result yet. Preserve these distinctions when quoting or summarizing a result; an observed log can still leave the implementation's coverage unestablished.
+
+For behavioral obligations, organize the record as:
+
+> Authority and logical form → input representation and boundary → final outcome and evidence → baseline outcome and evidence, when claiming compatibility → supported wording and exceptions.
+
+A sentence can carry this record for a small task. Keep successful-result postconditions, non-success requirements, and named-error requirements distinct. An observed outcome alone does not authorize a new maintained promise. Retain input representations and failure paths even when they share a business meaning. Source inspection can support a broader scoped argument; sampled outcomes alone cannot. After implementation checks, read back changed behavioral text and derive its wording from this record, including baseline evidence for claims of preserved behavior.
+
+Before returning, reconcile these notes with the tool trace and final plan. Every relevant completed check and every applicable pending obligation must remain accounted for. Each conclusion needs supporting evidence of the stated strength. Do not move an unconfirmed prerequisite into a conclusion merely because the named method ordinarily requires it. This ledger is a task-report aid, not another project registry.
+
+For a confirmed bypass, specify the same-boundary regression and valid control. When repair advice is requested or offered, connect it to that evidence:
+
+| Boundary and counterexample | Repair | Same-path regression and valid control | Status and remaining paths |
+| --- | --- | --- | --- |
+| Restoration accepts data that construction rejects. | Route restored data through the checked construction boundary while preserving its wire shape. | Reject the predicate-reaching invalid payload; retain a fixed historical payload and current round trip. | Proposed until run against the repair; inspect any other construction and mutation paths separately. |
+
+Verification-only work can stop at the counterexample, checks, and limits. If recommending a repair, keep partial defenses distinct and identify their remaining bypasses. Read-only work may explain a requested repair without applying it. Claims about cleanup or other performed actions also need completed tool results.
+
+## Focused claim review
+
+For implementation work, use an available reviewer focused on correctness to reconcile changed behavior-bearing artifacts and the complete final response draft. This is the completion check, not an additional whole-change audit. A review already covering the same final snapshot, evidence, and response draft satisfies it. A claim-only request stops after inline claim records and creates no task items for them; when hardening or a broader correctness review already covers the change, attach the obligations to that review, return claim records separately, and retain its authorized ordinary defect scope and finding reporting. Do not add another reviewer or loop. Preserve the caller's model policy.
+
+Give the reviewer the authoritative obligations, exact changed paths and final contents (including untracked files), baseline source or evidence when comparing behavior, completed-check results, known limits, and the complete response draft. Label missing baseline evidence as unavailable. The draft is transient handoff content; do not create a maintained report file or registry for it.
+
+The reviewer derives maintained claims from changed or behaviorally affected statements in the supplied final artifacts within the changed files and task scope, and report claims from the complete draft. It records exact text and a source location or draft section; relevant maintained sources include docstrings, comments, documentation, error messages, manifests, and workflows. Group equivalent repeated claims in one record with every occurrence and location; separate claims with different conditions, domains, or conclusions. Test names and implementation labels are evidence unless they independently assert a contract. It does not audit unrelated unchanged documentation.
+
+The reviewer returns derived maintained and report claims as separate categories. Each item receives **supported** when scoped evidence establishes it, **contradicted** when scoped evidence supplies a counterexample, or **unestablished** when available evidence cannot decide it. Each disposition names the evidence or gap and minimal supported wording or pending obligation. Respect stated conditions and exclusions; when the domain is ambiguous, record the uncertainty instead of silently broadening it. Tested examples and evidence limits do not silently narrow a maintained claim's domain: if only narrower wording is supported, disposition the exact claim accordingly. A counterexample within the established domain contradicts a claim without separate proof that current callers exercise that case.
+
+Record whether each claim has independent authority or was introduced by the implementation or response draft. Introduced text is an assertion under review, not authority to expand behavior. For an unsupported introduced assertion, return one minimal supported textual correction or removal. For a violated independently authoritative obligation, record the counterexample and required caller work; do not propose a repair alternative. Assess any caller-authorized behavior change against that obligation's domain and evidence.
+
+Use this bounded contract with the existing reviewer's instructions:
+
+> Remain read-only. Derive maintained claims from changed or behaviorally affected statements in the scoped final artifacts and report claims from the complete response draft. Record exact text and location or draft section. Group equivalent repeated claims in one record with every occurrence and location; separate claims with different conditions, domains, or conclusions. Treat test names and implementation labels as evidence unless they independently assert a contract. Mark every claim supported, contradicted, or unestablished and keep the categories separate. For each claim, distinguish independent authority from text introduced by this change or draft. Inspect scoped source, tests, and supplied baseline as needed. Respect stated conditions and exclusions; record ambiguous domains as uncertain. Tested examples and evidence limits do not silently narrow a maintained claim's domain; if only narrower wording is supported, disposition the exact claim accordingly. Keep successful-result, non-success, and named-error claims distinct, and check compatibility claims against baseline and final outcomes. For unsupported introduced text, give only minimal supported wording or removal; do not offer code or test changes to make it true. Record a violated independently authoritative obligation with its counterexample and required caller work, not a repair alternative. In a claim-only request, return these claim verdicts inline, create no task items for them, then stop; do not run the ordinary defect workflow. In a broader existing review with attached claim obligations, return these records separately and retain the review's authorized ordinary defect scope and finding reporting. Do not build, test, edit, delegate again, add infrastructure, or audit unrelated concerns during a claim-only request.
+
+Require a completed result covering every derived claim before calling the check performed. If independent review is unavailable or fails, use direct extraction and inspection with the same record shape and record that method. Correct, narrow, or remove unsupported assertions about present behavior; do not change production behavior or add tests solely to preserve introduced text. Retain authoritative required obligations as normative when unestablished and mark their verification or implementation pending; a registry does not cache verified assertions.
+
+Post-review edits to behavior-bearing final artifacts must use the record's minimal supported wording. If an edit adds or materially broadens a behavioral statement, derive and disposition that affected maintained claim against the same evidence before completion; this does not start another review cycle.
+
+A behavior-changing correction requires independent task or contract authority, affected applicable checks to run again, and affected records and draft wording to use their actual results; it does not require another reviewer or audit cycle.
+
+Apply supported report corrections to the reviewed draft, check only affected records against the same evidence, and emit that corrected draft rather than regenerating behavioral prose. Post-review additions are limited to formatting and completion metadata copied from the completed review receipt or required follow-up check results; omit new or materially broadened behavioral claims.
+
+Completion requires those resolutions and explicit pending obligations. Fully supported records remain fallible evidence, not proof.
+
 ## Execution report
 
 Keep execution evidence separate from the maintained obligation manifest. Include:
@@ -29,6 +82,14 @@ Keep execution evidence separate from the maintained obligation manifest. Includ
 - Toolchain, relevant configuration, exact command or artifact, and observed result.
 - Model/input bounds, assumptions, truncation, and implementation linkage where relevant.
 - Unchecked paths, unavailable checks, counterexamples, and the next action warranted by the task.
+
+When connecting a requested CI check, start with the project's existing check command and preserve its flags and working directory unless a demonstrated need requires a change. Verify that exact invocation with the relevant configuration. A nearby command that passes supplies local evidence only until its equivalence to the CI invocation is established. If the exact invocation cannot run because its tool or environment is unavailable, report CI execution as unavailable; do not treat another command's success as CI acceptance.
+
+CI must obtain every referenced checker from the checkout or a declared, reproducible dependency. A path into an agent's local plugin installation is not portable. For an authorized project-owned copy, treat the bundled checker as read-only input: read its contents and write the project destination with the available file tools. Confirm the destination exists, then execute the exact CI invocation. If an operation is denied, inspect the stated reason and respect that boundary. Do not re-express the denied operation through other tools. Proceed with a narrower action only when the denial clearly permits it; otherwise report the blocker and do not present an incomplete workflow as working CI.
+
+When copying a checker into a project, compare bytes or digests before calling it unchanged. Added attribution or documentation still changes the file; describe it as adapted when appropriate. Record the source and any changes separately from evidence that the copied checker behaves correctly.
+
+When the task creates or updates maintained contract documents, compare their statements with the production boundary, tests, and manifest assumptions or exclusions. Check both the accepted domain and promised failure behavior. Correct conflicting wording within the authorized scope; explaining the discrepancy only in the final response leaves future callers with a false contract.
 
 For example: “The client fixture cannot construct a validated quantity directly under the recorded compiler settings. Its valid factory control compiles. Decoder tests reject zero and negative inputs. Privileged module code and foreign interfaces were not checked.” This says more than “the type is safe” and is easier to keep accurate.
 
@@ -50,11 +111,13 @@ Record model/specification sources, assumptions, axioms, trusted code, toolchain
 
 ## Completion checklist
 
+- Any installed companion required by the language-specific boundary has been loaded and its rules applied.
 - The domain contract defines “incorrect,” and the claim has a finite scope.
 - Construction, decoding, mutation, transition, and external boundaries relevant to the claim are accounted for.
 - Evidence uses production code or states its model-only limit.
 - Valid controls distinguish intended rejection from broken fixtures.
 - Results identify the checked snapshot and configuration.
+- Conclusions and pending checks map to the reconciled evidence ledger, with supplied assertions distinguished from observed results.
 - Bounds, assumptions, gaps, and unavailable checks are explicit.
 - The conclusion distinguishes enforcement from evidence and does not promise whole-program correctness.
 - Persistence and changes remain within the authorized task.

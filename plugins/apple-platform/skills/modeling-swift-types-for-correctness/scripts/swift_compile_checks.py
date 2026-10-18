@@ -63,10 +63,10 @@ def _validate_compiler_arguments(arguments: list[str]) -> None:
         raise ManifestError("compiler_arguments must select Swift 6 language mode")
 
 
-def load_manifest(path: Path) -> dict[str, Any]:
+def _parse_manifest(contents: bytes) -> dict[str, Any]:
     try:
-        data = json.loads(path.read_text(encoding="utf-8"))
-    except (OSError, UnicodeError, json.JSONDecodeError) as error:
+        data = json.loads(contents.decode("utf-8"))
+    except (UnicodeError, json.JSONDecodeError) as error:
         raise ManifestError(f"cannot read manifest: {error}") from error
     if not isinstance(data, dict):
         raise ManifestError("manifest root must be an object")
@@ -156,6 +156,14 @@ def load_manifest(path: Path) -> dict[str, Any]:
     return data
 
 
+def load_manifest(path: Path) -> dict[str, Any]:
+    try:
+        contents = path.read_bytes()
+    except OSError as error:
+        raise ManifestError(f"cannot read manifest: {error}") from error
+    return _parse_manifest(contents)
+
+
 def resolve_inputs(manifest_path: Path, manifest: dict[str, Any]) -> dict[str, Any]:
     root = manifest_path.parent
     paths: set[str] = set(manifest["support_sources"])
@@ -172,6 +180,45 @@ def resolve_inputs(manifest_path: Path, manifest: dict[str, Any]) -> dict[str, A
         "negative_fixtures": manifest["negative_fixtures"],
         "runtime_checks": manifest.get("runtime_checks", []),
     }
+
+
+def source_snapshots(manifest_path: Path, manifest: dict[str, Any]) -> dict[str, bytes]:
+    source_names = set(manifest["support_sources"])
+    for collection in ("positive_controls", "negative_fixtures", "runtime_checks"):
+        for item in manifest.get(collection, []):
+            source_names.update(item["sources"])
+
+    snapshots: dict[str, bytes] = {}
+    for source in sorted(source_names):
+        path = manifest_path.parent / source
+        try:
+            snapshots[source] = path.read_bytes()
+        except OSError as error:
+            raise ManifestError(f"cannot snapshot source file {source}: {error}") from error
+    return snapshots
+
+
+def stage_sources(directory: Path, snapshots: dict[str, bytes]) -> dict[str, Path]:
+    staged: dict[str, Path] = {}
+    for index, (source, contents) in enumerate(snapshots.items()):
+        destination = directory / str(index) / Path(source).name
+        destination.parent.mkdir(parents=True)
+        destination.write_bytes(contents)
+        staged[source] = destination
+    return staged
+
+
+def changed_staged_sources(staged: dict[str, Path], snapshots: dict[str, bytes]) -> list[str]:
+    changed: list[str] = []
+    for source, path in staged.items():
+        try:
+            contents = path.read_bytes()
+        except OSError:
+            changed.append(source)
+            continue
+        if contents != snapshots[source]:
+            changed.append(source)
+    return changed
 
 
 def module_name(name: str) -> str:
@@ -209,13 +256,13 @@ def run_process(command: list[str], cwd: Path, timeout: float) -> dict[str, Any]
     }
 
 
-def _source_paths(root: Path, support: list[str], sources: list[str]) -> list[str]:
-    return [str(root / source) for source in [*support, *sources]]
+def _source_paths(staged: dict[str, Path], support: list[str], sources: list[str]) -> list[str]:
+    return [str(staged[source]) for source in [*support, *sources]]
 
 
 def compile_command(
     swiftc: str,
-    root: Path,
+    staged: dict[str, Path],
     temporary: Path,
     arguments: list[str],
     support: list[str],
@@ -229,7 +276,7 @@ def compile_command(
         module,
         "-emit-module-path",
         str(temporary / f"{module}.swiftmodule"),
-        *_source_paths(root, support, item["sources"]),
+        *_source_paths(staged, support, item["sources"]),
     ]
 
 
@@ -252,6 +299,15 @@ def evaluate_positive(name: str, process: dict[str, Any]) -> dict[str, Any]:
         return _result(name, "positive", process, "fail", "compiler crashed")
     if process["outcome"] == "unavailable":
         return _result(name, "positive", process, "fail", "compiler became unavailable")
+    if process.get("input_changes"):
+        changed = ", ".join(process["input_changes"])
+        return _result(
+            name,
+            "positive",
+            process,
+            "fail",
+            f"staged source changed during compilation: {changed}",
+        )
     if process["returncode"] != 0:
         return _result(name, "positive", process, "fail", "positive control did not compile")
     return _result(name, "positive", process, "pass", "compiled")
@@ -265,6 +321,15 @@ def evaluate_negative(item: dict[str, Any], process: dict[str, Any]) -> dict[str
         return _result(name, "negative", process, "fail", "compiler crashed")
     if process["outcome"] == "unavailable":
         return _result(name, "negative", process, "fail", "compiler became unavailable")
+    if process.get("input_changes"):
+        changed = ", ".join(process["input_changes"])
+        return _result(
+            name,
+            "negative",
+            process,
+            "fail",
+            f"staged source changed during compilation: {changed}",
+        )
     if process["returncode"] == 0:
         return _result(name, "negative", process, "fail", "negative fixture was unexpectedly accepted")
 
@@ -309,13 +374,13 @@ def run_checks(
 ) -> dict[str, Any]:
     if not math.isfinite(timeout) or timeout <= 0:
         raise ManifestError("timeout must be a finite positive number")
-    manifest_bytes = manifest_path.read_bytes()
-    manifest = load_manifest(manifest_path)
+    try:
+        manifest_bytes = manifest_path.read_bytes()
+    except OSError as error:
+        raise ManifestError(f"cannot read manifest: {error}") from error
+    manifest = _parse_manifest(manifest_bytes)
     inputs = resolve_inputs(manifest_path, manifest)
-    source_names = set(manifest["support_sources"])
-    for collection in ("positive_controls", "negative_fixtures", "runtime_checks"):
-        for item in manifest.get(collection, []):
-            source_names.update(item["sources"])
+    snapshots = source_snapshots(manifest_path, manifest)
     report: dict[str, Any] = {
         "schema_version": 1,
         "status": "fail",
@@ -325,14 +390,16 @@ def run_checks(
             "manifest": str(manifest_path.resolve()),
             "sha256": hashlib.sha256(manifest_bytes).hexdigest(),
             "sources": {
-                source: hashlib.sha256((manifest_path.parent / source).read_bytes()).hexdigest()
-                for source in sorted(source_names)
+                source: hashlib.sha256(contents).hexdigest()
+                for source, contents in snapshots.items()
             },
         },
         "inputs": inputs,
         "results": [],
         "limitations": [
             "Compiler rejection proves only the listed source snapshot, flags, and diagnostic markers.",
+            "Compiler source paths refer to temporary snapshot copies; path-sensitive behavior and settings require separate build evidence.",
+            "Prebuilt modules, SDK contents, plugins, response files, and other compiler-argument dependencies are not included in the snapshot digest.",
             "Runtime validation, serialization, interoperability, availability, and unsafe escape hatches require separate evidence.",
         ],
     }
@@ -372,10 +439,22 @@ def run_checks(
     results: list[dict[str, Any]] = report["results"]
     with tempfile.TemporaryDirectory(prefix="swift-compile-checks-") as directory:
         temporary = Path(directory)
+        invocation = 0
+
+        def invoke(build_command: Any) -> dict[str, Any]:
+            nonlocal invocation
+            invocation += 1
+            staged = stage_sources(temporary / "inputs" / str(invocation), snapshots)
+            process = run_process(build_command(staged), root, timeout)
+            process["input_changes"] = changed_staged_sources(staged, snapshots)
+            return process
+
         controls: dict[str, dict[str, Any]] = {}
         for control in manifest["positive_controls"]:
-            process = run_process(
-                compile_command(swiftc, root, temporary, arguments, support, control), root, timeout
+            process = invoke(
+                lambda staged, control=control: compile_command(
+                    swiftc, staged, temporary, arguments, support, control
+                )
             )
             result = evaluate_positive(control["name"], process)
             controls[control["name"]] = result
@@ -394,21 +473,24 @@ def run_checks(
                     "diagnostics": "",
                 })
                 continue
-            process = run_process(
-                compile_command(swiftc, root, temporary, arguments, support, fixture), root, timeout
+            process = invoke(
+                lambda staged, fixture=fixture: compile_command(
+                    swiftc, staged, temporary, arguments, support, fixture
+                )
             )
             results.append(evaluate_negative(fixture, process))
 
         for check in manifest.get("runtime_checks", []):
             executable = temporary / module_name(check["name"])
-            command = [
-                swiftc,
-                *check.get("compiler_arguments", []),
-                *_source_paths(root, support, check["sources"]),
-                "-o",
-                str(executable),
-            ]
-            compile_process = run_process(command, root, timeout)
+            compile_process = invoke(
+                lambda staged, check=check, executable=executable: [
+                    swiftc,
+                    *check.get("compiler_arguments", []),
+                    *_source_paths(staged, support, check["sources"]),
+                    "-o",
+                    str(executable),
+                ]
+            )
             compile_result = evaluate_positive(check["name"], compile_process)
             compile_result["kind"] = "runtime-build"
             results.append(compile_result)

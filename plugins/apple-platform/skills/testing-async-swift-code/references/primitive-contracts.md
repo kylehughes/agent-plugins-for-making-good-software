@@ -95,10 +95,11 @@ final class TimeoutBudget: @unchecked Sendable {
 
     /// Sleeps one slice and debits it. Returns false once the budget is spent.
     func spendSlice() async -> Bool {
-        lock.lock()
-        let spent = remaining <= .zero
-        if !spent { remaining -= slice }
-        lock.unlock()
+        let spent = lock.withLock {
+            let spent = remaining <= .zero
+            if !spent { remaining -= slice }
+            return spent
+        }
         guard !spent else { return false }
         try? await Task.sleep(for: slice)
         return true
