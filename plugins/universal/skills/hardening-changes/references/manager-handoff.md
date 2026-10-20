@@ -1,6 +1,6 @@
 # Manager handoff
 
-Prepare a concise handoff for someone who did not watch the implementation. Name concrete files, symbols, changes, and the next action. Report scoped findings and obligations; rejected observations stay in the internal ledger. Use only sections with content. A wording-only change may need only the status block and its prose-review result.
+For the substantive path, prepare a concise handoff for someone who did not watch the implementation. Name concrete files, symbols, changes, and the next action. Report scoped findings and obligations; rejected observations stay in the internal ledger. Use only sections with content. The wording-only path finishes in the skill entry point without this reference.
 
 ## Status and proof
 
@@ -33,14 +33,14 @@ In attended runs with a configured issue tracker, offer once to file deferred wo
 
 ## When invariant verification applies
 
-Use the existing correctness reviewer for the bounded claim check defined by [verifying-invariants](../../verifying-invariants/SKILL.md). Keep it inside the current workflow:
+The existing correctness reviewer owns the final review response; the orchestrator owns resolving its findings. The claim contract and correction rules come from [verifying-invariants](../../verifying-invariants/SKILL.md).
 
-1. Write every section you intend to emit in its final wording, including pending obligations and the next action. The four-line status block or selected claim bullets alone are not the complete draft.
-2. Give the reviewer that entire draft, final artifacts, actual checkpoint results, and verification limits. Require explicit supported, contradicted, or unestablished verdicts for maintained claims and report claims. Reuse a prior review only when it covered these same inputs.
-3. Wait for the completed verdicts and resolve the records. Apply their supported corrections to the same draft. After review, add only formatting or completion metadata from the review receipt or required follow-up results; do not add new or broader behavioral claims.
-4. Emit that corrected draft. Completing this stage does not discharge pending project proof or complete invariant implementation.
+1. Once final fixes and checkpoint evidence are stable, write the complete intended handoff with every section, pending obligation, and next action. Supply that full text, final scoped artifacts, baseline evidence, actual results, and limits to the existing correctness reviewer. Combine this with an applicable final scoped correctness re-audit rather than scheduling a separate claim audit.
+2. Obtain its completed **Maintained claims**, **Report claims**, and **Reviewed response**. The first two contain the derived dispositions; the third contains the entire supplied handoff with only supported wording corrections. Selected claim bullets or a verdict without the reviewed response do not complete this transfer.
+3. Resolve the records and any ordinary findings under the invariant skill's correction rules. An incomplete review or unresolved contradiction prevents declaring hardening complete. Required project proof may remain pending when accurately handed off.
+4. Emit the returned **Reviewed response**, with only the permitted supported corrections and completion metadata. Do not compose another handoff from the verdicts. This completes the hardening stage, not the pending project proof.
 
-The invariant skill owns claim semantics and correction rules. This handoff adds no reviewer, registry, audit cycle, or project verification gate.
+When independent review is unavailable, use the invariant skill's direct-check fallback on the same complete draft and retain that corrected response. No additional reviewer, registry, audit cycle, or project verification gate is introduced.
 
 ## Completion checklist
 

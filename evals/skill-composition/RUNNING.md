@@ -4,6 +4,20 @@ Use this guide for new batches. [README.md](README.md) preserves the historical
 initial protocol; its frozen criteria, scenarios, prompts, and rubrics remain
 unchanged. [Results](results.md) records earlier batches and their failures.
 
+## Test a structural repair before the full gate
+
+The [structural pilot](structural-pilot-plan.json) declares six sequential Sonnet
+runs: three cosmetic and three substantive hardening cases. It uses the existing
+frozen inputs, medium effort, and 900-second timeout. Its source snapshot stays
+fixed through independent review.
+
+All six must be accepted before attempting the full matrix below on the same
+plugin bytes. A failed or missing pilot outcome ends this repair attempt; retain
+it and report the remaining mechanism. Do not substitute a retry, switch models,
+or launch another tuning batch without a new explicit decision. The pilot does
+not satisfy or reduce the 18-run gate. This attempt permits at most six pilot
+runs and, conditionally, one full matrix.
+
 ## Declare the batch
 
 Before launching, record a fresh 18-run matrix: three cases (`hardening-invariant`,

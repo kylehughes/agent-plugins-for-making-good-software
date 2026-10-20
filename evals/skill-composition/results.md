@@ -1,12 +1,13 @@
 # Composition evaluation results
 
-The release gate remains closed. The latest full batch accepted **12 of 18**
-runs on its retained plugin snapshot. Its deterministic assessments passed
-17 of 18; successful compilation does not establish workflow adherence.
+The release gate remains closed. The latest [structural pilot](#structural-pilot)
+accepted **2 of 6** Sonnet runs, so its conditional 18-run release matrix was
+not launched. All six passed deterministic checks; those checks do not establish
+workflow adherence. The latest earlier full batch accepted **12 of 18** runs on
+its own retained plugin snapshot, with 17 deterministic passes.
 Use [RUNNING.md](RUNNING.md) for the current procedure. The frozen
 [README](README.md) preserves the initial protocol.
-The [scope revision](#scope-revision) still fails cosmetic and substantive
-hardening on Sonnet. Supplemental Opus runs do not replace the full-batch gate.
+Neither pilot nor supplemental Opus results replace the full-batch gate.
 
 | Full batch | Protocol | Accepted | Deterministic pass |
 | --- | --- | --- | --- |
@@ -24,7 +25,59 @@ Prompts, fixtures, and rubrics did not change. These are separate samples,
 not a pooled or best-of pass rate. An additional interrupted declaration is
 recorded separately below; its missing outcomes remain failures.
 
-## Remaining failures
+## Structural pilot
+
+The [declared pilot](structural-pilot-plan.json) froze Universal 1.8.2 and Apple
+Platform 2.1.0 at plugin digest
+`b4dc460727fe82f09590c30beb938a0b8e7e6130fe4bee2bc8753eb4a73c3887`.
+It ran three cosmetic and three substantive hardening cases sequentially on
+Sonnet 5.5 at medium effort, each with a 900-second timeout. Prompts, fixtures,
+rubrics, runner behavior, and native tool restrictions stayed unchanged.
+
+The candidate makes wording-only hardening a terminating path before the general
+loop. Explicit truth audits still take precedence. For substantive invariant
+work, the existing correctness reviewer receives the complete intended response
+with final artifacts and evidence, then returns separate maintained/report claim
+records and the complete corrected response. The caller resolves the records
+and emits that response. The claim procedure, reviewer, and evidence reference
+now share this contract; no reviewer role, registry, model pin, or extra audit
+loop was added.
+
+The [results](native-results-structural-pilot.json) accepted cosmetic hardening
+2/3 and substantive hardening 0/3. All six native executions completed and all
+six deterministic checks passed. The remaining failures are concrete:
+
+- One cosmetic handoff speculated that unchanged decoding might bypass the
+  predicate and recommended a separate check after the scoped prose review.
+- Two substantive callers supplied abbreviated drafts, then expanded their final
+  responses beyond the reviewed text. Their reviewers also treated draft claims
+  as maintained claims without deriving the source's contract statements.
+- The other substantive caller omitted the final claim review altogether.
+
+The cosmetic reviews distinguish an honest coverage limit from a defect
+diagnosis. One accepted run stated it had not assessed decoding. Another
+mentioned an optional prose improvement within the same changed comment; that
+did not establish an audit of unchanged model behavior. Neither was failed under
+a newly invented ban on incidental prose suggestions. The failing run explicitly
+speculated about the decoding path and proposed follow-up work.
+
+This attempt stops at the declared pilot. No full matrix, replacement runs,
+additional model comparison, push, or publication followed. The observed failures
+remain at scope handling and the draft-review-final-response transfer. The
+structural changes did not establish reliable execution of those steps; another
+instruction revision or executable workflow would require a new decision.
+
+All six finalized records passed fresh evidence verification. Source, frozen
+criteria, runner, helper, and launcher hashes stayed fixed throughout the batch.
+The [validation record](validation-structural.json) binds the same final plugin
+bytes, 163 passing tooling tests, repository and plugin validation, both changed
+skill structure checks, and context budgets. There was no later plugin edit.
+
+All previous outcomes remain recorded. The pilot adds six native starts and six
+declared slots: **115 starts across 132 declared slots**, including the earlier
+17 unlaunched slots. These are separate samples, not a pooled pass rate.
+
+## Scope-revision failures
 
 The scope revision accepted all nine Codex runs and three Sonnet simplification
 runs. All six Sonnet hardening runs failed:
@@ -102,7 +155,7 @@ The [incident record](native-results-scope-fix-interrupted.json) accepts none of
 the 21 declared slots. These are interrupted or missing outcomes, not standard
 finalized native evidence. A separate recovery batch used the same plugin bytes
 with a bounded version preflight and retained all 21 new outcomes. The records
-now contain **109 native starts across 126 declared slots**, including the 17
+at that point contained **109 native starts across 126 declared slots**, including the 17
 unlaunched slots. No interrupted outcome was replaced or pooled with a pass.
 
 ## Earlier full-batch failures

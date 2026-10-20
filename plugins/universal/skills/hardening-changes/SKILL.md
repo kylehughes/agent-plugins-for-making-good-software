@@ -5,18 +5,48 @@ description: "Harden an owned branch or working tree for a PR through an audit-a
 
 # Hardening Changes
 
-Prepare the owned changes through the five phases below: audit, decide, fix, compile checkpoint, and re-audit. The orchestrator owns fixes and dispositions; installed reviewers supply the audits. Obtain their completed findings before fixing. Do not replace available reviewers with self-review because the patch is small. If delegation is unavailable, record that limit and perform the same scoped review directly.
+Prepare the owned changes through one of the two paths below. The orchestrator owns fixes and dispositions; installed reviewers supply completed audits. Do not replace available reviewers with self-review because the patch is small. If delegation is unavailable, record that limit and perform the same scoped review directly.
 
-Inspect the diff to freeze the changed surface and select its concerns before judging correctness. For prose-only changes, compare old and new meaning before selecting auditors. Equivalent wording needs a prose review; a truth review needs an identified new or strengthened behavioral claim. Pass that distinction and both wordings to the reviewer. Surrounding unchanged claims do not become owned work.
+## Scope Guard
+
+Inspect `git status --short` first, then select the scope:
+
+- **Branch mode**: working tree clean → audit the diff from the base branch (usually `main`; confirm from repository context) to `HEAD`.
+- **Working-tree mode**: uncommitted or untracked changes exist → audit the working tree via `git status --short`, `git diff HEAD --find-renames=20%`, and direct reads of untracked files.
+
+If the committed diff against the base branch is empty but the tree is dirty, working-tree mode is required. Never report a clean branch from an empty committed diff while uncommitted work exists.
+
+The audit surface determines where findings come from, not where fixes stop. A fix extends as far as the thread the branch owns requires, including files outside the surface — updating a generated registration file after adding a test target, adopting a type the branch introduced in the sibling subsystems the work implicates. The boundary is ownership, not size.
+
+**The surface is frozen at the initial inspection and does not ratchet.** A completion edit outside it is audited for the correctness of that edit; the file it landed in does not become newly owned territory to mine for unrelated findings. Without this, each iteration enlarges what the next one audits — a fix reaches into a neighboring package, that package enters the next surface, its own drift produces fresh findings — and the loop cannot converge. Adopting the type you introduced in a sibling subsystem is in scope. Auditing that sibling's test suite because you touched a file near it is not.
+
+Also freeze the auditor set to the surface's content. A diff with no code gives the language-specific auditors nothing to answer; launching them costs a subagent context for a guaranteed-empty result. Launch the auditors whose concerns the surface actually implicates and record which you skipped and why.
+
+## Choose the Path
+
+Compare old and new meaning before choosing reviewers or reading implementation details.
+
+- **Wording-only:** All changes are prose or comments with equivalent meaning, and the request contains no factual or invariant assessment. Follow the wording-only path and finish there.
+- **Substantive:** Code, configuration, contracts, or behavioral claims change, or the user explicitly requests a truth audit or invariant assessment. Follow the substantive path. A new or strengthened prose claim needs a scoped truth check; an explicitly requested whole-document truth audit includes existing claims in that document and takes precedence over wording-only routing.
+
+If the distinction is uncertain, identify the exact old/new claim and resolve that uncertainty before proceeding. Surrounding unchanged claims do not become owned work.
+
+## Wording-only Path
+
+1. Give the technical-writing reviewer the old and new text, locations, and only the prose context needed to assess the change. Request read-only findings about that wording; do not send an implementation-audit bundle or launch code/type reviewers.
+2. Obtain the completed review. Preserve the cleanup or apply a justified small prose correction. If the reviewer identifies a concrete changed behavioral claim, switch to the substantive path with that claim and the original frozen surface. An unrelated implementation observation does not justify switching; reject it internally.
+3. Run `git diff --check HEAD --find-renames=20%` and any project-required document/configuration validation. Inspect untracked text when present. A comment edit remains wording-only regardless of its file extension: skip compilation and project execution.
+4. Finish with `Status`, `Next`, `Changed`, and `Proof`, followed by the scoped prose-review result and any small correction. State that compilation was unnecessary and name any ordinary project gate still pending. This completes hardening of the wording; it makes no runtime or invariant assurance. Stop here. The substantive loop, finding ledger, deferral sections, and invariant handoff below do not apply.
+
+## Substantive Path
+
+Run the five phases below: audit, decide, fix, compile checkpoint, and re-audit. Obtain completed findings before fixing.
 
 For a changed construction boundary, invariant claim, enforcement gap, legal transition, or explicit proof request, load [verifying-invariants](../verifying-invariants/SKILL.md) and the installed language/type-correctness companion before boundary judgments or edits. Reuse active guidance within this workflow.
 
-Two boundaries hold:
+Surfaces the branch does not implicate stay untouched. Defer owned work that requires app-wide rearchitecture or a product decision only the user can make.
 
-- Surfaces the branch does not implicate stay untouched. Completeness never means consistency grooming of unrelated working code.
-- Work that would tear up floorboards across the whole app, or that needs a product decision only the user can make, is deferred — not attempted.
-
-**This skill runs one compile checkpoint, not a verification pass.** The project's own ship gate — its full build, test, and release checks — runs after this skill and is the project's responsibility; this skill does not substitute for it.
+**This path runs one compile checkpoint, not a verification pass.** The project's full build, test, and release checks remain its later ship gate.
 
 ## Dispositions
 
@@ -31,19 +61,6 @@ Every finding gets one. Do not dismiss a finding because it seems low priority, 
 | Blocker | Cannot be safely prepared without resolving a correctness, build, or architecture issue that exceeds this loop. | Attended: stop and ask. Unattended: report in the handoff. |
 
 Mechanical fixes are never optional. Judgment fixes are not put to the user mid-loop — pick the strongest-evidence option, apply it, and report the call in the handoff where it can be audited. Effort is not a defer criterion: large but branch-owned work is still fix-now work.
-
-## Scope Guard
-
-- **Branch mode**: working tree clean → audit the diff from the base branch (usually `main`; confirm from repository context) to `HEAD`.
-- **Working-tree mode**: uncommitted or untracked changes exist → audit the working tree via `git status --short`, `git diff HEAD --find-renames=20%`, and direct reads of untracked files.
-
-If the committed diff against the base branch is empty but the tree is dirty, working-tree mode is required. Never report a clean branch from an empty committed diff while uncommitted work exists.
-
-The audit surface determines where findings come from, not where fixes stop. A fix extends as far as the thread the branch owns requires, including files outside the surface — updating a generated registration file after adding a test target, adopting a type the branch introduced in the sibling subsystems the work implicates. The boundary is ownership, not size.
-
-**The surface is frozen at Phase 1 and does not ratchet.** A completion edit outside it is audited for the correctness of that edit; the file it landed in does not become newly owned territory to mine for unrelated findings. Without this, each iteration enlarges what the next one audits — a fix reaches into a neighboring package, that package enters the next surface, its own drift produces fresh findings — and the loop cannot converge. Adopting the type you introduced in a sibling subsystem is in scope. Auditing that sibling's test suite because you touched a file near it is not.
-
-Also freeze the auditor set to the surface's content. A diff with no code gives the language-specific auditors nothing to answer; launching them costs a subagent context for a guaranteed-empty result. Launch the auditors whose concerns the surface actually implicates and record which you skipped and why.
 
 ## Finding Classification
 
@@ -73,7 +90,7 @@ Where the runtime provides cheaper delegated workers, bounded mechanical slices 
 
 ### Phase 1: Audit
 
-Run `git status --short` and `git diff --name-only <base>...HEAD`, choose the mode, and display the surface. For untracked directories include the file list so auditors can inspect new files.
+Use the mode and frozen surface from the initial inspection. Display the surface, including file lists for untracked directories, so auditors can inspect new files.
 
 Launch the implicated auditors in parallel against the surface. The roster is a set of concerns, not a fixed list of names. This plugin supplies four:
 
@@ -145,6 +162,8 @@ If the diff fires a maintenance trigger the repository declares for an architect
 
 ### Phase 5: Re-Audit
 
+When invariant verification applies, read [Manager handoff](references/manager-handoff.md) and prepare the complete intended response before launching the final scoped correctness re-audit. Supply the stable artifacts and checkpoint evidence with that draft so one completed review covers both the changes and the handoff claims.
+
 Return to Phase 1, scoped by what changed:
 
 - Surface materially unchanged since the last completed audit → reuse that result rather than rerunning auditors.
@@ -159,7 +178,7 @@ Return to Phase 1, scoped by what changed:
 
 ### Final Manager Handoff
 
-Read [Manager handoff](references/manager-handoff.md) before preparing the final response. It defines stage status, pending project proof, and the complete-draft claim check when invariant verification applies. Finish all intended sections before that check; emit the reviewed draft with supported corrections instead of composing a new report afterward.
+Complete [Manager handoff](references/manager-handoff.md) at convergence. When invariant verification applies, resolve the records from the completed correctness review and emit its reviewed response under the invariant skill's correction rules. Otherwise prepare the scoped handoff directly.
 
 ## Decision Ledger
 
@@ -171,6 +190,6 @@ The ledger accumulates across iterations and settles decisions: a re-audit findi
 
 Read the reference at the phase that needs it:
 
-- [Manager handoff](references/manager-handoff.md): final status, required sections, conditional claim review, and completion checklist.
+- [Manager handoff](references/manager-handoff.md): substantive-path final status, pending project proof, conditional claim review, and completion checklist.
 
-Before finishing, apply its completion checklist to the handoff and retained evidence.
+Before finishing the substantive path, apply its completion checklist to the handoff and retained evidence.

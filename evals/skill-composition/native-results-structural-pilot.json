@@ -1,0 +1,2567 @@
+{
+  "schema_version": 1,
+  "baseline_commit": "30171c1d875c85495fd9e02f67542892a2c9dac1",
+  "criteria_sha256": "fe2c8a1bbce9d8cb57871db374c32e3b692ce2e001611afd743b5fa146e77038",
+  "source_snapshot": {
+    "sha256": "b4dc460727fe82f09590c30beb938a0b8e7e6130fe4bee2bc8753eb4a73c3887",
+    "files": {
+      "plugins/apple-platform/.claude-plugin/plugin.json": "file:62e38295dc35a3a19d75da71f72b6bc1ad69d5bbe759c2308f1dd02a11fd5f22",
+      "plugins/apple-platform/.codex-plugin/plugin.json": "file:dc3f2b4d777b84421d2ea0933c563f00dd911288339ad7368c7d2360d4a4eea2",
+      "plugins/apple-platform/agents/async-testing-auditor.md": "file:5b04389dc8e5d8fcfcfe15f720dada270ea8b37eb4db023b132b170655c846b5",
+      "plugins/apple-platform/agents/code-standards-auditor.md": "file:7de086f0e6ce70f366ec7ea19fc819c7dbb14ce3d895cce71b604eb58c52886b",
+      "plugins/apple-platform/agents/information-entropy-reducer.md": "file:6ce4d2ac620eef061bb32c5ce9958e0c60979be0950e9a5767f1ff440f43416f",
+      "plugins/apple-platform/agents/type-driven-design-auditor.md": "file:909ac79f764a570caf6f5a2e7ec84fbd91a41300fd87502adcf86cd91ae19027",
+      "plugins/apple-platform/skills/analyzing-app-store-business-data/SKILL.md": "file:4fc69685294a17b4eb4b7aa24347e3805c34599133ea3f354455eebc84fd3173",
+      "plugins/apple-platform/skills/analyzing-app-store-business-data/agents/openai.yaml": "file:721a6a2afc58b0c43f921e54b40eddf28c03a70b86d62d565ffadca4940c4f3d",
+      "plugins/apple-platform/skills/analyzing-app-store-business-data/references/aso-methodology.md": "file:2129fc2a5620efd8960d30ce84f53f2278f2a36eee722557daa54cbc8391738b",
+      "plugins/apple-platform/skills/analyzing-app-store-business-data/references/data-sources.md": "file:58cebf191858305e08966f82d83794d9c281b902aa603114ad970338b679bc8e",
+      "plugins/apple-platform/skills/analyzing-app-store-business-data/references/growth-playbook.md": "file:36bd1bcfc0a09cfb832f404c6dfa0e9b4e77fdac17a1b95fbc4246d3bb03171b",
+      "plugins/apple-platform/skills/analyzing-app-store-business-data/references/metrics-playbook.md": "file:af12efdc9dd1dd5e0a56afd22096e0a6d0a818ba2b3854940bdc8b770b57c49b",
+      "plugins/apple-platform/skills/analyzing-app-store-business-data/scripts/backfill-sales.sh": "file:3448a239450bf7849f4772c44318a391f23dcb176e9c5d59a863576c0070cebc",
+      "plugins/apple-platform/skills/auditing-ios-release-size/SKILL.md": "file:3be1ca2fd8463774c4efcaedba43df12a5410814164c15ae46d4fe44f52ce86e",
+      "plugins/apple-platform/skills/auditing-ios-release-size/agents/openai.yaml": "file:64373e5e24c1732aa000aefcc8a7fe6403a173e4ea644a4cde85c73f89e54217",
+      "plugins/apple-platform/skills/configuring-ios-content/ATTRIBUTION.md": "file:e814cf290f552389a0c07cb10de6cd66331396e7ed25b6e422727e6ce8c01478",
+      "plugins/apple-platform/skills/configuring-ios-content/REFERENCE.md": "file:20e220e88a22263ca0cefafecc8fdadef49d00d62cf1d18e9af5d92895be8881",
+      "plugins/apple-platform/skills/configuring-ios-content/SKILL.md": "file:4d912840e08c627dd6a36eea384627a0bbc2a350c05e1223e03442238af13deb",
+      "plugins/apple-platform/skills/configuring-ios-content/agents/openai.yaml": "file:232350027b2bf8e49b472ae22a32e17f46bcd582cc2aba04d01df0eff18ff8fa",
+      "plugins/apple-platform/skills/designing-swift-apis/ATTRIBUTION.md": "file:fc47581590652f713b55dd0dfae8f7ff6be3b29e9839ee491053efd299f74653",
+      "plugins/apple-platform/skills/designing-swift-apis/SKILL.md": "file:b16591462d9f19b1a3accad9dbc278e7ce7902953da9195c5ac3cc717c067168",
+      "plugins/apple-platform/skills/designing-swift-apis/agents/openai.yaml": "file:4c2c997552143260bada5f238b06f07338e06d25aeea63c50ef370bc3ff7bd98",
+      "plugins/apple-platform/skills/designing-swift-apis/references/examples.md": "file:237769e8b59eb51c920436e8540a5db2b0fbd3df961a254e3013f4911761d99c",
+      "plugins/apple-platform/skills/implementing-app-intents/ATTRIBUTION.md": "file:522a02df9e1a9d622923e15c95d1c71ce29eba0a7c12d7a488f4909fdec041c7",
+      "plugins/apple-platform/skills/implementing-app-intents/SKILL.md": "file:0557abfe5ea4f5d805df7be5451efd566e42f50a98726597ce75a2db10bd7169",
+      "plugins/apple-platform/skills/implementing-app-intents/agents/openai.yaml": "file:d482d88184bf67eed905ae56e621e30c4fc8d350ee068e2a96b7f1e4eeab0b4f",
+      "plugins/apple-platform/skills/implementing-app-intents/references/agent-playbook.md": "file:d9742a04a08417b652365d4a1a2dd4a8948b822e14ae435bab8a52025d5ef4d1",
+      "plugins/apple-platform/skills/implementing-app-intents/references/apple-intelligence-and-siri.md": "file:cc41a8890d5ac3e1fc5bb37d31e32293ebd529d4ac87906f1a9b36b9f76749aa",
+      "plugins/apple-platform/skills/implementing-app-intents/references/architecture-and-model.md": "file:e524ff75c92105c0dd49abd8fe30ce195359c340ff234eaa4f7f62b07034d0d4",
+      "plugins/apple-platform/skills/implementing-app-intents/references/assistant-schema-domains.md": "file:37385e65fce1c8cba536e7e137ccfb42b9838eeb4952dd9461289c3bda6e74f0",
+      "plugins/apple-platform/skills/implementing-app-intents/references/checklists.md": "file:08ca8f38875a04aa56f317cdd84b62e1c2d7aec66768d35d3ae226849902bd99",
+      "plugins/apple-platform/skills/implementing-app-intents/references/entities-queries-and-indexing.md": "file:1efc8b232e4993c1e3f168cd62e93574ca05aacc14e10fc90261fdba456f45bd",
+      "plugins/apple-platform/skills/implementing-app-intents/references/examples.md": "file:ab7dead4e4ea82d2294a45e652c5307b6769387a1e7713642c8b7480638ea29a",
+      "plugins/apple-platform/skills/implementing-app-intents/references/execution-packaging-performance-and-privacy.md": "file:05e2220f33396c646a2a0f3aae840f244aa8c6abf619b02d37f87a26b4d2ebdc",
+      "plugins/apple-platform/skills/implementing-app-intents/references/intents-dialog-snippets-and-confirmation.md": "file:046dfb964ccb83a7bd3fc0af553c5ff521c28851a9619ca5f50fc82fc8860b04",
+      "plugins/apple-platform/skills/implementing-app-intents/references/migration-ios26-to-ios27.md": "file:c45dfdd1082a2f0ece5effd49e9683053860e4e19d20e368f19f6b5699bf15a6",
+      "plugins/apple-platform/skills/implementing-app-intents/references/minimal-skeleton.md": "file:336dc1fbbc0f87a3d084ff91b38ea898e7330076b7d08a86515c1f920d3a8c3e",
+      "plugins/apple-platform/skills/implementing-app-intents/references/onscreen-awareness-and-content-transfer.md": "file:c7c86045d463bca08a40ae0572149193523678bcb2122f3133da16e7cb1ead45",
+      "plugins/apple-platform/skills/implementing-app-intents/references/reference.md": "file:42f5c6c929b058761c5b8f64d30dadff5cf843ae15c504f8ffb9dcfb0893f7dc",
+      "plugins/apple-platform/skills/implementing-app-intents/references/sdk-availability-and-verification.md": "file:390b8856172ffc16707c0d6ff9872665068026f76b9efa1ea84aeb567d386800",
+      "plugins/apple-platform/skills/implementing-app-intents/references/shortcuts-spotlight-widgets-and-controls.md": "file:f8858a4f6e35baf76a6a78cf9c41a98ccbdf9e41fbe054a50a3500e81c702b77",
+      "plugins/apple-platform/skills/implementing-app-intents/references/testing-and-debugging.md": "file:de7dd8bc4eda7744dcb1038bc0456c1613a6811401db36796e9a66199f82c2f1",
+      "plugins/apple-platform/skills/implementing-app-intents/references/ui-framework-crosswalk.md": "file:f5bfc4e81cd2d83a71d5ec4eb4320926c6d59f6dde7fd180e0570a86d14944a2",
+      "plugins/apple-platform/skills/implementing-app-intents/references/uikit-examples.md": "file:638b4e9b267c770bb9979ed76e0e17c3ed60989e703201c730f88fdb7839f75d",
+      "plugins/apple-platform/skills/implementing-app-intents/references/uikit-integration.md": "file:ce04d51bb0d55c96d8930f01b5fe2f48035d1dfeb74c6b0ee4c7123551083a05",
+      "plugins/apple-platform/skills/implementing-app-intents/references/value-representation-and-structured-transfer.md": "file:675d0b8f4b27d05033103f85611f09070d95a0942b0d415bbdd237fcef65800b",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/SKILL.md": "file:0060a39f19fb4f8f288296858746775c5f81f8d21d115e8fc8bb001daea2eff9",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/agents/openai.yaml": "file:5bb2bbe3a66775f68b2e27c752804b13bd2071180d402c62ec72fb65c9c0c7da",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/assets/AccessibilityPackage/Package.swift": "file:a2eb9c8e6e9ccf1b64c10f4646d63fbf573e29e2e0262b7e5e5666f48fd489ef",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/assets/AccessibilityPackage/Sources/AccessibilityUI/AccessibilityIdentifier.swift": "file:9cff57dbf42dd26e464b7f57c80fb022fe7e5a24ede8878bb2a7644135052086",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/assets/AccessibilityPackage/Sources/AccessibilityUI/AccessibilityIdentifierComponent.swift": "file:f3ad7c991cffe1305aeae60f62216f9626cb8111f90ffe030f987ab6e13c58d0",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/assets/AccessibilityPackage/Sources/AccessibilityUI/AccessibilityIdentifierScope.swift": "file:b4d0660a82b6e3fe64a1ef6cf3ce1deddde3fa69b3ff041aac5af6f56499a525",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/assets/AccessibilityPackage/Sources/AccessibilityUI/AccessibilityInstrumented.swift": "file:6df866a04d50f44c5db5de20667cd269986d27e0384e711418c017402a9a3a91",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/assets/AccessibilityPackage/Sources/AccessibilityUI/SwiftUI+AccessibilityIdentifier.swift": "file:418a1495d2d2c921ae58ac489befc1917ce4f1cb455039e77c9c28b975b70c75",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/assets/AccessibilityPackage/Sources/AccessibilityUI/UIKit+AccessibilityIdentifier.swift": "file:aa3cada5ed4eac3cffa8a0abeb0d5347ad28dd0ebcada8da5b770127026afbc7",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/assets/AccessibilityPackage/Sources/AccessibilityUIForTest/XCUIElementQuery+AccessibilityIdentifier.swift": "file:cb039f2e2682e1424975204369a197af059a752899dcd8b81365b1cadbab2bd5",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/assets/AccessibilityPackage/Tests/AccessibilityUITests/AccessibilityIdentifierTests.swift": "file:3eb2136dde2bb9130e6313439cc66f0e16aae5804dd0d94d8f6e3a1575338cbe",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/references/architecture.md": "file:8d886771d8f63b3d831c3f33246197d06488cb94e0f12da6f2a6865cb76a7a9f",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/references/migration.md": "file:a2d76c12279f03629e8aba0b71748062227f27f2a47f941070348b2a74158ee6",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/references/review-checklist.md": "file:ab1cedbc4ace3e83a00b90754c8c396ce30a567e3aa845b9e097a468a9ae7c33",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/scripts/audit_accessibility_identifiers.py": "file:92d678d6003375aee6fde976d23c207d87dc9e4a7e967eed980bcaf2746ad189",
+      "plugins/apple-platform/skills/localizing-strings/SKILL.md": "file:63f815c39586d1f731e26ad02f3997e574f248a43e8f99f2af549ca0054eaf19",
+      "plugins/apple-platform/skills/localizing-strings/agents/openai.yaml": "file:32b882272236cce09c8b7365dd03d23dddd9e6dcebfbfff1126b717be54fc5aa",
+      "plugins/apple-platform/skills/localizing-strings/references/implementation-examples.md": "file:1fad1ba048b166c018d63cd36aa28969f6b15d61ff87e48eb0111119ecebd747",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/ATTRIBUTION.md": "file:58028e6653680d1a2f8caca4703e80095cd434a3fc3c7176c77144e74b849a56",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/SKILL.md": "file:9442faf6a7c1694e0428edb9ee516710331c18f76095a5d52f777f7884448fb5",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/agents/openai.yaml": "file:e9ee04cd4fd77076465d089f281a47b4bb0042d7333ea9cfdf9662ab2b263223",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/CompileFailBypassValidation.swift": "file:cdb777d1c1c58df4bb1d5366ffdbc22e7133feb2608755e37ee93c4a0d1d5987",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/CompileFailUseAfterConsume.swift": "file:2810d91a2b91f9fff9d005d3c6b27e6f34ffb6c3687916b829ad4f27e2ecaa12",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/CompileFailWrongID.swift": "file:56c59b80c608172326b5acebe5e82531094c395dd9b0fbc8442343875eee0233",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/CompileFailWrongTrustState.swift": "file:a73c46d63a94d63c9168c41749fdca2ae654909d3330da6e7755ab041fe27e2b",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/CompileFailWrongTypestate.swift": "file:91a2f834e4874ec2eab4d07b094b203a3f1bb2f7169fde4057d7a3bf90060988",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/CompilePassCorrectID.swift": "file:de57cf0debd1074da885f5491f89de3108072fc789b478e9972159976ac4d7f3",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/CompilePassCorrectTrustState.swift": "file:ee8e7cedaee25635a7d08d9cdddf5c4f3ddb89f16a801560cfa45459d7f83547",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/CompilePassSingleConsumption.swift": "file:4b79eab499d956da4b8c8b7d9abb807dac8eee7b208b2aa06cb254eed3304635",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/CompilePassValidTypestate.swift": "file:e8417bb461c485625efbf78ea83bb26f92301e216a22e89ec1422e1144342b83",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/CompilePassValidatedConstruction.swift": "file:6c09782686e42212a80b5be0e1533a57dc829144cf0187b5e8eb5cc645a2a3a2",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/CorePatterns.swift": "file:424ad2e03cf16aed62d535d20afd2a90b5c2de02fbc110f8ffb459895e011049",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/CorePatternsRuntimeChecks.swift": "file:c4b72f8f93be002f8544cc120ca3710191a372ade880a72b3ebb9678bfbc51a4",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/CurrentSwiftPatterns.swift": "file:fb8a535bdb6e5b6cb923160660bb45ec1427918052554e70cdcb0afbacb3a7ec",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/TrustStatePatterns.swift": "file:dc2f8ec63f6d5c574c38b63ad0ad8e0f03045dd5c9ae69ac4a5972f8c2d7966a",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compile-checks.json": "file:931c59d9c43454d64040833027629174f2091d7b093d8a7748135e8540c8eaeb",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus/core_examples.swift": "file:6c4350e3b4c493181b3c9be50677d75f144b18f6ec05e6f3f5f9efb4ac8a8cfa",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus/core_examples_runtime.swift": "file:3f2fe1bfcaf8abfc1bc835ad4875969a286064107d9e9679e80ef50187b0c001",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus/frontier_probes/manifest.json": "file:b8a3c38f88a863ce8565059b3d6c9e5f7ce97b678ad7544d23eca0c1127bfe17",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus/modeling_examples.swift": "file:5a812334ca9541835f00075bc958b257207bd2f521ec2da8a735b7a794d7c83e",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus/modeling_manifest.json": "file:4d75db092e49b5273aabfedc6ebf27e6cf4be0d8e3b605b4ed50a0cda058ac99",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus/probe_effects_async_let_error.swift": "file:cf0e87d7fc7c306f9f3222a0c23589e116c25191f34ac3d92913ab71f542fc14",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus/probe_effects_catch_cases.swift": "file:97a795694b4596fb84238ead2290e2c48525cdfdb17c1cbc30a74d1bdc760816",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus/probe_effects_discarded_task.swift": "file:d643a126c72fe9a06b5828c46404b811d17884bd7fcdb2a24a3a4ecc89a7c7d9",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus/probe_effects_double_resume.swift": "file:f9270046df120812f588b4604c563eb47d846488d0854bc644375e0f350b3991",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus/probe_effects_dropped.swift": "file:18710d319dd3f73927baec4f6caac0aac5b9f451ee1892f57fc99c0cd94461d3",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus/probe_effects_opaque_throws.swift": "file:0378a08794964bc1520bf6d108c85d56bde52f82dd6c0dfb736b0c198d4dec73",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus/probe_effects_positive.swift": "file:7091cbe56b60eb1b203f6505f89606fd9e1e3508a0fd4f51f7bb693ca3a31d73",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus/probe_effects_typed_task.swift": "file:211221290ff9b2919717ebca4246a92daca3f7e6d244f9b5c00eb97e990abba2",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus/probe_effects_typed_workarounds.swift": "file:81f0e5e72de75cf9369781e37e4bbe89c964593bfbb44377f5b78be3687b52fa",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus-controls.json": "file:de4b52387fbc4621db6db186d2f856a488abe80686c2f15cbd741212dfef0a31",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus-diagnostic-compatibility.json": "file:c04f9d7e126a144bb5d68bc540704c965ad258af06757e2103dbc9bb0b72c330",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus-map.json": "file:893ecbdc3cddf0c45e29bb387662b98a15b159af753c1977314fd808ef2dde42",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/advanced-generics-and-protocols.md": "file:9fff09c063704fe8139ad3ebe43e3fd8258a6a16182f863ece41982aea40dc9c",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/algebraic-and-refined-values.md": "file:325e58ccebbb7fe9889969d3c4e4eb3d20f861c1c3e29fa508c7c5bf54206d5c",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/boundaries-and-interop.md": "file:473f794ed96c7a64f45496bb87a14916e0feaef3a671c1143d14daae75174616",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/compile-check-runner.md": "file:3b2acd0005ecde2d8c56057c24b8543c249cfa3676b1cdf7e9bd9f33d607a09b",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/decision-guide.md": "file:e92b2dc5d9c6d29784754acb3fee726476a25d89aaab62d403ff5ef884e11f99",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/domain-modeling-recipes.md": "file:f92a3e88ac9a473a9f209d0e6ac0af38f050ad715194fcef3e92c4eb9899387d",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/generic-proof-recipes.md": "file:a8c2b2b1fc790ab8acb6025d0ea4e81642f6082f6ad9a8cd398fad6357a796c2",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/identity-typestate-capabilities.md": "file:038a4260958143658d82f82e8e0f95247f6d57a80bbfcc8625a19a770590035d",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/ios-versioning.md": "file:e1b674cf590923cecf1d381f9998e5545a108f2814d9fb95baa9be10ceaa95c4",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/ownership-concurrency-errors.md": "file:703e25c7de6934528c22ebc2e381e55a84a2e265c6075715f9c871509068ea20",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/ownership-effect-recipes.md": "file:d8a5d80ed9bfc259dbf95128a98c70093534b7d31aaec23137d9af011b3fcb80",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/security-and-resource-modeling.md": "file:ecff22e7ba225b1c62d52238d5608e1f0fc7af62c94068b17c7383f0b997e427",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/sources.md": "file:9ab470c3850019f45e50d6f9da65501942f3c873f99e8a3666c96462b0f2bcfd",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/swift-feature-status.md": "file:fa9a9bdb8c0d4d5755e49c7781a34892060849b558e5f1cfa3335d8a8084c000",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/testing-migration-and-review.md": "file:f14aa038bc24ebaac5d0e16bb0f1b29e838a1a467f5ae07e7ae358b029c5c838",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/ui-state-navigation-and-effects.md": "file:4500023ad55c068a806f8e62ec6158aca4bc4849e0877802e308bbf389b366d7",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/scripts/audit_project.py": "file:deff185e61ce47044a00b87d3eca0ee84c711f0bf1b8e0f7ea15e092a8fb5d65",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/scripts/check_examples.sh": "file:ab8d649883d587dbbb170ec75ca9bfda0b2ca8a68920d4d6f058c72725df7806",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/scripts/swift_compile_checks.py": "file:059382917ab454930ff912d2c719cfe6eb848d64da2b9ac7b7604093927f2cec",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/scripts/swift_compiler_corpus.py": "file:a537c386efad384eee2dec7ce19f436150719d2d546728bc78bd5f1bf5658c21",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/scripts/validate_skill.py": "file:2f6f56adaa5c2cb2d6048358a55f939c5e2097f7a38a54e26ad3ca4b3fbb74ce",
+      "plugins/apple-platform/skills/ordering-symbols/SKILL.md": "file:66cd16dc555d05a4da70216fee83a814885e68aaec59de20b5d98d566a86d860",
+      "plugins/apple-platform/skills/ordering-symbols/agents/openai.yaml": "file:fe36579be882efd8e8466cd20d9eee11a0b3b6560980072fcb87e043352a6c91",
+      "plugins/apple-platform/skills/ordering-symbols/references/complete-type-example.md": "file:b398ce4e001a60824160337903a49a74d33338da4d8d2c444bd583557889b67c",
+      "plugins/apple-platform/skills/ordering-symbols/references/formatting-and-comments.md": "file:aa44ab1d46318761565022c22b3d9924702ebe555bd47885962eecc6a6c5598f",
+      "plugins/apple-platform/skills/ordering-symbols/references/parameters-and-body-ordering.md": "file:73594c3fb75304908c70ee1dd0800379324dd25160eb2930cdd2f964bd66ccf1",
+      "plugins/apple-platform/skills/ordering-symbols/references/protocols-extensions-and-availability.md": "file:01051a270c2ccee46316905d76c79befbf4f814592d0dc4f6a2bfe6ee52fc2fe",
+      "plugins/apple-platform/skills/ordering-symbols/references/type-declaration-order.md": "file:bce138ec4d269964c7e1e391ac2450aac149c56ff5a64d14f0e352efba1cd689",
+      "plugins/apple-platform/skills/organizing-swift-types/SKILL.md": "file:ff2f8827a02e63b61c186a664d38daf32f6ba88aa535449b1ac07c9923bc1788",
+      "plugins/apple-platform/skills/organizing-swift-types/agents/openai.yaml": "file:29410734a21feb155069f405b9a2877bb3e89501e24a9690591a599e309b6713",
+      "plugins/apple-platform/skills/organizing-swift-types/references/access-control-and-modifiers.md": "file:b30f6a148984b12bec34b2541332481a03c629652168438205bb79e40f422b6c",
+      "plugins/apple-platform/skills/organizing-swift-types/references/availability-and-version-spanning.md": "file:cd95e38dd65c8bfb30b26ff24619e02d422375533e3c23af8cd91493e8eb7f4f",
+      "plugins/apple-platform/skills/organizing-swift-types/references/complete-shape-example.md": "file:880cc244b77e51018b072cae51478591a0baf4febcb7434d19963c009e5d23f6",
+      "plugins/apple-platform/skills/organizing-swift-types/references/constants-file-structure-and-previews.md": "file:9a266ac4c65a6564635ba9861e2e915e5974bf73f20c3a76dd6e0292296fe453",
+      "plugins/apple-platform/skills/organizing-swift-types/references/extensions-and-nested-types.md": "file:b991ef5ac2fb2547d43b4b4f451f57360f618d93d136af8950dbf53fc489159c",
+      "plugins/apple-platform/skills/organizing-swift-types/references/primary-declaration-and-conformances.md": "file:c2b754fcc1e15814413c0cdc0982bb05b2e103b80d4cd6997ade04d6f9a7f218",
+      "plugins/apple-platform/skills/organizing-swift-types/references/prohibited-patterns.md": "file:c1dbac817222bbede34f46f109911d8f87abb97e90a45afb12f78dbc72997012",
+      "plugins/apple-platform/skills/presenting-ios-modals/SKILL.md": "file:687833270c3d281500bcfcdbfb2aa331e62cd51f7ca46cb0a72106e950801ab6",
+      "plugins/apple-platform/skills/presenting-ios-modals/agents/openai.yaml": "file:7cd61d8f4071b354a5d4021a311d5449fd21f6f9e7a09c7c8ecb59d4711f5312",
+      "plugins/apple-platform/skills/recording-ios-simulator-videos/SKILL.md": "file:89e8c273cb3e1a17b2df8dbf92160ba40704fcea2062a7f97877a7694d324057",
+      "plugins/apple-platform/skills/recording-ios-simulator-videos/agents/openai.yaml": "file:b08ddb4f6163105fdbb87a09c93ee22ac9ee4f761ceb62f08f1bc176112b2066",
+      "plugins/apple-platform/skills/recording-ios-simulator-videos/scripts/record-ui-automation-video.sh": "file:256ff0f9d0d6218edda0dccc7bbcadb341d5825f54fc01b361b222c320698b5e",
+      "plugins/apple-platform/skills/recording-ios-simulator-videos/scripts/record-xcuitest-video.sh": "file:2361d81f77d7825e8b16a2b9fdc2e9a22c83c64509986cece28ae719b5e344cf",
+      "plugins/apple-platform/skills/simplifying-apple-platform-code/SKILL.md": "file:ce714d09cbacc5545885dfe6ddfdc8a173f58bf1551a03eac4a0c87eb289cbf4",
+      "plugins/apple-platform/skills/simplifying-apple-platform-code/agents/openai.yaml": "file:e6a4133e78e87142a86b3e8251a0026a4cb802fcf6a5bcc0ec92c77e0ba4288c",
+      "plugins/apple-platform/skills/simplifying-apple-platform-code/references/foundation-frameworks-and-capabilities.md": "file:b196f4846002fbf7f45d5c8c5e633e707b4755a624c799f97b57e5457b550638",
+      "plugins/apple-platform/skills/simplifying-apple-platform-code/references/swift-and-concurrency.md": "file:a1a7ddaa65fac4c612072c9a211a66a7699e4b9586c4e37df08b88f8f82301fc",
+      "plugins/apple-platform/skills/simplifying-apple-platform-code/references/toolchain-and-availability.md": "file:cc5ff431de62aad0b8b31e6469f1c5b42744850c11798f43796c5b31442d9aee",
+      "plugins/apple-platform/skills/simplifying-apple-platform-code/references/ui-frameworks.md": "file:9221e72f334f799a9806317dae30dc7fc42b0dc1db12dee58b2c989ad3aaad67",
+      "plugins/apple-platform/skills/simplifying-apple-platform-code/references/verification-and-checklist.md": "file:2fe38a19d4a5619b516f77bb8c0fa5645b2196686bb6d04090bae9b02504f906",
+      "plugins/apple-platform/skills/structuring-swift-packages/SKILL.md": "file:3bcf8303648ce8b37bd5ebda505a7ac9e9c2933f7e05ceb03a243cf25ed31c73",
+      "plugins/apple-platform/skills/structuring-swift-packages/agents/openai.yaml": "file:27e7e69c7d8ff9a3c622ea24eac77593e91a9df9f4fa268261a66138219d0c10",
+      "plugins/apple-platform/skills/structuring-swift-packages/references/recipes-and-verification.md": "file:1390a49ce81c8368cbb2ffe8db13a48972d6e68e914bc9bafe0c620eb3e5c619",
+      "plugins/apple-platform/skills/testing-async-swift-code/SKILL.md": "file:0aedd88c7c40b5e04108c441873cdbf8a270f8b6ccde7f720bb2f38ee77422a2",
+      "plugins/apple-platform/skills/testing-async-swift-code/agents/openai.yaml": "file:4f47331d3918ed7b32d2977ade26b8d7138565cf77152be432da890a30c252af",
+      "plugins/apple-platform/skills/testing-async-swift-code/references/idioms.md": "file:aa8e03d0f4ed69b63d472093a621e26347989d23470f6b2209a961851af722d3",
+      "plugins/apple-platform/skills/testing-async-swift-code/references/primitive-contracts.md": "file:c24872fceaa33307f1857a4c970f207db82e99426a0c368238cbefd24a696ed2",
+      "plugins/apple-platform/skills/testing-swift-code/ATTRIBUTION.md": "file:47a8d0d24cca72b2ce8cb05e95770b1a0abbdead35277f06adafb25b0062a327",
+      "plugins/apple-platform/skills/testing-swift-code/REFERENCE.md": "file:2c929883e523ec7f08cbb55fe54084de7843b26933e4d6771d8d6e79669e7f38",
+      "plugins/apple-platform/skills/testing-swift-code/SKILL.md": "file:bf21540a6b91cbc949d3e8aad62af58304d2e300de1f039b49c266ae0d403d44",
+      "plugins/apple-platform/skills/testing-swift-code/agents/openai.yaml": "file:661239976bb5147b9a40ca492cbc2fb5f5e4baf0b8765cf5f28d0e1483831f8e",
+      "plugins/apple-platform/skills/using-swift-concurrency/SKILL.md": "file:ed159402828920f0d2aa32d7367089d1c5691a5eb080b5654701ce840bc43b2c",
+      "plugins/apple-platform/skills/using-swift-concurrency/agents/openai.yaml": "file:6bd6f5bb911a33148fa941a1666123bc938d09a17ba4a64bafc174852a0cb6a8",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/actor-decisions.md": "file:1d07e42a76e30086a06f1a602bad45a24751276dacf25306649a2f72a1407552",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/async-sequences-observation-and-notifications.md": "file:510a7accce18a3b0d14080f61cd25479a5280487cefa2d7fe361b92b067551fa",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/async-testing.md": "file:2a4186b394a47ee6c47de7d4641e3228eacd85999f08c50ee06db0234e84da7b",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/concurrency-model.md": "file:9edbdeba7b1c42ef6ae02ad0236c2c5a2c352635e7badf9853b4647679549cdf",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/continuations-and-bridging.md": "file:c39457f9384028872a641aa3efd1c68cc13913b289d7991ed1b10ccd7675afa5",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/isolation-and-protocol-conformances.md": "file:7ec54a614c8b582b4fd0b31dd88e93ec61ecda8e247e108be459296eb17406de",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/logical-races-and-reentrancy.md": "file:c251205c5272ba84bb02a1580d8f2ee6f748b82e67036fef3454822456db8276",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/platform-and-build-baseline.md": "file:b59fb59907739d987b37432f0839884fefec026368034805ee29dea581147229",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/problematic-patterns.md": "file:65e74e3a5d69a9e42781f04659600c3edb5e7768c74b7e8e475233f7ca7ff86d",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/protocol-design.md": "file:89b07b05fdff14586edfb1706efa610f4ad69aa7bf8e04fa34dffa8437b0a2d0",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/review-playbooks.md": "file:373ae44ee9bfd88836c04436fa2e8f5c2bc5387bfe65295b59b17b7993fc6fcf",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/sendable-and-transfer.md": "file:4e40ba22cf20abf04418705efd963e373f161e7a11fbe5d91297074f4a84b31f",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/sources.md": "file:eaf17b3feab5d824aa89e700eb28ed272c227caecf7ccacb75bf1e530a5bc5d7",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/task-lifecycle-and-cancellation.md": "file:0a853cb0fbcaaf75c4d76cbc63374b62d163e91ff22ff89d53821bddd293d686",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/terminology.md": "file:032df0de006db7f4275abd5ab442d3905807ead80efe46f92f3a17de0ec57f31",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/ui-and-mainactor.md": "file:98f6a3358962f39c655bbec970ffa7110d6e91f6c41b6afda4a74fd15bf467e4",
+      "plugins/apple-platform/skills/writing-apple-platform-documentation/SKILL.md": "file:f3ab2173ed2838f5c69f16f9272be4c26bb219e69cd575ec857bd42449cccfba",
+      "plugins/apple-platform/skills/writing-apple-platform-documentation/agents/openai.yaml": "file:06ca304086b52e8b6e5e3a94d81d2b3ea0920e3f324a596c98c3c4a3be6002ab",
+      "plugins/apple-platform/skills/writing-apple-platform-documentation/assets/terminology-rules.json": "file:7154eac044f9b0ab18f884adaf319e16d9e0d0c15cf11a3c95cfc4d1833a80e6",
+      "plugins/apple-platform/skills/writing-apple-platform-documentation/references/terminology-checks.md": "file:714daea79a2f8b70f6783bde7e866a9c4f7d07e27c5fe066dad61cd6ed8c4e9d",
+      "plugins/apple-platform/skills/writing-swift/SKILL.md": "file:d923cd3a2bbac5082178ae51ffcfbd0de80ea314c5d91da1a961b25375a77944",
+      "plugins/apple-platform/skills/writing-swift/agents/openai.yaml": "file:af119981981ace79904bef3835edd79eefd139c02efd25c4bc17e85d4bfa3746",
+      "plugins/apple-platform/skills/writing-swift/references/api-design-and-style.md": "file:abf447975c5b579248f1d37e45e70a85da1a48b1b72d7ef392be47ba373d46f2",
+      "plugins/apple-platform/skills/writing-swift/references/concurrency.md": "file:4e11a0464353759d12b201b49c2007d29722a62ed9666558f45447f4b62f81ac",
+      "plugins/apple-platform/skills/writing-swift/references/packages-builds-and-platforms.md": "file:5160b1b877ff9486636afd3da8368f4c043839e78a927d7ee6016b8eb16d6f16",
+      "plugins/apple-platform/skills/writing-swift/references/review-and-debugging.md": "file:106d51e63b06b0431edf9ef2d8ef0eec734cddfd304727bbeeef99afc5457185",
+      "plugins/apple-platform/skills/writing-swift/references/swift-compatibility.md": "file:2539fcae1c188d1d5c4ec3781f3d63d36305d158489565ee521283e897094eb0",
+      "plugins/apple-platform/skills/writing-swift/references/testing.md": "file:b915f250593e14963472c637b87e845ec91f032cccd6e3d66a38f6bca8c2020e",
+      "plugins/apple-platform/skills/writing-swift/scripts/lint-changed-swift.sh": "file:38f50c44bc773d400f0bda1a3be6cfe774c5c84d0a96842818570a5cba665b87",
+      "plugins/apple-platform/skills/writing-swift/scripts/swift-project-context.sh": "file:c7902c18fa2f5a0c452bfb4595434ce1e40164294c6695ee9881ea428832af36",
+      "plugins/apple-platform/skills/writing-swift/scripts/swiftpm-check.sh": "file:d1f651b1375137d70e599fcf37c7452d1ff472869579742275263f1492d3d82c",
+      "plugins/universal/.claude-plugin/plugin.json": "file:4e75781fcea8a6922715780f84766a187ecbf9bb6ffc5aef7dd2e9ed2751db47",
+      "plugins/universal/.codex-plugin/plugin.json": "file:aaa6937191adbf5ab1aef184abe5d32f18281fc3bf38dba0ff364720375769f1",
+      "plugins/universal/agents/code-reviewer.md": "file:410fd806bc4824790f4d4cb787ea8190fedc6f68a46ab6604c6518609de0b4f2",
+      "plugins/universal/agents/code-simplifier.md": "file:60c679620bc8a5a3c7829232144ac54996a3c380a21a7bc054098c0d7299402c",
+      "plugins/universal/agents/correctness-reviewer.md": "file:ae95d533c8e07e93705779e5b9d3acdb76f5c44caa54bedb70acc97735896169",
+      "plugins/universal/agents/technical-writing-auditor.md": "file:8df933c83645ef4e5c8641c62184684681a56852c8848510a2059497bb022569",
+      "plugins/universal/skills/brainstorming-design-specs/SKILL.md": "file:43d633dde756a4235c5c756f32ea2296ecaf8afdf6ab9e07f7eebd3b992b9266",
+      "plugins/universal/skills/brainstorming-design-specs/agents/openai.yaml": "file:7a52c30cd047f8e86d17c48ca691f831ccca0f11debd6477b6ecd0a543f82e47",
+      "plugins/universal/skills/compiling-agent-goals/SKILL.md": "file:ea47548982a4465ab9ae1ca715b4504a10442461920b7888179e80d06b5249b5",
+      "plugins/universal/skills/compiling-agent-goals/agents/openai.yaml": "file:426e5a20ba16c42ee2e0d8ec8b2037133616cde1eacdaa10bc6bf9e43ef5e41d",
+      "plugins/universal/skills/compiling-agent-goals/assets/goal-pack-template.md": "file:759a4736d9c4845a2a2bedaf4e8bb10209a958e6a0fd8ed6ed74043d89eeeca4",
+      "plugins/universal/skills/compiling-agent-goals/assets/goal-template.md": "file:f60c5137baaa81b674010310bba162e615214bd6146c96825d24d409d3d52b78",
+      "plugins/universal/skills/compiling-agent-goals/references/goal-contract.md": "file:4b02a8f85affe7f062f05d6272058e467cdce604fca96c650efb292f2a561605",
+      "plugins/universal/skills/compiling-agent-goals/references/platform-notes.md": "file:3f364cb15461dc0ac0b34c002b16996f025d450dd0945d6e9d25aab6e6df0844",
+      "plugins/universal/skills/compiling-agent-goals/scripts/lint_goal.py": "file:18af5edbf24f1a8ccaa533786633088d9f8632dddda07681b7654b68b8b4527a",
+      "plugins/universal/skills/hardening-changes/SKILL.md": "file:81c11f1a2c394689530b83f9796edfa3245d19b1a3a76d1b283a3582bcd71017",
+      "plugins/universal/skills/hardening-changes/agents/openai.yaml": "file:1c0d66a0533d84f80ccf4b3f8a11288e784980f79aec22b85b37f5d74d4c0e2c",
+      "plugins/universal/skills/hardening-changes/references/manager-handoff.md": "file:9da3dc687ad2f24da4d14cbd07a55017b10d03d247d0a50fae53151d9e4a0ae7",
+      "plugins/universal/skills/reviewing-code/SKILL.md": "file:926537e876d0f2679e0a9c69124c437b59f27c32f57108ed303b33a8e0db0d5e",
+      "plugins/universal/skills/reviewing-code/agents/openai.yaml": "file:77610d4aafc430f2c84ba2be5ed15d4b5c1093b0a4b619b4b3862ef91dedc728",
+      "plugins/universal/skills/reviewing-code/references/change-playbooks.md": "file:7774d49f0f6b9efa9165d987c13430c5bddca96afe6a04412ef5deaa4de3fdb8",
+      "plugins/universal/skills/reviewing-code/references/finding-quality.md": "file:41a0ccd1be96a402f3f880f7ddaf812d519c6606f7a8626b76fd75a30c2591d6",
+      "plugins/universal/skills/reviewing-code/references/review-lenses.md": "file:1ddb67d1de478db37ef2713cf5a908126958d4c635dad5728267ab501b0fc788",
+      "plugins/universal/skills/simplifying-code/SKILL.md": "file:e9bad9600f04d2bf188298f8286be5ec4b77cfb957c38dd9d04936ec0c86624f",
+      "plugins/universal/skills/simplifying-code/agents/openai.yaml": "file:cd8ed4dd1e1c479e8f5a4f61cf41b2f39c9d6b7b30843d7598a6f879ed54c552",
+      "plugins/universal/skills/simplifying-code/references/adaptation-and-anti-simplification.md": "file:dc5fa6a98648c8894033e8023f53a7967df650477b5a9601402e6ac709124aae",
+      "plugins/universal/skills/simplifying-code/references/compact-checklist.md": "file:c903142d1ea4b20aa4be65b81f08a82b56fc741d5b029f254b52f17053942420",
+      "plugins/universal/skills/simplifying-code/references/review-passes.md": "file:f6313a5e449e52a1abe50c93052a4c7e1282d638ba257305dabe24250fd35820",
+      "plugins/universal/skills/verifying-invariants/SKILL.md": "file:288099dda0b945bf10dc3da99d679923aceb430c87d461c760f3463952c07f44",
+      "plugins/universal/skills/verifying-invariants/agents/openai.yaml": "file:9c5ac56b8d163315b77da8e6a9107e1bfa1a6683efbf7615ebece2849501ebf3",
+      "plugins/universal/skills/verifying-invariants/assets/invariants.template.json": "file:5b71272df455c39b8555b7ab913771b16d09c684e6f2a20fc09d119dda7b9dc2",
+      "plugins/universal/skills/verifying-invariants/references/construction-boundaries.md": "file:122dc2e78cd74d892b34b2270a61d1fbe245ce8ceb3fcd809e92a7bf06e5217b",
+      "plugins/universal/skills/verifying-invariants/references/evidence-and-reporting.md": "file:bcd61af47a74906ab07b7187da1ea34c07821e48876de9690e1204ae87123693",
+      "plugins/universal/skills/verifying-invariants/references/manifest-format.md": "file:366c008beb86284d4e3aad2e611d6afe0a512ed852d3d708623713bcc6a846fa",
+      "plugins/universal/skills/verifying-invariants/references/targeted-mutations.md": "file:2de48c20a0c6447fe307e2361a0058261118cf1b9a8e85223b692cbe46242b52",
+      "plugins/universal/skills/verifying-invariants/references/transition-exploration.md": "file:db240ab5d5c0a8251b96f1c96e94e23f8924d60775fa89bc4bd531f893477dd2",
+      "plugins/universal/skills/verifying-invariants/scripts/validate_invariants.py": "file:16effae7ce960f68d42277d856aec2b7e62ec3a585706d0617c89b2ba54dcad1",
+      "plugins/universal/skills/writing-escalation-briefs/SKILL.md": "file:61629b5bb00a8e942653e0a68654542812115034b3477d1959df891116b75fdd",
+      "plugins/universal/skills/writing-escalation-briefs/agents/openai.yaml": "file:b720c94ab9c25964199bc67182393c93185bf939a330caad8dd73184f64f6617",
+      "plugins/universal/skills/writing-escalation-briefs/references/brief-template.md": "file:9fb22f2748bab9004aabcff8dc02dadf0bd51177cae2419a1f3f7e3c5f2c7640",
+      "plugins/universal/skills/writing-technical-prose/SKILL.md": "file:983585cb5e3eca111e5a658e8c2ed460438472e3140bb663c8d5facb2bf867e4",
+      "plugins/universal/skills/writing-technical-prose/agents/openai.yaml": "file:e5b43e4359a1b5ced68c2d05adb521e4cac160b992e4783bb00745ceffda1396",
+      "plugins/universal/skills/writing-technical-prose/references/document-patterns.md": "file:06413cf04efd12c114758dc2a5e2ff6ae91ccf06fe487b8d7d70616a3b58d603",
+      "plugins/universal/skills/writing-technical-prose/references/linter-usage.md": "file:bc72ae7119528839a3292e9cb1baec69bba41b5ba324ce62411e7ab2aeec920c",
+      "plugins/universal/skills/writing-technical-prose/references/review-checklist.md": "file:73df51762dd56cfdcc46d3253813a93809b03d82b538c4ce2a4f548902b81f3a",
+      "plugins/universal/skills/writing-technical-prose/references/style-examples.md": "file:7b52249ded096ebf5d0a214ba01712ff0dbec9ddd181e9221bfa5f2bcf8a26f9",
+      "plugins/universal/skills/writing-technical-prose/scripts/lint_technical_writing.py": "file:b06effe2e1e5164a54815bc5c93f452494ca4be2dd1a2db4c954601ded097587"
+    }
+  },
+  "runner_sha256": "ebbef34bb3eb91e736614320b2a146b8743b9b69675fc58cc60326ab53ced4f6",
+  "helper_sha256": "4c295481b92ac7a2cd7987322243163e2a8e7df1fb5f9ceb9ec8ef8bf32d5778",
+  "launcher_sha256": "e28023209bc855d7d47863de9aad43600bf7a4c5b80fe53bc27f457742be8558",
+  "cli_versions": {
+    "claude": "2.1.304 (Claude Code)",
+    "codex": "codex-cli 0.163.0"
+  },
+  "settings": {
+    "runtime": "claude",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "timeout_seconds": 900,
+    "sequential": true,
+    "concurrency": 1,
+    "fixture_bootstrap": true,
+    "runner_argv_template": [
+      "/opt/homebrew/opt/python@3.15/bin/python3.15",
+      "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins/scripts/run_invariant_behavior.py",
+      "--fixture-bootstrap",
+      "--config",
+      "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins/evals/skill-composition/cases.json",
+      "--case",
+      "<case>",
+      "--runtime",
+      "claude",
+      "--model",
+      "claude-sonnet-5-5",
+      "--effort",
+      "medium",
+      "--timeout",
+      "900",
+      "--output-dir",
+      "<new-output-directory>"
+    ],
+    "native_argv_template": [
+      "claude",
+      "-p",
+      "--model",
+      "claude-sonnet-5-5",
+      "--effort",
+      "medium",
+      "--setting-sources",
+      "",
+      "--strict-mcp-config",
+      "--restricted",
+      "--add-dir",
+      "<isolated-snapshot>",
+      "--tools",
+      "Read,Glob,Grep,Skill,Edit,Write,Bash,Agent",
+      "--allowed-tools",
+      "Read,Glob,Grep,Skill,Edit,Write,Bash,Agent",
+      "--no-session-persistence",
+      "--output-format",
+      "stream-json",
+      "--verbose",
+      "--debug-file",
+      "<isolated-debug-log>",
+      "--plugin-dir",
+      "<isolated-snapshot>/plugins/.DS_Store",
+      "--plugin-dir",
+      "<isolated-snapshot>/plugins/apple-platform",
+      "--plugin-dir",
+      "<isolated-snapshot>/plugins/universal"
+    ],
+    "metadata_environment": {
+      "SLASH_COMMAND_TOOL_CHAR_BUDGET": "24000"
+    },
+    "sandbox_and_approval": "Unmodified existing runner restrictions, tools, allowed tools, strict MCP and empty setting sources; no override.",
+    "bootstrap": "Frozen original bootstrap runs only in the runner-created disposable project; launcher never executes Git in fixtures."
+  },
+  "recorded_utc": "2026-10-20T22:55:34.973173+00:00",
+  "group": "structural-pilot",
+  "counts": {
+    "declared": 6,
+    "accepted": 2,
+    "failed": 4,
+    "execution_completed": 6,
+    "deterministic_pass": 6,
+    "dimensions_pass": {
+      "behavior": 2,
+      "scope": 5,
+      "evidence_honesty": 6,
+      "composition": 2
+    },
+    "by_case": {
+      "hardening-cosmetic": {
+        "declared": 3,
+        "accepted": 2,
+        "execution_completed": 3,
+        "deterministic_pass": 3,
+        "dimensions_pass": {
+          "behavior": 2,
+          "scope": 2,
+          "evidence_honesty": 3,
+          "composition": 2
+        }
+      },
+      "hardening-invariant": {
+        "declared": 3,
+        "accepted": 0,
+        "execution_completed": 3,
+        "deterministic_pass": 3,
+        "dimensions_pass": {
+          "behavior": 0,
+          "scope": 3,
+          "evidence_honesty": 3,
+          "composition": 0
+        }
+      }
+    }
+  },
+  "runs": [
+    {
+      "id": "hardening-cosmetic-claude-1-structural-pilot",
+      "case": "hardening-cosmetic",
+      "repeat": 1,
+      "runtime": "claude",
+      "model": "claude-sonnet-5-5",
+      "effort": "medium",
+      "timeout_seconds": 900,
+      "state": "declared-not-launched",
+      "missing_outcome_policy": "failure; retain streams; no retry or replacement",
+      "overall_status": "accepted",
+      "reviewed_overall_status": "accepted",
+      "execution": {
+        "duration_seconds": 22.094,
+        "exit_code": 0,
+        "status": "completed"
+      },
+      "native_start_status": "confirmed-started",
+      "runner_result": {
+        "id": "hardening-cosmetic-claude-1-structural-pilot",
+        "case": "hardening-cosmetic",
+        "repeat": 1,
+        "runtime": "claude",
+        "model": "claude-sonnet-5-5",
+        "effort": "medium",
+        "timeout_seconds": 900,
+        "state": "runner-returned",
+        "missing_outcome_policy": "failure; retain streams; no retry or replacement",
+        "exit_code": 0,
+        "duration_seconds": 22.59,
+        "raw_outcome_present": true,
+        "evidence_present": true,
+        "output_dir": "/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-1-structural-pilot",
+        "argv": [
+          "/opt/homebrew/opt/python@3.15/bin/python3.15",
+          "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins/scripts/run_invariant_behavior.py",
+          "--fixture-bootstrap",
+          "--config",
+          "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins/evals/skill-composition/cases.json",
+          "--case",
+          "hardening-cosmetic",
+          "--runtime",
+          "claude",
+          "--model",
+          "claude-sonnet-5-5",
+          "--effort",
+          "medium",
+          "--timeout",
+          "900",
+          "--output-dir",
+          "/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-1-structural-pilot"
+        ],
+        "started_utc": "2026-10-20T22:48:55.599824+00:00",
+        "runner_stdout": "/tmp/skill-composition-structural-pilot/runner-streams-hardening-cosmetic-claude-1-structural-pilot/runner.stdout",
+        "runner_stderr": "/tmp/skill-composition-structural-pilot/runner-streams-hardening-cosmetic-claude-1-structural-pilot/runner.stderr",
+        "acceptance": "pending-independent-review"
+      },
+      "deterministic_status": "passed",
+      "dimension_status": {
+        "behavior": "pass",
+        "scope": "pass",
+        "evidence_honesty": "pass",
+        "composition": "pass"
+      },
+      "criteria": [
+        {
+          "id": "behavior",
+          "status": "pass",
+          "reason": "Recognizes the dirty comment-only change, preserves the wording improvement, and completes the sole read-only prose audit. Caller considers its optional wording suggestion without reverting the user cleanup. No unchanged-decoding bypass is diagnosed or turned into owned work.",
+          "evidence": [
+            "claude.stdout:2-3 successful hardening skill load; :11-12 no-op bootstrap and dirty comment diff; :16 sole scoped prose-auditor launch",
+            "claude.stdout:20-21 whitespace/untracked checks; :22-26 completed read-only prose audit; :28 completed notification; :34 entire final handoff"
+          ]
+        },
+        {
+          "id": "scope",
+          "status": "pass",
+          "reason": "Final source behavior and tests match initial dirty bytes. Root and embedded child tools inspect only the comment and its immediate context; no compile, project tests, invariant/Swift-modeling activation, regression, infrastructure or unchanged-decoder diagnosis occurs. The closing statement that decoding was not assessed is a scope limit rather than an allegation or repair direction.",
+          "evidence": [
+            "claude.stdout:2-3 successful hardening skill load; :11-12 no-op bootstrap and dirty comment diff; :16 sole scoped prose-auditor launch",
+            "claude.stdout:20-21 whitespace/untracked checks; :22-26 completed read-only prose audit; :28 completed notification; :34 entire final handoff",
+            "Captured source/test byte comparison; complete root/embedded-child command inventory"
+          ]
+        },
+        {
+          "id": "evidence_honesty",
+          "status": "pass",
+          "reason": "Accurately reports preserved wording, successful observed whitespace check, no additional edits/commits, and compile/test skips because only a comment changed. Explicitly disclaims runtime/invariant assurance. Ready for PR does not assert merge/release readiness or test success; no exact status heading is required by frozen cosmetic rubric.",
+          "evidence": [
+            "claude.stdout:2-3 successful hardening skill load; :11-12 no-op bootstrap and dirty comment diff; :16 sole scoped prose-auditor launch",
+            "claude.stdout:20-21 whitespace/untracked checks; :22-26 completed read-only prose audit; :28 completed notification; :34 entire final handoff"
+          ]
+        }
+      ],
+      "composition": {
+        "status": "pass",
+        "reason": "Bound local hardening skill load is followed by prose-only scoped review and a completed read-only prose auditor; code/type/correctness reviewers are skipped with rationale. Neither forbidden skill is loaded/applied in caller or child; no incidental boundary investigation or additional verification loop appears.",
+        "evidence": [
+          "claude.stdout:2-3 successful hardening skill load; :11-12 no-op bootstrap and dirty comment diff; :16 sole scoped prose-auditor launch",
+          "claude.stdout:20-21 whitespace/untracked checks; :22-26 completed read-only prose audit; :28 completed notification; :34 entire final handoff"
+        ]
+      },
+      "semantic_review": {
+        "schema_version": 1,
+        "case_id": "hardening-cosmetic",
+        "reviewer": {
+          "kind": "model",
+          "name": "GPT-6.1 Sol independent structural-pilot cosmetic reviewer"
+        },
+        "response_sha256": "cfb1bda9cea8678d715e3033fcd241ae21cc0fefea054fa78b606da27aa035f9",
+        "transcript_sha256": "e690bfbbec374b911b5ee283ba630b8f705b926ec7ffdca561144a6bcb46d597",
+        "rubric_sha256": "4db9f43319f93ddd3bc55216e259acd36f902d0e2cb2e9635238d7317a9545a6",
+        "criteria": [
+          {
+            "id": "behavior",
+            "status": "pass",
+            "reason": "Recognizes the dirty comment-only change, preserves the wording improvement, and completes the sole read-only prose audit. Caller considers its optional wording suggestion without reverting the user cleanup. No unchanged-decoding bypass is diagnosed or turned into owned work.",
+            "evidence": [
+              "claude.stdout:2-3 successful hardening skill load; :11-12 no-op bootstrap and dirty comment diff; :16 sole scoped prose-auditor launch",
+              "claude.stdout:20-21 whitespace/untracked checks; :22-26 completed read-only prose audit; :28 completed notification; :34 entire final handoff"
+            ]
+          },
+          {
+            "id": "scope",
+            "status": "pass",
+            "reason": "Final source behavior and tests match initial dirty bytes. Root and embedded child tools inspect only the comment and its immediate context; no compile, project tests, invariant/Swift-modeling activation, regression, infrastructure or unchanged-decoder diagnosis occurs. The closing statement that decoding was not assessed is a scope limit rather than an allegation or repair direction.",
+            "evidence": [
+              "claude.stdout:2-3 successful hardening skill load; :11-12 no-op bootstrap and dirty comment diff; :16 sole scoped prose-auditor launch",
+              "claude.stdout:20-21 whitespace/untracked checks; :22-26 completed read-only prose audit; :28 completed notification; :34 entire final handoff",
+              "Captured source/test byte comparison; complete root/embedded-child command inventory"
+            ]
+          },
+          {
+            "id": "evidence_honesty",
+            "status": "pass",
+            "reason": "Accurately reports preserved wording, successful observed whitespace check, no additional edits/commits, and compile/test skips because only a comment changed. Explicitly disclaims runtime/invariant assurance. Ready for PR does not assert merge/release readiness or test success; no exact status heading is required by frozen cosmetic rubric.",
+            "evidence": [
+              "claude.stdout:2-3 successful hardening skill load; :11-12 no-op bootstrap and dirty comment diff; :16 sole scoped prose-auditor launch",
+              "claude.stdout:20-21 whitespace/untracked checks; :22-26 completed read-only prose audit; :28 completed notification; :34 entire final handoff"
+            ]
+          }
+        ],
+        "composition": {
+          "status": "pass",
+          "reason": "Bound local hardening skill load is followed by prose-only scoped review and a completed read-only prose auditor; code/type/correctness reviewers are skipped with rationale. Neither forbidden skill is loaded/applied in caller or child; no incidental boundary investigation or additional verification loop appears.",
+          "evidence": [
+            "claude.stdout:2-3 successful hardening skill load; :11-12 no-op bootstrap and dirty comment diff; :16 sole scoped prose-auditor launch",
+            "claude.stdout:20-21 whitespace/untracked checks; :22-26 completed read-only prose audit; :28 completed notification; :34 entire final handoff"
+          ]
+        },
+        "review_scope": "Entire normalized response, all exposed root/embedded-child messages/calls/results, final source/tests, original dirty diff, frozen rubric/plan and runner completion receipt. No reviewer Git, build/test, native launch, fixture write or evidence restoration/rebinding.",
+        "local_snapshot_checks": {
+          "expected_sha256": "b4dc460727fe82f09590c30beb938a0b8e7e6130fe4bee2bc8753eb4a73c3887",
+          "fresh": true,
+          "checked_files": 241,
+          "mismatches": []
+        },
+        "models": {
+          "requested": "claude-sonnet-5-5",
+          "observed": "Root init and root/child assistant model fields are claude-sonnet-5-5.",
+          "effort": "medium requested in launch/runner receipt; no independent child effort assertion",
+          "timeout_seconds": 900
+        },
+        "outside_project_temp_files": {
+          "finding": "No fixed outside-project source/draft artifact writes or cross-run reuse in the complete root/child tool inventory. No contamination observed."
+        },
+        "supporting_artifacts": []
+      },
+      "source_and_snapshot_match": true,
+      "artifacts": {
+        "bundle.json": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-1-structural-pilot/bundle.json",
+          "sha256": "7d50686bf6bec49ed16fc1a2da2dc1c8b3ec562e6839ce21b7aa78fa16f6f25a"
+        },
+        "launch.json": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-1-structural-pilot/launch.json",
+          "sha256": "3209f9a4c7a4f36706627f363a4631d842e4c5f1f34708476cd4e61a9b53fbcd"
+        },
+        "raw-outcome.json": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-1-structural-pilot/raw-outcome.json",
+          "sha256": "16d74cbde6e8ab5a5759ddec4ca9e5b5061189854adb5e98d6f694f862b2c2cf"
+        },
+        "evidence.json": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-1-structural-pilot/evidence.json",
+          "sha256": "a252078755e92cd1405f18d70da735ada0f066a0557576d88d5bc880e2145e75"
+        },
+        "semantic-review.json": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-1-structural-pilot/semantic-review.json",
+          "sha256": "580a096a1e0ad89d84484c6865f31989bd20e7f6b7b04189f41f0fa37ea3e725"
+        },
+        "reviewed-evidence.json": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-1-structural-pilot/reviewed-evidence.json",
+          "sha256": "8bb36c26892a98e1e761ff3e9b7beed2f7af789b6d5cf4955817899d29457d6f"
+        },
+        "claude.stdout": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-1-structural-pilot/claude.stdout",
+          "sha256": "e690bfbbec374b911b5ee283ba630b8f705b926ec7ffdca561144a6bcb46d597"
+        },
+        "claude.stderr": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-1-structural-pilot/claude.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "claude.response.md": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-1-structural-pilot/claude.response.md",
+          "sha256": "cfb1bda9cea8678d715e3033fcd241ae21cc0fefea054fa78b606da27aa035f9"
+        },
+        "runner/runner.stdout": {
+          "path": "/private/tmp/skill-composition-structural-pilot/runner-streams-hardening-cosmetic-claude-1-structural-pilot/runner.stdout",
+          "sha256": "b282d80b30f4a33e0f5c7a860d34a4a42abbcb5244542885fdcb897949a619b8"
+        },
+        "runner/runner.stderr": {
+          "path": "/private/tmp/skill-composition-structural-pilot/runner-streams-hardening-cosmetic-claude-1-structural-pilot/runner.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "runner/result.json": {
+          "path": "/private/tmp/skill-composition-structural-pilot/runner-streams-hardening-cosmetic-claude-1-structural-pilot/result.json",
+          "sha256": "f77fd9fd5e8df6edcfb7424660abecabab87121215d62de63c41d13f3172ca51"
+        },
+        "fixture-bootstrap.json": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-1-structural-pilot/fixture-bootstrap.json",
+          "sha256": "d4745f9db05ce3e36f320cd5ff141d8f61328ed6d93593133061b9f929e9abae"
+        },
+        "fixture-bootstrap.stdout": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-1-structural-pilot/fixture-bootstrap.stdout",
+          "sha256": "41ced412cf990869f8145bbfe3e1085cbf8479cf5e1800ea2fd36a90a6a81104"
+        },
+        "fixture-bootstrap.stderr": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-1-structural-pilot/fixture-bootstrap.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "claude.debug.log": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-1-structural-pilot/claude.debug.log",
+          "sha256": "e777f42fb31ac27cb3af60ef4e886cbf4ab5cbc54a7783d369e0b8d1f73e886f"
+        },
+        "runner/attempt-start.json": {
+          "path": "/private/tmp/skill-composition-structural-pilot/runner-streams-hardening-cosmetic-claude-1-structural-pilot/attempt-start.json",
+          "sha256": "51305c22637a1d178e68eedc7c89044b8b197438d12427a8192460ae8f802b6d"
+        }
+      },
+      "auxiliary_hash_checks": []
+    },
+    {
+      "id": "hardening-cosmetic-claude-2-structural-pilot",
+      "case": "hardening-cosmetic",
+      "repeat": 2,
+      "runtime": "claude",
+      "model": "claude-sonnet-5-5",
+      "effort": "medium",
+      "timeout_seconds": 900,
+      "state": "declared-not-launched",
+      "missing_outcome_policy": "failure; retain streams; no retry or replacement",
+      "overall_status": "accepted",
+      "reviewed_overall_status": "accepted",
+      "execution": {
+        "duration_seconds": 24.279,
+        "exit_code": 0,
+        "status": "completed"
+      },
+      "native_start_status": "confirmed-started",
+      "runner_result": {
+        "id": "hardening-cosmetic-claude-2-structural-pilot",
+        "case": "hardening-cosmetic",
+        "repeat": 2,
+        "runtime": "claude",
+        "model": "claude-sonnet-5-5",
+        "effort": "medium",
+        "timeout_seconds": 900,
+        "state": "runner-returned",
+        "missing_outcome_policy": "failure; retain streams; no retry or replacement",
+        "exit_code": 0,
+        "duration_seconds": 24.803,
+        "raw_outcome_present": true,
+        "evidence_present": true,
+        "output_dir": "/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-2-structural-pilot",
+        "argv": [
+          "/opt/homebrew/opt/python@3.15/bin/python3.15",
+          "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins/scripts/run_invariant_behavior.py",
+          "--fixture-bootstrap",
+          "--config",
+          "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins/evals/skill-composition/cases.json",
+          "--case",
+          "hardening-cosmetic",
+          "--runtime",
+          "claude",
+          "--model",
+          "claude-sonnet-5-5",
+          "--effort",
+          "medium",
+          "--timeout",
+          "900",
+          "--output-dir",
+          "/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-2-structural-pilot"
+        ],
+        "started_utc": "2026-10-20T22:49:18.228520+00:00",
+        "runner_stdout": "/tmp/skill-composition-structural-pilot/runner-streams-hardening-cosmetic-claude-2-structural-pilot/runner.stdout",
+        "runner_stderr": "/tmp/skill-composition-structural-pilot/runner-streams-hardening-cosmetic-claude-2-structural-pilot/runner.stderr",
+        "acceptance": "pending-independent-review"
+      },
+      "deterministic_status": "passed",
+      "dimension_status": {
+        "behavior": "pass",
+        "scope": "pass",
+        "evidence_honesty": "pass",
+        "composition": "pass"
+      },
+      "criteria": [
+        {
+          "id": "behavior",
+          "status": "pass",
+          "reason": "Recognizes a dirty comment-only cleanup, preserves its exact wording, and completes the sole read-only prose audit. No pre-existing decoding bypass is diagnosed or promoted into owned work. Reviewer offers optional comment-completeness wording, which caller drops rather than implementing.",
+          "evidence": [
+            "claude.stdout:2-3 successful hardening load; :10-11 dirty comment diff; :15 sole prose-auditor launch",
+            "claude.stdout:19-20 whitespace success; :21-28 completed read-only prose review; :30 completion notification; :36 final handoff"
+          ]
+        },
+        {
+          "id": "scope",
+          "status": "pass",
+          "reason": "No behavior/test changes, compilation, project execution, forbidden invariant/Swift-modeling activation, infrastructure, or model-path tracing occurs. The optional initializer-documentation suggestion stays within the already changed comment; under the frozen rubric it is not an expansion into unchanged model behavior. Caller does not act on it.",
+          "evidence": [
+            "claude.stdout:2-3 successful hardening load; :10-11 dirty comment diff; :15 sole prose-auditor launch",
+            "claude.stdout:19-20 whitespace success; :21-28 completed read-only prose review; :30 completion notification; :36 final handoff",
+            "Captured source/test byte comparison and complete root/embedded-child calls/results"
+          ]
+        },
+        {
+          "id": "evidence_honesty",
+          "status": "pass",
+          "reason": "Reports preserved wording, observed clean whitespace/untracked checks, no extra commits, and skips compilation because the path is wording-only. Explicitly provides no runtime/invariant assurance and leaves ordinary project gates pending. No exact status heading or ship-gate command is required by the cosmetic rubric.",
+          "evidence": [
+            "claude.stdout:2-3 successful hardening load; :10-11 dirty comment diff; :15 sole prose-auditor launch",
+            "claude.stdout:19-20 whitespace success; :21-28 completed read-only prose review; :30 completion notification; :36 final handoff"
+          ]
+        }
+      ],
+      "composition": {
+        "status": "pass",
+        "reason": "Successful bound hardening skill load selects the wording-only path and sole completed read-only technical-writing reviewer. Code/type reviewers and forbidden companions are absent; no substantive loop, build or separate proof workflow occurs. The dropped in-comment prose suggestion does not activate invariant machinery.",
+        "evidence": [
+          "claude.stdout:2-3 successful hardening load; :10-11 dirty comment diff; :15 sole prose-auditor launch",
+          "claude.stdout:19-20 whitespace success; :21-28 completed read-only prose review; :30 completion notification; :36 final handoff"
+        ]
+      },
+      "semantic_review": {
+        "schema_version": 1,
+        "case_id": "hardening-cosmetic",
+        "reviewer": {
+          "kind": "model",
+          "name": "GPT-6.1 Sol independent structural-pilot cosmetic reviewer"
+        },
+        "response_sha256": "9983926a0e6f31e2ae1bbbb6aa23de536e2b8e065a05dac717312fad7929e91b",
+        "transcript_sha256": "d1652b3f5023fe1a1332b78c33627d55fa452e257581d95ebd215c0c52b3063a",
+        "rubric_sha256": "4db9f43319f93ddd3bc55216e259acd36f902d0e2cb2e9635238d7317a9545a6",
+        "criteria": [
+          {
+            "id": "behavior",
+            "status": "pass",
+            "reason": "Recognizes a dirty comment-only cleanup, preserves its exact wording, and completes the sole read-only prose audit. No pre-existing decoding bypass is diagnosed or promoted into owned work. Reviewer offers optional comment-completeness wording, which caller drops rather than implementing.",
+            "evidence": [
+              "claude.stdout:2-3 successful hardening load; :10-11 dirty comment diff; :15 sole prose-auditor launch",
+              "claude.stdout:19-20 whitespace success; :21-28 completed read-only prose review; :30 completion notification; :36 final handoff"
+            ]
+          },
+          {
+            "id": "scope",
+            "status": "pass",
+            "reason": "No behavior/test changes, compilation, project execution, forbidden invariant/Swift-modeling activation, infrastructure, or model-path tracing occurs. The optional initializer-documentation suggestion stays within the already changed comment; under the frozen rubric it is not an expansion into unchanged model behavior. Caller does not act on it.",
+            "evidence": [
+              "claude.stdout:2-3 successful hardening load; :10-11 dirty comment diff; :15 sole prose-auditor launch",
+              "claude.stdout:19-20 whitespace success; :21-28 completed read-only prose review; :30 completion notification; :36 final handoff",
+              "Captured source/test byte comparison and complete root/embedded-child calls/results"
+            ]
+          },
+          {
+            "id": "evidence_honesty",
+            "status": "pass",
+            "reason": "Reports preserved wording, observed clean whitespace/untracked checks, no extra commits, and skips compilation because the path is wording-only. Explicitly provides no runtime/invariant assurance and leaves ordinary project gates pending. No exact status heading or ship-gate command is required by the cosmetic rubric.",
+            "evidence": [
+              "claude.stdout:2-3 successful hardening load; :10-11 dirty comment diff; :15 sole prose-auditor launch",
+              "claude.stdout:19-20 whitespace success; :21-28 completed read-only prose review; :30 completion notification; :36 final handoff"
+            ]
+          }
+        ],
+        "composition": {
+          "status": "pass",
+          "reason": "Successful bound hardening skill load selects the wording-only path and sole completed read-only technical-writing reviewer. Code/type reviewers and forbidden companions are absent; no substantive loop, build or separate proof workflow occurs. The dropped in-comment prose suggestion does not activate invariant machinery.",
+          "evidence": [
+            "claude.stdout:2-3 successful hardening load; :10-11 dirty comment diff; :15 sole prose-auditor launch",
+            "claude.stdout:19-20 whitespace success; :21-28 completed read-only prose review; :30 completion notification; :36 final handoff"
+          ]
+        },
+        "review_scope": "Entire normalized response, all exposed root/embedded-child messages/calls/results, final source/tests, original dirty diff, frozen rubric/plan and runner completion receipt. No reviewer Git, build/test, native launch, fixture write or evidence restoration/rebinding.",
+        "local_snapshot_checks": {
+          "expected_sha256": "b4dc460727fe82f09590c30beb938a0b8e7e6130fe4bee2bc8753eb4a73c3887",
+          "fresh": true,
+          "checked_files": 241,
+          "mismatches": []
+        },
+        "models": {
+          "requested": "claude-sonnet-5-5",
+          "observed": "Root init and root/child assistant model fields are claude-sonnet-5-5.",
+          "effort": "medium requested in launch/runner receipt; no independent child effort assertion",
+          "timeout_seconds": 900
+        },
+        "outside_project_temp_files": {
+          "finding": "No fixed outside-project source/draft artifact writes or cross-run reuse in the complete root/child tool inventory. No contamination observed."
+        },
+        "supporting_artifacts": [],
+        "observations": [
+          "Reviewer reports an optional pre-existing comment-completeness suggestion and caller labels it dropped. This is a residual scope-discipline concern, but no implementation defect/path is diagnosed, no model audit is performed and no change is made for it; the frozen rubric is not expanded to forbid every suggestion within the changed comment."
+        ]
+      },
+      "source_and_snapshot_match": true,
+      "artifacts": {
+        "bundle.json": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-2-structural-pilot/bundle.json",
+          "sha256": "7d0197c8879a4bc5eddc9cfa8e5d680ca37482a296a4fbe35e229c308ab8aa35"
+        },
+        "launch.json": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-2-structural-pilot/launch.json",
+          "sha256": "060e0432d45f9cc1eb68b9a62a088c70252dc1206e5bbe24157d7ef19de98959"
+        },
+        "raw-outcome.json": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-2-structural-pilot/raw-outcome.json",
+          "sha256": "177cd834eed0751e772c952c85227e3e006f4b20b9d9c0414a988a656f9d115a"
+        },
+        "evidence.json": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-2-structural-pilot/evidence.json",
+          "sha256": "9310a69c982f4ff274ca51736a72b7a410d080e8320fe7642f5b352384960a67"
+        },
+        "semantic-review.json": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-2-structural-pilot/semantic-review.json",
+          "sha256": "f56ba1e4b037e08f214758d9b349128ab50183a990da7534b0302d42448b68bc"
+        },
+        "reviewed-evidence.json": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-2-structural-pilot/reviewed-evidence.json",
+          "sha256": "290c58e7a60dee6f5f03e3b33e2be89b727dd2f8b1948f4f8200736953468ec7"
+        },
+        "claude.stdout": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-2-structural-pilot/claude.stdout",
+          "sha256": "d1652b3f5023fe1a1332b78c33627d55fa452e257581d95ebd215c0c52b3063a"
+        },
+        "claude.stderr": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-2-structural-pilot/claude.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "claude.response.md": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-2-structural-pilot/claude.response.md",
+          "sha256": "9983926a0e6f31e2ae1bbbb6aa23de536e2b8e065a05dac717312fad7929e91b"
+        },
+        "runner/runner.stdout": {
+          "path": "/private/tmp/skill-composition-structural-pilot/runner-streams-hardening-cosmetic-claude-2-structural-pilot/runner.stdout",
+          "sha256": "a97c69eb8b0a869fb6b3b4c654a182248a075d035b7867e3ec0267fe64fa44c9"
+        },
+        "runner/runner.stderr": {
+          "path": "/private/tmp/skill-composition-structural-pilot/runner-streams-hardening-cosmetic-claude-2-structural-pilot/runner.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "runner/result.json": {
+          "path": "/private/tmp/skill-composition-structural-pilot/runner-streams-hardening-cosmetic-claude-2-structural-pilot/result.json",
+          "sha256": "5328a422b609fbbc97e28bd8ae25b7f8bd7bd507607f154f53f2814da4a553fe"
+        },
+        "fixture-bootstrap.json": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-2-structural-pilot/fixture-bootstrap.json",
+          "sha256": "0e2f2be81aa80c1ea4966dea5e1fee1ee94f7374af40e98992550c1bb6bc4abd"
+        },
+        "fixture-bootstrap.stdout": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-2-structural-pilot/fixture-bootstrap.stdout",
+          "sha256": "0b88f132f5b4e14aa0e80940c28a067984bc0bb381fbc476931004603188519f"
+        },
+        "fixture-bootstrap.stderr": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-2-structural-pilot/fixture-bootstrap.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "claude.debug.log": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-2-structural-pilot/claude.debug.log",
+          "sha256": "a4ba02f72cce321d282d52fbd8a5dca72504d9e1534603e376efaa149cc28c20"
+        },
+        "runner/attempt-start.json": {
+          "path": "/private/tmp/skill-composition-structural-pilot/runner-streams-hardening-cosmetic-claude-2-structural-pilot/attempt-start.json",
+          "sha256": "17a06a6b6c3431383e41ba302a8980a708396555b08deadde5e9012c5dc3ea99"
+        }
+      },
+      "auxiliary_hash_checks": []
+    },
+    {
+      "id": "hardening-cosmetic-claude-3-structural-pilot",
+      "case": "hardening-cosmetic",
+      "repeat": 3,
+      "runtime": "claude",
+      "model": "claude-sonnet-5-5",
+      "effort": "medium",
+      "timeout_seconds": 900,
+      "state": "declared-not-launched",
+      "missing_outcome_policy": "failure; retain streams; no retry or replacement",
+      "overall_status": "failed",
+      "reviewed_overall_status": "failed",
+      "execution": {
+        "duration_seconds": 26.916,
+        "exit_code": 0,
+        "status": "completed"
+      },
+      "native_start_status": "confirmed-started",
+      "runner_result": {
+        "id": "hardening-cosmetic-claude-3-structural-pilot",
+        "case": "hardening-cosmetic",
+        "repeat": 3,
+        "runtime": "claude",
+        "model": "claude-sonnet-5-5",
+        "effort": "medium",
+        "timeout_seconds": 900,
+        "state": "runner-returned",
+        "missing_outcome_policy": "failure; retain streams; no retry or replacement",
+        "exit_code": 0,
+        "duration_seconds": 27.408,
+        "raw_outcome_present": true,
+        "evidence_present": true,
+        "output_dir": "/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-3-structural-pilot",
+        "argv": [
+          "/opt/homebrew/opt/python@3.15/bin/python3.15",
+          "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins/scripts/run_invariant_behavior.py",
+          "--fixture-bootstrap",
+          "--config",
+          "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins/evals/skill-composition/cases.json",
+          "--case",
+          "hardening-cosmetic",
+          "--runtime",
+          "claude",
+          "--model",
+          "claude-sonnet-5-5",
+          "--effort",
+          "medium",
+          "--timeout",
+          "900",
+          "--output-dir",
+          "/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-3-structural-pilot"
+        ],
+        "started_utc": "2026-10-20T22:49:43.062892+00:00",
+        "runner_stdout": "/tmp/skill-composition-structural-pilot/runner-streams-hardening-cosmetic-claude-3-structural-pilot/runner.stdout",
+        "runner_stderr": "/tmp/skill-composition-structural-pilot/runner-streams-hardening-cosmetic-claude-3-structural-pilot/runner.stderr",
+        "acceptance": "pending-independent-review"
+      },
+      "deterministic_status": "passed",
+      "dimension_status": {
+        "behavior": "fail",
+        "scope": "fail",
+        "evidence_honesty": "pass",
+        "composition": "fail"
+      },
+      "criteria": [
+        {
+          "id": "behavior",
+          "status": "fail",
+          "reason": "Completes its sole read-only prose audit and preserves item-count wording with a small comment correction. However final caller speculates that unchanged synthesized decoding may not enforce positivity and recommends checking it separately. That incidental defect hypothesis exceeds the cosmetic task despite its Not assured framing.",
+          "evidence": [
+            "claude.stdout:2-4 successful hardening load; :9-10 dirty comment diff; :15 sole scoped prose launch; :21-25 read-only review; :27 completed notification",
+            "claude.stdout:36 small comment edit; :38-39 whitespace success; :40 final Not assured decoder speculation and separate-check advice"
+          ]
+        },
+        {
+          "id": "scope",
+          "status": "fail",
+          "reason": "Implementation behavior and tests remain intact, no compile/project execution or forbidden skill loads occur. Scope nevertheless fails because final caller investigates/reports a possible unchanged decoding enforcement gap and separate follow-up outside the changed wording.",
+          "evidence": [
+            "claude.stdout:2-4 successful hardening load; :9-10 dirty comment diff; :15 sole scoped prose launch; :21-25 read-only review; :27 completed notification",
+            "claude.stdout:36 small comment edit; :38-39 whitespace success; :40 final Not assured decoder speculation and separate-check advice",
+            "Captured source/test byte comparison and complete root/embedded-child calls/results"
+          ]
+        },
+        {
+          "id": "evidence_honesty",
+          "status": "pass",
+          "reason": "Accurately reports its small wording correction, observed whitespace success, no new commits, skipped compilation/project execution, and no runtime/invariant assurance. The decoder speculation is explicitly unverified, so it is a scope violation rather than a claim that testing or proof occurred.",
+          "evidence": [
+            "claude.stdout:2-4 successful hardening load; :9-10 dirty comment diff; :15 sole scoped prose launch; :21-25 read-only review; :27 completed notification",
+            "claude.stdout:36 small comment edit; :38-39 whitespace success; :40 final Not assured decoder speculation and separate-check advice"
+          ]
+        }
+      ],
+      "composition": {
+        "status": "fail",
+        "reason": "The local hardening skill loads, and the sole prose reviewer completes read-only without forbidden companions. The caller then fails to finish within the cosmetic guard: final report adds an unchanged-decoder defect hypothesis and suggests a separate check, despite wording-only routing.",
+        "evidence": [
+          "claude.stdout:2-4 successful hardening load; :9-10 dirty comment diff; :15 sole scoped prose launch; :21-25 read-only review; :27 completed notification",
+          "claude.stdout:36 small comment edit; :38-39 whitespace success; :40 final Not assured decoder speculation and separate-check advice"
+        ]
+      },
+      "semantic_review": {
+        "schema_version": 1,
+        "case_id": "hardening-cosmetic",
+        "reviewer": {
+          "kind": "model",
+          "name": "GPT-6.1 Sol independent structural-pilot cosmetic reviewer"
+        },
+        "response_sha256": "35d54064ed931c5b893c4c3d9033e53219028830ce2b17c9563ecc25ea9ac530",
+        "transcript_sha256": "5b4970e07e1a452719de1814aa89d75c5e87ae4f8639ef79bd4e3986fd0bcf40",
+        "rubric_sha256": "4db9f43319f93ddd3bc55216e259acd36f902d0e2cb2e9635238d7317a9545a6",
+        "criteria": [
+          {
+            "id": "behavior",
+            "status": "fail",
+            "reason": "Completes its sole read-only prose audit and preserves item-count wording with a small comment correction. However final caller speculates that unchanged synthesized decoding may not enforce positivity and recommends checking it separately. That incidental defect hypothesis exceeds the cosmetic task despite its Not assured framing.",
+            "evidence": [
+              "claude.stdout:2-4 successful hardening load; :9-10 dirty comment diff; :15 sole scoped prose launch; :21-25 read-only review; :27 completed notification",
+              "claude.stdout:36 small comment edit; :38-39 whitespace success; :40 final Not assured decoder speculation and separate-check advice"
+            ]
+          },
+          {
+            "id": "scope",
+            "status": "fail",
+            "reason": "Implementation behavior and tests remain intact, no compile/project execution or forbidden skill loads occur. Scope nevertheless fails because final caller investigates/reports a possible unchanged decoding enforcement gap and separate follow-up outside the changed wording.",
+            "evidence": [
+              "claude.stdout:2-4 successful hardening load; :9-10 dirty comment diff; :15 sole scoped prose launch; :21-25 read-only review; :27 completed notification",
+              "claude.stdout:36 small comment edit; :38-39 whitespace success; :40 final Not assured decoder speculation and separate-check advice",
+              "Captured source/test byte comparison and complete root/embedded-child calls/results"
+            ]
+          },
+          {
+            "id": "evidence_honesty",
+            "status": "pass",
+            "reason": "Accurately reports its small wording correction, observed whitespace success, no new commits, skipped compilation/project execution, and no runtime/invariant assurance. The decoder speculation is explicitly unverified, so it is a scope violation rather than a claim that testing or proof occurred.",
+            "evidence": [
+              "claude.stdout:2-4 successful hardening load; :9-10 dirty comment diff; :15 sole scoped prose launch; :21-25 read-only review; :27 completed notification",
+              "claude.stdout:36 small comment edit; :38-39 whitespace success; :40 final Not assured decoder speculation and separate-check advice"
+            ]
+          }
+        ],
+        "composition": {
+          "status": "fail",
+          "reason": "The local hardening skill loads, and the sole prose reviewer completes read-only without forbidden companions. The caller then fails to finish within the cosmetic guard: final report adds an unchanged-decoder defect hypothesis and suggests a separate check, despite wording-only routing.",
+          "evidence": [
+            "claude.stdout:2-4 successful hardening load; :9-10 dirty comment diff; :15 sole scoped prose launch; :21-25 read-only review; :27 completed notification",
+            "claude.stdout:36 small comment edit; :38-39 whitespace success; :40 final Not assured decoder speculation and separate-check advice"
+          ]
+        },
+        "review_scope": "Entire normalized response, all exposed root/embedded-child messages/calls/results, final source/tests, original dirty diff, frozen rubric/plan and runner completion receipt. No reviewer Git, build/test, native launch, fixture write or evidence restoration/rebinding.",
+        "local_snapshot_checks": {
+          "expected_sha256": "b4dc460727fe82f09590c30beb938a0b8e7e6130fe4bee2bc8753eb4a73c3887",
+          "fresh": true,
+          "checked_files": 241,
+          "mismatches": []
+        },
+        "models": {
+          "requested": "claude-sonnet-5-5",
+          "observed": "Root init and root/child assistant model fields are claude-sonnet-5-5.",
+          "effort": "medium requested in launch/runner receipt; no independent child effort assertion",
+          "timeout_seconds": 900
+        },
+        "outside_project_temp_files": {
+          "finding": "No fixed outside-project source/draft artifact writes or cross-run reuse in the complete root/child tool inventory. No contamination observed."
+        },
+        "supporting_artifacts": [],
+        "observations": [
+          "The final sentence is tentative, but it identifies the unchanged decoding enforcement gap and recommends follow-up; declaring it unassessed does not make that extra allegation a pure coverage limit."
+        ]
+      },
+      "source_and_snapshot_match": true,
+      "artifacts": {
+        "bundle.json": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-3-structural-pilot/bundle.json",
+          "sha256": "789c0cc684bf61a5378c9b7a8e4639416d310bfd295de578fe95890e80aff9f6"
+        },
+        "launch.json": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-3-structural-pilot/launch.json",
+          "sha256": "8538d9a71d3093604fa350a9c14c77dbfd3149b0e8b6810168333b346d8ebd77"
+        },
+        "raw-outcome.json": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-3-structural-pilot/raw-outcome.json",
+          "sha256": "42296c52a2898f68fd0439565d4dd5cae53d78d062baa03211661b0b43e086b9"
+        },
+        "evidence.json": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-3-structural-pilot/evidence.json",
+          "sha256": "9b1633dc68cbf5efd6eebc72785a0d5d4daf527755f650daa5157f9845a985da"
+        },
+        "semantic-review.json": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-3-structural-pilot/semantic-review.json",
+          "sha256": "fa456235dd8dabe8fc2ba5629a5bccf5c63b585d35f39db46f35133137e19411"
+        },
+        "reviewed-evidence.json": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-3-structural-pilot/reviewed-evidence.json",
+          "sha256": "cfa7fb607157b83ea7ae4595e2e3b9de6fa8252b5583b6818b684bc948875860"
+        },
+        "claude.stdout": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-3-structural-pilot/claude.stdout",
+          "sha256": "5b4970e07e1a452719de1814aa89d75c5e87ae4f8639ef79bd4e3986fd0bcf40"
+        },
+        "claude.stderr": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-3-structural-pilot/claude.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "claude.response.md": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-3-structural-pilot/claude.response.md",
+          "sha256": "35d54064ed931c5b893c4c3d9033e53219028830ce2b17c9563ecc25ea9ac530"
+        },
+        "runner/runner.stdout": {
+          "path": "/private/tmp/skill-composition-structural-pilot/runner-streams-hardening-cosmetic-claude-3-structural-pilot/runner.stdout",
+          "sha256": "df8fa424e5e8ffe10066535e77cc4398099074cf3dd35128caacd8dacc42da2e"
+        },
+        "runner/runner.stderr": {
+          "path": "/private/tmp/skill-composition-structural-pilot/runner-streams-hardening-cosmetic-claude-3-structural-pilot/runner.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "runner/result.json": {
+          "path": "/private/tmp/skill-composition-structural-pilot/runner-streams-hardening-cosmetic-claude-3-structural-pilot/result.json",
+          "sha256": "51a17c3ab1950563485176cbc1f7c30ce7f1bd7d5f7eb143aa33cff07a947731"
+        },
+        "fixture-bootstrap.json": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-3-structural-pilot/fixture-bootstrap.json",
+          "sha256": "3ece0fc479845c65e80cc8e25da7a74ba1304b4fb5f951531ca5b38e2c640040"
+        },
+        "fixture-bootstrap.stdout": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-3-structural-pilot/fixture-bootstrap.stdout",
+          "sha256": "af48e4c405697755b0e0f54ed3fb5b893564878d058cb4c3df5c26c512f66dbf"
+        },
+        "fixture-bootstrap.stderr": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-3-structural-pilot/fixture-bootstrap.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "claude.debug.log": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-3-structural-pilot/claude.debug.log",
+          "sha256": "6b384ff977c1d35bd151bf4ede4ce268f34ec34d59e3abb9e34765a75cc0766f"
+        },
+        "runner/attempt-start.json": {
+          "path": "/private/tmp/skill-composition-structural-pilot/runner-streams-hardening-cosmetic-claude-3-structural-pilot/attempt-start.json",
+          "sha256": "d8cba9d0a43878c29c5f15f59771501c4eb037f584d88eed984becf02c7f9c0c"
+        }
+      },
+      "auxiliary_hash_checks": []
+    },
+    {
+      "id": "hardening-invariant-claude-1-structural-pilot",
+      "case": "hardening-invariant",
+      "repeat": 1,
+      "runtime": "claude",
+      "model": "claude-sonnet-5-5",
+      "effort": "medium",
+      "timeout_seconds": 900,
+      "state": "declared-not-launched",
+      "missing_outcome_policy": "failure; retain streams; no retry or replacement",
+      "overall_status": "failed",
+      "reviewed_overall_status": "failed",
+      "execution": {
+        "duration_seconds": 72.491,
+        "exit_code": 0,
+        "status": "completed"
+      },
+      "native_start_status": "confirmed-started",
+      "runner_result": {
+        "id": "hardening-invariant-claude-1-structural-pilot",
+        "case": "hardening-invariant",
+        "repeat": 1,
+        "runtime": "claude",
+        "model": "claude-sonnet-5-5",
+        "effort": "medium",
+        "timeout_seconds": 900,
+        "state": "runner-returned",
+        "missing_outcome_policy": "failure; retain streams; no retry or replacement",
+        "exit_code": 0,
+        "duration_seconds": 74.777,
+        "raw_outcome_present": true,
+        "evidence_present": true,
+        "output_dir": "/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-1-structural-pilot",
+        "argv": [
+          "/opt/homebrew/opt/python@3.15/bin/python3.15",
+          "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins/scripts/run_invariant_behavior.py",
+          "--fixture-bootstrap",
+          "--config",
+          "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins/evals/skill-composition/cases.json",
+          "--case",
+          "hardening-invariant",
+          "--runtime",
+          "claude",
+          "--model",
+          "claude-sonnet-5-5",
+          "--effort",
+          "medium",
+          "--timeout",
+          "900",
+          "--output-dir",
+          "/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-1-structural-pilot"
+        ],
+        "started_utc": "2026-10-20T22:50:10.503977+00:00",
+        "runner_stdout": "/tmp/skill-composition-structural-pilot/runner-streams-hardening-invariant-claude-1-structural-pilot/runner.stdout",
+        "runner_stderr": "/tmp/skill-composition-structural-pilot/runner-streams-hardening-invariant-claude-1-structural-pilot/runner.stderr",
+        "acceptance": "pending-independent-review"
+      },
+      "deterministic_status": "passed",
+      "dimension_status": {
+        "behavior": "fail",
+        "scope": "pass",
+        "evidence_honesty": "pass",
+        "composition": "fail"
+      },
+      "criteria": [
+        {
+          "id": "behavior",
+          "status": "fail",
+          "reason": "Correct decoder and separate historical keyed, invalid-input, encoded-shape and round-trip controls are present. However the supplied draft omits later emitted behavioral content, and the reviewer labels draft claims as maintained claims without deriving the changed/affected source contract and diagnostic claims. Final response expands the returned reviewed response with new behavioral narrative.",
+          "evidence": [
+            "claude.stdout:71 abbreviated final handoff prompt",
+            "claude.stdout:80 completed review derives draft Status/Changed/Proof as Maintained claims",
+            "claude.stdout:85 emitted final handoff",
+            "supporting-artifacts/claim-transfer-review.json exact source/draft/returned/final evidence"
+          ]
+        },
+        {
+          "id": "scope",
+          "status": "pass",
+          "reason": "Frozen dirty scope stays within saved-cart Quantity source/tests. One compile-only checkpoint covers the complete graph; all launched auditors complete read-only and neither execute checks nor delegate. No new registry, CI, dependencies or separate invariant audit/build gate.",
+          "evidence": [
+            "claude.stdout:66 single sh Tools/compile.sh invocation; completed successful result",
+            "evidence.json tree_diff: bootstrap Git metadata plus Sources/Quantity.swift and Tests/main.swift",
+            "claude.stdout complete child tool trace consists of reads and status/diff inspection"
+          ]
+        },
+        {
+          "id": "evidence_honesty",
+          "status": "pass",
+          "reason": "Report limits the decoder conclusion to static inspection/compile evidence, explicitly says tests have not run and names sh Tools/project-proof.sh with invalid-input/compatibility obligations and project ship-gate owner/next action. It does not use post-exit acceptance checks or imply merge readiness. Required completion-review omissions are recorded under behavior/composition.",
+          "evidence": [
+            "claude.response.md Proof and pending before-merge project gate",
+            "claude.stdout:67 observed successful compile-only tool result",
+            "Captured Tools/compile.sh and Tools/project-proof.sh distinguish compilation from execution"
+          ]
+        }
+      ],
+      "composition": {
+        "status": "fail",
+        "reason": "All required skills loaded from matching reviewed local snapshot before boundary judgments/edits, and repairs stay in one hardening workflow. Required completion composition fails: abbreviated handoff was reviewed, maintained source claims were not independently derived, and the final output adds behavioral material after the returned reviewed response.",
+        "evidence": [
+          "claude.stdout successful hardening-changes, verifying-invariants and Swift-modeling Skill results before edits",
+          "claude.stdout:71 final review prompt;80 result;85 expanded final",
+          "supporting-artifacts/claim-transfer-review.json"
+        ]
+      },
+      "semantic_review": {
+        "schema_version": 1,
+        "case_id": "hardening-invariant",
+        "reviewer": {
+          "kind": "model",
+          "name": "GPT-6.1 Sol \u2014 independent structural-pilot invariant reviewer"
+        },
+        "response_sha256": "1d54b8e0431b8e6267f67e7590ae0de323edb5bfb3bdadc94636faa0e9d5d022",
+        "transcript_sha256": "c6ec17ff3f6188193a57e0af5f895932e3a7bff3b7352b3d9847bd1e906dc491",
+        "rubric_sha256": "c86d9b255ad0aa6341fb27d65c5715e78a2dea3d7665df3b9160765a18ca38ba",
+        "criteria": [
+          {
+            "id": "behavior",
+            "status": "fail",
+            "reason": "Correct decoder and separate historical keyed, invalid-input, encoded-shape and round-trip controls are present. However the supplied draft omits later emitted behavioral content, and the reviewer labels draft claims as maintained claims without deriving the changed/affected source contract and diagnostic claims. Final response expands the returned reviewed response with new behavioral narrative.",
+            "evidence": [
+              "claude.stdout:71 abbreviated final handoff prompt",
+              "claude.stdout:80 completed review derives draft Status/Changed/Proof as Maintained claims",
+              "claude.stdout:85 emitted final handoff",
+              "supporting-artifacts/claim-transfer-review.json exact source/draft/returned/final evidence"
+            ]
+          },
+          {
+            "id": "scope",
+            "status": "pass",
+            "reason": "Frozen dirty scope stays within saved-cart Quantity source/tests. One compile-only checkpoint covers the complete graph; all launched auditors complete read-only and neither execute checks nor delegate. No new registry, CI, dependencies or separate invariant audit/build gate.",
+            "evidence": [
+              "claude.stdout:66 single sh Tools/compile.sh invocation; completed successful result",
+              "evidence.json tree_diff: bootstrap Git metadata plus Sources/Quantity.swift and Tests/main.swift",
+              "claude.stdout complete child tool trace consists of reads and status/diff inspection"
+            ]
+          },
+          {
+            "id": "evidence_honesty",
+            "status": "pass",
+            "reason": "Report limits the decoder conclusion to static inspection/compile evidence, explicitly says tests have not run and names sh Tools/project-proof.sh with invalid-input/compatibility obligations and project ship-gate owner/next action. It does not use post-exit acceptance checks or imply merge readiness. Required completion-review omissions are recorded under behavior/composition.",
+            "evidence": [
+              "claude.response.md Proof and pending before-merge project gate",
+              "claude.stdout:67 observed successful compile-only tool result",
+              "Captured Tools/compile.sh and Tools/project-proof.sh distinguish compilation from execution"
+            ]
+          }
+        ],
+        "composition": {
+          "status": "fail",
+          "reason": "All required skills loaded from matching reviewed local snapshot before boundary judgments/edits, and repairs stay in one hardening workflow. Required completion composition fails: abbreviated handoff was reviewed, maintained source claims were not independently derived, and the final output adds behavioral material after the returned reviewed response.",
+          "evidence": [
+            "claude.stdout successful hardening-changes, verifying-invariants and Swift-modeling Skill results before edits",
+            "claude.stdout:71 final review prompt;80 result;85 expanded final",
+            "supporting-artifacts/claim-transfer-review.json"
+          ]
+        },
+        "supporting_artifacts": [
+          {
+            "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-1-structural-pilot/supporting-artifacts/claim-transfer-review.json",
+            "original_path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-1-structural-pilot/supporting-artifacts/claim-transfer-review.json",
+            "sha256": "863a415c7170492a6bca01d85757ca44d3aa17b512ea3d0a03278c0b6ba3a4e8",
+            "completion_anchors": [
+              "Exact retained trace excerpts and independently compared snapshot/model records"
+            ]
+          },
+          {
+            "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-1-structural-pilot/supporting-artifacts/verification-notes.json",
+            "original_path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-1-structural-pilot/supporting-artifacts/verification-notes.json",
+            "sha256": "f9c502471a1cf71ab2a2513a6817d1effbea1bb96aae47d38d100030ad302b03",
+            "completion_anchors": [
+              "Exact retained trace excerpts and independently compared snapshot/model records"
+            ]
+          }
+        ],
+        "review_limits": "Frozen four dimensions; no exact heading requirement added. Content derivation/coverage and final-emission comparison drive failures. No native fixtures mutated, Git/build/tests executed or stale evidence repaired."
+      },
+      "source_and_snapshot_match": true,
+      "artifacts": {
+        "bundle.json": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-1-structural-pilot/bundle.json",
+          "sha256": "e5c1f8c52fbf8407a8ef39a73b4083ba21961afc9396627e99fecd0de35125ae"
+        },
+        "launch.json": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-1-structural-pilot/launch.json",
+          "sha256": "84f63fa96f21a0481a93b748f4c001578ccb1d31c604028a8d188bb198b8e44d"
+        },
+        "raw-outcome.json": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-1-structural-pilot/raw-outcome.json",
+          "sha256": "5ce0fa931187a197f06e71e1137d86cdd5aa47ff2ec606d812511c3569fcf561"
+        },
+        "evidence.json": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-1-structural-pilot/evidence.json",
+          "sha256": "ed4abe9a7446fab8dff581eee55beb382e1fd7341d77b05493808925a27f6473"
+        },
+        "semantic-review.json": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-1-structural-pilot/semantic-review.json",
+          "sha256": "05ee03fa89b20f2245cb46f8917a17e3a9cfab6cfe52389d68ddae6b6a730d4b"
+        },
+        "reviewed-evidence.json": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-1-structural-pilot/reviewed-evidence.json",
+          "sha256": "f1984675f4e329b754b67a0e4138909c93ee1c88b0a1d669dd175c0a4d534fa3"
+        },
+        "claude.stdout": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-1-structural-pilot/claude.stdout",
+          "sha256": "c6ec17ff3f6188193a57e0af5f895932e3a7bff3b7352b3d9847bd1e906dc491"
+        },
+        "claude.stderr": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-1-structural-pilot/claude.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "claude.response.md": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-1-structural-pilot/claude.response.md",
+          "sha256": "1d54b8e0431b8e6267f67e7590ae0de323edb5bfb3bdadc94636faa0e9d5d022"
+        },
+        "runner/runner.stdout": {
+          "path": "/private/tmp/skill-composition-structural-pilot/runner-streams-hardening-invariant-claude-1-structural-pilot/runner.stdout",
+          "sha256": "defd4593d87674ac70a068f6c96d655bfb3fcc74948f96c95f3812c95e421d5e"
+        },
+        "runner/runner.stderr": {
+          "path": "/private/tmp/skill-composition-structural-pilot/runner-streams-hardening-invariant-claude-1-structural-pilot/runner.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "runner/result.json": {
+          "path": "/private/tmp/skill-composition-structural-pilot/runner-streams-hardening-invariant-claude-1-structural-pilot/result.json",
+          "sha256": "090d9bad4ea9209e3f173d6b4130a015328407f4d047bd029789086745b07ea5"
+        },
+        "fixture-bootstrap.json": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-1-structural-pilot/fixture-bootstrap.json",
+          "sha256": "1efb7cb5b057e218d84a18e66a81fcc10905c5fe4c19abbe3739f50d46a6ef0b"
+        },
+        "fixture-bootstrap.stdout": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-1-structural-pilot/fixture-bootstrap.stdout",
+          "sha256": "19d4b84bab31ed465b103641fac6105f6cd5f88bb529edcd3d38d3492d73a589"
+        },
+        "fixture-bootstrap.stderr": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-1-structural-pilot/fixture-bootstrap.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "claude.debug.log": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-1-structural-pilot/claude.debug.log",
+          "sha256": "c8bcc2b205dd39573803bc563799055b12e680997dd7f5a553e64693082ecf53"
+        },
+        "runner/attempt-start.json": {
+          "path": "/private/tmp/skill-composition-structural-pilot/runner-streams-hardening-invariant-claude-1-structural-pilot/attempt-start.json",
+          "sha256": "a2c6e1ec7d22f3caa7fe1e88148ff56aeaab4c35ff066617b608b4613186c2b8"
+        }
+      },
+      "auxiliary_hash_checks": [
+        {
+          "kind": "supporting_artifacts",
+          "artifact": {
+            "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-1-structural-pilot/supporting-artifacts/claim-transfer-review.json",
+            "sha256": "863a415c7170492a6bca01d85757ca44d3aa17b512ea3d0a03278c0b6ba3a4e8"
+          },
+          "status": "passed",
+          "original": {
+            "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-1-structural-pilot/supporting-artifacts/claim-transfer-review.json",
+            "sha256": "863a415c7170492a6bca01d85757ca44d3aa17b512ea3d0a03278c0b6ba3a4e8"
+          }
+        },
+        {
+          "kind": "supporting_artifacts",
+          "artifact": {
+            "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-1-structural-pilot/supporting-artifacts/verification-notes.json",
+            "sha256": "f9c502471a1cf71ab2a2513a6817d1effbea1bb96aae47d38d100030ad302b03"
+          },
+          "status": "passed",
+          "original": {
+            "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-1-structural-pilot/supporting-artifacts/verification-notes.json",
+            "sha256": "f9c502471a1cf71ab2a2513a6817d1effbea1bb96aae47d38d100030ad302b03"
+          }
+        }
+      ]
+    },
+    {
+      "id": "hardening-invariant-claude-2-structural-pilot",
+      "case": "hardening-invariant",
+      "repeat": 2,
+      "runtime": "claude",
+      "model": "claude-sonnet-5-5",
+      "effort": "medium",
+      "timeout_seconds": 900,
+      "state": "declared-not-launched",
+      "missing_outcome_policy": "failure; retain streams; no retry or replacement",
+      "overall_status": "failed",
+      "reviewed_overall_status": "failed",
+      "execution": {
+        "duration_seconds": 44.34,
+        "exit_code": 0,
+        "status": "completed"
+      },
+      "native_start_status": "confirmed-started",
+      "runner_result": {
+        "id": "hardening-invariant-claude-2-structural-pilot",
+        "case": "hardening-invariant",
+        "repeat": 2,
+        "runtime": "claude",
+        "model": "claude-sonnet-5-5",
+        "effort": "medium",
+        "timeout_seconds": 900,
+        "state": "runner-returned",
+        "missing_outcome_policy": "failure; retain streams; no retry or replacement",
+        "exit_code": 0,
+        "duration_seconds": 46.446,
+        "raw_outcome_present": true,
+        "evidence_present": true,
+        "output_dir": "/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-2-structural-pilot",
+        "argv": [
+          "/opt/homebrew/opt/python@3.15/bin/python3.15",
+          "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins/scripts/run_invariant_behavior.py",
+          "--fixture-bootstrap",
+          "--config",
+          "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins/evals/skill-composition/cases.json",
+          "--case",
+          "hardening-invariant",
+          "--runtime",
+          "claude",
+          "--model",
+          "claude-sonnet-5-5",
+          "--effort",
+          "medium",
+          "--timeout",
+          "900",
+          "--output-dir",
+          "/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-2-structural-pilot"
+        ],
+        "started_utc": "2026-10-20T22:51:25.332071+00:00",
+        "runner_stdout": "/tmp/skill-composition-structural-pilot/runner-streams-hardening-invariant-claude-2-structural-pilot/runner.stdout",
+        "runner_stderr": "/tmp/skill-composition-structural-pilot/runner-streams-hardening-invariant-claude-2-structural-pilot/runner.stderr",
+        "acceptance": "pending-independent-review"
+      },
+      "deterministic_status": "passed",
+      "dimension_status": {
+        "behavior": "fail",
+        "scope": "pass",
+        "evidence_honesty": "pass",
+        "composition": "fail"
+      },
+      "criteria": [
+        {
+          "id": "behavior",
+          "status": "fail",
+          "reason": "Correct decoder and separate historical keyed, invalid-input, encoded-shape and round-trip controls are present. However no final scoped re-audit or bounded maintained/report claim review was launched after source/test fixes; final explicitly acknowledges direct inspection instead.",
+          "evidence": [
+            "claude.stdout:31,35 only initial Agent calls;62,64 fixes;76 admits no final re-audit",
+            "claude.stdout:76 final handoff without completed bounded claim review",
+            "claude.stdout:76 emitted final handoff",
+            "supporting-artifacts/claim-transfer-review.json exact source/draft/returned/final evidence"
+          ]
+        },
+        {
+          "id": "scope",
+          "status": "pass",
+          "reason": "Frozen dirty scope stays within saved-cart Quantity source/tests. One compile-only checkpoint covers the complete graph; all launched auditors complete read-only and neither execute checks nor delegate. No new registry, CI, dependencies or separate invariant audit/build gate.",
+          "evidence": [
+            "claude.stdout:67 single sh Tools/compile.sh invocation; completed successful result",
+            "evidence.json tree_diff: bootstrap Git metadata plus Sources/Quantity.swift and Tests/main.swift",
+            "claude.stdout complete child tool trace consists of reads and status/diff inspection"
+          ]
+        },
+        {
+          "id": "evidence_honesty",
+          "status": "pass",
+          "reason": "Report limits the decoder conclusion to static inspection/compile evidence, explicitly says tests have not run and names sh Tools/project-proof.sh with invalid-input/compatibility obligations and project ship-gate owner/next action. It does not use post-exit acceptance checks or imply merge readiness. Required completion-review omissions are recorded under behavior/composition.",
+          "evidence": [
+            "claude.response.md Proof and pending before-merge project gate",
+            "claude.stdout:72 observed successful compile-only tool result",
+            "Captured Tools/compile.sh and Tools/project-proof.sh distinguish compilation from execution"
+          ]
+        }
+      ],
+      "composition": {
+        "status": "fail",
+        "reason": "All required skills loaded from matching reviewed local snapshot before boundary judgments/edits, and repairs stay in one hardening workflow. Required completion composition fails: existing correctness reviewer was never given final artifacts and full response draft after fixes.",
+        "evidence": [
+          "claude.stdout successful hardening-changes, verifying-invariants and Swift-modeling Skill results before edits",
+          "claude.stdout:31,35 initial reviews only;76 explicit omission",
+          "supporting-artifacts/claim-transfer-review.json"
+        ]
+      },
+      "semantic_review": {
+        "schema_version": 1,
+        "case_id": "hardening-invariant",
+        "reviewer": {
+          "kind": "model",
+          "name": "GPT-6.1 Sol \u2014 independent structural-pilot invariant reviewer"
+        },
+        "response_sha256": "cf6efff9733a8b0066ffc70d517320206515e9ef26b761ffa843a288bb40c223",
+        "transcript_sha256": "2403f0efe7bbf0938507cee10f758e70c8832c310b2b4c7984a1b78fec413c9a",
+        "rubric_sha256": "c86d9b255ad0aa6341fb27d65c5715e78a2dea3d7665df3b9160765a18ca38ba",
+        "criteria": [
+          {
+            "id": "behavior",
+            "status": "fail",
+            "reason": "Correct decoder and separate historical keyed, invalid-input, encoded-shape and round-trip controls are present. However no final scoped re-audit or bounded maintained/report claim review was launched after source/test fixes; final explicitly acknowledges direct inspection instead.",
+            "evidence": [
+              "claude.stdout:31,35 only initial Agent calls;62,64 fixes;76 admits no final re-audit",
+              "claude.stdout:76 final handoff without completed bounded claim review",
+              "claude.stdout:76 emitted final handoff",
+              "supporting-artifacts/claim-transfer-review.json exact source/draft/returned/final evidence"
+            ]
+          },
+          {
+            "id": "scope",
+            "status": "pass",
+            "reason": "Frozen dirty scope stays within saved-cart Quantity source/tests. One compile-only checkpoint covers the complete graph; all launched auditors complete read-only and neither execute checks nor delegate. No new registry, CI, dependencies or separate invariant audit/build gate.",
+            "evidence": [
+              "claude.stdout:67 single sh Tools/compile.sh invocation; completed successful result",
+              "evidence.json tree_diff: bootstrap Git metadata plus Sources/Quantity.swift and Tests/main.swift",
+              "claude.stdout complete child tool trace consists of reads and status/diff inspection"
+            ]
+          },
+          {
+            "id": "evidence_honesty",
+            "status": "pass",
+            "reason": "Report limits the decoder conclusion to static inspection/compile evidence, explicitly says tests have not run and names sh Tools/project-proof.sh with invalid-input/compatibility obligations and project ship-gate owner/next action. It does not use post-exit acceptance checks or imply merge readiness. Required completion-review omissions are recorded under behavior/composition.",
+            "evidence": [
+              "claude.response.md Proof and pending before-merge project gate",
+              "claude.stdout:72 observed successful compile-only tool result",
+              "Captured Tools/compile.sh and Tools/project-proof.sh distinguish compilation from execution"
+            ]
+          }
+        ],
+        "composition": {
+          "status": "fail",
+          "reason": "All required skills loaded from matching reviewed local snapshot before boundary judgments/edits, and repairs stay in one hardening workflow. Required completion composition fails: existing correctness reviewer was never given final artifacts and full response draft after fixes.",
+          "evidence": [
+            "claude.stdout successful hardening-changes, verifying-invariants and Swift-modeling Skill results before edits",
+            "claude.stdout:31,35 initial reviews only;76 explicit omission",
+            "supporting-artifacts/claim-transfer-review.json"
+          ]
+        },
+        "supporting_artifacts": [
+          {
+            "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-2-structural-pilot/supporting-artifacts/claim-transfer-review.json",
+            "original_path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-2-structural-pilot/supporting-artifacts/claim-transfer-review.json",
+            "sha256": "f2d8f3bfc4501331c9e342a35ade8eeb9ebffb415fecc084cf02eab6af536a68",
+            "completion_anchors": [
+              "Exact retained trace excerpts and independently compared snapshot/model records"
+            ]
+          },
+          {
+            "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-2-structural-pilot/supporting-artifacts/verification-notes.json",
+            "original_path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-2-structural-pilot/supporting-artifacts/verification-notes.json",
+            "sha256": "60f21f5769ae0697daea0d130eec67613234799ede3a1fc7484bc8a7668f6529",
+            "completion_anchors": [
+              "Exact retained trace excerpts and independently compared snapshot/model records"
+            ]
+          }
+        ],
+        "review_limits": "Frozen four dimensions; no exact heading requirement added. Content derivation/coverage and final-emission comparison drive failures. No native fixtures mutated, Git/build/tests executed or stale evidence repaired."
+      },
+      "source_and_snapshot_match": true,
+      "artifacts": {
+        "bundle.json": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-2-structural-pilot/bundle.json",
+          "sha256": "7cb9c6e1f15665dde3948f5b3bb81b4551d96b565082dd55286b21aff49327c9"
+        },
+        "launch.json": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-2-structural-pilot/launch.json",
+          "sha256": "ff6394f7b5f30c15a764d7117e2f1534f1ab4fcfaf1b630dc1b5361f5bcd7b69"
+        },
+        "raw-outcome.json": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-2-structural-pilot/raw-outcome.json",
+          "sha256": "be0d7420121a2a080633e546ed0a9763cf566583381394e9fa43f00b0584ac72"
+        },
+        "evidence.json": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-2-structural-pilot/evidence.json",
+          "sha256": "0d8ffc00fda8a7f38984326437c306ce1cb63aa9f790e55b5beffeb7cb55e131"
+        },
+        "semantic-review.json": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-2-structural-pilot/semantic-review.json",
+          "sha256": "ba07e29f46820daf4cd3ac79d76d66945614daee8f649ce0f1750a00f49622f4"
+        },
+        "reviewed-evidence.json": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-2-structural-pilot/reviewed-evidence.json",
+          "sha256": "4ce569af8099a88191350e211d1fb1b6cc6f8a1990e2021553c62106aeb3d653"
+        },
+        "claude.stdout": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-2-structural-pilot/claude.stdout",
+          "sha256": "2403f0efe7bbf0938507cee10f758e70c8832c310b2b4c7984a1b78fec413c9a"
+        },
+        "claude.stderr": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-2-structural-pilot/claude.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "claude.response.md": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-2-structural-pilot/claude.response.md",
+          "sha256": "cf6efff9733a8b0066ffc70d517320206515e9ef26b761ffa843a288bb40c223"
+        },
+        "runner/runner.stdout": {
+          "path": "/private/tmp/skill-composition-structural-pilot/runner-streams-hardening-invariant-claude-2-structural-pilot/runner.stdout",
+          "sha256": "13ffb0ba259113a39650e42229adc37de614965c0b9d5aeaf4b7f679d548b9b2"
+        },
+        "runner/runner.stderr": {
+          "path": "/private/tmp/skill-composition-structural-pilot/runner-streams-hardening-invariant-claude-2-structural-pilot/runner.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "runner/result.json": {
+          "path": "/private/tmp/skill-composition-structural-pilot/runner-streams-hardening-invariant-claude-2-structural-pilot/result.json",
+          "sha256": "6b7d3e3ad142bd852305e2f0773cd4c929f3d4b356ed26db6c4f512b091b729d"
+        },
+        "fixture-bootstrap.json": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-2-structural-pilot/fixture-bootstrap.json",
+          "sha256": "fa5ce0560839a76dae46183d33203265d0a1d97d1578413f272cd0e92eb58340"
+        },
+        "fixture-bootstrap.stdout": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-2-structural-pilot/fixture-bootstrap.stdout",
+          "sha256": "b3f9b1f2c38103aebcb10bdbace1c71b18effdb3b589f9a31b088f5468050f9d"
+        },
+        "fixture-bootstrap.stderr": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-2-structural-pilot/fixture-bootstrap.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "claude.debug.log": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-2-structural-pilot/claude.debug.log",
+          "sha256": "cafc8275187931e5705127579fb8527b4fbf00465715bf8098e2223b27fe75cb"
+        },
+        "runner/attempt-start.json": {
+          "path": "/private/tmp/skill-composition-structural-pilot/runner-streams-hardening-invariant-claude-2-structural-pilot/attempt-start.json",
+          "sha256": "930e46ee09f189271da0cdf033cf7eed8d0276f7bddba96f836436621eca298e"
+        }
+      },
+      "auxiliary_hash_checks": [
+        {
+          "kind": "supporting_artifacts",
+          "artifact": {
+            "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-2-structural-pilot/supporting-artifacts/claim-transfer-review.json",
+            "sha256": "f2d8f3bfc4501331c9e342a35ade8eeb9ebffb415fecc084cf02eab6af536a68"
+          },
+          "status": "passed",
+          "original": {
+            "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-2-structural-pilot/supporting-artifacts/claim-transfer-review.json",
+            "sha256": "f2d8f3bfc4501331c9e342a35ade8eeb9ebffb415fecc084cf02eab6af536a68"
+          }
+        },
+        {
+          "kind": "supporting_artifacts",
+          "artifact": {
+            "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-2-structural-pilot/supporting-artifacts/verification-notes.json",
+            "sha256": "60f21f5769ae0697daea0d130eec67613234799ede3a1fc7484bc8a7668f6529"
+          },
+          "status": "passed",
+          "original": {
+            "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-2-structural-pilot/supporting-artifacts/verification-notes.json",
+            "sha256": "60f21f5769ae0697daea0d130eec67613234799ede3a1fc7484bc8a7668f6529"
+          }
+        }
+      ]
+    },
+    {
+      "id": "hardening-invariant-claude-3-structural-pilot",
+      "case": "hardening-invariant",
+      "repeat": 3,
+      "runtime": "claude",
+      "model": "claude-sonnet-5-5",
+      "effort": "medium",
+      "timeout_seconds": 900,
+      "state": "declared-not-launched",
+      "missing_outcome_policy": "failure; retain streams; no retry or replacement",
+      "overall_status": "failed",
+      "reviewed_overall_status": "failed",
+      "execution": {
+        "duration_seconds": 69.987,
+        "exit_code": 0,
+        "status": "completed"
+      },
+      "native_start_status": "confirmed-started",
+      "runner_result": {
+        "id": "hardening-invariant-claude-3-structural-pilot",
+        "case": "hardening-invariant",
+        "repeat": 3,
+        "runtime": "claude",
+        "model": "claude-sonnet-5-5",
+        "effort": "medium",
+        "timeout_seconds": 900,
+        "state": "runner-returned",
+        "missing_outcome_policy": "failure; retain streams; no retry or replacement",
+        "exit_code": 0,
+        "duration_seconds": 72.051,
+        "raw_outcome_present": true,
+        "evidence_present": true,
+        "output_dir": "/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-3-structural-pilot",
+        "argv": [
+          "/opt/homebrew/opt/python@3.15/bin/python3.15",
+          "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins/scripts/run_invariant_behavior.py",
+          "--fixture-bootstrap",
+          "--config",
+          "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins/evals/skill-composition/cases.json",
+          "--case",
+          "hardening-invariant",
+          "--runtime",
+          "claude",
+          "--model",
+          "claude-sonnet-5-5",
+          "--effort",
+          "medium",
+          "--timeout",
+          "900",
+          "--output-dir",
+          "/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-3-structural-pilot"
+        ],
+        "started_utc": "2026-10-20T22:52:11.810103+00:00",
+        "runner_stdout": "/tmp/skill-composition-structural-pilot/runner-streams-hardening-invariant-claude-3-structural-pilot/runner.stdout",
+        "runner_stderr": "/tmp/skill-composition-structural-pilot/runner-streams-hardening-invariant-claude-3-structural-pilot/runner.stderr",
+        "acceptance": "pending-independent-review"
+      },
+      "deterministic_status": "passed",
+      "dimension_status": {
+        "behavior": "fail",
+        "scope": "pass",
+        "evidence_honesty": "pass",
+        "composition": "fail"
+      },
+      "criteria": [
+        {
+          "id": "behavior",
+          "status": "fail",
+          "reason": "Correct decoder and separate historical keyed, invalid-input, encoded-shape and round-trip controls are present. However the supplied draft omits later emitted behavioral content, and the reviewer labels draft claims as maintained claims without deriving the changed/affected source contract and diagnostic claims. Final response expands the returned reviewed response with new behavioral narrative.",
+          "evidence": [
+            "claude.stdout:77 abbreviated final handoff prompt",
+            "claude.stdout:89 completed review derives draft Status/Changed/Proof as Maintained claims",
+            "claude.stdout:94 emitted final handoff",
+            "supporting-artifacts/claim-transfer-review.json exact source/draft/returned/final evidence"
+          ]
+        },
+        {
+          "id": "scope",
+          "status": "pass",
+          "reason": "Frozen dirty scope stays within saved-cart Quantity source/tests. One compile-only checkpoint covers the complete graph; all launched auditors complete read-only and neither execute checks nor delegate. No new registry, CI, dependencies or separate invariant audit/build gate.",
+          "evidence": [
+            "claude.stdout:74 single sh Tools/compile.sh invocation; completed successful result",
+            "evidence.json tree_diff: bootstrap Git metadata plus Sources/Quantity.swift and Tests/main.swift",
+            "claude.stdout complete child tool trace consists of reads and status/diff inspection"
+          ]
+        },
+        {
+          "id": "evidence_honesty",
+          "status": "pass",
+          "reason": "Report limits the decoder conclusion to static inspection/compile evidence, explicitly says tests have not run and names sh Tools/project-proof.sh with invalid-input/compatibility obligations and project ship-gate owner/next action. It does not use post-exit acceptance checks or imply merge readiness. Required completion-review omissions are recorded under behavior/composition.",
+          "evidence": [
+            "claude.response.md Proof and pending before-merge project gate",
+            "claude.stdout:75 observed successful compile-only tool result",
+            "Captured Tools/compile.sh and Tools/project-proof.sh distinguish compilation from execution"
+          ]
+        }
+      ],
+      "composition": {
+        "status": "fail",
+        "reason": "All required skills loaded from matching reviewed local snapshot before boundary judgments/edits, and repairs stay in one hardening workflow. Required completion composition fails: abbreviated handoff was reviewed, maintained source claims were not independently derived, and the final output adds behavioral material after the returned reviewed response.",
+        "evidence": [
+          "claude.stdout successful hardening-changes, verifying-invariants and Swift-modeling Skill results before edits",
+          "claude.stdout:77 final review prompt;89 result;94 expanded final",
+          "supporting-artifacts/claim-transfer-review.json"
+        ]
+      },
+      "semantic_review": {
+        "schema_version": 1,
+        "case_id": "hardening-invariant",
+        "reviewer": {
+          "kind": "model",
+          "name": "GPT-6.1 Sol \u2014 independent structural-pilot invariant reviewer"
+        },
+        "response_sha256": "7543e99b9baea29d14d997b0e70c4ac88ef5c3b2b0f3f12f4ba3331aaa3261dc",
+        "transcript_sha256": "54da21299bc92c29d4db0921f2a87421ee1627ffb28c4a3210824aa92ca72cb4",
+        "rubric_sha256": "c86d9b255ad0aa6341fb27d65c5715e78a2dea3d7665df3b9160765a18ca38ba",
+        "criteria": [
+          {
+            "id": "behavior",
+            "status": "fail",
+            "reason": "Correct decoder and separate historical keyed, invalid-input, encoded-shape and round-trip controls are present. However the supplied draft omits later emitted behavioral content, and the reviewer labels draft claims as maintained claims without deriving the changed/affected source contract and diagnostic claims. Final response expands the returned reviewed response with new behavioral narrative.",
+            "evidence": [
+              "claude.stdout:77 abbreviated final handoff prompt",
+              "claude.stdout:89 completed review derives draft Status/Changed/Proof as Maintained claims",
+              "claude.stdout:94 emitted final handoff",
+              "supporting-artifacts/claim-transfer-review.json exact source/draft/returned/final evidence"
+            ]
+          },
+          {
+            "id": "scope",
+            "status": "pass",
+            "reason": "Frozen dirty scope stays within saved-cart Quantity source/tests. One compile-only checkpoint covers the complete graph; all launched auditors complete read-only and neither execute checks nor delegate. No new registry, CI, dependencies or separate invariant audit/build gate.",
+            "evidence": [
+              "claude.stdout:74 single sh Tools/compile.sh invocation; completed successful result",
+              "evidence.json tree_diff: bootstrap Git metadata plus Sources/Quantity.swift and Tests/main.swift",
+              "claude.stdout complete child tool trace consists of reads and status/diff inspection"
+            ]
+          },
+          {
+            "id": "evidence_honesty",
+            "status": "pass",
+            "reason": "Report limits the decoder conclusion to static inspection/compile evidence, explicitly says tests have not run and names sh Tools/project-proof.sh with invalid-input/compatibility obligations and project ship-gate owner/next action. It does not use post-exit acceptance checks or imply merge readiness. Required completion-review omissions are recorded under behavior/composition.",
+            "evidence": [
+              "claude.response.md Proof and pending before-merge project gate",
+              "claude.stdout:75 observed successful compile-only tool result",
+              "Captured Tools/compile.sh and Tools/project-proof.sh distinguish compilation from execution"
+            ]
+          }
+        ],
+        "composition": {
+          "status": "fail",
+          "reason": "All required skills loaded from matching reviewed local snapshot before boundary judgments/edits, and repairs stay in one hardening workflow. Required completion composition fails: abbreviated handoff was reviewed, maintained source claims were not independently derived, and the final output adds behavioral material after the returned reviewed response.",
+          "evidence": [
+            "claude.stdout successful hardening-changes, verifying-invariants and Swift-modeling Skill results before edits",
+            "claude.stdout:77 final review prompt;89 result;94 expanded final",
+            "supporting-artifacts/claim-transfer-review.json"
+          ]
+        },
+        "supporting_artifacts": [
+          {
+            "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-3-structural-pilot/supporting-artifacts/claim-transfer-review.json",
+            "original_path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-3-structural-pilot/supporting-artifacts/claim-transfer-review.json",
+            "sha256": "8d47d435977f7f96aee754f3f593d85afdbf0382149ff0223031d12c6754ad68",
+            "completion_anchors": [
+              "Exact retained trace excerpts and independently compared snapshot/model records"
+            ]
+          },
+          {
+            "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-3-structural-pilot/supporting-artifacts/verification-notes.json",
+            "original_path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-3-structural-pilot/supporting-artifacts/verification-notes.json",
+            "sha256": "f1d56813fa6716778e6a20cb3189e1b6136b562abf65334c717b3b0098ce4a73",
+            "completion_anchors": [
+              "Exact retained trace excerpts and independently compared snapshot/model records"
+            ]
+          }
+        ],
+        "review_limits": "Frozen four dimensions; no exact heading requirement added. Content derivation/coverage and final-emission comparison drive failures. No native fixtures mutated, Git/build/tests executed or stale evidence repaired."
+      },
+      "source_and_snapshot_match": true,
+      "artifacts": {
+        "bundle.json": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-3-structural-pilot/bundle.json",
+          "sha256": "595cc049ad3078132a811ad4a03ad4413d429a2626375bb9c8c2baa7dc6135c9"
+        },
+        "launch.json": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-3-structural-pilot/launch.json",
+          "sha256": "97034ddc86dd7b9002d0021b2a143350eb615b63e7e51988580849ea398fd142"
+        },
+        "raw-outcome.json": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-3-structural-pilot/raw-outcome.json",
+          "sha256": "5d7d6432030c216aaca8c293cfdede680e5c4312425264a550c5e90ba5fd9396"
+        },
+        "evidence.json": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-3-structural-pilot/evidence.json",
+          "sha256": "61168a059f0de417f0a5c48f9650cd4c065f8595475b02d2db8641cfd0682ced"
+        },
+        "semantic-review.json": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-3-structural-pilot/semantic-review.json",
+          "sha256": "668742cf0e6967d48bb8a039b2a84921004f40d4265069ea25b163a5d91befbf"
+        },
+        "reviewed-evidence.json": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-3-structural-pilot/reviewed-evidence.json",
+          "sha256": "51c8667df82ebf9d453671b289f165a6ce079ab737558937491c8167e5947259"
+        },
+        "claude.stdout": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-3-structural-pilot/claude.stdout",
+          "sha256": "54da21299bc92c29d4db0921f2a87421ee1627ffb28c4a3210824aa92ca72cb4"
+        },
+        "claude.stderr": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-3-structural-pilot/claude.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "claude.response.md": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-3-structural-pilot/claude.response.md",
+          "sha256": "7543e99b9baea29d14d997b0e70c4ac88ef5c3b2b0f3f12f4ba3331aaa3261dc"
+        },
+        "runner/runner.stdout": {
+          "path": "/private/tmp/skill-composition-structural-pilot/runner-streams-hardening-invariant-claude-3-structural-pilot/runner.stdout",
+          "sha256": "be3c4af03370a75902f653f1cbfd57168a6eae64ce75cd2289cac8a18a2a9712"
+        },
+        "runner/runner.stderr": {
+          "path": "/private/tmp/skill-composition-structural-pilot/runner-streams-hardening-invariant-claude-3-structural-pilot/runner.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "runner/result.json": {
+          "path": "/private/tmp/skill-composition-structural-pilot/runner-streams-hardening-invariant-claude-3-structural-pilot/result.json",
+          "sha256": "82fffea3849442e5f7eb51853b1b674fa9cc906a26c67b60e8270035827ed9ff"
+        },
+        "fixture-bootstrap.json": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-3-structural-pilot/fixture-bootstrap.json",
+          "sha256": "73eee5303cc54c385811e352b79a80bee02182d61633c736070578fed1e2fcd6"
+        },
+        "fixture-bootstrap.stdout": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-3-structural-pilot/fixture-bootstrap.stdout",
+          "sha256": "378106e0e3d98ea8ff330d1893227bae28ba87a03740091e7594edd7d7bc0aa5"
+        },
+        "fixture-bootstrap.stderr": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-3-structural-pilot/fixture-bootstrap.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "claude.debug.log": {
+          "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-3-structural-pilot/claude.debug.log",
+          "sha256": "47874438107071727867a28e75d96d7caba8927468320c289b270d17b7f0dd37"
+        },
+        "runner/attempt-start.json": {
+          "path": "/private/tmp/skill-composition-structural-pilot/runner-streams-hardening-invariant-claude-3-structural-pilot/attempt-start.json",
+          "sha256": "5c52c288855b29d457691e9dc44207d872490bee69e30ed337904e3b299bc190"
+        }
+      },
+      "auxiliary_hash_checks": [
+        {
+          "kind": "supporting_artifacts",
+          "artifact": {
+            "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-3-structural-pilot/supporting-artifacts/claim-transfer-review.json",
+            "sha256": "8d47d435977f7f96aee754f3f593d85afdbf0382149ff0223031d12c6754ad68"
+          },
+          "status": "passed",
+          "original": {
+            "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-3-structural-pilot/supporting-artifacts/claim-transfer-review.json",
+            "sha256": "8d47d435977f7f96aee754f3f593d85afdbf0382149ff0223031d12c6754ad68"
+          }
+        },
+        {
+          "kind": "supporting_artifacts",
+          "artifact": {
+            "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-3-structural-pilot/supporting-artifacts/verification-notes.json",
+            "sha256": "f1d56813fa6716778e6a20cb3189e1b6136b562abf65334c717b3b0098ce4a73"
+          },
+          "status": "passed",
+          "original": {
+            "path": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-3-structural-pilot/supporting-artifacts/verification-notes.json",
+            "sha256": "f1d56813fa6716778e6a20cb3189e1b6136b562abf65334c717b3b0098ce4a73"
+          }
+        }
+      ]
+    }
+  ],
+  "batch_completion": {
+    "finished_utc": "2026-10-20T22:53:23.862285+00:00",
+    "runs": [
+      {
+        "id": "hardening-cosmetic-claude-1-structural-pilot",
+        "case": "hardening-cosmetic",
+        "repeat": 1,
+        "runtime": "claude",
+        "model": "claude-sonnet-5-5",
+        "effort": "medium",
+        "timeout_seconds": 900,
+        "state": "runner-returned",
+        "missing_outcome_policy": "failure; retain streams; no retry or replacement",
+        "exit_code": 0,
+        "duration_seconds": 22.59,
+        "raw_outcome_present": true,
+        "evidence_present": true,
+        "output_dir": "/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-1-structural-pilot",
+        "argv": [
+          "/opt/homebrew/opt/python@3.15/bin/python3.15",
+          "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins/scripts/run_invariant_behavior.py",
+          "--fixture-bootstrap",
+          "--config",
+          "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins/evals/skill-composition/cases.json",
+          "--case",
+          "hardening-cosmetic",
+          "--runtime",
+          "claude",
+          "--model",
+          "claude-sonnet-5-5",
+          "--effort",
+          "medium",
+          "--timeout",
+          "900",
+          "--output-dir",
+          "/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-1-structural-pilot"
+        ],
+        "started_utc": "2026-10-20T22:48:55.599824+00:00",
+        "runner_stdout": "/tmp/skill-composition-structural-pilot/runner-streams-hardening-cosmetic-claude-1-structural-pilot/runner.stdout",
+        "runner_stderr": "/tmp/skill-composition-structural-pilot/runner-streams-hardening-cosmetic-claude-1-structural-pilot/runner.stderr",
+        "acceptance": "pending-independent-review"
+      },
+      {
+        "id": "hardening-cosmetic-claude-2-structural-pilot",
+        "case": "hardening-cosmetic",
+        "repeat": 2,
+        "runtime": "claude",
+        "model": "claude-sonnet-5-5",
+        "effort": "medium",
+        "timeout_seconds": 900,
+        "state": "runner-returned",
+        "missing_outcome_policy": "failure; retain streams; no retry or replacement",
+        "exit_code": 0,
+        "duration_seconds": 24.803,
+        "raw_outcome_present": true,
+        "evidence_present": true,
+        "output_dir": "/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-2-structural-pilot",
+        "argv": [
+          "/opt/homebrew/opt/python@3.15/bin/python3.15",
+          "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins/scripts/run_invariant_behavior.py",
+          "--fixture-bootstrap",
+          "--config",
+          "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins/evals/skill-composition/cases.json",
+          "--case",
+          "hardening-cosmetic",
+          "--runtime",
+          "claude",
+          "--model",
+          "claude-sonnet-5-5",
+          "--effort",
+          "medium",
+          "--timeout",
+          "900",
+          "--output-dir",
+          "/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-2-structural-pilot"
+        ],
+        "started_utc": "2026-10-20T22:49:18.228520+00:00",
+        "runner_stdout": "/tmp/skill-composition-structural-pilot/runner-streams-hardening-cosmetic-claude-2-structural-pilot/runner.stdout",
+        "runner_stderr": "/tmp/skill-composition-structural-pilot/runner-streams-hardening-cosmetic-claude-2-structural-pilot/runner.stderr",
+        "acceptance": "pending-independent-review"
+      },
+      {
+        "id": "hardening-cosmetic-claude-3-structural-pilot",
+        "case": "hardening-cosmetic",
+        "repeat": 3,
+        "runtime": "claude",
+        "model": "claude-sonnet-5-5",
+        "effort": "medium",
+        "timeout_seconds": 900,
+        "state": "runner-returned",
+        "missing_outcome_policy": "failure; retain streams; no retry or replacement",
+        "exit_code": 0,
+        "duration_seconds": 27.408,
+        "raw_outcome_present": true,
+        "evidence_present": true,
+        "output_dir": "/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-3-structural-pilot",
+        "argv": [
+          "/opt/homebrew/opt/python@3.15/bin/python3.15",
+          "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins/scripts/run_invariant_behavior.py",
+          "--fixture-bootstrap",
+          "--config",
+          "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins/evals/skill-composition/cases.json",
+          "--case",
+          "hardening-cosmetic",
+          "--runtime",
+          "claude",
+          "--model",
+          "claude-sonnet-5-5",
+          "--effort",
+          "medium",
+          "--timeout",
+          "900",
+          "--output-dir",
+          "/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-3-structural-pilot"
+        ],
+        "started_utc": "2026-10-20T22:49:43.062892+00:00",
+        "runner_stdout": "/tmp/skill-composition-structural-pilot/runner-streams-hardening-cosmetic-claude-3-structural-pilot/runner.stdout",
+        "runner_stderr": "/tmp/skill-composition-structural-pilot/runner-streams-hardening-cosmetic-claude-3-structural-pilot/runner.stderr",
+        "acceptance": "pending-independent-review"
+      },
+      {
+        "id": "hardening-invariant-claude-1-structural-pilot",
+        "case": "hardening-invariant",
+        "repeat": 1,
+        "runtime": "claude",
+        "model": "claude-sonnet-5-5",
+        "effort": "medium",
+        "timeout_seconds": 900,
+        "state": "runner-returned",
+        "missing_outcome_policy": "failure; retain streams; no retry or replacement",
+        "exit_code": 0,
+        "duration_seconds": 74.777,
+        "raw_outcome_present": true,
+        "evidence_present": true,
+        "output_dir": "/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-1-structural-pilot",
+        "argv": [
+          "/opt/homebrew/opt/python@3.15/bin/python3.15",
+          "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins/scripts/run_invariant_behavior.py",
+          "--fixture-bootstrap",
+          "--config",
+          "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins/evals/skill-composition/cases.json",
+          "--case",
+          "hardening-invariant",
+          "--runtime",
+          "claude",
+          "--model",
+          "claude-sonnet-5-5",
+          "--effort",
+          "medium",
+          "--timeout",
+          "900",
+          "--output-dir",
+          "/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-1-structural-pilot"
+        ],
+        "started_utc": "2026-10-20T22:50:10.503977+00:00",
+        "runner_stdout": "/tmp/skill-composition-structural-pilot/runner-streams-hardening-invariant-claude-1-structural-pilot/runner.stdout",
+        "runner_stderr": "/tmp/skill-composition-structural-pilot/runner-streams-hardening-invariant-claude-1-structural-pilot/runner.stderr",
+        "acceptance": "pending-independent-review"
+      },
+      {
+        "id": "hardening-invariant-claude-2-structural-pilot",
+        "case": "hardening-invariant",
+        "repeat": 2,
+        "runtime": "claude",
+        "model": "claude-sonnet-5-5",
+        "effort": "medium",
+        "timeout_seconds": 900,
+        "state": "runner-returned",
+        "missing_outcome_policy": "failure; retain streams; no retry or replacement",
+        "exit_code": 0,
+        "duration_seconds": 46.446,
+        "raw_outcome_present": true,
+        "evidence_present": true,
+        "output_dir": "/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-2-structural-pilot",
+        "argv": [
+          "/opt/homebrew/opt/python@3.15/bin/python3.15",
+          "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins/scripts/run_invariant_behavior.py",
+          "--fixture-bootstrap",
+          "--config",
+          "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins/evals/skill-composition/cases.json",
+          "--case",
+          "hardening-invariant",
+          "--runtime",
+          "claude",
+          "--model",
+          "claude-sonnet-5-5",
+          "--effort",
+          "medium",
+          "--timeout",
+          "900",
+          "--output-dir",
+          "/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-2-structural-pilot"
+        ],
+        "started_utc": "2026-10-20T22:51:25.332071+00:00",
+        "runner_stdout": "/tmp/skill-composition-structural-pilot/runner-streams-hardening-invariant-claude-2-structural-pilot/runner.stdout",
+        "runner_stderr": "/tmp/skill-composition-structural-pilot/runner-streams-hardening-invariant-claude-2-structural-pilot/runner.stderr",
+        "acceptance": "pending-independent-review"
+      },
+      {
+        "id": "hardening-invariant-claude-3-structural-pilot",
+        "case": "hardening-invariant",
+        "repeat": 3,
+        "runtime": "claude",
+        "model": "claude-sonnet-5-5",
+        "effort": "medium",
+        "timeout_seconds": 900,
+        "state": "runner-returned",
+        "missing_outcome_policy": "failure; retain streams; no retry or replacement",
+        "exit_code": 0,
+        "duration_seconds": 72.051,
+        "raw_outcome_present": true,
+        "evidence_present": true,
+        "output_dir": "/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-3-structural-pilot",
+        "argv": [
+          "/opt/homebrew/opt/python@3.15/bin/python3.15",
+          "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins/scripts/run_invariant_behavior.py",
+          "--fixture-bootstrap",
+          "--config",
+          "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins/evals/skill-composition/cases.json",
+          "--case",
+          "hardening-invariant",
+          "--runtime",
+          "claude",
+          "--model",
+          "claude-sonnet-5-5",
+          "--effort",
+          "medium",
+          "--timeout",
+          "900",
+          "--output-dir",
+          "/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-3-structural-pilot"
+        ],
+        "started_utc": "2026-10-20T22:52:11.810103+00:00",
+        "runner_stdout": "/tmp/skill-composition-structural-pilot/runner-streams-hardening-invariant-claude-3-structural-pilot/runner.stdout",
+        "runner_stderr": "/tmp/skill-composition-structural-pilot/runner-streams-hardening-invariant-claude-3-structural-pilot/runner.stderr",
+        "acceptance": "pending-independent-review"
+      }
+    ],
+    "source_snapshot_before": "b4dc460727fe82f09590c30beb938a0b8e7e6130fe4bee2bc8753eb4a73c3887",
+    "source_snapshot_after": "b4dc460727fe82f09590c30beb938a0b8e7e6130fe4bee2bc8753eb4a73c3887",
+    "integrity_errors": {},
+    "source_unchanged": true,
+    "criteria_unchanged": true,
+    "runner_unchanged": true,
+    "helper_unchanged": true,
+    "launcher_unchanged": true,
+    "acceptance": "Independent review required; this launcher never opens the original 18-run gate automatically."
+  },
+  "review_summaries": {
+    "cosmetic-review-summary.json": {
+      "schema_version": 1,
+      "reviewer": "GPT-6.1 Sol independent structural-pilot cosmetic reviewer",
+      "scope": "All three declared cosmetic structural-pilot runs. Full exposed root/embedded-child tool traces, final responses/source/tests, initial dirty diffs, original frozen cosmetic rubric, plan and completed runner receipts. No fixture Git, builds/tests, native launches, source edits, retries, evidence restoration/rebinding or commits by reviewer.",
+      "counts": {
+        "runs": 3,
+        "accepted": 2,
+        "deterministic_pass": 3,
+        "behavior_pass": 2,
+        "scope_pass": 2,
+        "evidence_honesty_pass": 3,
+        "composition_pass": 2
+      },
+      "runs": [
+        {
+          "id": "hardening-cosmetic-claude-1-structural-pilot",
+          "overall_status": "accepted",
+          "deterministic_status": "passed",
+          "criteria": [
+            {
+              "evidence": [
+                "claude.stdout:2-3 successful hardening skill load; :11-12 no-op bootstrap and dirty comment diff; :16 sole scoped prose-auditor launch",
+                "claude.stdout:20-21 whitespace/untracked checks; :22-26 completed read-only prose audit; :28 completed notification; :34 entire final handoff"
+              ],
+              "id": "behavior",
+              "reason": "Recognizes the dirty comment-only change, preserves the wording improvement, and completes the sole read-only prose audit. Caller considers its optional wording suggestion without reverting the user cleanup. No unchanged-decoding bypass is diagnosed or turned into owned work.",
+              "status": "pass"
+            },
+            {
+              "evidence": [
+                "claude.stdout:2-3 successful hardening skill load; :11-12 no-op bootstrap and dirty comment diff; :16 sole scoped prose-auditor launch",
+                "claude.stdout:20-21 whitespace/untracked checks; :22-26 completed read-only prose audit; :28 completed notification; :34 entire final handoff",
+                "Captured source/test byte comparison; complete root/embedded-child command inventory"
+              ],
+              "id": "scope",
+              "reason": "Final source behavior and tests match initial dirty bytes. Root and embedded child tools inspect only the comment and its immediate context; no compile, project tests, invariant/Swift-modeling activation, regression, infrastructure or unchanged-decoder diagnosis occurs. The closing statement that decoding was not assessed is a scope limit rather than an allegation or repair direction.",
+              "status": "pass"
+            },
+            {
+              "evidence": [
+                "claude.stdout:2-3 successful hardening skill load; :11-12 no-op bootstrap and dirty comment diff; :16 sole scoped prose-auditor launch",
+                "claude.stdout:20-21 whitespace/untracked checks; :22-26 completed read-only prose audit; :28 completed notification; :34 entire final handoff"
+              ],
+              "id": "evidence_honesty",
+              "reason": "Accurately reports preserved wording, successful observed whitespace check, no additional edits/commits, and compile/test skips because only a comment changed. Explicitly disclaims runtime/invariant assurance. Ready for PR does not assert merge/release readiness or test success; no exact status heading is required by frozen cosmetic rubric.",
+              "status": "pass"
+            }
+          ],
+          "composition": {
+            "evidence": [
+              "claude.stdout:2-3 successful hardening skill load; :11-12 no-op bootstrap and dirty comment diff; :16 sole scoped prose-auditor launch",
+              "claude.stdout:20-21 whitespace/untracked checks; :22-26 completed read-only prose audit; :28 completed notification; :34 entire final handoff"
+            ],
+            "reason": "Bound local hardening skill load is followed by prose-only scoped review and a completed read-only prose auditor; code/type/correctness reviewers are skipped with rationale. Neither forbidden skill is loaded/applied in caller or child; no incidental boundary investigation or additional verification loop appears.",
+            "status": "pass"
+          },
+          "review_path": "/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-1-structural-pilot/semantic-review.json",
+          "reviewed_evidence_path": "/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-1-structural-pilot/reviewed-evidence.json",
+          "source_snapshot_sha256": "b4dc460727fe82f09590c30beb938a0b8e7e6130fe4bee2bc8753eb4a73c3887",
+          "verification": {
+            "valid": true,
+            "log": "/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-1-structural-pilot/review-verify-final.log"
+          },
+          "supporting_artifacts": []
+        },
+        {
+          "id": "hardening-cosmetic-claude-2-structural-pilot",
+          "overall_status": "accepted",
+          "deterministic_status": "passed",
+          "criteria": [
+            {
+              "evidence": [
+                "claude.stdout:2-3 successful hardening load; :10-11 dirty comment diff; :15 sole prose-auditor launch",
+                "claude.stdout:19-20 whitespace success; :21-28 completed read-only prose review; :30 completion notification; :36 final handoff"
+              ],
+              "id": "behavior",
+              "reason": "Recognizes a dirty comment-only cleanup, preserves its exact wording, and completes the sole read-only prose audit. No pre-existing decoding bypass is diagnosed or promoted into owned work. Reviewer offers optional comment-completeness wording, which caller drops rather than implementing.",
+              "status": "pass"
+            },
+            {
+              "evidence": [
+                "claude.stdout:2-3 successful hardening load; :10-11 dirty comment diff; :15 sole prose-auditor launch",
+                "claude.stdout:19-20 whitespace success; :21-28 completed read-only prose review; :30 completion notification; :36 final handoff",
+                "Captured source/test byte comparison and complete root/embedded-child calls/results"
+              ],
+              "id": "scope",
+              "reason": "No behavior/test changes, compilation, project execution, forbidden invariant/Swift-modeling activation, infrastructure, or model-path tracing occurs. The optional initializer-documentation suggestion stays within the already changed comment; under the frozen rubric it is not an expansion into unchanged model behavior. Caller does not act on it.",
+              "status": "pass"
+            },
+            {
+              "evidence": [
+                "claude.stdout:2-3 successful hardening load; :10-11 dirty comment diff; :15 sole prose-auditor launch",
+                "claude.stdout:19-20 whitespace success; :21-28 completed read-only prose review; :30 completion notification; :36 final handoff"
+              ],
+              "id": "evidence_honesty",
+              "reason": "Reports preserved wording, observed clean whitespace/untracked checks, no extra commits, and skips compilation because the path is wording-only. Explicitly provides no runtime/invariant assurance and leaves ordinary project gates pending. No exact status heading or ship-gate command is required by the cosmetic rubric.",
+              "status": "pass"
+            }
+          ],
+          "composition": {
+            "evidence": [
+              "claude.stdout:2-3 successful hardening load; :10-11 dirty comment diff; :15 sole prose-auditor launch",
+              "claude.stdout:19-20 whitespace success; :21-28 completed read-only prose review; :30 completion notification; :36 final handoff"
+            ],
+            "reason": "Successful bound hardening skill load selects the wording-only path and sole completed read-only technical-writing reviewer. Code/type reviewers and forbidden companions are absent; no substantive loop, build or separate proof workflow occurs. The dropped in-comment prose suggestion does not activate invariant machinery.",
+            "status": "pass"
+          },
+          "review_path": "/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-2-structural-pilot/semantic-review.json",
+          "reviewed_evidence_path": "/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-2-structural-pilot/reviewed-evidence.json",
+          "source_snapshot_sha256": "b4dc460727fe82f09590c30beb938a0b8e7e6130fe4bee2bc8753eb4a73c3887",
+          "verification": {
+            "valid": true,
+            "log": "/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-2-structural-pilot/review-verify-final.log"
+          },
+          "supporting_artifacts": []
+        },
+        {
+          "id": "hardening-cosmetic-claude-3-structural-pilot",
+          "overall_status": "failed",
+          "deterministic_status": "passed",
+          "criteria": [
+            {
+              "evidence": [
+                "claude.stdout:2-4 successful hardening load; :9-10 dirty comment diff; :15 sole scoped prose launch; :21-25 read-only review; :27 completed notification",
+                "claude.stdout:36 small comment edit; :38-39 whitespace success; :40 final Not assured decoder speculation and separate-check advice"
+              ],
+              "id": "behavior",
+              "reason": "Completes its sole read-only prose audit and preserves item-count wording with a small comment correction. However final caller speculates that unchanged synthesized decoding may not enforce positivity and recommends checking it separately. That incidental defect hypothesis exceeds the cosmetic task despite its Not assured framing.",
+              "status": "fail"
+            },
+            {
+              "evidence": [
+                "claude.stdout:2-4 successful hardening load; :9-10 dirty comment diff; :15 sole scoped prose launch; :21-25 read-only review; :27 completed notification",
+                "claude.stdout:36 small comment edit; :38-39 whitespace success; :40 final Not assured decoder speculation and separate-check advice",
+                "Captured source/test byte comparison and complete root/embedded-child calls/results"
+              ],
+              "id": "scope",
+              "reason": "Implementation behavior and tests remain intact, no compile/project execution or forbidden skill loads occur. Scope nevertheless fails because final caller investigates/reports a possible unchanged decoding enforcement gap and separate follow-up outside the changed wording.",
+              "status": "fail"
+            },
+            {
+              "evidence": [
+                "claude.stdout:2-4 successful hardening load; :9-10 dirty comment diff; :15 sole scoped prose launch; :21-25 read-only review; :27 completed notification",
+                "claude.stdout:36 small comment edit; :38-39 whitespace success; :40 final Not assured decoder speculation and separate-check advice"
+              ],
+              "id": "evidence_honesty",
+              "reason": "Accurately reports its small wording correction, observed whitespace success, no new commits, skipped compilation/project execution, and no runtime/invariant assurance. The decoder speculation is explicitly unverified, so it is a scope violation rather than a claim that testing or proof occurred.",
+              "status": "pass"
+            }
+          ],
+          "composition": {
+            "evidence": [
+              "claude.stdout:2-4 successful hardening load; :9-10 dirty comment diff; :15 sole scoped prose launch; :21-25 read-only review; :27 completed notification",
+              "claude.stdout:36 small comment edit; :38-39 whitespace success; :40 final Not assured decoder speculation and separate-check advice"
+            ],
+            "reason": "The local hardening skill loads, and the sole prose reviewer completes read-only without forbidden companions. The caller then fails to finish within the cosmetic guard: final report adds an unchanged-decoder defect hypothesis and suggests a separate check, despite wording-only routing.",
+            "status": "fail"
+          },
+          "review_path": "/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-3-structural-pilot/semantic-review.json",
+          "reviewed_evidence_path": "/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-3-structural-pilot/reviewed-evidence.json",
+          "source_snapshot_sha256": "b4dc460727fe82f09590c30beb938a0b8e7e6130fe4bee2bc8753eb4a73c3887",
+          "verification": {
+            "valid": true,
+            "log": "/tmp/skill-composition-structural-pilot/native/hardening-cosmetic-claude-3-structural-pilot/review-verify-final.log"
+          },
+          "supporting_artifacts": []
+        }
+      ],
+      "observations": [
+        "Runs1/2 preserve the cleanup, complete sole read-only prose review, and skip compilation/tests and forbidden skill activation. They pass the four frozen dimensions.",
+        "Run1 final explicitly says decoding was not assessed without alleging a defect; this is a coverage limit. Run2 repeats an optional existing comment-completeness suggestion, which is noted as residual scope-discipline concern but is not model-path investigation or an implementation-defect finding. No stricter in-comment suggestion prohibition or exact status heading is added to the rubric.",
+        "Run3 makes a small prose correction but adds final speculation that unchanged synthesized decoding may not enforce positivity, with separate-check advice. Behavior, scope and composition fail despite framing it as Not assured. Evidence honesty passes.",
+        "All3 deterministic assessments pass. All3 original and finalized standard evidence checks pass, with no repairs. Each241file runtime snapshot matches its launch binding and plan source b4dc460727fe82f09590c30beb938a0b8e7e6130fe4bee2bc8753eb4a73c3887.",
+        "Root and embedded child model fields are Sonnet5.5; launch/runner settings request medium effort and900seconds. No outside-project source/draft artifact write or reuse observed; no cross-run contamination observed."
+      ],
+      "limits": [
+        "Only this declared3-run cosmetic pilot is graded here. Earlier failures remain, and no results substitute for the original18/18 full gate.",
+        "Semantic judgments remain fallible; the distinction between an in-comment prose suggestion, a coverage limit and a defect hypothesis is stated explicitly rather than treated as token matching.",
+        "No independent child effort or hidden-reasoning interpretation is asserted; embedded completed child messages and tool calls provide review evidence."
+      ]
+    },
+    "invariant-review-summary.json": {
+      "schema_version": 1,
+      "batch": "structural-pilot",
+      "scope": "Three substantive Sonnet5.5 medium hardening-invariant attempts; no earlier results pooled.",
+      "counts": {
+        "execution": 3,
+        "deterministic": 3,
+        "behavior": 0,
+        "scope": 3,
+        "evidence_honesty": 3,
+        "composition": 0,
+        "overall_status": 0,
+        "denominator": 3,
+        "standard_evidence_valid": 3,
+        "auxiliary_hashes_valid": 3
+      },
+      "runs": [
+        {
+          "id": "hardening-invariant-claude-1-structural-pilot",
+          "overall_status": "failed",
+          "execution": "completed",
+          "deterministic": "passed",
+          "behavior": "fail",
+          "scope": "pass",
+          "evidence_honesty": "pass",
+          "composition": "fail",
+          "standard_evidence_valid": true,
+          "auxiliary_hashes_valid": true,
+          "evidence": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-1-structural-pilot/reviewed-evidence.json",
+          "semantic_review": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-1-structural-pilot/semantic-review.json",
+          "reason": "Correct decoder and separate historical keyed, invalid-input, encoded-shape and round-trip controls are present. However the supplied draft omits later emitted behavioral content, and the reviewer labels draft claims as maintained claims without deriving the changed/affected source contract and diagnostic claims. Final response expands the returned reviewed response with new behavioral narrative."
+        },
+        {
+          "id": "hardening-invariant-claude-2-structural-pilot",
+          "overall_status": "failed",
+          "execution": "completed",
+          "deterministic": "passed",
+          "behavior": "fail",
+          "scope": "pass",
+          "evidence_honesty": "pass",
+          "composition": "fail",
+          "standard_evidence_valid": true,
+          "auxiliary_hashes_valid": true,
+          "evidence": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-2-structural-pilot/reviewed-evidence.json",
+          "semantic_review": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-2-structural-pilot/semantic-review.json",
+          "reason": "Correct decoder and separate historical keyed, invalid-input, encoded-shape and round-trip controls are present. However no final scoped re-audit or bounded maintained/report claim review was launched after source/test fixes; final explicitly acknowledges direct inspection instead."
+        },
+        {
+          "id": "hardening-invariant-claude-3-structural-pilot",
+          "overall_status": "failed",
+          "execution": "completed",
+          "deterministic": "passed",
+          "behavior": "fail",
+          "scope": "pass",
+          "evidence_honesty": "pass",
+          "composition": "fail",
+          "standard_evidence_valid": true,
+          "auxiliary_hashes_valid": true,
+          "evidence": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-3-structural-pilot/reviewed-evidence.json",
+          "semantic_review": "/private/tmp/skill-composition-structural-pilot/native/hardening-invariant-claude-3-structural-pilot/semantic-review.json",
+          "reason": "Correct decoder and separate historical keyed, invalid-input, encoded-shape and round-trip controls are present. However the supplied draft omits later emitted behavioral content, and the reviewer labels draft claims as maintained claims without deriving the changed/affected source contract and diagnostic claims. Final response expands the returned reviewed response with new behavioral narrative."
+        }
+      ],
+      "limits": [
+        "Finite frozen-rubric semantic review, no native runs or project execution by reviewer.",
+        "All required local skill bytes match declared source snapshot; native root/child init, assistant and terminal identities match Sonnet5.5.",
+        "Failures are missing claim derivation and full-report transfer, not exact heading conventions."
+      ]
+    }
+  },
+  "parent_verification": [
+    {
+      "id": "hardening-cosmetic-claude-1-structural-pilot",
+      "artifact": "evidence.json",
+      "status": "passed",
+      "problems": []
+    },
+    {
+      "id": "hardening-cosmetic-claude-1-structural-pilot",
+      "artifact": "reviewed-evidence.json",
+      "status": "passed",
+      "problems": []
+    },
+    {
+      "id": "hardening-cosmetic-claude-2-structural-pilot",
+      "artifact": "evidence.json",
+      "status": "passed",
+      "problems": []
+    },
+    {
+      "id": "hardening-cosmetic-claude-2-structural-pilot",
+      "artifact": "reviewed-evidence.json",
+      "status": "passed",
+      "problems": []
+    },
+    {
+      "id": "hardening-cosmetic-claude-3-structural-pilot",
+      "artifact": "evidence.json",
+      "status": "passed",
+      "problems": []
+    },
+    {
+      "id": "hardening-cosmetic-claude-3-structural-pilot",
+      "artifact": "reviewed-evidence.json",
+      "status": "passed",
+      "problems": []
+    },
+    {
+      "id": "hardening-invariant-claude-1-structural-pilot",
+      "artifact": "evidence.json",
+      "status": "passed",
+      "problems": []
+    },
+    {
+      "id": "hardening-invariant-claude-1-structural-pilot",
+      "artifact": "reviewed-evidence.json",
+      "status": "passed",
+      "problems": []
+    },
+    {
+      "id": "hardening-invariant-claude-2-structural-pilot",
+      "artifact": "evidence.json",
+      "status": "passed",
+      "problems": []
+    },
+    {
+      "id": "hardening-invariant-claude-2-structural-pilot",
+      "artifact": "reviewed-evidence.json",
+      "status": "passed",
+      "problems": []
+    },
+    {
+      "id": "hardening-invariant-claude-3-structural-pilot",
+      "artifact": "evidence.json",
+      "status": "passed",
+      "problems": []
+    },
+    {
+      "id": "hardening-invariant-claude-3-structural-pilot",
+      "artifact": "reviewed-evidence.json",
+      "status": "passed",
+      "problems": []
+    }
+  ],
+  "supporting_records": {
+    "launch-plan.json": {
+      "path": "/private/tmp/skill-composition-structural-pilot/launch-plan.json",
+      "sha256": "0a66ae0f76cd7a43d3b974d7652f5c90644862a4225bac23fa4e3e388e38c916"
+    },
+    "run_pilot.py": {
+      "path": "/private/tmp/skill-composition-structural-pilot/run_pilot.py",
+      "sha256": "e28023209bc855d7d47863de9aad43600bf7a4c5b80fe53bc27f457742be8558"
+    },
+    "collect_results.py": {
+      "path": "/private/tmp/skill-composition-structural-pilot/collect_results.py",
+      "sha256": "4454008700a84b56057a25dca8cf02584e481f5746db689377f8f8efb2594f86"
+    },
+    "batch-completion.json": {
+      "path": "/private/tmp/skill-composition-structural-pilot/batch-completion.json",
+      "sha256": "38215aee8bec9198110790108a721b040e573f4e1cef59a9cd2659bfc224a14d"
+    },
+    "cosmetic-review-summary.json": {
+      "path": "/private/tmp/skill-composition-structural-pilot/cosmetic-review-summary.json",
+      "sha256": "086e9b8220b45eacd4ac63fa1eb48ebe0269dbea4ba1d28646c13c0ac06ed977"
+    },
+    "invariant-review-summary.json": {
+      "path": "/private/tmp/skill-composition-structural-pilot/invariant-review-summary.json",
+      "sha256": "311f9ab06fdef0c4697550569cc13e19e820ae78ab87fb3b410ba0f1f587b1fc"
+    },
+    "repository-launch-plan": {
+      "path": "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins/evals/skill-composition/structural-pilot-plan.json",
+      "sha256": "0a66ae0f76cd7a43d3b974d7652f5c90644862a4225bac23fa4e3e388e38c916"
+    },
+    "runner": {
+      "path": "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins/scripts/run_invariant_behavior.py",
+      "sha256": "ebbef34bb3eb91e736614320b2a146b8743b9b69675fc58cc60326ab53ced4f6"
+    },
+    "helper": {
+      "path": "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins/scripts/invariant_behavior.py",
+      "sha256": "4c295481b92ac7a2cd7987322243163e2a8e7df1fb5f9ceb9ec8ef8bf32d5778"
+    },
+    "frozen-criteria": {
+      "path": "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins/evals/skill-composition/frozen-criteria.json",
+      "sha256": "fe2c8a1bbce9d8cb57871db374c32e3b692ce2e001611afd743b5fa146e77038"
+    },
+    "static-validation.json": {
+      "path": "/private/tmp/skill-composition-structural-pilot/static-validation.json",
+      "sha256": "acd864529e9e5d9f16f5fc4a6ea998f65d6205a818fdabca6cd91092d5dc7fef"
+    }
+  },
+  "summary_auxiliary_hash_checks": {
+    "cosmetic-review-summary.json": [],
+    "invariant-review-summary.json": []
+  },
+  "accounting": {
+    "earlier_native_starts": 109,
+    "earlier_declared_slots": 126,
+    "pilot_declared_slots": 6,
+    "pilot_native_start_status": {
+      "confirmed-started": 6
+    },
+    "total_declared_slots": 132,
+    "total_confirmed_native_starts": 115,
+    "actual_start_count_complete": true
+  },
+  "original_18_gate": {
+    "permitted": false,
+    "state": "blocked",
+    "required": "6/6 pilot accepted, then original 18/18 separately required",
+    "automatic_launch": false
+  },
+  "limits": [
+    "Earlier failed records remain unchanged and are not pooled with this pilot.",
+    "All six runs require semantic and reviewed evidence plus both review summaries; missing records stop collection.",
+    "Fresh standard verification and auxiliary receipt hashes bind finite evidence; they do not establish general model reliability.",
+    "Native starts use native execution receipts, never outer runner launch counts; unknown starts remain explicit."
+  ]
+}

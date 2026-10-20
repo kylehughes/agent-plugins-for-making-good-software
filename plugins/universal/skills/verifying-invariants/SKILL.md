@@ -78,13 +78,15 @@ Classify authority before correction. Introduced text is a claim, not authority 
 
 Respect a claim's stated conditions and exclusions. If its domain is ambiguous, mark the domain uncertainty rather than silently choosing a broader reading. Tested examples and evidence limits do not silently narrow a maintained claim's domain: if only narrower wording is supported, disposition the exact claim accordingly. A counterexample inside the established domain contradicts the claim without separate evidence that current callers exercise that case.
 
-For independent review, give the existing correctness reviewer the response draft, obligations, exact changed paths and final contents, results, limits, and baseline evidence for compatibility. Require separate dispositions for derived maintained and report claims. A violated independently authoritative obligation is a claim record with its counterexample and required caller work, not a repair proposal. A claim-only focused review stops after these records; it does not run the ordinary defect workflow or offer optional repair alternatives. In that mode, keep claim records inline and do not create task items for them. When an existing broader correctness or hardening review reuses claim obligations, return the claim records separately and retain that review's authorized ordinary defect workflow and finding reporting in the same review. The claim-only reviewer remains read-only and must not build, test, edit, delegate, create tasks, add infrastructure, or audit unrelated concerns. Require a completed result, not merely a tool call.
+For independent review, give the existing correctness reviewer the complete intended response, obligations, exact changed paths and final contents, results, limits, and baseline evidence for compatibility. Require three response sections: **Maintained claims**, **Report claims**, and **Reviewed response**. The first two contain separate claim records and dispositions. The last returns the complete supplied draft with only the records' supported wording corrections; preserve its sections, next actions, limits, and pending obligations. Do not invent completed work or add behavioral assurances. Missing or incomplete inputs or an unresolved contradiction mean the review is incomplete, not approved; identify the gap rather than reconstructing missing content.
+
+A violated independently authoritative obligation is a claim record with its counterexample and required caller work, not a repair proposal. Preserve unestablished required obligations as pending in the reviewed response. A claim-only focused review returns the three sections without the ordinary defect workflow or optional repair alternatives; keep its records inline without task items. Combine this work with the final scoped correctness audit when applicable, retaining that review's authorized ordinary findings separately. The claim-only reviewer remains read-only and must not build, test, edit, delegate, create tasks, add infrastructure, or audit unrelated concerns. Require a completed result, not merely a tool call.
 
 For fallback, record why review was unavailable, denied, or failed, then perform the same bounded check:
 
 1. Read the changed inventory and final diff, then any changed behavior-bearing file whose full content was omitted, truncated, or untracked. Derive maintained claims from changed or behaviorally affected statements in those scoped final artifacts, and report claims from the complete response draft.
 2. Keep successful-result, non-success, and named-error obligations separate. Document a named error only when authorized and only for its established path and conditions. Leave incidental outcomes in the ledger or report.
-3. Assess every derived maintained and report claim from the scoped evidence using the same record shape.
+3. Assess every derived maintained and report claim from the scoped evidence using the same record shape. Produce the same three sections, including the complete corrected response, and identify any input gap or unresolved contradiction that leaves the check incomplete.
 
 The caller owns corrections. Correct, narrow, or remove unsupported assertions about present behavior. Do not change production behavior or add tests solely to preserve introduced text. Do not erase an authoritative required obligation merely because it is unestablished; retain it as a normative obligation and mark its verification or implementation pending.
 
@@ -92,13 +94,13 @@ Post-review edits to behavior-bearing final artifacts must use the record's mini
 
 A behavior-changing correction requires independent task or contract authority, affected applicable checks to run again, and affected records and draft wording to use their actual results; it does not require another reviewer or audit cycle.
 
-Apply supported report corrections to the reviewed draft, then reconcile affected records against the same evidence without another review. Emit that corrected draft instead of recomposing its behavioral content. After review, add only formatting or completion metadata copied from the completed review receipt or required follow-up check results; omit any new or materially broadened behavioral claim.
+Resolve the records and apply any remaining supported corrections to the returned **Reviewed response**, then reconcile affected records against the same evidence without another review. Emit that response instead of rebuilding it from the claim records. After review, add only formatting or completion metadata copied from the completed review receipt or required follow-up check results; omit any new or materially broadened behavioral claim.
 
 Completion requires these resolutions and explicit pending obligations. Do not add tests for optional prose, audit unchanged files, expand the invariant inventory, or restart implementation except for an in-scope contradiction.
 
 ### 5. Report and Persist Proportionally
 
-Report only after the claim check and corrections complete. Emit the corrected reviewed draft; use the ledger and tool trace when applying corrections rather than generating new behavioral wording.
+Report only after the claim check and corrections complete. Use the ledger and tool trace to resolve records and retain pending obligations in the returned reviewed response.
 
 Before claiming preservation or change, pair baseline and final outcomes for the same representation and boundary. Claim only the exact respect that matches or differs; if either side is unavailable, omit the temporal claim or mark it unestablished.
 
