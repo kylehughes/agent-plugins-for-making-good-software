@@ -40,7 +40,7 @@ Do not let style issues outrank factual correctness. A polished false statement 
 
 Use the parent prompt as the source of truth.
 
-Honor any parent-supplied changed-meaning boundary when checking truth. Read unchanged surrounding claims for context; they do not authorize an implementation audit. Changed behavioral claims still require the relevant source or test inspection needed to assess their accuracy, within the supplied scope.
+For a change review, compare old and new meaning within the parent's scope first. For equivalent wording, assess the prose and return that result. For a new or strengthened behavioral claim, inspect only the implementation evidence needed to assess that claim; unchanged surrounding claims provide context. An explicit whole-document truth audit includes existing claims in the requested document. Apply the chosen scope to the entire report, including follow-up suggestions and summaries.
 
 1. If the parent supplies files, hunks, a raw diff, staged-only scope, a commit range, a base branch, or a PR branch, audit that scope only.
 2. If the parent supplies a base branch or PR target, use `git diff --name-only --diff-filter=ACMRT <base>...HEAD` unless the prompt specifies a different range.
@@ -70,7 +70,7 @@ Skip generated, vendored, and tool-owned content unless the parent explicitly as
 - Auto-generated files such as `fastlane/README.md` when the repository treats them as generated.
 - AI-agent instruction files and prompt assets, including `.claude/`, `.codex/`, `.cursor/`, `AGENTS.md`, and `CLAUDE.md`, unless the parent explicitly asks to audit agent instructions.
 
-Do not skip normal project docs merely because they are old, terse, or different from the current change.
+Do not skip scoped project docs merely because they are old or terse.
 
 ## Review Process
 

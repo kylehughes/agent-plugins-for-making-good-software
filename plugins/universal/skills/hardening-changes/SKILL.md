@@ -7,7 +7,7 @@ description: "Harden an owned branch or working tree for a PR through an audit-a
 
 Prepare the owned changes through the five phases below: audit, decide, fix, compile checkpoint, and re-audit. The orchestrator owns fixes and dispositions; installed reviewers supply the audits. Obtain their completed findings before fixing. Do not replace available reviewers with self-review because the patch is small. If delegation is unavailable, record that limit and perform the same scoped review directly.
 
-Inspect the diff to freeze the changed surface and select its concerns before judging correctness. For wording-only changes, review the changed meaning; surrounding claims do not become owned work. A new or strengthened behavioral claim needs a scoped truth check.
+Inspect the diff to freeze the changed surface and select its concerns before judging correctness. For prose-only changes, compare old and new meaning before selecting auditors. Equivalent wording needs a prose review; a truth review needs an identified new or strengthened behavioral claim. Pass that distinction and both wordings to the reviewer. Surrounding unchanged claims do not become owned work.
 
 For a changed construction boundary, invariant claim, enforcement gap, legal transition, or explicit proof request, load [verifying-invariants](../verifying-invariants/SKILL.md) and the installed language/type-correctness companion before boundary judgments or edits. Reuse active guidance within this workflow.
 
@@ -27,7 +27,7 @@ Every finding gets one. Do not dismiss a finding because it seems low priority, 
 | Mechanical fix | A codified rule determines exactly one correct outcome. | Fix automatically. |
 | Judgment fix | The branch owns the thread and project evidence supports a best answer among several valid ones. | Resolve from evidence, fix, record in the decision ledger. |
 | Defer | Completing the thread would tear up floorboards across the whole app, or needs a product decision only the user can make. | Record with full context for the handoff. |
-| Drop | Vague, speculative, or grooming of code the branch does not own. | Record the drop and its rationale. |
+| Drop | Vague, speculative, or grooming of code the branch does not own. | Record the exclusion and rationale in the internal ledger. |
 | Blocker | Cannot be safely prepared without resolving a correctness, build, or architecture issue that exceeds this loop. | Attended: stop and ask. Unattended: report in the handoff. |
 
 Mechanical fixes are never optional. Judgment fixes are not put to the user mid-loop — pick the strongest-evidence option, apply it, and report the call in the handoff where it can be audited. Effort is not a defer criterion: large but branch-owned work is still fix-now work.
@@ -97,12 +97,12 @@ Remain read-only. Do not modify files and do not build, test, or run the project
 
 For each finding, include: file:line, concern, proposed fix, expected disposition, patch boundary, and the skill, project rule, or architectural pattern that supports it.
 
-You may suggest a disposition, but the orchestrator owns final classification. Put app-wide rearchitecting and product decisions in a "Deferral Candidates" section.
+Return scoped findings in one list. Each finding must identify the owned change that gives rise to it. You may suggest a disposition; the orchestrator owns final classification.
 ```
 
 Auditors do not propose Drop — an auditor that believes a finding is not worth reporting omits it. All launched auditors must complete; re-launch any that fails rather than proceeding with missing results.
 
-Collect every finding, including Deferral Candidates, into the ledger. Deduplicate by underlying failure, including findings across files or concern labels: an invariant bypass and a type-based way to prevent it share one finding and disposition. Correctness owns the failure evidence and impact; the type specialist supplies representation choices and tradeoffs; the orchestrator decides the fix. Preserve distinct failures as distinct findings. Close completed auditor sessions if the runtime keeps them active.
+Collect the scoped findings into the ledger. If a reviewer submits an excluded observation, record its rejection internally without investigating a repair. Deduplicate by underlying failure, including findings across files or concern labels: an invariant bypass and a type-based way to prevent it share one finding and disposition. Correctness owns the failure evidence and impact; the type specialist supplies representation choices and tradeoffs; the orchestrator decides the fix. Preserve distinct failures as distinct findings. Close completed auditor sessions if the runtime keeps them active.
 
 ### Phase 2: Decide
 

@@ -52,7 +52,7 @@ Use progressive disclosure—layer your understanding before judging.
 4. Note the packages/modules touched—this hints at which risk classes apply
 
 **Layer 2: Context** (just-in-time)
-5. For each file, reconstruct the intended behavior before judging the diff:
+5. Reconstruct the behavior within the requested review scope. When reviewing prose changes, identify the new or strengthened behavioral claim before tracing implementation paths; equivalent wording has no new correctness claim to investigate or report. An explicit whole-document truth audit includes existing claims in the requested document. For an implicated behavior:
    - Read complete changed functions, types, modules, and relevant surrounding code
    - Trace important callers, callees, data flow, control flow, state transitions, and error paths
    - Inspect tests, interfaces, schemas, and configuration that define the contract

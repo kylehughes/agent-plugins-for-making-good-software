@@ -1,6 +1,6 @@
 # Manager handoff
 
-Prepare a concise handoff for someone who did not watch the implementation. Name concrete files, symbols, changes, and the next action. Use only sections with content.
+Prepare a concise handoff for someone who did not watch the implementation. Name concrete files, symbols, changes, and the next action. Report scoped findings and obligations; rejected observations stay in the internal ledger. Use only sections with content. A wording-only change may need only the status block and its prose-review result.
 
 ## Status and proof
 
@@ -27,9 +27,7 @@ Write complete sentences after the status block; avoid compressed label-colon fr
 
 **Must Fix or Decide Before Merge.** Include blockers, unresolved dispositions, and anything the project ship gate still has to prove. For each, name the evidence or gap, owner, and next action. Keep pending invariant checks here even when hardening is complete.
 
-**Deferred Work.** Include only work that exceeds the branch's ownership or requires a product decision. Give its impact, scope reason, first implementation step, affected modules, rough effort (`S`/`M`/`L`/`XL`), and originating finding. Most runs have none; include at most six.
-
-**Not Carried Forward.** Optionally explain findings that were fixed, dropped, or not worth tracking, including their rationale.
+**Deferred Work.** Include owned findings whose completion would require app-wide rearchitecture or a product decision. Give the owned change that gives rise to the finding, impact, reason for deferral, first implementation step, affected modules, rough effort (`S`/`M`/`L`/`XL`), and originating finding. Most runs have none; include at most six.
 
 In attended runs with a configured issue tracker, offer once to file deferred work, with at most six concise options. Do not file issues without authorization.
 
