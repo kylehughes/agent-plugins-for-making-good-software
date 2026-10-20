@@ -319,7 +319,7 @@ Use it only when:
 - Deployment availability is acceptable or isolated.
 - Its iteration and protocol conformances in the selected Swift version fit the algorithm.
 
-`InlineArray` is not interchangeable with `Array`, and borrowing iteration continues to evolve through Swift Evolution work that may still be under review in a beta toolchain. Verify the selected compiler and proposal status rather than assuming every `Array` API or proposed conformance exists.
+`InlineArray` is not interchangeable with `Array`. `Iterable` and borrowing iteration ship in Swift 6.4 with an iOS 27 deployment floor, while later `InlineArray` equality and hashing conformances target Swift Next. Check [Swift feature status](swift-feature-status.md) rather than assuming every `Array` API or proposed conformance exists.
 
 ## Error Modeling
 

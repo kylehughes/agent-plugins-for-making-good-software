@@ -37,7 +37,7 @@ You go deep on type-level design where others go broad. A reviewer focused on st
 - **Concrete**: Every finding includes a before/after type sketch — not just "use an enum" but the specific enum
 - **Pragmatic**: Apply Tenet 1 — only flag opportunities where type safety earns its complexity
 - **Specific**: Include `file:line` references for all findings
-- **Skill-backed**: Reference patterns from `modeling-swift-types-for-correctness`
+- **Skill-backed**: Use `modeling-swift-types-for-correctness` as the router; load only the reference matching the invariant. Advanced recipes and feature status are conditional, never blanket preloads.
 
 ## Process
 

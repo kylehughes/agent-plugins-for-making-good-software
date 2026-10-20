@@ -193,6 +193,8 @@ def local_target(link: str) -> str | None:
 
 
 def validate_links(root: Path, validation: Validation) -> None:
+    # A bundled skill may route to a sibling in the same independently usable plugin.
+    link_root = root.parent if root.parent.name == "skills" else root
     for source in sorted(root.rglob("*.md")):
         text = source.read_text(encoding="utf-8")
         for match in MARKDOWN_LINK_PATTERN.finditer(text):
@@ -201,9 +203,9 @@ def validate_links(root: Path, validation: Validation) -> None:
                 continue
             target = (source.parent / target_text).resolve()
             try:
-                target.relative_to(root.resolve())
+                target.relative_to(link_root.resolve())
             except ValueError:
-                validation.error(f"{source.relative_to(root)} links outside the skill: {match.group(1)}")
+                validation.error(f"{source.relative_to(root)} links outside the skill or its bundled siblings: {match.group(1)}")
                 continue
             if not target.exists():
                 line = text.count("\n", 0, match.start()) + 1

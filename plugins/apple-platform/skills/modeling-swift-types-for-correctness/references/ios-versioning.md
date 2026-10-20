@@ -16,12 +16,10 @@ A lower deployment target does not require an earlier Swift language mode. Compi
 
 ## Verified Toolchain Snapshot
 
-Verified on **2026-06-21**:
+Verified on **2026-10-19**:
 
-- Swift.org lists Swift 6.3.2 as the current stable downloadable compiler.
-- Xcode 26.5 is the current generally released Xcode listed by Apple and carries Swift 6.3-era tooling and the iOS 26.5 SDK.
-- Xcode 26.6 RC 2 is prerelease software, not the production baseline.
-- Xcode 27 beta includes Swift 6.4 and the iOS 27 SDK.
+- Swift.org lists Swift 6.4.1 as the latest stable downloadable compiler.
+- Apple lists Xcode 27.1 (27A9275) as the current released Xcode. Xcode 27 (27A266a) is also a released toolchain whose release notes identify Swift 6.4 and the iOS 27 SDK.
 
 For an Apple-platform build, `xcrun swift --version`, `xcodebuild -version`, and the selected Xcode path are authoritative. Do not substitute the separately installed Swift.org toolchain for the compiler that actually builds the Xcode target.
 
@@ -113,7 +111,7 @@ Any declaration that mentions an unavailable type in its signature or stored rep
 | Typed NotificationCenter messages | Current Foundation API | iOS 26+ | Hide behind a domain event adapter with an iOS 16 implementation |
 | Observation framework / `@Observable` | Current observation API | iOS 17+ | Keep an iOS 16 `ObservableObject` or manual observation adapter when needed |
 | SwiftData | Current persistence framework | iOS 17+ | Keep domain models independent from the persistence adapter |
-| Swift 6.4 preview features such as `anyAppleOS` and `@diagnose` | Xcode 27 beta at verification | No inherent blanket floor | Preview lane only; referenced APIs still need their own availability checks |
+| Recent and experimental Swift features | Varies by proposal and compiler flag | No inherent blanket floor | Check [Swift feature status](swift-feature-status.md); referenced APIs still need their own availability checks |
 
 The key distinction is not “old Swift versus new Swift.” It is current source semantics versus runtime symbols that may not exist on the minimum OS.
 
@@ -222,7 +220,7 @@ This architecture preserves current Swift source quality without allowing one mo
 
 ## Preview Lane
 
-Use Xcode 27 beta, Swift 6.4, and iOS 27 SDK behavior only when the repository explicitly opts in.
+Use a beta Xcode, Swift development snapshot, or preview SDK only when the repository explicitly opts in. Xcode 27 and the iOS 27 SDK are released at this document's verification date; a later beta channel remains a separate lane.
 
 Requirements:
 
@@ -247,9 +245,9 @@ Use one Swift source/toolchain baseline per channel and vary runtime coverage:
 | Current production Xcode with strict memory safety enabled for audited targets | Unsafe-code inventory |
 | Minimum iOS 16 runtime or direct fallback-adapter tests | Oldest supported behavior |
 | iOS 17 and iOS 18 runtime or direct adapter tests | Observation/persistence and synchronization boundaries |
-| Current iOS 26 runtime | Modern production adapter path |
+| Current iOS 27 runtime | Modern production adapter path |
 | Current production Xcode archive | Linkage, release configuration, and distribution surface |
-| Xcode 27 beta optional job | Preview diagnostics and iOS 27 behavior only |
+| Selected beta Xcode optional job | Preview diagnostics and next-SDK behavior only |
 
 A current simulator alone does not exercise fallback branches. Test adapters directly when older simulator runtimes are unavailable.
 

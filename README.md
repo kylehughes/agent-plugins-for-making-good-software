@@ -45,7 +45,7 @@ Skills and agent definitions for Apple-platform codebases.
 | `implementing-app-intents` | Guidance for App Intents: Siri, Apple Intelligence, entities, Spotlight, and value representations. |
 | `instrumenting-accessibility-identifiers` | A type-safe `accessibilityIdentifier` pattern across SwiftUI, UIKit, XCUITest, and screenshot automation. |
 | `localizing-strings` | Patterns for `String(localized:)` and string catalogs. |
-| `modeling-swift-types-for-correctness` | Patterns for modeling Swift types that make invalid states unrepresentable. |
+| `modeling-swift-types-for-correctness` | Swift invariant boundaries, validated decoding, ownership, and advanced type relationships, with recipes loaded by concern. |
 | `ordering-symbols` | The canonical member ordering for Swift types. |
 | `organizing-swift-types` | Conventions for Swift types, extensions, access control, and file layout. |
 | `presenting-ios-modals` | Modal chrome, button roles, sheet detents, and dismissal behavior per Apple's HIG. |
@@ -57,6 +57,13 @@ Skills and agent definitions for Apple-platform codebases.
 | `using-swift-concurrency` | Swift Concurrency design, diagnostics, actor isolation, logical races, and async tests. |
 | `writing-apple-platform-documentation` | The Apple-platform companion to writing-technical-prose: DocC, Swift doc comments, terminology, availability, and privacy wording. |
 | `writing-swift` | Swift 6 standards for production code and packages. |
+
+The type-modeling skill starts with the lightest useful representation and routes to
+focused recipes for domain values, generic proofs, ownership, effects, and binary
+boundaries. Its feature-status reference separates shipped features, experiments,
+and Apple availability. The [Swift integration record](docs/swift-type-system-integration.md)
+tracks source coverage, corrections, and validation; it is maintainer evidence,
+not required reading for ordinary Swift work.
 
 ### Agents
 

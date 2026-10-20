@@ -190,11 +190,11 @@ Do not spread `@preconcurrency` imports across many files.
 
 ## Beta and future OS policy
 
-For iOS 27 beta APIs:
+For APIs available only in the selected preview SDK (determine release status from [feature status](../../modeling-swift-types-for-correctness/references/swift-feature-status.md), rather than an OS number):
 
 - Keep beta-only code in its own adapter or file.
 - Gate compilation with `#if canImport(...)` when the module may not exist in older SDKs.
-- Gate runtime use with `#available(iOS 27, *)`.
+- Gate runtime use with the API's declared availability; `#if canImport` alone does not establish deployment support.
 - Do not change core protocol contracts to require beta-only types. Convert beta-specific values to stable app/domain types at the boundary.
 - Expect signatures, names, isolation annotations, and Sendable conformances to change before GM.
 

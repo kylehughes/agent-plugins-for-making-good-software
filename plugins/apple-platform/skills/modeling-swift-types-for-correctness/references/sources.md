@@ -2,7 +2,7 @@
 
 This file records the primary specifications and official documentation used to verify time-sensitive or easily conflated guidance. Re-check availability in the actual SDK because documentation and beta behavior evolve.
 
-Last verified: **2026-06-21**.
+Last verified: **2026-10-19**.
 
 ## Agent Skills
 
@@ -24,9 +24,10 @@ Key structural constraints reflected in this package:
 ## Current Apple and Swift Releases
 
 - Apple developer software releases: https://developer.apple.com/news/releases/
-- Xcode 26.5 release notes: https://developer.apple.com/documentation/xcode-release-notes/xcode-26_5-release-notes
-- Xcode 27 beta release notes: https://developer.apple.com/documentation/xcode-release-notes/xcode-27-release-notes
+- Xcode 27 release notes: https://developer.apple.com/documentation/xcode-release-notes/xcode-27-release-notes
 - Swift stable downloads: https://www.swift.org/install/
+- Swift 6.4 release: https://www.swift.org/blog/swift-6.4-released/
+- Swift 6.4.1 announcement: https://forums.swift.org/t/announcing-swift-6-4-1/90029
 - Apple's “What's new in Swift”: https://developer.apple.com/swift/whats-new/
 - Xcode build settings reference: https://developer.apple.com/documentation/xcode/build-settings-reference
 - SwiftPM `SwiftSetting` reference: https://docs.swift.org/swiftpm/documentation/packagedescription/swiftsetting/
@@ -34,10 +35,9 @@ Key structural constraints reflected in this package:
 
 Snapshot used by this version:
 
-- Xcode 26.5 (17F42): current generally released Apple toolchain, with Swift 6.3-era tooling and the iOS 26.5 SDK.
-- Xcode 26.6 RC 2 (17F113): prerelease at the verification date.
-- Swift.org current stable download: Swift 6.3.2.
-- Xcode 27 beta (27A5194q): Swift 6.4 and iOS 27 SDK preview lane.
+- Xcode 27.1 (27A9275): current released Apple toolchain.
+- Xcode 27 (27A266a): released Apple toolchain with Swift 6.4 and the iOS 27 SDK.
+- Swift.org latest stable download: Swift 6.4.1.
 
 For Apple-platform builds, the compiler reported by the selected Xcode via `xcrun swift --version` is authoritative. This skill uses one current Swift 6 language baseline rather than preserving source compatibility with another language mode.
 
@@ -66,7 +66,24 @@ For Apple-platform builds, the compiler reported by the selected Xcode via `xcru
 - SE-0465 Nonescapable standard-library primitives: https://github.com/swiftlang/swift-evolution/blob/main/proposals/0465-nonescapable-stdlib-primitives.md
 - SE-0466 Default actor isolation controls: https://github.com/swiftlang/swift-evolution/blob/main/proposals/0466-control-default-actor-isolation.md
 - SE-0522 Source-level warning control with `@diagnose`: https://github.com/swiftlang/swift-evolution/blob/main/proposals/0522-source-warning-control.md
-- SE-0516 `Iterable` / borrowing iteration (active review at the verification date, not a stable commitment): https://github.com/swiftlang/swift-evolution/blob/main/proposals/0516-iterable.md
+- SE-0474 Yielding accessors: https://github.com/swiftlang/swift-evolution/blob/main/proposals/0474-yielding-accessors.md
+- SE-0493 Async `defer`: https://github.com/swiftlang/swift-evolution/blob/main/proposals/0493-defer-async.md
+- SE-0504 Task cancellation shields: https://github.com/swiftlang/swift-evolution/blob/main/proposals/0504-task-cancellation-shields.md
+- SE-0507 Borrow and mutate accessors: https://github.com/swiftlang/swift-evolution/blob/main/proposals/0507-borrow-accessors.md
+- SE-0516 `Iterable` / borrowing iteration: https://github.com/swiftlang/swift-evolution/blob/main/proposals/0516-borrowing-sequence.md
+- SE-0517 `UniqueBox`: https://github.com/swiftlang/swift-evolution/blob/main/proposals/0517-uniquebox.md
+- SE-0518 Suppressing inferred `Sendable`: https://github.com/swiftlang/swift-evolution/blob/main/proposals/0518-tilde-sendable.md
+- SE-0519 `Ref` and `MutableRef`: https://github.com/swiftlang/swift-evolution/blob/main/proposals/0519-ref-mutableref-types.md
+- SE-0525 Safe raw-byte loading: https://github.com/swiftlang/swift-evolution/blob/main/proposals/0525-rawspan-safe-loading-api.md
+- SE-0527 `UniqueArray` manuscript: https://github.com/swiftlang/swift-evolution/blob/main/proposals/0527-rigidarray-uniquearray.md
+- SE-0528 Noncopyable `Continuation`: https://github.com/swiftlang/swift-evolution/blob/main/proposals/0528-noncopyable-continuation.md
+- SE-0530 Async `Result`: https://github.com/swiftlang/swift-evolution/blob/main/proposals/0530-async-result-support.md
+- SE-0531 Literal expressions: https://github.com/swiftlang/swift-evolution/blob/main/proposals/0531-literal-expressions.md
+- SE-0532 Additional noncopyable `Optional` operations: https://github.com/swiftlang/swift-evolution/blob/main/proposals/0532-optional-noncopyable-improvements.md
+- SE-0543 `InlineArray` equality and hashing: https://github.com/swiftlang/swift-evolution/blob/main/proposals/0543-inline-array-hashable.md
+- SE-0544 Mutation and consumption in `deinit`: https://github.com/swiftlang/swift-evolution/blob/main/proposals/0544-mutate-or-consume-in-deinit.md
+- SE-0551 Single-value span adapters: https://github.com/swiftlang/swift-evolution/blob/main/proposals/0551-span-of-one.md
+- SE-0556 Interior-mutable cells: https://github.com/swiftlang/swift-evolution/blob/main/proposals/0556-cell.md
 - Swift compiler documentation for `anyAppleOS`: https://docs.swift.org/compiler/documentation/diagnostics/use-any-apple-os-availability/
 
 Important proposal details reflected in the skill:
@@ -80,14 +97,18 @@ Important proposal details reflected in the skill:
 - Strict memory safety is opt-in and inventories unsafe operations; it does not verify the programmer's proof inside `unsafe` expressions.
 - Default actor isolation is a module-level setting, not a universal property of Swift 6 source.
 - A nonescapable type requires valid lifetime dependencies; spelling `~Escapable` is not by itself an owner-lifetime proof.
-- `anyAppleOS` and `@diagnose` are Swift 6.4 beta source features at the verification date; neither supplies runtime availability for APIs it references.
-- SE-0516 was in active review at the verification date; do not describe its borrowing-iteration model or proposed conformances as shipped stable behavior until its status and implementation are rechecked.
+- Swift 6.4 language support, experimental flags, unavailable forms, and Apple deployment floors are tracked in [Swift feature status](swift-feature-status.md). Accepted proposals and compiler probes do not establish Apple deployment support.
+- SE-0516 is implemented in Swift 6.4. Its `Iterable` APIs have a separate iOS 27 deployment floor, and borrowing iteration does not promise stable borrows across iterator mutation.
 
 ## Apple API Availability
 
 - `InlineArray`: https://developer.apple.com/documentation/swift/inlinearray
 - `Span`: https://developer.apple.com/documentation/swift/span
 - `RawSpan`: https://developer.apple.com/documentation/swift/rawspan
+- `Ref`: https://developer.apple.com/documentation/swift/ref
+- `UniqueBox`: https://developer.apple.com/documentation/swift/uniquebox
+- `UniqueArray`: https://developer.apple.com/documentation/swift/uniquearray
+- `Iterable`: https://developer.apple.com/documentation/swift/iterable
 - `Synchronization.Mutex`: https://developer.apple.com/documentation/synchronization/mutex
 - `OSAllocatedUnfairLock`: https://developer.apple.com/documentation/os/osallocatedunfairlock
 - Foundation notification center messages: https://developer.apple.com/documentation/foundation/notification-center-messages
@@ -108,6 +129,9 @@ Availability facts used by the compatibility guidance:
 |---|---:|
 | `InlineArray` | iOS 26+ |
 | `Span` type | iOS 12.2+ through special back deployment; producer APIs vary |
+| `Ref` / `MutableRef` | iOS 27+ |
+| `UniqueBox` / `UniqueArray` | iOS 27+ |
+| `Iterable` | iOS 27+ |
 | `Synchronization.Mutex` | iOS 18+ |
 | `OSAllocatedUnfairLock` | iOS 16+ |
 | Typed NotificationCenter message APIs | iOS 26+ |

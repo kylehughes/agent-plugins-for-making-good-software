@@ -5,15 +5,17 @@ description: "Design, debug, or review Swift concurrency: async/await, tasks, ac
 
 # Using Swift Concurrency
 
-Use this skill to produce Swift 6.3 concurrency code that is correct under strict concurrency and practical for iOS applications with deployment targets as low as iOS 16. Treat concurrency as a design problem first and a diagnostic-silencing problem last.
+Use this skill to produce Swift concurrency code that is correct under strict concurrency and practical for iOS applications with deployment targets as low as iOS 16. Treat concurrency as a design problem first and a diagnostic-silencing problem last.
 
 ## Scope and assumptions
 
-- Assume Swift 6.3 syntax and Swift 6 language mode unless the user provides contrary project settings.
+- Use the project's selected compiler and Swift 6 language mode. References retain their recorded Swift 6.3 baseline; consult [feature status](../modeling-swift-types-for-correctness/references/swift-feature-status.md) for newer mechanisms only when the task needs them.
 - Assume iOS 16 is the lowest supported runtime unless the user states a higher minimum. Code may use current Swift language features, but framework APIs introduced after iOS 16 need availability gates or fallbacks.
-- Treat iOS 27 and newer SDK-only APIs as beta/unstable. Do not let beta-only APIs leak into unconditional iOS 16-compatible code.
+- Determine stable versus preview support from the selected SDK and official release evidence. Gate newer APIs by their declaration availability; compiler support alone does not establish iOS 16 deployment.
 - Prefer portable Swift and Apple-platform APIs that are available on iOS 16+. If using a newer API such as Observation, Synchronization.Mutex, typed notifications, or beta frameworks, call out the availability implication.
-- Do not preserve Swift 5-era workarounds unless they still improve Swift 6.3 code.
+- Do not preserve Swift 5-era workarounds unless they still improve code under the selected compiler.
+
+For a claim about ownership, representable state, typed failure, or mandatory completion, route through [type modeling](../modeling-swift-types-for-correctness/SKILL.md). This skill retains scheduling, isolation repair, and task-lifecycle guidance; load the modeling recipe only for the enforcement claim.
 
 ## First pass
 

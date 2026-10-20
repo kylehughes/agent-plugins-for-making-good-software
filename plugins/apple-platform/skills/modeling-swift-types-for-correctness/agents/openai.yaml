@@ -1,4 +1,4 @@
 interface:
-  display_name: "Model Swift Types for Correctness"
-  short_description: "Make invalid Swift states unrepresentable"
+  display_name: "Modeling Swift Types for Correctness"
+  short_description: "Model Swift invariants and preserve type relationships"
   default_prompt: "Use $modeling-swift-types-for-correctness to review or implement this Swift model so its invariants are enforced by the lightest practical type design while preserving the project's iOS deployment, selected current Swift/Xcode toolchain, SDK availability, concurrency, and ABI constraints."

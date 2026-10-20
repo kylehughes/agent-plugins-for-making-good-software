@@ -254,9 +254,13 @@ Before publishing a pack-based API:
 
 Pack syntax and capabilities continue to evolve; isolate sophisticated use from business-domain APIs unless it creates a material correctness or maintenance gain.
 
+Swift 6.4 supports ordinary copyable parameter-pack elements. It does not establish noncopyable tuples or `each T: ~Copyable`; use a nominal noncopyable aggregate for that ownership boundary. See [Swift feature status](swift-feature-status.md#release-14).
+
 ## Integer Generic Parameters and Fixed Size
 
 Integer generic parameters and `InlineArray` can express compile-time cardinality and fixed inline storage, but the standard-library type has Apple-platform runtime availability beginning at iOS 26.
+
+Swift 6.4 does not provide general symbolic arithmetic or refinement constraints. The accepted literal-expressions design remains experimental and the supplied 6.4.x probes do not establish a usable implementation even with its flag. Keep runtime validation for bounds and use [Swift feature status](swift-feature-status.md#release-12) before adopting preview syntax.
 
 Do not use an integer generic parameter merely to model a runtime business bound. `Maximum<20>` does not validate an array loaded from JSON; construction still needs a runtime check.
 

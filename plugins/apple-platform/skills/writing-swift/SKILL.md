@@ -14,7 +14,7 @@ Write correct, idiomatic Swift while respecting the repository's compatibility c
 3. Keep toolchain version, language mode, SwiftPM tools version, deployment target, dependency versions, and Xcode requirements separate. Never raise them silently.
 4. Preserve user changes and public behavior. Inspect `git status --short`; never discard edits, create commits, or run broad migrations unless requested.
 
-For greenfield work or an explicitly requested upgrade, use the Swift 6.3.2 baseline in [Swift compatibility](references/swift-6.3.2.md).
+For compatibility decisions, use [Swift compatibility](references/swift-6.3.2.md) for the version axes and its recorded baseline. For newer type-system features, consult [feature status](../modeling-swift-types-for-correctness/references/swift-feature-status.md) only when needed; do not silently upgrade the project.
 
 For broad orientation, run [the project-context script](scripts/swift-project-context.sh). Resolve bundled paths relative to this skill directory.
 
@@ -39,7 +39,7 @@ Load only the concern-specific guidance needed for the task. Use repository inst
 - Concurrency, isolation, `Sendable`, tasks, actors, cancellation, or async sequences: `using-swift-concurrency`; if unavailable, use [Concurrency](references/concurrency.md) for repair patterns or consult it only for an unresolved detail.
 - Test structure and assertions: `testing-swift-code`; if unavailable, use [Testing Swift](references/testing.md) or consult it only for an unresolved detail.
 - Timing, observers, cancellation, or async-test determinism: `testing-async-swift-code`; if unavailable, use the async portions of [Testing Swift](references/testing.md) or consult them only for an unresolved detail.
-- Validated values, initializer or decoding validation, persisted-data compatibility, impossible-state claims, typed IDs, ownership, or legal transitions: [modeling-swift-types-for-correctness](../modeling-swift-types-for-correctness/SKILL.md). Load it before changing or assessing those boundaries; it composes with the shared invariant procedure when needed.
+- Validated values, initializer or decoding validation, persisted-data compatibility, impossible-state claims, typed IDs, ownership, legal transitions, or preserving generic relationships: [modeling-swift-types-for-correctness](../modeling-swift-types-for-correctness/SKILL.md). Load it before changing or assessing those boundaries; it composes with the shared invariant procedure when needed.
 - API design: `designing-swift-apis`; type and file layout: `organizing-swift-types`; member placement: `ordering-symbols`.
 - User-facing UI text: `localizing-strings`; UIKit cell content: `configuring-ios-content`; sheets: `presenting-ios-modals`.
 - Package/module boundaries: `structuring-swift-packages`.

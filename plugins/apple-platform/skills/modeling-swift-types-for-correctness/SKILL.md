@@ -1,6 +1,6 @@
 ---
 name: modeling-swift-types-for-correctness
-description: "Required for Swift invariant assessments and validation fixes, including decoding and restoring saved data. Load before judging or editing those boundaries, even for a small fix. Covers typed IDs, legal transitions, ownership, and compiler evidence; excludes ordinary output tests and naming."
+description: "Model and assess Swift invariants, validated decoding, legal transitions, ownership, and type relationships. Use before judging or changing enforcement boundaries, including small fixes. Covers practical and advanced encodings; excludes ordinary output tests and naming."
 ---
 
 # Model Swift Types for Correctness
@@ -52,14 +52,7 @@ Apply the settled invariant to Swift with these defaults:
 
 A comment, `typealias`, naming convention, boolean permission, `RawRepresentable`, or freely conformable marker protocol documents intent without enforcing it.
 
-Use [the decision guide](references/decision-guide.md) for the Swift pattern matrix and rollback criteria. Read only the focused representation reference needed by the change:
-
-- [Algebraic and refined values](references/algebraic-and-refined-values.md) for enums, validated values, bounds, units, money, intervals, and collections.
-- [Identity, typestate, and capabilities](references/identity-typestate-capabilities.md) for typed IDs, staged transitions, trust states, and authority tokens.
-- [UI state, navigation, and effects](references/ui-state-navigation-and-effects.md) for SwiftUI state, forms, routes, request identity, cancellation, and restoration.
-- [Advanced generics and protocols](references/advanced-generics-and-protocols.md) for same-type constraints, existentials, witnesses, packs, key paths, and macros.
-- [Ownership, concurrency, and errors](references/ownership-concurrency-errors.md) for `Sendable`, actors, locks, noncopyable values, borrowing, typed throws, and cancellation.
-- [Security and resource modeling](references/security-and-resource-modeling.md) for revocable authority, secrets, paths, handles, cryptographic state, and unsafe code.
+Use [the decision guide](references/decision-guide.md) for pattern selection and rollback, then the narrowest concern in the Reference Map. The recipe guides compose existing rules for a specific task; do not load them as a complete compendium. Consult feature status only when the selected mechanism depends on recent compiler or library support.
 
 ## Close Swift construction and mutation
 
@@ -188,6 +181,10 @@ Load only the reference that answers the changed Swift concern:
 - [iOS versioning](references/ios-versioning.md): current-toolchain policy, runtime availability, stable versus preview Xcode, and feature availability.
 - [Testing, migration, and review](references/testing-migration-and-review.md): Swift runtime tests, compile checks, migration, performance, and review.
 - [Compile-check runner](references/compile-check-runner.md): manifest schema, CLI, paths, module linkage, reports, exit statuses, and evidence limits.
+- [Domain modeling recipes](references/domain-modeling-recipes.md): cardinality, refined values, relationships, recovering workflows, applied boundaries, and public contracts.
+- [Generic proof recipes](references/generic-proof-recipes.md): preserving correlations, static sizes, typed DSLs, equality witnesses, higher-rank encodings, and restricted proof structures.
+- [Ownership and effect recipes](references/ownership-effect-recipes.md): borrowed projections, isolation, error transport, completion obligations, and binary representations.
+- [Feature status and frontier](references/swift-feature-status.md): release-specific support, flags, Apple availability, disputed evidence, and unavailable encodings.
 - [Sources](references/sources.md): primary specifications and official release documentation for time-sensitive guidance.
 
 ## Included utilities and fixtures
