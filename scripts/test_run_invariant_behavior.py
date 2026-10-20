@@ -14,9 +14,225 @@ sys.path.insert(0, str(ROOT / "scripts"))
 SPEC = importlib.util.spec_from_file_location("run_invariant_behavior", MODULE_PATH)
 RUNNER = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(RUNNER)
+import invariant_behavior as BEHAVIOR
 
 
 class NativeLauncherTests(unittest.TestCase):
+    def bootstrap_config(self, root, script):
+        fixture = root / "fixture"
+        fixture.mkdir()
+        (fixture / "bootstrap.py").write_text(script, encoding="utf-8")
+        (fixture / "owned.txt").write_text("original\n", encoding="utf-8")
+        (root / "prompt.md").write_text("Prepare the dirty fixture.\n", encoding="utf-8")
+        (root / "rubric.md").write_text("Inspect scoped behavior and evidence.\n", encoding="utf-8")
+        case = {"id": "bootstrap-fixture", "mode": "write", "configuration": "fixture",
+                "workspace_fixture": "fixture", "prompt": "prompt.md", "rubric": "rubric.md",
+                "plugin_paths": [], "write_tools_available": True, "allowed_change_paths": ["**"]}
+        config = root / "cases.json"
+        config.write_text(json.dumps({"schema_version": 1, "cases": [case]}), encoding="utf-8")
+        return case, config
+
+    def test_fixture_bootstrap_is_opt_in_and_prepares_git_before_native_launch(self):
+        for enabled in (False, True):
+            with self.subTest(enabled=enabled), tempfile.TemporaryDirectory() as directory:
+                output = Path(directory) / "output"
+                config = ROOT / "evals/skill-composition/cases.json"
+                case_id = "hardening-cosmetic"
+                original_prompt = BEHAVIOR.natural_prompt(config.parent / case_id / "prompt.md")
+
+                def launch(prompt, snapshot, project, output_dir, model, effort, timeout, auth, write_tools, env, home):
+                    self.assertEqual(prompt, original_prompt)
+                    self.assertEqual((project / ".git/HEAD").is_file(), enabled)
+                    self.assertFalse((output / "bundle.json").exists())
+                    self.assertFalse((output / "launch.json").exists())
+                    self.assertFalse((project / "fixture-bootstrap.json").exists())
+                    self.assertEqual({p.name for p in project.parent.iterdir()}, {"project", "marketplace-snapshot"})
+                    self.assertTrue(all(str(output) not in value and str(ROOT) not in value for value in env.values()))
+                    argv = RUNNER.codex_argv(project, model, effort, write_tools, output / "final.md")
+                    self.assertEqual(argv[argv.index("--sandbox") + 1], "workspace-write")
+                    self.assertEqual(argv[argv.index("-a") + 1], "never")
+                    if enabled:
+                        before = BEHAVIOR.relative_files(project)
+                        repeated = RUNNER.run_process([sys.executable, "bootstrap.py"], project, env, 10, output, "repeat-bootstrap")
+                        self.assertEqual(repeated["exit_code"], 0)
+                        self.assertEqual(BEHAVIOR.relative_files(project), before)
+                    return {"status": "completed", "exit_code": 0, "duration_seconds": 0,
+                            "final_response": "fixture response", "tools": [], "write_tools_available": True}
+
+                with patch.object(RUNNER, "capability_help", return_value={}), \
+                        patch.object(RUNNER, "launch_codex", side_effect=launch) as native, \
+                        patch.object(RUNNER, "cli_version", return_value="fixture-version"), \
+                        patch.object(RUNNER, "assess", return_value={"overall_status": "pending_manual_review"}):
+                    args = ["--runtime", "codex", "--case", case_id, "--config", str(config), "--output-dir", str(output)]
+                    result = RUNNER.main(args + (["--fixture-bootstrap"] if enabled else []))
+                self.assertEqual(result, 0)
+                native.assert_called_once()
+                bundle = json.loads((output / "bundle.json").read_text())
+                self.assertNotIn(".git/HEAD", bundle["workspace"]["baseline_files"])
+                self.assertEqual("fixture_bootstrap" in bundle, enabled)
+                self.assertEqual((output / "fixture-bootstrap.json").exists(), enabled)
+                if enabled:
+                    self.assertEqual(bundle["fixture_bootstrap"]["status"], "completed")
+                    self.assertEqual(bundle["fixture_bootstrap"]["before_tree_sha256"], bundle["workspace"]["baseline_tree_sha256"])
+                    self.assertEqual(BEHAVIOR.check_acceptance_input_freshness(bundle), [])
+
+    def test_fixture_bootstrap_rejects_missing_symlinked_or_mismatched_scripts_before_execution(self):
+        for invalid in ("missing", "symlink", "source-changed", "copy-changed"):
+            with self.subTest(invalid=invalid), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                case, config = self.bootstrap_config(root, "print('fixture')\n")
+                project = root / "project"
+                output = root / "output"
+                output.mkdir()
+                bundle = RUNNER.prepare_case(case["id"], project, ROOT, config)
+                source = root / "fixture/bootstrap.py"
+                if invalid == "missing":
+                    source.unlink()
+                elif invalid == "symlink":
+                    source.rename(root / "outside.py")
+                    source.symlink_to(root / "outside.py")
+                elif invalid == "source-changed":
+                    source.write_text("print('changed source')\n")
+                else:
+                    (project / "bootstrap.py").write_text("print('changed copy')\n")
+                with patch.object(RUNNER, "run_process") as execute, self.assertRaises(BEHAVIOR.HarnessError):
+                    RUNNER.prepare_fixture_bootstrap(case, bundle, config, project, output, os.environ.copy())
+                execute.assert_not_called()
+                receipt = json.loads((output / "fixture-bootstrap.json").read_text())
+                self.assertEqual(receipt["status"], "failed")
+                self.assertNotIn("execution", receipt)
+
+    def test_fixture_bootstrap_failure_and_timeout_retain_receipt_and_streams(self):
+        for ending, expected_status in (("raise SystemExit(2)", "completed"), ("import time; time.sleep(30)", "timed_out")):
+            with self.subTest(status=expected_status), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                case, config = self.bootstrap_config(root, "import sys\nprint('setup stdout', flush=True)\nprint('setup stderr', file=sys.stderr, flush=True)\n" + ending + "\n")
+                project = root / "project"
+                output = root / "output"
+                output.mkdir()
+                bundle = RUNNER.prepare_case(case["id"], project, ROOT, config)
+                with self.assertRaises(BEHAVIOR.HarnessError):
+                    RUNNER.prepare_fixture_bootstrap(case, bundle, config, project, output, os.environ.copy(), timeout_seconds=1)
+                receipt = json.loads((output / "fixture-bootstrap.json").read_text())
+                self.assertEqual(receipt["status"], "failed")
+                self.assertEqual(receipt["execution"]["status"], expected_status)
+                self.assertIn("setup stdout", (output / "fixture-bootstrap.stdout").read_text())
+                self.assertIn("setup stderr", (output / "fixture-bootstrap.stderr").read_text())
+
+    def test_fixture_bootstrap_rechecks_source_after_setup(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            case, config = self.bootstrap_config(root, "print('setup completed')\n")
+            project = root / "project"
+            output = root / "output"
+            output.mkdir()
+            bundle = RUNNER.prepare_case(case["id"], project, ROOT, config)
+            execute = RUNNER.run_process
+
+            def change_source(*args):
+                result = execute(*args)
+                (root / "fixture/bootstrap.py").write_text("print('changed during setup')\n")
+                return result
+
+            with patch.object(RUNNER, "run_process", side_effect=change_source), self.assertRaises(BEHAVIOR.HarnessError):
+                RUNNER.prepare_fixture_bootstrap(case, bundle, config, project, output, os.environ.copy())
+            receipt = json.loads((output / "fixture-bootstrap.json").read_text())
+            self.assertEqual(receipt["status"], "failed")
+            self.assertIn("changed during setup", receipt["reason"])
+
+    def test_fixture_bootstrap_binds_source_streams_and_receipt_for_evidence_verification(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            case, config = self.bootstrap_config(root, "from pathlib import Path\nPath('owned.txt').write_text('dirty\\n')\n")
+            project = root / "project"
+            output = root / "output"
+            output.mkdir()
+            bundle = RUNNER.prepare_case(case["id"], project, ROOT, config)
+            baseline = dict(bundle["workspace"]["baseline_files"])
+            RUNNER.prepare_fixture_bootstrap(case, bundle, config, project, output, os.environ.copy())
+            self.assertEqual(bundle["workspace"]["baseline_files"], baseline)
+            self.assertEqual((project / "owned.txt").read_text(), "dirty\n")
+            self.assertEqual(BEHAVIOR.check_acceptance_input_freshness(bundle), [])
+            for label in ("fixture_bootstrap_source", "fixture_bootstrap_stdout", "fixture_bootstrap_stderr", "fixture_bootstrap_receipt"):
+                with self.subTest(label=label):
+                    entry = bundle["acceptance_inputs"][label]
+                    path = Path(entry["path"])
+                    content = path.read_bytes()
+                    path.write_bytes(content + b"changed\n")
+                    self.assertIn("acceptance input changed after preparation: " + label, BEHAVIOR.check_acceptance_input_freshness(bundle))
+                    path.write_bytes(content)
+
+    def test_crlf_fixture_bootstrap_preserves_bytes_and_verifiable_evidence(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source_bytes = b"from pathlib import Path\r\nPath('owned.txt').write_text('dirty\\n')\r\n"
+            case, config = self.bootstrap_config(root, "")
+            source = root / "fixture/bootstrap.py"
+            source.write_bytes(source_bytes)
+            project = root / "project"
+            output = root / "output"
+            output.mkdir()
+            bundle = RUNNER.prepare_case(case["id"], project, ROOT, config)
+            source_hash = BEHAVIOR.sha256_file(source)
+            self.assertEqual((project / "bootstrap.py").read_bytes(), source_bytes)
+            self.assertEqual(bundle["workspace"]["baseline_files"]["bootstrap.py"], "file:" + source_hash)
+
+            RUNNER.prepare_fixture_bootstrap(case, bundle, config, project, output, os.environ.copy())
+
+            self.assertEqual((project / "owned.txt").read_text(), "dirty\n")
+            self.assertEqual((project / "bootstrap.py").read_bytes(), source_bytes)
+            self.assertEqual(bundle["fixture_bootstrap"]["status"], "completed")
+            self.assertEqual(bundle["fixture_bootstrap"]["source_sha256"], source_hash)
+            captured = bundle["acceptance_inputs"]["fixture_bootstrap_source"]
+            self.assertEqual(captured["content"].encode("utf-8"), source_bytes)
+            self.assertEqual(captured["sha256"], source_hash)
+            self.assertEqual(BEHAVIOR.check_acceptance_input_freshness(bundle), [])
+
+            bundle_path = output / "bundle.json"
+            RUNNER.write_json(bundle_path, bundle)
+            outcome = {
+                "schema_version": 1, "case_id": case["id"],
+                "bundle_sha256": BEHAVIOR.sha256_file(bundle_path),
+                "prompt_sha256": bundle["prompt"]["sha256"],
+                "plugin_snapshot_sha256": bundle["plugin_snapshot"]["sha256"],
+                "runtime": {"name": "fixture", "version": "1"},
+                "model": {"name": "fixture", "effort": "medium"},
+                "tools": {"available": ["Write"], "calls": [], "write_capable": True},
+                "execution": {"status": "completed", "exit_code": 0, "duration_seconds": 0},
+            }
+            for label, content in (("response", "Fixture prepared.\n"), ("transcript", "{}\n"), ("stderr", "")):
+                path = output / (label + ".txt")
+                path.write_text(content, encoding="utf-8")
+                outcome[label] = {"path": str(path), "sha256": BEHAVIOR.sha256_file(path)}
+            outcome_path = output / "outcome.json"
+            RUNNER.write_json(outcome_path, outcome)
+            evidence = BEHAVIOR.assess(bundle_path, outcome_path, config)
+            evidence_path = output / "evidence.json"
+            RUNNER.write_json(evidence_path, evidence)
+            self.assertEqual(evidence["deterministic_assessment"], {"status": "passed", "problems": []})
+            self.assertEqual(BEHAVIOR.verify_evidence(evidence_path), [])
+
+            source.write_bytes(source_bytes.replace(b"\r\n", b"\n"))
+            self.assertIn(
+                "acceptance input changed after preparation: fixture_bootstrap_source",
+                BEHAVIOR.verify_evidence(evidence_path),
+            )
+
+    def test_failed_host_bootstrap_stops_before_either_native_launcher(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            case, config = self.bootstrap_config(root, "raise SystemExit(2)\n")
+            output = root / "output"
+            with patch.object(RUNNER, "capability_help", return_value={}), \
+                    patch.object(RUNNER, "launch_codex") as codex, \
+                    patch.object(RUNNER, "launch_claude") as claude:
+                result = RUNNER.main(["--runtime", "codex", "--case", case["id"], "--config", str(config),
+                                      "--output-dir", str(output), "--fixture-bootstrap"])
+            self.assertEqual(result, 2)
+            codex.assert_not_called()
+            claude.assert_not_called()
+            self.assertEqual(json.loads((output / "fixture-bootstrap.json").read_text())["status"], "failed")
+
     def test_snapshot_copies_loadable_plugin_files_but_not_evaluations(self):
         with tempfile.TemporaryDirectory() as directory:
             snapshot = Path(directory) / "snapshot"
@@ -270,6 +486,16 @@ class NativeLauncherTests(unittest.TestCase):
         self.assertEqual(readonly_argv[readonly_argv.index("--allowed-tools") + 1], ",".join(readonly_tools))
         self.assertIn("--restricted", writable_argv)
         self.assertIn("--restricted", readonly_argv)
+
+    def test_codex_persists_write_capable_cases_and_keeps_readonly_cases_ephemeral(self):
+        for write_tools, expected_sandbox in ((True, "workspace-write"), (False, "read-only")):
+            with self.subTest(write_tools=write_tools):
+                argv = RUNNER.codex_argv(Path("/fixture/project"), "fixture-model", "medium", write_tools, Path("/fixture/final.md"))
+                self.assertEqual("--ephemeral" in argv, not write_tools)
+                self.assertEqual(argv[argv.index("--sandbox") + 1], expected_sandbox)
+                self.assertEqual(argv[argv.index("-a") + 1], "never")
+                self.assertEqual(argv[argv.index("--cd") + 1], "/fixture/project")
+                self.assertIn("--skip-git-repo-check", argv)
 
     def test_native_runtime_argv_uses_requested_effort(self):
         with tempfile.TemporaryDirectory() as directory:

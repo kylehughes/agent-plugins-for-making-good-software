@@ -129,7 +129,7 @@ After analysis, record action items for the parent agent. If your runtime provid
 - `description`: include file:line, smell, pattern reference, and the concrete before/after type sketch
 - `activeForm`: present continuous ("Replacing loading booleans with enum in ChannelViewModel.swift")
 
-Check the prompt and any prior findings first to avoid duplicate action items for the same issue.
+Check the prompt and any prior findings first to avoid duplicate action items for the same issue. An invariant bypass and a type-based prevention option share one finding and disposition, even across files. A correctness reviewer owns the failure evidence and impact; contribute representation choices and complexity tradeoffs to that finding. The parent decides the fix. When reviewing alone, include the concrete misuse evidence yourself.
 
 ## Final Report
 

@@ -1,0 +1,544 @@
+{
+  "unit_tests": {
+    "count": 162,
+    "result": "passed",
+    "log": "/tmp/skill-composition-implementation/unit-tests-persisted.log"
+  },
+  "repository_validator": "passed",
+  "claude_plugin_validators": [
+    "apple-platform passed",
+    "universal passed"
+  ],
+  "manifest_json_count": 6,
+  "skill_structure_count": 6,
+  "skill_structure_note": "Default Python lacked PyYAML; reran successfully with an existing cached PyYAML package; no dependency installed.",
+  "source_coverage": {
+    "catalog_items": 262,
+    "release_rows": 21,
+    "html_headings": 323,
+    "source_root": "/tmp/swift-type-system-integration-source/Swift_Type_System_Companion",
+    "result": "passed"
+  },
+  "discovery_costs": {
+    "agent_count": 8,
+    "agent_description_chars": 1630,
+    "agent_preloaded_body_chars": 81539,
+    "skill_body_chars": 272596,
+    "skill_body_lines": 3822,
+    "skill_count": 27,
+    "skill_description_chars": 5455
+  },
+  "frozen_inputs_unchanged": true,
+  "native_evidence": [
+    {
+      "id": "hardening-invariant-codex-1",
+      "path": "/tmp/skill-composition-implementation/native/hardening-invariant-codex-1/reviewed-evidence.json",
+      "sha256": "d5b9884eddde9034f702bd301622f2d23d339782066458da389674f0f860c30e",
+      "status": "failed",
+      "evidence_verification": "valid"
+    },
+    {
+      "id": "hardening-invariant-claude-1",
+      "path": "/tmp/skill-composition-implementation/native/hardening-invariant-claude-1/reviewed-evidence.json",
+      "sha256": "89f0e7eac14d4ba15ed43138f9c92c66284953774078301412db9bbd0599c1db",
+      "status": "failed",
+      "evidence_verification": "valid"
+    },
+    {
+      "id": "hardening-invariant-codex-2",
+      "path": "/tmp/skill-composition-implementation/native/hardening-invariant-codex-2/reviewed-evidence.json",
+      "sha256": "fb5323e951c1aa0fe329fcd8e218feea2e231824ae7ea7c49fe401d2071b57d7",
+      "status": "failed",
+      "evidence_verification": "valid"
+    },
+    {
+      "id": "hardening-invariant-claude-2",
+      "path": "/tmp/skill-composition-implementation/native/hardening-invariant-claude-2/reviewed-evidence.json",
+      "sha256": "d6fdb5e712c2bc439278712a01793202d9d53faa107ad08c351743f78f01d29c",
+      "status": "failed",
+      "evidence_verification": "valid"
+    },
+    {
+      "id": "hardening-invariant-codex-3",
+      "path": "/tmp/skill-composition-implementation/native/hardening-invariant-codex-3/reviewed-evidence.json",
+      "sha256": "1cbd302e42217450163e6265f0e155a906de0ca1b57843ec79acd858d3c38eb3",
+      "status": "failed",
+      "evidence_verification": "valid"
+    },
+    {
+      "id": "hardening-invariant-claude-3",
+      "path": "/tmp/skill-composition-implementation/native/hardening-invariant-claude-3/reviewed-evidence.json",
+      "sha256": "0693382d52965dc0222c8a0a6ac15d1b094930f885e976ee88b20fe7e1c3b373",
+      "status": "failed",
+      "evidence_verification": "valid"
+    },
+    {
+      "id": "hardening-cosmetic-codex-1",
+      "path": "/tmp/skill-composition-implementation/native/hardening-cosmetic-codex-1/reviewed-evidence.json",
+      "sha256": "fb38eb0367d7ca0018359204ea8a750460d3461d196dbffecdc66329d07916ea",
+      "status": "failed",
+      "evidence_verification": "valid"
+    },
+    {
+      "id": "hardening-cosmetic-claude-1",
+      "path": "/tmp/skill-composition-implementation/native/hardening-cosmetic-claude-1/reviewed-evidence.json",
+      "sha256": "06005938c1efd5858ce5bd2aea4f580b8cd57fa4c4fa667db230a0fe81e60d91",
+      "status": "failed",
+      "evidence_verification": "valid"
+    },
+    {
+      "id": "hardening-cosmetic-codex-2",
+      "path": "/tmp/skill-composition-implementation/native/hardening-cosmetic-codex-2/reviewed-evidence.json",
+      "sha256": "52318d2fdcd174a55d23adfbcd1e032f40e09de7b9099a003ea7affcea1a0ce2",
+      "status": "failed",
+      "evidence_verification": "valid"
+    },
+    {
+      "id": "hardening-cosmetic-claude-2",
+      "path": "/tmp/skill-composition-implementation/native/hardening-cosmetic-claude-2/reviewed-evidence.json",
+      "sha256": "c377441533ce7b33ad089a6a25f592440c7d4c61605f73818087b6a2b99dab01",
+      "status": "failed",
+      "evidence_verification": "valid"
+    },
+    {
+      "id": "hardening-cosmetic-codex-3",
+      "path": "/tmp/skill-composition-implementation/native/hardening-cosmetic-codex-3/reviewed-evidence.json",
+      "sha256": "f59c04e36b93cabcd9f62bf4edec4ffe2e98651bd8385c3d8f59043cd39376ee",
+      "status": "failed",
+      "evidence_verification": "valid"
+    },
+    {
+      "id": "hardening-cosmetic-claude-3",
+      "path": "/tmp/skill-composition-implementation/native/hardening-cosmetic-claude-3/reviewed-evidence.json",
+      "sha256": "3975e3c261a0008be23ea7c30d2f00111225d9940412acd2697c741cb19d3915",
+      "status": "failed",
+      "evidence_verification": "valid"
+    },
+    {
+      "id": "apple-simplification-codex-1",
+      "path": "/tmp/skill-composition-implementation/native/apple-simplification-codex-1/reviewed-evidence.json",
+      "sha256": "be13abe15578076496f2a74aaa1b819f3faf6f3aa7f89c1ac51a097e894c0b30",
+      "status": "failed",
+      "evidence_verification": "valid"
+    },
+    {
+      "id": "apple-simplification-claude-1",
+      "path": "/tmp/skill-composition-implementation/native/apple-simplification-claude-1/reviewed-evidence.json",
+      "sha256": "2cfcb8812e505bba7f6e8448a90475a0e9bbf3153bc3ca88930590af7bc99507",
+      "status": "failed",
+      "evidence_verification": "valid"
+    },
+    {
+      "id": "apple-simplification-codex-2",
+      "path": "/tmp/skill-composition-implementation/native/apple-simplification-codex-2/reviewed-evidence.json",
+      "sha256": "3f5e64c580d508248e29201ad9609971ff9345daae8b74712d44817e42eb92ff",
+      "status": "failed",
+      "evidence_verification": "valid"
+    },
+    {
+      "id": "apple-simplification-claude-2",
+      "path": "/tmp/skill-composition-implementation/native/apple-simplification-claude-2/reviewed-evidence.json",
+      "sha256": "9d1aa6e68b30b1ee5190171189a16815d3d48737cc4b6addf69c411213c72654",
+      "status": "failed",
+      "evidence_verification": "valid"
+    },
+    {
+      "id": "apple-simplification-codex-3",
+      "path": "/tmp/skill-composition-implementation/native/apple-simplification-codex-3/reviewed-evidence.json",
+      "sha256": "3818137d522b59c845e8b05c5ec3da87c5072571b9eb5d7f588a24c0a2c1caa8",
+      "status": "failed",
+      "evidence_verification": "valid"
+    },
+    {
+      "id": "apple-simplification-claude-3",
+      "path": "/tmp/skill-composition-implementation/native/apple-simplification-claude-3/reviewed-evidence.json",
+      "sha256": "6b26a44b664d75a3e727c4bc68477e27a2fc70c789e9ff65543776918e4816b6",
+      "status": "failed",
+      "evidence_verification": "valid"
+    },
+    {
+      "id": "hardening-invariant-codex-1-prepared-v2",
+      "path": "/tmp/skill-composition-implementation/followup/native/hardening-invariant-codex-1-prepared-v2/reviewed-evidence.json",
+      "sha256": "ae89f8806505a8e349cb9447408b807b868d413eb2ecd27c278f57a26c7bfa11",
+      "status": "failed",
+      "evidence_verification": "valid"
+    },
+    {
+      "id": "hardening-invariant-claude-1-prepared-v2",
+      "path": "/tmp/skill-composition-implementation/followup/native/hardening-invariant-claude-1-prepared-v2/reviewed-evidence.json",
+      "sha256": "6f287e49e8e52d4aa491cc5614defa27d36e72be9bb804ebf57ece3941bce1fe",
+      "status": "failed",
+      "evidence_verification": "valid"
+    },
+    {
+      "id": "hardening-invariant-codex-2-prepared-v2",
+      "path": "/tmp/skill-composition-implementation/followup/native/hardening-invariant-codex-2-prepared-v2/reviewed-evidence.json",
+      "sha256": "6213d634ad6d4e64d7aabd8013ca39bfa0bc6e3037e27883fb2d846a32ad9154",
+      "status": "failed",
+      "evidence_verification": "valid"
+    },
+    {
+      "id": "hardening-invariant-claude-2-prepared-v2",
+      "path": "/tmp/skill-composition-implementation/followup/native/hardening-invariant-claude-2-prepared-v2/reviewed-evidence.json",
+      "sha256": "1739f76e979fdc50c918aac8a0d84eff9fc9844ff1ede0733f4c72ae7b3aeddd",
+      "status": "failed",
+      "evidence_verification": "valid"
+    },
+    {
+      "id": "hardening-invariant-codex-3-prepared-v2",
+      "path": "/tmp/skill-composition-implementation/followup/native/hardening-invariant-codex-3-prepared-v2/reviewed-evidence.json",
+      "sha256": "656aee729ea477f57ef312bbb1a7b8b9b33f86aa42ab5beac23614330cc4eda4",
+      "status": "failed",
+      "evidence_verification": "valid"
+    },
+    {
+      "id": "hardening-invariant-claude-3-prepared-v2",
+      "path": "/tmp/skill-composition-implementation/followup/native/hardening-invariant-claude-3-prepared-v2/reviewed-evidence.json",
+      "sha256": "a23d8da15f9e980bf504dbb6b57d5c4e76e196b0cdf6caedfcd249c0369b82b3",
+      "status": "failed",
+      "evidence_verification": "valid"
+    },
+    {
+      "id": "hardening-cosmetic-codex-1-prepared-v2",
+      "path": "/tmp/skill-composition-implementation/followup/native/hardening-cosmetic-codex-1-prepared-v2/reviewed-evidence.json",
+      "sha256": "7b1b0a7b065759ae3761b5cef77ba5ad85bab9ef06f13f67eb71d8c4ff9602ab",
+      "status": "failed",
+      "evidence_verification": "valid"
+    },
+    {
+      "id": "hardening-cosmetic-claude-1-prepared-v2",
+      "path": "/tmp/skill-composition-implementation/followup/native/hardening-cosmetic-claude-1-prepared-v2/reviewed-evidence.json",
+      "sha256": "ee058f060ce7569c2699a690dbab5f99070f9a0b061e189c72e2392a5e239351",
+      "status": "failed",
+      "evidence_verification": "valid"
+    },
+    {
+      "id": "hardening-cosmetic-codex-2-prepared-v2",
+      "path": "/tmp/skill-composition-implementation/followup/native/hardening-cosmetic-codex-2-prepared-v2/reviewed-evidence.json",
+      "sha256": "c8b9f01de5243057559474ef0879628a6bd8b11128c9d8076f254675ce52f264",
+      "status": "failed",
+      "evidence_verification": "valid"
+    },
+    {
+      "id": "hardening-cosmetic-claude-2-prepared-v2",
+      "path": "/tmp/skill-composition-implementation/followup/native/hardening-cosmetic-claude-2-prepared-v2/reviewed-evidence.json",
+      "sha256": "bb7ce3fc63707c3b278f1001069d16bd97f692c6793d1c3b06878aa56370158a",
+      "status": "failed",
+      "evidence_verification": "valid"
+    },
+    {
+      "id": "hardening-cosmetic-codex-3-prepared-v2",
+      "path": "/tmp/skill-composition-implementation/followup/native/hardening-cosmetic-codex-3-prepared-v2/reviewed-evidence.json",
+      "sha256": "66bfbda85d10f02d5f7fdcdd4c6d6d59b26a6b64d45f04aed036767773cb4ab4",
+      "status": "failed",
+      "evidence_verification": "valid"
+    },
+    {
+      "id": "hardening-cosmetic-claude-3-prepared-v2",
+      "path": "/tmp/skill-composition-implementation/followup/native/hardening-cosmetic-claude-3-prepared-v2/reviewed-evidence.json",
+      "sha256": "0008d4cceb044b7026a52a4592542529b458682300ba623d8dbebd3c9e8690a4",
+      "status": "failed",
+      "evidence_verification": "valid"
+    },
+    {
+      "id": "apple-simplification-codex-1-prepared-v2",
+      "path": "/tmp/skill-composition-implementation/followup/native/apple-simplification-codex-1-prepared-v2/reviewed-evidence.json",
+      "sha256": "1ac5e90a3c60c14a2880f28761dca8c623eaab4dd1e0dcbdd6945a46e1d2ef0d",
+      "status": "accepted",
+      "evidence_verification": "valid"
+    },
+    {
+      "id": "apple-simplification-claude-1-prepared-v2",
+      "path": "/tmp/skill-composition-implementation/followup/native/apple-simplification-claude-1-prepared-v2/reviewed-evidence.json",
+      "sha256": "564cd1fad8ccd174b30ecb0de448e101b85be5620f2d6a6d900950ad1e8434df",
+      "status": "accepted",
+      "evidence_verification": "valid"
+    },
+    {
+      "id": "apple-simplification-codex-2-prepared-v2",
+      "path": "/tmp/skill-composition-implementation/followup/native/apple-simplification-codex-2-prepared-v2/reviewed-evidence.json",
+      "sha256": "1a1839a395fb83ffea7a051c56b0dd0bffb613da8d9adc43eea784280d6dbe2e",
+      "status": "accepted",
+      "evidence_verification": "valid"
+    },
+    {
+      "id": "apple-simplification-claude-2-prepared-v2",
+      "path": "/tmp/skill-composition-implementation/followup/native/apple-simplification-claude-2-prepared-v2/reviewed-evidence.json",
+      "sha256": "720392b9123a7ed502975c19240dc35ee5d7be2aca474d50a21f346d552f6007",
+      "status": "failed",
+      "evidence_verification": "valid"
+    },
+    {
+      "id": "apple-simplification-codex-3-prepared-v2",
+      "path": "/tmp/skill-composition-implementation/followup/native/apple-simplification-codex-3-prepared-v2/reviewed-evidence.json",
+      "sha256": "ace423964e04b90398d0eb9073ad873eb9d527e20afa432c0c717c50d76bf89a",
+      "status": "accepted",
+      "evidence_verification": "valid"
+    },
+    {
+      "id": "apple-simplification-claude-3-prepared-v2",
+      "path": "/tmp/skill-composition-implementation/followup/native/apple-simplification-claude-3-prepared-v2/reviewed-evidence.json",
+      "sha256": "b7abc6a05df320a4bab2b7298e5083b99ef9de0a53abaaa474ae2dcba9907830",
+      "status": "accepted",
+      "evidence_verification": "valid"
+    },
+    {
+      "id": "hardening-invariant-codex-1-persisted-v3",
+      "path": "/tmp/skill-composition-implementation/persisted/native/hardening-invariant-codex-1-persisted-v3/reviewed-evidence.json",
+      "sha256": "5959017f2674f0f6b944926f892f3e6dfd5b579a91d396d6fdb58821aebba42c",
+      "status": "accepted",
+      "evidence_verification": "valid"
+    },
+    {
+      "id": "hardening-invariant-claude-1-persisted-v3",
+      "path": "/tmp/skill-composition-implementation/persisted/native/hardening-invariant-claude-1-persisted-v3/reviewed-evidence.json",
+      "sha256": "5c5b94cc7d5cecb6acea560d11618ba9e7c1b86b8c46043b85d0fc1ab1f8cbbb",
+      "status": "failed",
+      "evidence_verification": "valid"
+    },
+    {
+      "id": "hardening-invariant-codex-2-persisted-v3",
+      "path": "/tmp/skill-composition-implementation/persisted/native/hardening-invariant-codex-2-persisted-v3/reviewed-evidence.json",
+      "sha256": "2f97db8809eb98279534debd3daec4d5fb60e0850b9508c73e705b3d2c05a57a",
+      "status": "accepted",
+      "evidence_verification": "valid"
+    },
+    {
+      "id": "hardening-invariant-claude-2-persisted-v3",
+      "path": "/tmp/skill-composition-implementation/persisted/native/hardening-invariant-claude-2-persisted-v3/reviewed-evidence.json",
+      "sha256": "e64df627586b11f80e03b946d69a9da1fd07577c07fbfbd3265dba821fdd6c69",
+      "status": "failed",
+      "evidence_verification": "valid"
+    },
+    {
+      "id": "hardening-invariant-codex-3-persisted-v3",
+      "path": "/tmp/skill-composition-implementation/persisted/native/hardening-invariant-codex-3-persisted-v3/reviewed-evidence.json",
+      "sha256": "870bbfd558c4985d39ba35ab91110656c89620a5f4f410c0fbdad0292286ce82",
+      "status": "failed",
+      "evidence_verification": "valid"
+    },
+    {
+      "id": "hardening-invariant-claude-3-persisted-v3",
+      "path": "/tmp/skill-composition-implementation/persisted/native/hardening-invariant-claude-3-persisted-v3/reviewed-evidence.json",
+      "sha256": "706219311a8e21fd44bf7f8341a548c39a89276b45d08fbb953a95925e401783",
+      "status": "failed",
+      "evidence_verification": "valid"
+    },
+    {
+      "id": "hardening-cosmetic-codex-1-persisted-v3",
+      "path": "/tmp/skill-composition-implementation/persisted/native/hardening-cosmetic-codex-1-persisted-v3/reviewed-evidence.json",
+      "sha256": "11de501bda919b4758f690dd7fcecbfcfc838862a46a18f3c9d1b5fc9c4b4068",
+      "status": "accepted",
+      "evidence_verification": "valid"
+    },
+    {
+      "id": "hardening-cosmetic-claude-1-persisted-v3",
+      "path": "/tmp/skill-composition-implementation/persisted/native/hardening-cosmetic-claude-1-persisted-v3/reviewed-evidence.json",
+      "sha256": "240b86b9d2deac7f7031d4eaabd2432d1ba675619d8e80040ddcd942420ee4ec",
+      "status": "accepted",
+      "evidence_verification": "valid"
+    },
+    {
+      "id": "hardening-cosmetic-codex-2-persisted-v3",
+      "path": "/tmp/skill-composition-implementation/persisted/native/hardening-cosmetic-codex-2-persisted-v3/reviewed-evidence.json",
+      "sha256": "d98b6404ace8ba7dcad92826220d74927fc5fdbfa2ea18d4ba441fccfa8664a6",
+      "status": "accepted",
+      "evidence_verification": "valid"
+    },
+    {
+      "id": "hardening-cosmetic-claude-2-persisted-v3",
+      "path": "/tmp/skill-composition-implementation/persisted/native/hardening-cosmetic-claude-2-persisted-v3/reviewed-evidence.json",
+      "sha256": "a3d70de09e1309009dba9082bc9e3ebaf73863e616fe9e922727c8dd476f25bc",
+      "status": "failed",
+      "evidence_verification": "valid"
+    },
+    {
+      "id": "hardening-cosmetic-codex-3-persisted-v3",
+      "path": "/tmp/skill-composition-implementation/persisted/native/hardening-cosmetic-codex-3-persisted-v3/reviewed-evidence.json",
+      "sha256": "0990504503641408f5955172f2f51c57fa0e7274a876066ec2f5a563c7d3ab01",
+      "status": "accepted",
+      "evidence_verification": "valid"
+    },
+    {
+      "id": "hardening-cosmetic-claude-3-persisted-v3",
+      "path": "/tmp/skill-composition-implementation/persisted/native/hardening-cosmetic-claude-3-persisted-v3/reviewed-evidence.json",
+      "sha256": "daefa2a0a831bcdf8c93a60b057427a10fa8b44da9e7ab9be5b4199184e31d49",
+      "status": "failed",
+      "evidence_verification": "valid"
+    },
+    {
+      "id": "apple-simplification-codex-1-persisted-v3",
+      "path": "/tmp/skill-composition-implementation/persisted/native/apple-simplification-codex-1-persisted-v3/reviewed-evidence.json",
+      "sha256": "c39de7fc1fa952349ea1e4d04594e788eb5d76c0324d8a374e3455c204c1798a",
+      "status": "accepted",
+      "evidence_verification": "valid"
+    },
+    {
+      "id": "apple-simplification-claude-1-persisted-v3",
+      "path": "/tmp/skill-composition-implementation/persisted/native/apple-simplification-claude-1-persisted-v3/reviewed-evidence.json",
+      "sha256": "d4538c92bc29d19a96b3932f61dfe7c9d5a3ebc0ca1aa87e7f66cdd2bca9ae66",
+      "status": "accepted",
+      "evidence_verification": "valid"
+    },
+    {
+      "id": "apple-simplification-codex-2-persisted-v3",
+      "path": "/tmp/skill-composition-implementation/persisted/native/apple-simplification-codex-2-persisted-v3/reviewed-evidence.json",
+      "sha256": "eacb88ba8c44cfd74200ab11383c1b214eb69c7081ef6bda447f1d048ce55dbf",
+      "status": "accepted",
+      "evidence_verification": "valid"
+    },
+    {
+      "id": "apple-simplification-claude-2-persisted-v3",
+      "path": "/tmp/skill-composition-implementation/persisted/native/apple-simplification-claude-2-persisted-v3/reviewed-evidence.json",
+      "sha256": "24ce05eda2f910f5c29ceef7713a105fdf6a6eb3b72ed651f66c1e4a11a775bc",
+      "status": "accepted",
+      "evidence_verification": "valid"
+    },
+    {
+      "id": "apple-simplification-codex-3-persisted-v3",
+      "path": "/tmp/skill-composition-implementation/persisted/native/apple-simplification-codex-3-persisted-v3/reviewed-evidence.json",
+      "sha256": "bae4d0036f183f8c724c177e5caf7afc9a1645d2152304207824d755f75b67d7",
+      "status": "accepted",
+      "evidence_verification": "valid"
+    },
+    {
+      "id": "apple-simplification-claude-3-persisted-v3",
+      "path": "/tmp/skill-composition-implementation/persisted/native/apple-simplification-claude-3-persisted-v3/reviewed-evidence.json",
+      "sha256": "cc252bcdfc6cf2b904422b3e43e60080d20a658f424718fe0a435e1c0fb2aa9b",
+      "status": "accepted",
+      "evidence_verification": "valid"
+    }
+  ],
+  "auxiliary_receipts": [
+    {
+      "path": "/tmp/skill-composition-implementation/persisted/native/hardening-invariant-codex-1-persisted-v3/supporting-receipts/rollout-2026-10-20T13-19-39-01a15af8-360d-7971-ad8b-41de6dbf543c.jsonl",
+      "sha256": "a1746ee8eb12413db844f10d4315b0b64db787957f2e8a80d9d8d10486d9d475",
+      "byte_identical_to_original": true
+    },
+    {
+      "path": "/tmp/skill-composition-implementation/persisted/native/hardening-invariant-codex-1-persisted-v3/supporting-receipts/rollout-2026-10-20T13-20-06-01a15af8-a0f1-7923-9730-eb98bca0ab61.jsonl",
+      "sha256": "a491e7c18f36a1fc74fef985f1bf6561ee0430aea9fc84f2c7281da5eb87027e",
+      "byte_identical_to_original": true
+    },
+    {
+      "path": "/tmp/skill-composition-implementation/persisted/native/hardening-invariant-codex-1-persisted-v3/supporting-receipts/rollout-2026-10-20T13-20-11-01a15af8-b6f1-7f72-ab1c-9d9b0159bd87.jsonl",
+      "sha256": "07f88539ac3ad2932ba07962a71db42d552fb515c7d2573059196a6196c256f6",
+      "byte_identical_to_original": true
+    },
+    {
+      "path": "/tmp/skill-composition-implementation/persisted/native/hardening-invariant-codex-1-persisted-v3/supporting-receipts/rollout-2026-10-20T13-20-17-01a15af8-ce7d-7480-a770-78b82233b9ce.jsonl",
+      "sha256": "0936f1f4c41fbfdcd391ba7c9de6123f1262c372be9157ebd3fd774b3c634d01",
+      "byte_identical_to_original": true
+    },
+    {
+      "path": "/tmp/skill-composition-implementation/persisted/native/hardening-invariant-codex-2-persisted-v3/supporting-receipts/rollout-2026-10-20T13-19-39-01a15af8-360e-7d93-bb52-59a9eddcb2a2.jsonl",
+      "sha256": "a8344e81979c8c7560542e279fe9c1b04f515b36aad50753df4b6ed6e069ba1f",
+      "byte_identical_to_original": true
+    },
+    {
+      "path": "/tmp/skill-composition-implementation/persisted/native/hardening-invariant-codex-2-persisted-v3/supporting-receipts/rollout-2026-10-20T13-20-10-01a15af8-b1a3-71a1-ae61-55745d8c0e43.jsonl",
+      "sha256": "8423dd3a5462deba0c2bde352457464a492dd91439bde97c32340134777d9236",
+      "byte_identical_to_original": true
+    },
+    {
+      "path": "/tmp/skill-composition-implementation/persisted/native/hardening-invariant-codex-2-persisted-v3/supporting-receipts/rollout-2026-10-20T13-20-18-01a15af8-cfcc-72c3-aa95-a62c35122570.jsonl",
+      "sha256": "860f1210ab8887d8bc461e0a70c0c9c11d565b110c9a0a9db28551d524f41351",
+      "byte_identical_to_original": true
+    },
+    {
+      "path": "/tmp/skill-composition-implementation/persisted/native/hardening-invariant-codex-2-persisted-v3/supporting-receipts/rollout-2026-10-20T13-20-24-01a15af8-e786-7cc1-8fbc-c067a7e7a0cc.jsonl",
+      "sha256": "b488283f942a649e517077a8d4aa49619b91611619c1c377f20fdec65a077737",
+      "byte_identical_to_original": true
+    },
+    {
+      "path": "/tmp/skill-composition-implementation/persisted/native/hardening-invariant-codex-3-persisted-v3/supporting-receipts/rollout-2026-10-20T13-21-11-01a15af9-9fca-7313-93dd-03894126860d.jsonl",
+      "sha256": "0e1cedb8482dbad0d24d8254004d9c09eefe2ad5b3f9b834202cc976c5ea6f23",
+      "byte_identical_to_original": true
+    },
+    {
+      "path": "/tmp/skill-composition-implementation/persisted/native/hardening-invariant-codex-3-persisted-v3/supporting-receipts/rollout-2026-10-20T13-21-39-01a15afa-0c06-77b2-ab91-b55458cad078.jsonl",
+      "sha256": "44f4aab80923e2c2c7aaa28862e717ce7c0d10e2f8fabf836552523edfb4b14a",
+      "byte_identical_to_original": true
+    },
+    {
+      "path": "/tmp/skill-composition-implementation/persisted/native/hardening-invariant-codex-3-persisted-v3/supporting-receipts/rollout-2026-10-20T13-21-44-01a15afa-2254-7252-825e-26045c3c2891.jsonl",
+      "sha256": "184c7c3dbe697ab83a07a025081cb9c44ed0d5a512ece29d3f9f91e8f95f5194",
+      "byte_identical_to_original": true
+    },
+    {
+      "path": "/tmp/skill-composition-implementation/persisted/native/hardening-invariant-codex-3-persisted-v3/supporting-receipts/rollout-2026-10-20T13-21-49-01a15afa-342a-76c0-8f5a-1f6be3a89b67.jsonl",
+      "sha256": "2b40a9492bb32467d1fe24f2250684eff12c49413cc2ec8e3e8f909878676031",
+      "byte_identical_to_original": true
+    },
+    {
+      "path": "/private/tmp/skill-composition-implementation/persisted/native/hardening-cosmetic-codex-1-persisted-v3/supporting-receipts/rollout-2026-10-20T13-22-05-01a15afa-7006-74e3-adb0-cbcee0093e55.jsonl",
+      "sha256": "ed6f481d09e76c869064b41622502a4b243de4e5db974ea1c2c21a0abf2356b0",
+      "byte_identical_to_original": true
+    },
+    {
+      "path": "/private/tmp/skill-composition-implementation/persisted/native/hardening-cosmetic-codex-1-persisted-v3/supporting-receipts/rollout-2026-10-20T13-22-31-01a15afa-d907-70e1-b01b-0375e9d300e6.jsonl",
+      "sha256": "9cff763e5a4a8e67cc0cebc0242e7aea3023f0e38f13d29f45ce3d86007ca159",
+      "byte_identical_to_original": true
+    },
+    {
+      "path": "/private/tmp/skill-composition-implementation/persisted/native/hardening-cosmetic-codex-2-persisted-v3/supporting-receipts/rollout-2026-10-20T13-22-33-01a15afa-dedc-7540-81f5-89d412e9eaec.jsonl",
+      "sha256": "f278110407b8744170b3021f682c061812d5477f1dd88e6e41009460955650a2",
+      "byte_identical_to_original": true
+    },
+    {
+      "path": "/private/tmp/skill-composition-implementation/persisted/native/hardening-cosmetic-codex-2-persisted-v3/supporting-receipts/rollout-2026-10-20T13-23-01-01a15afb-4d13-7971-8ee6-1e051f8983bf.jsonl",
+      "sha256": "53f069c8262b04c22bd86e9af28644073bcd8ac711f294794492014b253d64ff",
+      "byte_identical_to_original": true
+    },
+    {
+      "path": "/private/tmp/skill-composition-implementation/persisted/native/hardening-cosmetic-codex-3-persisted-v3/supporting-receipts/rollout-2026-10-20T13-22-54-01a15afb-322b-7733-9f14-95573272ce60.jsonl",
+      "sha256": "b60161e964ea2550093dd0223f2ac52c9c7e6fb3669cd8d50d195b13135796c6",
+      "byte_identical_to_original": true
+    },
+    {
+      "path": "/private/tmp/skill-composition-implementation/persisted/native/hardening-cosmetic-codex-3-persisted-v3/supporting-receipts/rollout-2026-10-20T13-23-21-01a15afb-9ae4-79a2-aad7-41eb4e1639e1.jsonl",
+      "sha256": "ab45d8096cc4592293f47cc6f0d10c61b8c1cc50400356152b6082c822bf35bd",
+      "byte_identical_to_original": true
+    }
+  ],
+  "auxiliary_verification": "Copied bytes equal retained original and declared SHA256; checked separately from verify-evidence.",
+  "native_sampled_plugin_snapshot": "f06aa09e883f0d8176cae4d932aea0b000f788d00a047f0ae54d3e7c76f227ff",
+  "final_plugin_snapshot": "e7b9873e29d998c51340fca3b5906480bf239a5dcd26a7592285cf4dad7b1fb4",
+  "final_claim_review": {
+    "report": "/tmp/skill-composition-implementation/final-claim-review.md",
+    "sha256": "b03f10b8ebafdd369bf929eeaee49afe8397cc179bf46267db843ef8d3007108",
+    "maintained_claim_groups": {
+      "supported": 19,
+      "contradicted": 1
+    },
+    "final_response_claim_groups": {
+      "supported": 6
+    },
+    "resolution": {
+      "claim": "M10",
+      "action": "Narrowed two linter descriptions to distinguish Markdown exclusions from Swift documentation-comment scanning. No executable code changed.",
+      "reviewed_replacement": "In Markdown, it skips backtick-fenced code and lines starting with `|`. In Swift files, it checks documentation-comment lines. It removes single-backtick code spans in both formats.",
+      "files": [
+        {
+          "path": "plugins/apple-platform/skills/writing-apple-platform-documentation/references/terminology-checks.md",
+          "before": "file:39e29966b5385e0b6c5d94c0627903f9bdeb1f1ac45228e44d8207468b0d59ef",
+          "after": "file:714daea79a2f8b70f6783bde7e866a9c4f7d07e27c5fe066dad61cd6ed8c4e9d"
+        },
+        {
+          "path": "plugins/universal/skills/writing-technical-prose/references/linter-usage.md",
+          "before": "file:50266738bd2ee1633fc1e83f6d1057695a458144c5142ec5250930d203ccb555",
+          "after": "file:bc72ae7119528839a3292e9cb1baec69bba41b5ba324ce62411e7ab2aeec920c"
+        }
+      ]
+    },
+    "native_resampling": "Not performed after this documentation-only correction; native results identify the earlier sampled snapshot."
+  },
+  "post_review_static_validation": {
+    "repository_validator": "passed",
+    "log": "/tmp/skill-composition-implementation/validator-final.log",
+    "diff_check": "passed",
+    "frozen_inputs": "unchanged",
+    "native_evidence_hashes_rechecked": 54,
+    "unit_test_note": "162-test suite predates only the two reference wording corrections and result metadata updates; executable code is unchanged."
+  }
+}

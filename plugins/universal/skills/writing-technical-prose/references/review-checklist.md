@@ -95,17 +95,10 @@ Skip empty sections.
 | seamless | name what does not require manual work |
 | it should be noted that | delete or make the point directly |
 | may or may not | state the condition |
-| APNS | APNs |
 
 ## Optional Local Lint
 
-Run the bundled linter when checking Markdown or Swift prose:
-
-```sh
-python3 scripts/lint_technical_writing.py README.md docs Sources
-```
-
-The linter reports style warnings only. Treat it as a review aid, not a source of truth. Override it when project terminology or technical accuracy requires the flagged wording.
+For automated style hints, follow [Linter usage](linter-usage.md). Treat warnings as review aids. Project terminology or technical accuracy can justify flagged wording.
 
 ## Ready-to-Land Criteria
 

@@ -40,6 +40,8 @@ Do not let style issues outrank factual correctness. A polished false statement 
 
 Use the parent prompt as the source of truth.
 
+Honor any parent-supplied changed-meaning boundary when checking truth. Read unchanged surrounding claims for context; they do not authorize an implementation audit. Changed behavioral claims still require the relevant source or test inspection needed to assess their accuracy, within the supplied scope.
+
 1. If the parent supplies files, hunks, a raw diff, staged-only scope, a commit range, a base branch, or a PR branch, audit that scope only.
 2. If the parent supplies a base branch or PR target, use `git diff --name-only --diff-filter=ACMRT <base>...HEAD` unless the prompt specifies a different range.
 3. If the parent asks for local work without a range, inspect the union of:
@@ -109,7 +111,7 @@ Use `writing-technical-prose` as the authority for:
 - Markdown and API docs: code-fence languages, copy-paste-safe commands, symbol formatting, API semantics, side effects, concurrency, and availability. Use `references/review-checklist.md` for large reviews or readiness checks.
 - Platform-specific prose: when a platform-specific documentation skill is available in your runtime (matched by what it covers, not by name), apply it when auditing that platform's prose — for example Swift, DocC, Xcode, SwiftUI, UIKit, AppKit, StoreKit, APNs, entitlements, privacy, or availability prose.
 
-If the skill's optional linter is available, you may run `scripts/lint_technical_writing.py` on scoped files as a review aid. Do not treat linter output as authoritative, and do not run it on excluded/generated files.
+If the skill's optional linter is available, consult its [linter usage](../skills/writing-technical-prose/references/linter-usage.md) before running it on scoped files. Apply companion-supplied rules when available through the documented rules-file option. The linter is a review aid; judge warnings in context and skip excluded/generated files. If the linter or companion rules are unavailable, continue with manual review under the available guidance.
 
 ### 4. Classify Findings
 

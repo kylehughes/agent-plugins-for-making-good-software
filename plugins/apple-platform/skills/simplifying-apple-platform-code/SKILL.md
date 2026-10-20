@@ -7,7 +7,9 @@ description: "Simplify Swift and Apple-platform code while preserving SDK, lifec
 
 Run this as the Apple-platform companion to the universal `simplifying-code` skill. It adds Swift, Xcode, SDK, availability, concurrency, UI lifecycle, resource, and Apple-framework checks. It does not replace the universal behavior-preservation and reuse/deletion workflow.
 
-If both skills are available, apply `simplifying-code` first to establish the review surface and universal cleanup passes, then apply this skill before editing and verification. When this Apple-specific guidance conflicts with a generic simplification heuristic, this guidance wins for Apple-platform code.
+**Before reviewing or editing, load the installed `simplifying-code` skill.** Its body supplies the review surface, preservation contract, and reuse/deletion passes; this skill supplies the Apple checklist. A reference to its name does not load its guidance. Reuse either skill when already active: keep one frozen surface, decision record, and verification account without restarting the workflow. When this guidance conflicts with a generic simplification heuristic, this guidance wins for Apple-platform code.
+
+If Universal is unavailable, freeze the requested surface, inspect nearby conventions and callers, preserve behavior and compatibility, make only justified local changes, and run the narrowest relevant project checks. Apply the Apple checklist below and report verification limits.
 
 ## Scope
 
@@ -28,6 +30,8 @@ For projects intended to use modern Swift, prefer the latest local Swift toolcha
 5. Prefer project primitives: design system, localization wrappers, analytics/logging, error mapping, dependency injection, persistence wrappers, feature flags, compatibility shims, environment keys, and test helpers.
 6. Avoid changing Xcode project settings, Swift language mode, signing, entitlements, bundle identifiers, deployment targets, package tools version, or target membership unless the user explicitly asked or the cleanup cannot build without it.
 7. Keep beta SDK APIs isolated behind availability checks and do not make stable paths depend on beta-only behavior unless the project is explicitly beta-only.
+
+Before assessing or changing a Swift invariant boundary involving construction, decoding, mutation, legal transitions, ownership, or isolation, load [modeling-swift-types-for-correctness](../modeling-swift-types-for-correctness/SKILL.md). It owns representation choices and their limits. Use `verifying-invariants` when available for an explicit invariant claim or enforcement change; reuse its active evidence plan. Ordinary cleanup does not need this handoff.
 
 ## Reference Map
 

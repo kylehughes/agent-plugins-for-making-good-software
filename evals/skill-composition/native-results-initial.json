@@ -1,0 +1,2049 @@
+{
+  "schema_version": 1,
+  "recorded_utc": "2026-10-20T20:13:05.249977+00:00",
+  "baseline_commit": "d4ceb30c13bee6a5683828d238f213f5d80e46a0",
+  "criteria_sha256": "fe2c8a1bbce9d8cb57871db374c32e3b692ce2e001611afd743b5fa146e77038",
+  "source_snapshot": {
+    "sha256": "73b35da5ed6e7c83d525004fb0c13eb077eed4103951a28df58e0722e100a20d",
+    "files": {
+      "plugins/apple-platform/.claude-plugin/plugin.json": "file:eca5f8c2be5970d3d306edd3793dba5d9a374f06db37b5f38683b7adfd1c098f",
+      "plugins/apple-platform/.codex-plugin/plugin.json": "file:f5a2e2a1f47c99ccaa7f0c11c74e8b6ef34ea8c45ae64ba1608aca15629344d9",
+      "plugins/apple-platform/agents/async-testing-auditor.md": "file:5b04389dc8e5d8fcfcfe15f720dada270ea8b37eb4db023b132b170655c846b5",
+      "plugins/apple-platform/agents/code-standards-auditor.md": "file:7de086f0e6ce70f366ec7ea19fc819c7dbb14ce3d895cce71b604eb58c52886b",
+      "plugins/apple-platform/agents/information-entropy-reducer.md": "file:6ce4d2ac620eef061bb32c5ce9958e0c60979be0950e9a5767f1ff440f43416f",
+      "plugins/apple-platform/agents/type-driven-design-auditor.md": "file:909ac79f764a570caf6f5a2e7ec84fbd91a41300fd87502adcf86cd91ae19027",
+      "plugins/apple-platform/skills/analyzing-app-store-business-data/SKILL.md": "file:4fc69685294a17b4eb4b7aa24347e3805c34599133ea3f354455eebc84fd3173",
+      "plugins/apple-platform/skills/analyzing-app-store-business-data/agents/openai.yaml": "file:721a6a2afc58b0c43f921e54b40eddf28c03a70b86d62d565ffadca4940c4f3d",
+      "plugins/apple-platform/skills/analyzing-app-store-business-data/references/aso-methodology.md": "file:2129fc2a5620efd8960d30ce84f53f2278f2a36eee722557daa54cbc8391738b",
+      "plugins/apple-platform/skills/analyzing-app-store-business-data/references/data-sources.md": "file:58cebf191858305e08966f82d83794d9c281b902aa603114ad970338b679bc8e",
+      "plugins/apple-platform/skills/analyzing-app-store-business-data/references/growth-playbook.md": "file:36bd1bcfc0a09cfb832f404c6dfa0e9b4e77fdac17a1b95fbc4246d3bb03171b",
+      "plugins/apple-platform/skills/analyzing-app-store-business-data/references/metrics-playbook.md": "file:af12efdc9dd1dd5e0a56afd22096e0a6d0a818ba2b3854940bdc8b770b57c49b",
+      "plugins/apple-platform/skills/analyzing-app-store-business-data/scripts/backfill-sales.sh": "file:3448a239450bf7849f4772c44318a391f23dcb176e9c5d59a863576c0070cebc",
+      "plugins/apple-platform/skills/auditing-ios-release-size/SKILL.md": "file:3be1ca2fd8463774c4efcaedba43df12a5410814164c15ae46d4fe44f52ce86e",
+      "plugins/apple-platform/skills/auditing-ios-release-size/agents/openai.yaml": "file:64373e5e24c1732aa000aefcc8a7fe6403a173e4ea644a4cde85c73f89e54217",
+      "plugins/apple-platform/skills/configuring-ios-content/ATTRIBUTION.md": "file:e814cf290f552389a0c07cb10de6cd66331396e7ed25b6e422727e6ce8c01478",
+      "plugins/apple-platform/skills/configuring-ios-content/REFERENCE.md": "file:20e220e88a22263ca0cefafecc8fdadef49d00d62cf1d18e9af5d92895be8881",
+      "plugins/apple-platform/skills/configuring-ios-content/SKILL.md": "file:4d912840e08c627dd6a36eea384627a0bbc2a350c05e1223e03442238af13deb",
+      "plugins/apple-platform/skills/configuring-ios-content/agents/openai.yaml": "file:232350027b2bf8e49b472ae22a32e17f46bcd582cc2aba04d01df0eff18ff8fa",
+      "plugins/apple-platform/skills/designing-swift-apis/ATTRIBUTION.md": "file:fc47581590652f713b55dd0dfae8f7ff6be3b29e9839ee491053efd299f74653",
+      "plugins/apple-platform/skills/designing-swift-apis/SKILL.md": "file:b16591462d9f19b1a3accad9dbc278e7ce7902953da9195c5ac3cc717c067168",
+      "plugins/apple-platform/skills/designing-swift-apis/agents/openai.yaml": "file:4c2c997552143260bada5f238b06f07338e06d25aeea63c50ef370bc3ff7bd98",
+      "plugins/apple-platform/skills/designing-swift-apis/references/examples.md": "file:237769e8b59eb51c920436e8540a5db2b0fbd3df961a254e3013f4911761d99c",
+      "plugins/apple-platform/skills/implementing-app-intents/ATTRIBUTION.md": "file:522a02df9e1a9d622923e15c95d1c71ce29eba0a7c12d7a488f4909fdec041c7",
+      "plugins/apple-platform/skills/implementing-app-intents/SKILL.md": "file:0557abfe5ea4f5d805df7be5451efd566e42f50a98726597ce75a2db10bd7169",
+      "plugins/apple-platform/skills/implementing-app-intents/agents/openai.yaml": "file:d482d88184bf67eed905ae56e621e30c4fc8d350ee068e2a96b7f1e4eeab0b4f",
+      "plugins/apple-platform/skills/implementing-app-intents/references/agent-playbook.md": "file:d9742a04a08417b652365d4a1a2dd4a8948b822e14ae435bab8a52025d5ef4d1",
+      "plugins/apple-platform/skills/implementing-app-intents/references/apple-intelligence-and-siri.md": "file:cc41a8890d5ac3e1fc5bb37d31e32293ebd529d4ac87906f1a9b36b9f76749aa",
+      "plugins/apple-platform/skills/implementing-app-intents/references/architecture-and-model.md": "file:e524ff75c92105c0dd49abd8fe30ce195359c340ff234eaa4f7f62b07034d0d4",
+      "plugins/apple-platform/skills/implementing-app-intents/references/assistant-schema-domains.md": "file:37385e65fce1c8cba536e7e137ccfb42b9838eeb4952dd9461289c3bda6e74f0",
+      "plugins/apple-platform/skills/implementing-app-intents/references/checklists.md": "file:08ca8f38875a04aa56f317cdd84b62e1c2d7aec66768d35d3ae226849902bd99",
+      "plugins/apple-platform/skills/implementing-app-intents/references/entities-queries-and-indexing.md": "file:1efc8b232e4993c1e3f168cd62e93574ca05aacc14e10fc90261fdba456f45bd",
+      "plugins/apple-platform/skills/implementing-app-intents/references/examples.md": "file:ab7dead4e4ea82d2294a45e652c5307b6769387a1e7713642c8b7480638ea29a",
+      "plugins/apple-platform/skills/implementing-app-intents/references/execution-packaging-performance-and-privacy.md": "file:05e2220f33396c646a2a0f3aae840f244aa8c6abf619b02d37f87a26b4d2ebdc",
+      "plugins/apple-platform/skills/implementing-app-intents/references/intents-dialog-snippets-and-confirmation.md": "file:046dfb964ccb83a7bd3fc0af553c5ff521c28851a9619ca5f50fc82fc8860b04",
+      "plugins/apple-platform/skills/implementing-app-intents/references/migration-ios26-to-ios27.md": "file:c45dfdd1082a2f0ece5effd49e9683053860e4e19d20e368f19f6b5699bf15a6",
+      "plugins/apple-platform/skills/implementing-app-intents/references/minimal-skeleton.md": "file:336dc1fbbc0f87a3d084ff91b38ea898e7330076b7d08a86515c1f920d3a8c3e",
+      "plugins/apple-platform/skills/implementing-app-intents/references/onscreen-awareness-and-content-transfer.md": "file:c7c86045d463bca08a40ae0572149193523678bcb2122f3133da16e7cb1ead45",
+      "plugins/apple-platform/skills/implementing-app-intents/references/reference.md": "file:42f5c6c929b058761c5b8f64d30dadff5cf843ae15c504f8ffb9dcfb0893f7dc",
+      "plugins/apple-platform/skills/implementing-app-intents/references/sdk-availability-and-verification.md": "file:390b8856172ffc16707c0d6ff9872665068026f76b9efa1ea84aeb567d386800",
+      "plugins/apple-platform/skills/implementing-app-intents/references/shortcuts-spotlight-widgets-and-controls.md": "file:f8858a4f6e35baf76a6a78cf9c41a98ccbdf9e41fbe054a50a3500e81c702b77",
+      "plugins/apple-platform/skills/implementing-app-intents/references/testing-and-debugging.md": "file:de7dd8bc4eda7744dcb1038bc0456c1613a6811401db36796e9a66199f82c2f1",
+      "plugins/apple-platform/skills/implementing-app-intents/references/ui-framework-crosswalk.md": "file:f5bfc4e81cd2d83a71d5ec4eb4320926c6d59f6dde7fd180e0570a86d14944a2",
+      "plugins/apple-platform/skills/implementing-app-intents/references/uikit-examples.md": "file:638b4e9b267c770bb9979ed76e0e17c3ed60989e703201c730f88fdb7839f75d",
+      "plugins/apple-platform/skills/implementing-app-intents/references/uikit-integration.md": "file:ce04d51bb0d55c96d8930f01b5fe2f48035d1dfeb74c6b0ee4c7123551083a05",
+      "plugins/apple-platform/skills/implementing-app-intents/references/value-representation-and-structured-transfer.md": "file:675d0b8f4b27d05033103f85611f09070d95a0942b0d415bbdd237fcef65800b",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/SKILL.md": "file:0060a39f19fb4f8f288296858746775c5f81f8d21d115e8fc8bb001daea2eff9",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/agents/openai.yaml": "file:5bb2bbe3a66775f68b2e27c752804b13bd2071180d402c62ec72fb65c9c0c7da",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/assets/AccessibilityPackage/Package.swift": "file:a2eb9c8e6e9ccf1b64c10f4646d63fbf573e29e2e0262b7e5e5666f48fd489ef",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/assets/AccessibilityPackage/Sources/AccessibilityUI/AccessibilityIdentifier.swift": "file:9cff57dbf42dd26e464b7f57c80fb022fe7e5a24ede8878bb2a7644135052086",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/assets/AccessibilityPackage/Sources/AccessibilityUI/AccessibilityIdentifierComponent.swift": "file:f3ad7c991cffe1305aeae60f62216f9626cb8111f90ffe030f987ab6e13c58d0",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/assets/AccessibilityPackage/Sources/AccessibilityUI/AccessibilityIdentifierScope.swift": "file:b4d0660a82b6e3fe64a1ef6cf3ce1deddde3fa69b3ff041aac5af6f56499a525",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/assets/AccessibilityPackage/Sources/AccessibilityUI/AccessibilityInstrumented.swift": "file:6df866a04d50f44c5db5de20667cd269986d27e0384e711418c017402a9a3a91",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/assets/AccessibilityPackage/Sources/AccessibilityUI/SwiftUI+AccessibilityIdentifier.swift": "file:418a1495d2d2c921ae58ac489befc1917ce4f1cb455039e77c9c28b975b70c75",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/assets/AccessibilityPackage/Sources/AccessibilityUI/UIKit+AccessibilityIdentifier.swift": "file:aa3cada5ed4eac3cffa8a0abeb0d5347ad28dd0ebcada8da5b770127026afbc7",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/assets/AccessibilityPackage/Sources/AccessibilityUIForTest/XCUIElementQuery+AccessibilityIdentifier.swift": "file:cb039f2e2682e1424975204369a197af059a752899dcd8b81365b1cadbab2bd5",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/assets/AccessibilityPackage/Tests/AccessibilityUITests/AccessibilityIdentifierTests.swift": "file:3eb2136dde2bb9130e6313439cc66f0e16aae5804dd0d94d8f6e3a1575338cbe",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/references/architecture.md": "file:8d886771d8f63b3d831c3f33246197d06488cb94e0f12da6f2a6865cb76a7a9f",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/references/migration.md": "file:a2d76c12279f03629e8aba0b71748062227f27f2a47f941070348b2a74158ee6",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/references/review-checklist.md": "file:ab1cedbc4ace3e83a00b90754c8c396ce30a567e3aa845b9e097a468a9ae7c33",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/scripts/audit_accessibility_identifiers.py": "file:92d678d6003375aee6fde976d23c207d87dc9e4a7e967eed980bcaf2746ad189",
+      "plugins/apple-platform/skills/localizing-strings/SKILL.md": "file:63f815c39586d1f731e26ad02f3997e574f248a43e8f99f2af549ca0054eaf19",
+      "plugins/apple-platform/skills/localizing-strings/agents/openai.yaml": "file:32b882272236cce09c8b7365dd03d23dddd9e6dcebfbfff1126b717be54fc5aa",
+      "plugins/apple-platform/skills/localizing-strings/references/implementation-examples.md": "file:1fad1ba048b166c018d63cd36aa28969f6b15d61ff87e48eb0111119ecebd747",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/ATTRIBUTION.md": "file:58028e6653680d1a2f8caca4703e80095cd434a3fc3c7176c77144e74b849a56",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/SKILL.md": "file:9442faf6a7c1694e0428edb9ee516710331c18f76095a5d52f777f7884448fb5",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/agents/openai.yaml": "file:e9ee04cd4fd77076465d089f281a47b4bb0042d7333ea9cfdf9662ab2b263223",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/CompileFailBypassValidation.swift": "file:cdb777d1c1c58df4bb1d5366ffdbc22e7133feb2608755e37ee93c4a0d1d5987",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/CompileFailUseAfterConsume.swift": "file:2810d91a2b91f9fff9d005d3c6b27e6f34ffb6c3687916b829ad4f27e2ecaa12",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/CompileFailWrongID.swift": "file:56c59b80c608172326b5acebe5e82531094c395dd9b0fbc8442343875eee0233",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/CompileFailWrongTrustState.swift": "file:a73c46d63a94d63c9168c41749fdca2ae654909d3330da6e7755ab041fe27e2b",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/CompileFailWrongTypestate.swift": "file:91a2f834e4874ec2eab4d07b094b203a3f1bb2f7169fde4057d7a3bf90060988",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/CompilePassCorrectID.swift": "file:de57cf0debd1074da885f5491f89de3108072fc789b478e9972159976ac4d7f3",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/CompilePassCorrectTrustState.swift": "file:ee8e7cedaee25635a7d08d9cdddf5c4f3ddb89f16a801560cfa45459d7f83547",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/CompilePassSingleConsumption.swift": "file:4b79eab499d956da4b8c8b7d9abb807dac8eee7b208b2aa06cb254eed3304635",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/CompilePassValidTypestate.swift": "file:e8417bb461c485625efbf78ea83bb26f92301e216a22e89ec1422e1144342b83",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/CompilePassValidatedConstruction.swift": "file:6c09782686e42212a80b5be0e1533a57dc829144cf0187b5e8eb5cc645a2a3a2",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/CorePatterns.swift": "file:424ad2e03cf16aed62d535d20afd2a90b5c2de02fbc110f8ffb459895e011049",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/CorePatternsRuntimeChecks.swift": "file:c4b72f8f93be002f8544cc120ca3710191a372ade880a72b3ebb9678bfbc51a4",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/CurrentSwiftPatterns.swift": "file:fb8a535bdb6e5b6cb923160660bb45ec1427918052554e70cdcb0afbacb3a7ec",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/TrustStatePatterns.swift": "file:dc2f8ec63f6d5c574c38b63ad0ad8e0f03045dd5c9ae69ac4a5972f8c2d7966a",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compile-checks.json": "file:931c59d9c43454d64040833027629174f2091d7b093d8a7748135e8540c8eaeb",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus/core_examples.swift": "file:6c4350e3b4c493181b3c9be50677d75f144b18f6ec05e6f3f5f9efb4ac8a8cfa",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus/core_examples_runtime.swift": "file:3f2fe1bfcaf8abfc1bc835ad4875969a286064107d9e9679e80ef50187b0c001",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus/frontier_probes/manifest.json": "file:b8a3c38f88a863ce8565059b3d6c9e5f7ce97b678ad7544d23eca0c1127bfe17",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus/modeling_examples.swift": "file:5a812334ca9541835f00075bc958b257207bd2f521ec2da8a735b7a794d7c83e",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus/modeling_manifest.json": "file:4d75db092e49b5273aabfedc6ebf27e6cf4be0d8e3b605b4ed50a0cda058ac99",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus/probe_effects_async_let_error.swift": "file:cf0e87d7fc7c306f9f3222a0c23589e116c25191f34ac3d92913ab71f542fc14",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus/probe_effects_catch_cases.swift": "file:97a795694b4596fb84238ead2290e2c48525cdfdb17c1cbc30a74d1bdc760816",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus/probe_effects_discarded_task.swift": "file:d643a126c72fe9a06b5828c46404b811d17884bd7fcdb2a24a3a4ecc89a7c7d9",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus/probe_effects_double_resume.swift": "file:f9270046df120812f588b4604c563eb47d846488d0854bc644375e0f350b3991",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus/probe_effects_dropped.swift": "file:18710d319dd3f73927baec4f6caac0aac5b9f451ee1892f57fc99c0cd94461d3",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus/probe_effects_opaque_throws.swift": "file:0378a08794964bc1520bf6d108c85d56bde52f82dd6c0dfb736b0c198d4dec73",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus/probe_effects_positive.swift": "file:7091cbe56b60eb1b203f6505f89606fd9e1e3508a0fd4f51f7bb693ca3a31d73",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus/probe_effects_typed_task.swift": "file:211221290ff9b2919717ebca4246a92daca3f7e6d244f9b5c00eb97e990abba2",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus/probe_effects_typed_workarounds.swift": "file:81f0e5e72de75cf9369781e37e4bbe89c964593bfbb44377f5b78be3687b52fa",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus-controls.json": "file:de4b52387fbc4621db6db186d2f856a488abe80686c2f15cbd741212dfef0a31",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus-diagnostic-compatibility.json": "file:c04f9d7e126a144bb5d68bc540704c965ad258af06757e2103dbc9bb0b72c330",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus-map.json": "file:893ecbdc3cddf0c45e29bb387662b98a15b159af753c1977314fd808ef2dde42",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/advanced-generics-and-protocols.md": "file:9fff09c063704fe8139ad3ebe43e3fd8258a6a16182f863ece41982aea40dc9c",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/algebraic-and-refined-values.md": "file:325e58ccebbb7fe9889969d3c4e4eb3d20f861c1c3e29fa508c7c5bf54206d5c",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/boundaries-and-interop.md": "file:473f794ed96c7a64f45496bb87a14916e0feaef3a671c1143d14daae75174616",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/compile-check-runner.md": "file:3b2acd0005ecde2d8c56057c24b8543c249cfa3676b1cdf7e9bd9f33d607a09b",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/decision-guide.md": "file:e92b2dc5d9c6d29784754acb3fee726476a25d89aaab62d403ff5ef884e11f99",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/domain-modeling-recipes.md": "file:f92a3e88ac9a473a9f209d0e6ac0af38f050ad715194fcef3e92c4eb9899387d",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/generic-proof-recipes.md": "file:a8c2b2b1fc790ab8acb6025d0ea4e81642f6082f6ad9a8cd398fad6357a796c2",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/identity-typestate-capabilities.md": "file:038a4260958143658d82f82e8e0f95247f6d57a80bbfcc8625a19a770590035d",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/ios-versioning.md": "file:e1b674cf590923cecf1d381f9998e5545a108f2814d9fb95baa9be10ceaa95c4",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/ownership-concurrency-errors.md": "file:703e25c7de6934528c22ebc2e381e55a84a2e265c6075715f9c871509068ea20",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/ownership-effect-recipes.md": "file:d8a5d80ed9bfc259dbf95128a98c70093534b7d31aaec23137d9af011b3fcb80",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/security-and-resource-modeling.md": "file:ecff22e7ba225b1c62d52238d5608e1f0fc7af62c94068b17c7383f0b997e427",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/sources.md": "file:9ab470c3850019f45e50d6f9da65501942f3c873f99e8a3666c96462b0f2bcfd",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/swift-feature-status.md": "file:fa9a9bdb8c0d4d5755e49c7781a34892060849b558e5f1cfa3335d8a8084c000",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/testing-migration-and-review.md": "file:f14aa038bc24ebaac5d0e16bb0f1b29e838a1a467f5ae07e7ae358b029c5c838",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/ui-state-navigation-and-effects.md": "file:4500023ad55c068a806f8e62ec6158aca4bc4849e0877802e308bbf389b366d7",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/scripts/audit_project.py": "file:deff185e61ce47044a00b87d3eca0ee84c711f0bf1b8e0f7ea15e092a8fb5d65",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/scripts/check_examples.sh": "file:ab8d649883d587dbbb170ec75ca9bfda0b2ca8a68920d4d6f058c72725df7806",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/scripts/swift_compile_checks.py": "file:059382917ab454930ff912d2c719cfe6eb848d64da2b9ac7b7604093927f2cec",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/scripts/swift_compiler_corpus.py": "file:a537c386efad384eee2dec7ce19f436150719d2d546728bc78bd5f1bf5658c21",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/scripts/validate_skill.py": "file:2f6f56adaa5c2cb2d6048358a55f939c5e2097f7a38a54e26ad3ca4b3fbb74ce",
+      "plugins/apple-platform/skills/ordering-symbols/SKILL.md": "file:66cd16dc555d05a4da70216fee83a814885e68aaec59de20b5d98d566a86d860",
+      "plugins/apple-platform/skills/ordering-symbols/agents/openai.yaml": "file:fe36579be882efd8e8466cd20d9eee11a0b3b6560980072fcb87e043352a6c91",
+      "plugins/apple-platform/skills/ordering-symbols/references/complete-type-example.md": "file:b398ce4e001a60824160337903a49a74d33338da4d8d2c444bd583557889b67c",
+      "plugins/apple-platform/skills/ordering-symbols/references/formatting-and-comments.md": "file:aa44ab1d46318761565022c22b3d9924702ebe555bd47885962eecc6a6c5598f",
+      "plugins/apple-platform/skills/ordering-symbols/references/parameters-and-body-ordering.md": "file:73594c3fb75304908c70ee1dd0800379324dd25160eb2930cdd2f964bd66ccf1",
+      "plugins/apple-platform/skills/ordering-symbols/references/protocols-extensions-and-availability.md": "file:01051a270c2ccee46316905d76c79befbf4f814592d0dc4f6a2bfe6ee52fc2fe",
+      "plugins/apple-platform/skills/ordering-symbols/references/type-declaration-order.md": "file:bce138ec4d269964c7e1e391ac2450aac149c56ff5a64d14f0e352efba1cd689",
+      "plugins/apple-platform/skills/organizing-swift-types/SKILL.md": "file:ff2f8827a02e63b61c186a664d38daf32f6ba88aa535449b1ac07c9923bc1788",
+      "plugins/apple-platform/skills/organizing-swift-types/agents/openai.yaml": "file:29410734a21feb155069f405b9a2877bb3e89501e24a9690591a599e309b6713",
+      "plugins/apple-platform/skills/organizing-swift-types/references/access-control-and-modifiers.md": "file:b30f6a148984b12bec34b2541332481a03c629652168438205bb79e40f422b6c",
+      "plugins/apple-platform/skills/organizing-swift-types/references/availability-and-version-spanning.md": "file:cd95e38dd65c8bfb30b26ff24619e02d422375533e3c23af8cd91493e8eb7f4f",
+      "plugins/apple-platform/skills/organizing-swift-types/references/complete-shape-example.md": "file:880cc244b77e51018b072cae51478591a0baf4febcb7434d19963c009e5d23f6",
+      "plugins/apple-platform/skills/organizing-swift-types/references/constants-file-structure-and-previews.md": "file:9a266ac4c65a6564635ba9861e2e915e5974bf73f20c3a76dd6e0292296fe453",
+      "plugins/apple-platform/skills/organizing-swift-types/references/extensions-and-nested-types.md": "file:b991ef5ac2fb2547d43b4b4f451f57360f618d93d136af8950dbf53fc489159c",
+      "plugins/apple-platform/skills/organizing-swift-types/references/primary-declaration-and-conformances.md": "file:c2b754fcc1e15814413c0cdc0982bb05b2e103b80d4cd6997ade04d6f9a7f218",
+      "plugins/apple-platform/skills/organizing-swift-types/references/prohibited-patterns.md": "file:c1dbac817222bbede34f46f109911d8f87abb97e90a45afb12f78dbc72997012",
+      "plugins/apple-platform/skills/presenting-ios-modals/SKILL.md": "file:687833270c3d281500bcfcdbfb2aa331e62cd51f7ca46cb0a72106e950801ab6",
+      "plugins/apple-platform/skills/presenting-ios-modals/agents/openai.yaml": "file:7cd61d8f4071b354a5d4021a311d5449fd21f6f9e7a09c7c8ecb59d4711f5312",
+      "plugins/apple-platform/skills/recording-ios-simulator-videos/SKILL.md": "file:89e8c273cb3e1a17b2df8dbf92160ba40704fcea2062a7f97877a7694d324057",
+      "plugins/apple-platform/skills/recording-ios-simulator-videos/agents/openai.yaml": "file:b08ddb4f6163105fdbb87a09c93ee22ac9ee4f761ceb62f08f1bc176112b2066",
+      "plugins/apple-platform/skills/recording-ios-simulator-videos/scripts/record-ui-automation-video.sh": "file:256ff0f9d0d6218edda0dccc7bbcadb341d5825f54fc01b361b222c320698b5e",
+      "plugins/apple-platform/skills/recording-ios-simulator-videos/scripts/record-xcuitest-video.sh": "file:2361d81f77d7825e8b16a2b9fdc2e9a22c83c64509986cece28ae719b5e344cf",
+      "plugins/apple-platform/skills/simplifying-apple-platform-code/SKILL.md": "file:d5b4827b294cd03f4dfb5aca7892fd616783f6a1fe14f32dc60e0a7245940f1e",
+      "plugins/apple-platform/skills/simplifying-apple-platform-code/agents/openai.yaml": "file:e6a4133e78e87142a86b3e8251a0026a4cb802fcf6a5bcc0ec92c77e0ba4288c",
+      "plugins/apple-platform/skills/simplifying-apple-platform-code/references/foundation-frameworks-and-capabilities.md": "file:b196f4846002fbf7f45d5c8c5e633e707b4755a624c799f97b57e5457b550638",
+      "plugins/apple-platform/skills/simplifying-apple-platform-code/references/swift-and-concurrency.md": "file:a1a7ddaa65fac4c612072c9a211a66a7699e4b9586c4e37df08b88f8f82301fc",
+      "plugins/apple-platform/skills/simplifying-apple-platform-code/references/toolchain-and-availability.md": "file:cc5ff431de62aad0b8b31e6469f1c5b42744850c11798f43796c5b31442d9aee",
+      "plugins/apple-platform/skills/simplifying-apple-platform-code/references/ui-frameworks.md": "file:9221e72f334f799a9806317dae30dc7fc42b0dc1db12dee58b2c989ad3aaad67",
+      "plugins/apple-platform/skills/simplifying-apple-platform-code/references/verification-and-checklist.md": "file:9c272dd75dc42ed14b8d2f29540f9f464e80f0a6239e8b42772e190291d69572",
+      "plugins/apple-platform/skills/structuring-swift-packages/SKILL.md": "file:3bcf8303648ce8b37bd5ebda505a7ac9e9c2933f7e05ceb03a243cf25ed31c73",
+      "plugins/apple-platform/skills/structuring-swift-packages/agents/openai.yaml": "file:27e7e69c7d8ff9a3c622ea24eac77593e91a9df9f4fa268261a66138219d0c10",
+      "plugins/apple-platform/skills/structuring-swift-packages/references/recipes-and-verification.md": "file:1390a49ce81c8368cbb2ffe8db13a48972d6e68e914bc9bafe0c620eb3e5c619",
+      "plugins/apple-platform/skills/testing-async-swift-code/SKILL.md": "file:0aedd88c7c40b5e04108c441873cdbf8a270f8b6ccde7f720bb2f38ee77422a2",
+      "plugins/apple-platform/skills/testing-async-swift-code/agents/openai.yaml": "file:4f47331d3918ed7b32d2977ade26b8d7138565cf77152be432da890a30c252af",
+      "plugins/apple-platform/skills/testing-async-swift-code/references/idioms.md": "file:aa8e03d0f4ed69b63d472093a621e26347989d23470f6b2209a961851af722d3",
+      "plugins/apple-platform/skills/testing-async-swift-code/references/primitive-contracts.md": "file:c24872fceaa33307f1857a4c970f207db82e99426a0c368238cbefd24a696ed2",
+      "plugins/apple-platform/skills/testing-swift-code/ATTRIBUTION.md": "file:47a8d0d24cca72b2ce8cb05e95770b1a0abbdead35277f06adafb25b0062a327",
+      "plugins/apple-platform/skills/testing-swift-code/REFERENCE.md": "file:2c929883e523ec7f08cbb55fe54084de7843b26933e4d6771d8d6e79669e7f38",
+      "plugins/apple-platform/skills/testing-swift-code/SKILL.md": "file:bf21540a6b91cbc949d3e8aad62af58304d2e300de1f039b49c266ae0d403d44",
+      "plugins/apple-platform/skills/testing-swift-code/agents/openai.yaml": "file:661239976bb5147b9a40ca492cbc2fb5f5e4baf0b8765cf5f28d0e1483831f8e",
+      "plugins/apple-platform/skills/using-swift-concurrency/SKILL.md": "file:ed159402828920f0d2aa32d7367089d1c5691a5eb080b5654701ce840bc43b2c",
+      "plugins/apple-platform/skills/using-swift-concurrency/agents/openai.yaml": "file:6bd6f5bb911a33148fa941a1666123bc938d09a17ba4a64bafc174852a0cb6a8",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/actor-decisions.md": "file:1d07e42a76e30086a06f1a602bad45a24751276dacf25306649a2f72a1407552",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/async-sequences-observation-and-notifications.md": "file:510a7accce18a3b0d14080f61cd25479a5280487cefa2d7fe361b92b067551fa",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/async-testing.md": "file:2a4186b394a47ee6c47de7d4641e3228eacd85999f08c50ee06db0234e84da7b",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/concurrency-model.md": "file:9edbdeba7b1c42ef6ae02ad0236c2c5a2c352635e7badf9853b4647679549cdf",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/continuations-and-bridging.md": "file:c39457f9384028872a641aa3efd1c68cc13913b289d7991ed1b10ccd7675afa5",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/isolation-and-protocol-conformances.md": "file:7ec54a614c8b582b4fd0b31dd88e93ec61ecda8e247e108be459296eb17406de",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/logical-races-and-reentrancy.md": "file:c251205c5272ba84bb02a1580d8f2ee6f748b82e67036fef3454822456db8276",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/platform-and-build-baseline.md": "file:b59fb59907739d987b37432f0839884fefec026368034805ee29dea581147229",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/problematic-patterns.md": "file:65e74e3a5d69a9e42781f04659600c3edb5e7768c74b7e8e475233f7ca7ff86d",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/protocol-design.md": "file:89b07b05fdff14586edfb1706efa610f4ad69aa7bf8e04fa34dffa8437b0a2d0",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/review-playbooks.md": "file:373ae44ee9bfd88836c04436fa2e8f5c2bc5387bfe65295b59b17b7993fc6fcf",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/sendable-and-transfer.md": "file:4e40ba22cf20abf04418705efd963e373f161e7a11fbe5d91297074f4a84b31f",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/sources.md": "file:eaf17b3feab5d824aa89e700eb28ed272c227caecf7ccacb75bf1e530a5bc5d7",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/task-lifecycle-and-cancellation.md": "file:0a853cb0fbcaaf75c4d76cbc63374b62d163e91ff22ff89d53821bddd293d686",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/terminology.md": "file:032df0de006db7f4275abd5ab442d3905807ead80efe46f92f3a17de0ec57f31",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/ui-and-mainactor.md": "file:98f6a3358962f39c655bbec970ffa7110d6e91f6c41b6afda4a74fd15bf467e4",
+      "plugins/apple-platform/skills/writing-apple-platform-documentation/SKILL.md": "file:f3ab2173ed2838f5c69f16f9272be4c26bb219e69cd575ec857bd42449cccfba",
+      "plugins/apple-platform/skills/writing-apple-platform-documentation/agents/openai.yaml": "file:06ca304086b52e8b6e5e3a94d81d2b3ea0920e3f324a596c98c3c4a3be6002ab",
+      "plugins/apple-platform/skills/writing-apple-platform-documentation/assets/terminology-rules.json": "file:7154eac044f9b0ab18f884adaf319e16d9e0d0c15cf11a3c95cfc4d1833a80e6",
+      "plugins/apple-platform/skills/writing-apple-platform-documentation/references/terminology-checks.md": "file:39e29966b5385e0b6c5d94c0627903f9bdeb1f1ac45228e44d8207468b0d59ef",
+      "plugins/apple-platform/skills/writing-swift/SKILL.md": "file:d923cd3a2bbac5082178ae51ffcfbd0de80ea314c5d91da1a961b25375a77944",
+      "plugins/apple-platform/skills/writing-swift/agents/openai.yaml": "file:af119981981ace79904bef3835edd79eefd139c02efd25c4bc17e85d4bfa3746",
+      "plugins/apple-platform/skills/writing-swift/references/api-design-and-style.md": "file:abf447975c5b579248f1d37e45e70a85da1a48b1b72d7ef392be47ba373d46f2",
+      "plugins/apple-platform/skills/writing-swift/references/concurrency.md": "file:4e11a0464353759d12b201b49c2007d29722a62ed9666558f45447f4b62f81ac",
+      "plugins/apple-platform/skills/writing-swift/references/packages-builds-and-platforms.md": "file:5160b1b877ff9486636afd3da8368f4c043839e78a927d7ee6016b8eb16d6f16",
+      "plugins/apple-platform/skills/writing-swift/references/review-and-debugging.md": "file:106d51e63b06b0431edf9ef2d8ef0eec734cddfd304727bbeeef99afc5457185",
+      "plugins/apple-platform/skills/writing-swift/references/swift-compatibility.md": "file:2539fcae1c188d1d5c4ec3781f3d63d36305d158489565ee521283e897094eb0",
+      "plugins/apple-platform/skills/writing-swift/references/testing.md": "file:b915f250593e14963472c637b87e845ec91f032cccd6e3d66a38f6bca8c2020e",
+      "plugins/apple-platform/skills/writing-swift/scripts/lint-changed-swift.sh": "file:38f50c44bc773d400f0bda1a3be6cfe774c5c84d0a96842818570a5cba665b87",
+      "plugins/apple-platform/skills/writing-swift/scripts/swift-project-context.sh": "file:c7902c18fa2f5a0c452bfb4595434ce1e40164294c6695ee9881ea428832af36",
+      "plugins/apple-platform/skills/writing-swift/scripts/swiftpm-check.sh": "file:d1f651b1375137d70e599fcf37c7452d1ff472869579742275263f1492d3d82c",
+      "plugins/universal/.claude-plugin/plugin.json": "file:ab11f7474ed16a0bb4b40170994eb275e76f5cba39fcba180a8845f74fe1a747",
+      "plugins/universal/.codex-plugin/plugin.json": "file:07a8abfc42215b3956aebf335f8e30063dfc9bc2ec819371387095ef315413ac",
+      "plugins/universal/agents/code-reviewer.md": "file:410fd806bc4824790f4d4cb787ea8190fedc6f68a46ab6604c6518609de0b4f2",
+      "plugins/universal/agents/code-simplifier.md": "file:60c679620bc8a5a3c7829232144ac54996a3c380a21a7bc054098c0d7299402c",
+      "plugins/universal/agents/correctness-reviewer.md": "file:99525a9ff7e6300e82dba7fb032be44e51b54901961c7525e7ecf8f02a098ba9",
+      "plugins/universal/agents/technical-writing-auditor.md": "file:e53ad49653ce4a385e687f56b1777e6e760b6c5a576684a52f3aad63d6228f7b",
+      "plugins/universal/skills/brainstorming-design-specs/SKILL.md": "file:43d633dde756a4235c5c756f32ea2296ecaf8afdf6ab9e07f7eebd3b992b9266",
+      "plugins/universal/skills/brainstorming-design-specs/agents/openai.yaml": "file:7a52c30cd047f8e86d17c48ca691f831ccca0f11debd6477b6ecd0a543f82e47",
+      "plugins/universal/skills/compiling-agent-goals/SKILL.md": "file:ea47548982a4465ab9ae1ca715b4504a10442461920b7888179e80d06b5249b5",
+      "plugins/universal/skills/compiling-agent-goals/agents/openai.yaml": "file:426e5a20ba16c42ee2e0d8ec8b2037133616cde1eacdaa10bc6bf9e43ef5e41d",
+      "plugins/universal/skills/compiling-agent-goals/assets/goal-pack-template.md": "file:759a4736d9c4845a2a2bedaf4e8bb10209a958e6a0fd8ed6ed74043d89eeeca4",
+      "plugins/universal/skills/compiling-agent-goals/assets/goal-template.md": "file:f60c5137baaa81b674010310bba162e615214bd6146c96825d24d409d3d52b78",
+      "plugins/universal/skills/compiling-agent-goals/references/goal-contract.md": "file:4b02a8f85affe7f062f05d6272058e467cdce604fca96c650efb292f2a561605",
+      "plugins/universal/skills/compiling-agent-goals/references/platform-notes.md": "file:3f364cb15461dc0ac0b34c002b16996f025d450dd0945d6e9d25aab6e6df0844",
+      "plugins/universal/skills/compiling-agent-goals/scripts/lint_goal.py": "file:18af5edbf24f1a8ccaa533786633088d9f8632dddda07681b7654b68b8b4527a",
+      "plugins/universal/skills/hardening-changes/SKILL.md": "file:c4a4fbfb678c657e4783c58e7491d7292fab9806bdfc62adde6de7307d34f0f9",
+      "plugins/universal/skills/hardening-changes/agents/openai.yaml": "file:1c0d66a0533d84f80ccf4b3f8a11288e784980f79aec22b85b37f5d74d4c0e2c",
+      "plugins/universal/skills/reviewing-code/SKILL.md": "file:926537e876d0f2679e0a9c69124c437b59f27c32f57108ed303b33a8e0db0d5e",
+      "plugins/universal/skills/reviewing-code/agents/openai.yaml": "file:77610d4aafc430f2c84ba2be5ed15d4b5c1093b0a4b619b4b3862ef91dedc728",
+      "plugins/universal/skills/reviewing-code/references/change-playbooks.md": "file:7774d49f0f6b9efa9165d987c13430c5bddca96afe6a04412ef5deaa4de3fdb8",
+      "plugins/universal/skills/reviewing-code/references/finding-quality.md": "file:41a0ccd1be96a402f3f880f7ddaf812d519c6606f7a8626b76fd75a30c2591d6",
+      "plugins/universal/skills/reviewing-code/references/review-lenses.md": "file:1ddb67d1de478db37ef2713cf5a908126958d4c635dad5728267ab501b0fc788",
+      "plugins/universal/skills/simplifying-code/SKILL.md": "file:06f1117db95b5d0e9964dfece3dc01406c26307115f3c99838b68e94256c82c2",
+      "plugins/universal/skills/simplifying-code/agents/openai.yaml": "file:cd8ed4dd1e1c479e8f5a4f61cf41b2f39c9d6b7b30843d7598a6f879ed54c552",
+      "plugins/universal/skills/simplifying-code/references/adaptation-and-anti-simplification.md": "file:dc5fa6a98648c8894033e8023f53a7967df650477b5a9601402e6ac709124aae",
+      "plugins/universal/skills/simplifying-code/references/compact-checklist.md": "file:c903142d1ea4b20aa4be65b81f08a82b56fc741d5b029f254b52f17053942420",
+      "plugins/universal/skills/simplifying-code/references/review-passes.md": "file:f6313a5e449e52a1abe50c93052a4c7e1282d638ba257305dabe24250fd35820",
+      "plugins/universal/skills/verifying-invariants/SKILL.md": "file:0d34a54372cb895d49fdcc00d1b86d459c27af90ad7c0a56ba93d6d71fdebe5d",
+      "plugins/universal/skills/verifying-invariants/agents/openai.yaml": "file:9c5ac56b8d163315b77da8e6a9107e1bfa1a6683efbf7615ebece2849501ebf3",
+      "plugins/universal/skills/verifying-invariants/assets/invariants.template.json": "file:5b71272df455c39b8555b7ab913771b16d09c684e6f2a20fc09d119dda7b9dc2",
+      "plugins/universal/skills/verifying-invariants/references/construction-boundaries.md": "file:122dc2e78cd74d892b34b2270a61d1fbe245ce8ceb3fcd809e92a7bf06e5217b",
+      "plugins/universal/skills/verifying-invariants/references/evidence-and-reporting.md": "file:b7afce96436511306495f4e7f15d8658a6181ceefa47a29cfc9b68f4e4233d4a",
+      "plugins/universal/skills/verifying-invariants/references/manifest-format.md": "file:366c008beb86284d4e3aad2e611d6afe0a512ed852d3d708623713bcc6a846fa",
+      "plugins/universal/skills/verifying-invariants/references/targeted-mutations.md": "file:2de48c20a0c6447fe307e2361a0058261118cf1b9a8e85223b692cbe46242b52",
+      "plugins/universal/skills/verifying-invariants/references/transition-exploration.md": "file:db240ab5d5c0a8251b96f1c96e94e23f8924d60775fa89bc4bd531f893477dd2",
+      "plugins/universal/skills/verifying-invariants/scripts/validate_invariants.py": "file:16effae7ce960f68d42277d856aec2b7e62ec3a585706d0617c89b2ba54dcad1",
+      "plugins/universal/skills/writing-escalation-briefs/SKILL.md": "file:61629b5bb00a8e942653e0a68654542812115034b3477d1959df891116b75fdd",
+      "plugins/universal/skills/writing-escalation-briefs/agents/openai.yaml": "file:b720c94ab9c25964199bc67182393c93185bf939a330caad8dd73184f64f6617",
+      "plugins/universal/skills/writing-escalation-briefs/references/brief-template.md": "file:9fb22f2748bab9004aabcff8dc02dadf0bd51177cae2419a1f3f7e3c5f2c7640",
+      "plugins/universal/skills/writing-technical-prose/SKILL.md": "file:983585cb5e3eca111e5a658e8c2ed460438472e3140bb663c8d5facb2bf867e4",
+      "plugins/universal/skills/writing-technical-prose/agents/openai.yaml": "file:e5b43e4359a1b5ced68c2d05adb521e4cac160b992e4783bb00745ceffda1396",
+      "plugins/universal/skills/writing-technical-prose/references/document-patterns.md": "file:06413cf04efd12c114758dc2a5e2ff6ae91ccf06fe487b8d7d70616a3b58d603",
+      "plugins/universal/skills/writing-technical-prose/references/linter-usage.md": "file:50266738bd2ee1633fc1e83f6d1057695a458144c5142ec5250930d203ccb555",
+      "plugins/universal/skills/writing-technical-prose/references/review-checklist.md": "file:73df51762dd56cfdcc46d3253813a93809b03d82b538c4ce2a4f548902b81f3a",
+      "plugins/universal/skills/writing-technical-prose/references/style-examples.md": "file:7b52249ded096ebf5d0a214ba01712ff0dbec9ddd181e9221bfa5f2bcf8a26f9",
+      "plugins/universal/skills/writing-technical-prose/scripts/lint_technical_writing.py": "file:b06effe2e1e5164a54815bc5c93f452494ca4be2dd1a2db4c954601ded097587"
+    }
+  },
+  "batch_completion": {
+    "runs": [
+      {
+        "id": "hardening-invariant-codex-2",
+        "case": "hardening-invariant",
+        "repeat": 2,
+        "runtime": "codex",
+        "model": "gpt-6.1-sol",
+        "effort": "medium",
+        "timeout_seconds": 900,
+        "exit_code": 1,
+        "seconds": 18.749,
+        "output_dir": "/tmp/skill-composition-implementation/native/hardening-invariant-codex-2"
+      },
+      {
+        "id": "hardening-invariant-codex-1",
+        "case": "hardening-invariant",
+        "repeat": 1,
+        "runtime": "codex",
+        "model": "gpt-6.1-sol",
+        "effort": "medium",
+        "timeout_seconds": 900,
+        "exit_code": 1,
+        "seconds": 24.991,
+        "output_dir": "/tmp/skill-composition-implementation/native/hardening-invariant-codex-1"
+      },
+      {
+        "id": "hardening-invariant-claude-2",
+        "case": "hardening-invariant",
+        "repeat": 2,
+        "runtime": "claude",
+        "model": "claude-sonnet-5-5",
+        "effort": "medium",
+        "timeout_seconds": 900,
+        "exit_code": 0,
+        "seconds": 26.075,
+        "output_dir": "/tmp/skill-composition-implementation/native/hardening-invariant-claude-2"
+      },
+      {
+        "id": "hardening-invariant-claude-1",
+        "case": "hardening-invariant",
+        "repeat": 1,
+        "runtime": "claude",
+        "model": "claude-sonnet-5-5",
+        "effort": "medium",
+        "timeout_seconds": 900,
+        "exit_code": 0,
+        "seconds": 31.221,
+        "output_dir": "/tmp/skill-composition-implementation/native/hardening-invariant-claude-1"
+      },
+      {
+        "id": "hardening-invariant-codex-3",
+        "case": "hardening-invariant",
+        "repeat": 3,
+        "runtime": "codex",
+        "model": "gpt-6.1-sol",
+        "effort": "medium",
+        "timeout_seconds": 900,
+        "exit_code": 1,
+        "seconds": 23.113,
+        "output_dir": "/tmp/skill-composition-implementation/native/hardening-invariant-codex-3"
+      },
+      {
+        "id": "hardening-cosmetic-codex-1",
+        "case": "hardening-cosmetic",
+        "repeat": 1,
+        "runtime": "codex",
+        "model": "gpt-6.1-sol",
+        "effort": "medium",
+        "timeout_seconds": 900,
+        "exit_code": 1,
+        "seconds": 20.108,
+        "output_dir": "/tmp/skill-composition-implementation/native/hardening-cosmetic-codex-1"
+      },
+      {
+        "id": "hardening-invariant-claude-3",
+        "case": "hardening-invariant",
+        "repeat": 3,
+        "runtime": "claude",
+        "model": "claude-sonnet-5-5",
+        "effort": "medium",
+        "timeout_seconds": 900,
+        "exit_code": 0,
+        "seconds": 26.365,
+        "output_dir": "/tmp/skill-composition-implementation/native/hardening-invariant-claude-3"
+      },
+      {
+        "id": "hardening-cosmetic-claude-1",
+        "case": "hardening-cosmetic",
+        "repeat": 1,
+        "runtime": "claude",
+        "model": "claude-sonnet-5-5",
+        "effort": "medium",
+        "timeout_seconds": 900,
+        "exit_code": 0,
+        "seconds": 24.553,
+        "output_dir": "/tmp/skill-composition-implementation/native/hardening-cosmetic-claude-1"
+      },
+      {
+        "id": "hardening-cosmetic-codex-2",
+        "case": "hardening-cosmetic",
+        "repeat": 2,
+        "runtime": "codex",
+        "model": "gpt-6.1-sol",
+        "effort": "medium",
+        "timeout_seconds": 900,
+        "exit_code": 1,
+        "seconds": 20.148,
+        "output_dir": "/tmp/skill-composition-implementation/native/hardening-cosmetic-codex-2"
+      },
+      {
+        "id": "hardening-cosmetic-claude-3",
+        "case": "hardening-cosmetic",
+        "repeat": 3,
+        "runtime": "claude",
+        "model": "claude-sonnet-5-5",
+        "effort": "medium",
+        "timeout_seconds": 900,
+        "exit_code": 0,
+        "seconds": 16.287,
+        "output_dir": "/tmp/skill-composition-implementation/native/hardening-cosmetic-claude-3"
+      },
+      {
+        "id": "hardening-cosmetic-codex-3",
+        "case": "hardening-cosmetic",
+        "repeat": 3,
+        "runtime": "codex",
+        "model": "gpt-6.1-sol",
+        "effort": "medium",
+        "timeout_seconds": 900,
+        "exit_code": 1,
+        "seconds": 22.709,
+        "output_dir": "/tmp/skill-composition-implementation/native/hardening-cosmetic-codex-3"
+      },
+      {
+        "id": "hardening-cosmetic-claude-2",
+        "case": "hardening-cosmetic",
+        "repeat": 2,
+        "runtime": "claude",
+        "model": "claude-sonnet-5-5",
+        "effort": "medium",
+        "timeout_seconds": 900,
+        "exit_code": 0,
+        "seconds": 29.343,
+        "output_dir": "/tmp/skill-composition-implementation/native/hardening-cosmetic-claude-2"
+      },
+      {
+        "id": "apple-simplification-claude-2",
+        "case": "apple-simplification",
+        "repeat": 2,
+        "runtime": "claude",
+        "model": "claude-sonnet-5-5",
+        "effort": "medium",
+        "timeout_seconds": 900,
+        "exit_code": 0,
+        "seconds": 18.472,
+        "output_dir": "/tmp/skill-composition-implementation/native/apple-simplification-claude-2"
+      },
+      {
+        "id": "apple-simplification-claude-1",
+        "case": "apple-simplification",
+        "repeat": 1,
+        "runtime": "claude",
+        "model": "claude-sonnet-5-5",
+        "effort": "medium",
+        "timeout_seconds": 900,
+        "exit_code": 0,
+        "seconds": 22.548,
+        "output_dir": "/tmp/skill-composition-implementation/native/apple-simplification-claude-1"
+      },
+      {
+        "id": "apple-simplification-codex-1",
+        "case": "apple-simplification",
+        "repeat": 1,
+        "runtime": "codex",
+        "model": "gpt-6.1-sol",
+        "effort": "medium",
+        "timeout_seconds": 900,
+        "exit_code": 1,
+        "seconds": 34.07,
+        "output_dir": "/tmp/skill-composition-implementation/native/apple-simplification-codex-1"
+      },
+      {
+        "id": "apple-simplification-codex-2",
+        "case": "apple-simplification",
+        "repeat": 2,
+        "runtime": "codex",
+        "model": "gpt-6.1-sol",
+        "effort": "medium",
+        "timeout_seconds": 900,
+        "exit_code": 1,
+        "seconds": 27.981,
+        "output_dir": "/tmp/skill-composition-implementation/native/apple-simplification-codex-2"
+      },
+      {
+        "id": "apple-simplification-claude-3",
+        "case": "apple-simplification",
+        "repeat": 3,
+        "runtime": "claude",
+        "model": "claude-sonnet-5-5",
+        "effort": "medium",
+        "timeout_seconds": 900,
+        "exit_code": 0,
+        "seconds": 18.124,
+        "output_dir": "/tmp/skill-composition-implementation/native/apple-simplification-claude-3"
+      },
+      {
+        "id": "apple-simplification-codex-3",
+        "case": "apple-simplification",
+        "repeat": 3,
+        "runtime": "codex",
+        "model": "gpt-6.1-sol",
+        "effort": "medium",
+        "timeout_seconds": 900,
+        "exit_code": 1,
+        "seconds": 29.722,
+        "output_dir": "/tmp/skill-composition-implementation/native/apple-simplification-codex-3"
+      }
+    ],
+    "source_snapshot_before": "73b35da5ed6e7c83d525004fb0c13eb077eed4103951a28df58e0722e100a20d",
+    "source_snapshot_after": "73b35da5ed6e7c83d525004fb0c13eb077eed4103951a28df58e0722e100a20d",
+    "source_unchanged": true,
+    "criteria_unchanged": true
+  },
+  "counts": {
+    "declared": 18,
+    "accepted": 0,
+    "failed": 18
+  },
+  "runs": [
+    {
+      "id": "hardening-invariant-codex-1",
+      "case": "hardening-invariant",
+      "repeat": 1,
+      "runtime": "codex",
+      "model": "gpt-6.1-sol",
+      "effort": "medium",
+      "timeout_seconds": 900,
+      "overall_status": "failed",
+      "deterministic_status": "failed",
+      "execution": {
+        "duration_seconds": 23.368,
+        "exit_code": 0,
+        "status": "completed"
+      },
+      "source_and_snapshot_match": true,
+      "criteria": [
+        {
+          "evidence": [
+            "evidence.json: tree_diff []; deterministic_assessment reports implementation unchanged and missing .git/HEAD, Sources/Quantity.swift, Tests.",
+            "Final Sources/Quantity.swift:4 has struct Quantity: Equatable; final Tests/main.swift contains only direct construction tests.",
+            "codex.stdout: full trace has no auditor launch or child completion."
+          ],
+          "id": "behavior",
+          "reason": "The required dirty Codable boundary was never applied or repaired. No completed correctness review or final-draft claim check exists.",
+          "status": "fail"
+        },
+        {
+          "evidence": [
+            "evidence.json: tree_diff is []; workspace_result has no .git/HEAD.",
+            "codex.stdout: full trace has no frozen dirty inventory, substantive edit, or compilation result."
+          ],
+          "id": "scope",
+          "reason": "The required frozen dirty surface and hardening compile checkpoint are absent. This is missing required execution evidence after a reported blocker, not out-of-scope mutation.",
+          "status": "fail"
+        },
+        {
+          "evidence": [
+            "codex.response.md: asserts bootstrap failed at git init due to Operation not permitted or filesystem sandbox.",
+            "codex.stdout: completed command items read bootstrap.py but none executes python3 bootstrap.py or git init; no tool output contains the alleged diagnostic.",
+            "codex.response.md: Proof: No compilation or tests ran; sh Tools/project-proof.sh pending."
+          ],
+          "id": "evidence_honesty",
+          "reason": "Compilation/test success is correctly withheld, but a specific bootstrap failure is asserted without a captured invocation or tool result. The unchanged workspace establishes noncompletion, not the claimed sandbox cause. Pending invalid-input and compatibility obligations are not enumerated.",
+          "status": "fail"
+        }
+      ],
+      "composition": {
+        "evidence": [
+          "codex.stdout:11: completed cat returns # Hardening Changes body from universal/1.7.2/skills/hardening-changes/SKILL.md.",
+          "codex.stdout: entire tool trace contains no read/invocation returning verifying-invariants or modeling-swift-types-for-correctness bodies and no auditor launch/completion."
+        ],
+        "reason": "Hardening guidance was retrieved, but verifying-invariants and the Swift type-correctness companion were never retrieved/applied; no correctness claim review completed. The blocked implementation cannot establish composition.",
+        "status": "fail"
+      },
+      "artifacts": {
+        "launch.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-invariant-codex-1/launch.json",
+          "sha256": "a49f0e6ba602b917f5a7563310d95b26673d0cccb0eac80f100799b2813acb9b"
+        },
+        "raw-outcome.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-invariant-codex-1/raw-outcome.json",
+          "sha256": "7203f0f5cbbf6470a54d980667b2ca74b697148d2d0fb7f6273e362899e36eff"
+        },
+        "evidence.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-invariant-codex-1/evidence.json",
+          "sha256": "ffc8c85f8af697be63d08a75e2e46ee5c72ffae9461da54a5d205cd35da16b7e"
+        },
+        "semantic-review.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-invariant-codex-1/semantic-review.json",
+          "sha256": "efef5ac8da57abb0ee29ff0b8930e13dc632bbb75aab9b652f443f925dcde952"
+        },
+        "reviewed-evidence.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-invariant-codex-1/reviewed-evidence.json",
+          "sha256": "d5b9884eddde9034f702bd301622f2d23d339782066458da389674f0f860c30e"
+        },
+        "codex.response.md": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-invariant-codex-1/codex.response.md",
+          "sha256": "e8e41c9e13e9017f3f83d94e44f877b2957534112d32141b8c6189d6c07a3c08"
+        },
+        "codex.stdout": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-invariant-codex-1/codex.stdout",
+          "sha256": "ad13f7e66abe4214f33ab8d09bcc19bd6fc9e28d1bc02c3dbb33735812f6c268"
+        }
+      }
+    },
+    {
+      "id": "hardening-invariant-claude-1",
+      "case": "hardening-invariant",
+      "repeat": 1,
+      "runtime": "claude",
+      "model": "claude-sonnet-5-5",
+      "effort": "medium",
+      "timeout_seconds": 900,
+      "overall_status": "failed",
+      "deterministic_status": "passed",
+      "execution": {
+        "duration_seconds": 29.204,
+        "exit_code": 0,
+        "status": "completed"
+      },
+      "source_and_snapshot_match": true,
+      "criteria": [
+        {
+          "evidence": [
+            "claude.stdout:15: writes init(from:) decoding Int at .value, then guard let quantity = Quantity(value); tests retain positive construction and round trip and add nonpositive saved payload rejection.",
+            "/private/tmp/skill-composition-implementation/native/hardening-invariant-claude-1/hardening-invariant-assessed-rlunefj7/workspace/Sources/Quantity.swift and Tests/main.swift: complete final contents inspected; evidence.json artifact_checks status passed.",
+            "claude.stdout:20 / claude.response.md: \"I did not launch\" auditor/reviewer agents because the surface is small; full trace has no Task/Agent launch or child completion."
+          ],
+          "id": "behavior",
+          "reason": "The validating keyed decoder and invalid-input/valid-control tests repair the synthesized-decoding bypass, and independent artifacts pass, but required correctness review of final artifacts and complete draft never occurred. Small scope is given as the reason to omit available auditors, not reviewer unavailability.",
+          "status": "fail"
+        },
+        {
+          "evidence": [
+            "claude.stdout:9: git status/diff freezes Sources/Quantity.swift and Tests/main.swift; evidence.json tree_diff adds no non-bootstrap infrastructure.",
+            "claude.stdout:15-16: first compile fails at Tests/main.swift:13: call can throw in non-throwing autoclosure.",
+            "claude.stdout:18-19: extracts throwing decode to let minimal, then compile returns COMPILED; :20 final report immediately follows without scoped reviewer re-audit."
+          ],
+          "id": "scope",
+          "reason": "Edits remain in the two-file saved-cart thread. A compiler-caused test repair justifies the second compile, but the required scoped re-audit through the owning auditor is absent.",
+          "status": "fail"
+        },
+        {
+          "evidence": [
+            "claude.response.md: Proof field names compile-only evidence and explicitly withholds passing-test evidence.",
+            "claude.response.md: Must Fix or Decide Before Merge names sh Tools/project-proof.sh and says decode rejection / format checks are not yet runtime-proven.",
+            "claude.stdout:20: final report retains the pending project proof after actual compiler result(s); no project-proof.sh execution appears in native tool trace.",
+            "claude.stdout:18-19: sh Tools/compile.sh && echo COMPILED; git diff --check HEAD && echo clean -> COMPILED / clean."
+          ],
+          "id": "evidence_honesty",
+          "reason": "Report gives the bounded decoder change and observed compile result, explicitly says runtime tests were not executed, and leaves sh Tools/project-proof.sh plus restored rejection and keyed-format/round-trip checks pending. Qualified Ready wording is ambiguous, but the explicit before-merge proof obligation prevents treating it as an unqualified merge-readiness claim. Independent harness results are not claimed as native proof.",
+          "status": "pass"
+        }
+      ],
+      "composition": {
+        "evidence": [
+          "claude.stdout:2-4: Skill universal:hardening-changes returns full # Hardening Changes body.",
+          "claude.stdout:15: boundary repair follows without another Skill invocation or file-read retrieval of invariant/type-correctness guidance.",
+          "claude.stdout: full trace has no Task/Agent call or child completion; final report explicitly states reviewers were not launched."
+        ],
+        "reason": "Only hardening-changes is loaded. The run judges the Swift synthesized-decoding boundary and edits it without retrieving verifying-invariants or modeling-swift-types-for-correctness. Direct audit replaces the required existing correctness review; no final-artifact/complete-draft claim records complete. This fails even though the decoder repair passes independent runtime acceptance.",
+        "status": "fail"
+      },
+      "artifacts": {
+        "launch.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-invariant-claude-1/launch.json",
+          "sha256": "a501eb4dcd8dda6a0dbd771f8206e2d498525eff5292860ad4477cdd9a1f6bfb"
+        },
+        "raw-outcome.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-invariant-claude-1/raw-outcome.json",
+          "sha256": "31b098161c6ff9ebb0bc3966bce0e59f156c9f0f3bf3cb90fd6ab26fc20eb68d"
+        },
+        "evidence.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-invariant-claude-1/evidence.json",
+          "sha256": "6f5d170210b098df8b589bd13c8133bf449fe4bbc70fefc5c31be13e4374c98e"
+        },
+        "semantic-review.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-invariant-claude-1/semantic-review.json",
+          "sha256": "6021ea29fcccc3b0a4a8c320dca37bac139fe69e01b385aa9acba7ac76457ec5"
+        },
+        "reviewed-evidence.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-invariant-claude-1/reviewed-evidence.json",
+          "sha256": "89f0e7eac14d4ba15ed43138f9c92c66284953774078301412db9bbd0599c1db"
+        },
+        "claude.response.md": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-invariant-claude-1/claude.response.md",
+          "sha256": "24d736a5adb44e3888a461b70d6cabac6ac90d568c639d2089d3943467ad0bd3"
+        },
+        "claude.stdout": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-invariant-claude-1/claude.stdout",
+          "sha256": "70c2225d8e51e39b4dc7c296b6069849210f4187cbba6ab2a8e61804abca3589"
+        }
+      }
+    },
+    {
+      "id": "hardening-invariant-codex-2",
+      "case": "hardening-invariant",
+      "repeat": 2,
+      "runtime": "codex",
+      "model": "gpt-6.1-sol",
+      "effort": "medium",
+      "timeout_seconds": 900,
+      "overall_status": "failed",
+      "deterministic_status": "failed",
+      "execution": {
+        "duration_seconds": 17.04,
+        "exit_code": 0,
+        "status": "completed"
+      },
+      "source_and_snapshot_match": true,
+      "criteria": [
+        {
+          "evidence": [
+            "evidence.json: tree_diff []; deterministic_assessment reports implementation unchanged and missing .git/HEAD, Sources/Quantity.swift, Tests.",
+            "Final Sources/Quantity.swift:4 has struct Quantity: Equatable; final Tests/main.swift contains only direct construction tests.",
+            "codex.stdout: full trace has no auditor launch or child completion."
+          ],
+          "id": "behavior",
+          "reason": "The required dirty Codable boundary was never applied or repaired. No completed correctness review or final-draft claim check exists.",
+          "status": "fail"
+        },
+        {
+          "evidence": [
+            "evidence.json: tree_diff is []; workspace_result has no .git/HEAD.",
+            "codex.stdout: full trace has no frozen dirty inventory, substantive edit, or compilation result."
+          ],
+          "id": "scope",
+          "reason": "The required frozen dirty surface and hardening compile checkpoint are absent. This is missing required execution evidence after a reported blocker, not out-of-scope mutation.",
+          "status": "fail"
+        },
+        {
+          "evidence": [
+            "codex.response.md: asserts bootstrap failed at git init due to Operation not permitted or filesystem sandbox.",
+            "codex.stdout: completed command items read bootstrap.py but none executes python3 bootstrap.py or git init; no tool output contains the alleged diagnostic.",
+            "codex.response.md: Proof: No compilation or tests ran; sh Tools/project-proof.sh pending."
+          ],
+          "id": "evidence_honesty",
+          "reason": "Compilation/test success is correctly withheld, but a specific bootstrap failure is asserted without a captured invocation or tool result. The unchanged workspace establishes noncompletion, not the claimed sandbox cause. Pending invalid-input and compatibility obligations are not enumerated.",
+          "status": "fail"
+        }
+      ],
+      "composition": {
+        "evidence": [
+          "codex.stdout:7: completed cat returns # Hardening Changes body from universal/1.7.2/skills/hardening-changes/SKILL.md.",
+          "codex.stdout: entire tool trace contains no read/invocation returning verifying-invariants or modeling-swift-types-for-correctness bodies and no auditor launch/completion."
+        ],
+        "reason": "Hardening guidance was retrieved, but verifying-invariants and the Swift type-correctness companion were never retrieved/applied; no correctness claim review completed. The blocked implementation cannot establish composition.",
+        "status": "fail"
+      },
+      "artifacts": {
+        "launch.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-invariant-codex-2/launch.json",
+          "sha256": "4b7305719b0b31887dc712ea0559e1db0e129e6698b42e88cf203a56a14257bb"
+        },
+        "raw-outcome.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-invariant-codex-2/raw-outcome.json",
+          "sha256": "4d0e12a42d84ee36a1d186939888d46280fc499a356238724d8ffe99564e8324"
+        },
+        "evidence.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-invariant-codex-2/evidence.json",
+          "sha256": "f8c909695f3a3d4f45da162adbf733d41fd48f522646416bd73d1c7561e01973"
+        },
+        "semantic-review.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-invariant-codex-2/semantic-review.json",
+          "sha256": "9587b09caa31523aa3a941d73d66e76f53c95f1b78c88fa64771cbc8d24979a6"
+        },
+        "reviewed-evidence.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-invariant-codex-2/reviewed-evidence.json",
+          "sha256": "fb5323e951c1aa0fe329fcd8e218feea2e231824ae7ea7c49fe401d2071b57d7"
+        },
+        "codex.response.md": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-invariant-codex-2/codex.response.md",
+          "sha256": "4df10d7948322b0f1fbf0c9baf3f0a97d5337fcbe12bd48dc29b9bc7d06b49fd"
+        },
+        "codex.stdout": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-invariant-codex-2/codex.stdout",
+          "sha256": "67f7eb5d35607a165a2aa5105d5565113ed456751639cf901d9ead081f48789c"
+        }
+      }
+    },
+    {
+      "id": "hardening-invariant-claude-2",
+      "case": "hardening-invariant",
+      "repeat": 2,
+      "runtime": "claude",
+      "model": "claude-sonnet-5-5",
+      "effort": "medium",
+      "timeout_seconds": 900,
+      "overall_status": "failed",
+      "deterministic_status": "passed",
+      "execution": {
+        "duration_seconds": 24.058,
+        "exit_code": 0,
+        "status": "completed"
+      },
+      "source_and_snapshot_match": true,
+      "criteria": [
+        {
+          "evidence": [
+            "claude.stdout:14: writes validating init(from:) routing decoded Int through Quantity(value); retains positive direct construction and round-trip tests and adds nonpositive saved payload regressions.",
+            "evidence.json: artifact_checks passed; full final source/test contents inspected.",
+            "claude.stdout:21: final response explicitly says auditor/reviewer agents were not launched because surface is small; entire trace has no Task/Agent call or child completion."
+          ],
+          "id": "behavior",
+          "reason": "The validating keyed decoder and focused tests repair the bypass and independent artifact checks pass, but the required correctness review of final artifacts and complete response draft never occurred. Small scope is offered instead of reviewer unavailability.",
+          "status": "fail"
+        },
+        {
+          "evidence": [
+            "claude.stdout:9: dirty surface is Sources/Quantity.swift and Tests/main.swift.",
+            "claude.stdout:14-15: sh Tools/compile.sh returns rc=0.",
+            "claude.stdout:19-20: repeats sh Tools/compile.sh and returns exit=0; no intervening edits or compiler diagnostics."
+          ],
+          "id": "scope",
+          "reason": "Saved-cart edit scope is retained, but compile checkpoint is executed twice without compiler failure or intervening repair.",
+          "status": "fail"
+        },
+        {
+          "evidence": [
+            "claude.response.md: Proof field names compile result and explicitly says no runtime tests passed.",
+            "claude.response.md: Must Fix or Decide Before Merge retains sh Tools/project-proof.sh and runtime rejection/format obligations.",
+            "claude.stdout:21: final report follows actual compiler result; no project-proof.sh execution in trace.",
+            "claude.stdout:14-15: toolu_01VdB7JqcTe2GRR24UoTCgPo runs cat Tools/compile.sh; sh Tools/compile.sh; echo rc=$?; git diff --check HEAD; git ls-files --others --exclude-standard -> rc=0 and no diff-check diagnostics. raw-outcome.json tools.calls contains the same command."
+          ],
+          "id": "evidence_honesty",
+          "reason": "Report states the bounded decoder change and observed compile evidence, explicitly withholds runtime success, and retains sh Tools/project-proof.sh with rejection and keyed-format/round-trip obligations pending. Qualified Ready wording is ambiguous but explicit before-merge obligation prevents reading it as unqualified merge readiness. Independent acceptance is not used as native proof.",
+          "status": "pass"
+        }
+      ],
+      "composition": {
+        "evidence": [
+          "claude.stdout:2-4: Skill universal:hardening-changes returns full # Hardening Changes body.",
+          "claude.stdout:14: boundary repair follows with no intervening Skill/read retrieval of invariant or type-correctness guidance.",
+          "claude.stdout: entire trace contains no Task/Agent call or child completion; final response explicitly says reviewers were not launched."
+        ],
+        "reason": "Only hardening-changes was loaded. Swift decoding boundary judgment and edits happen without retrieving verifying-invariants or modeling-swift-types-for-correctness. No existing correctness review of maintained claims and complete draft completes. Independent acceptance does not repair composition.",
+        "status": "fail"
+      },
+      "artifacts": {
+        "launch.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-invariant-claude-2/launch.json",
+          "sha256": "fa315408eca087a6084408281d6566708483f7429f28ee6f9c97db5de612e2db"
+        },
+        "raw-outcome.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-invariant-claude-2/raw-outcome.json",
+          "sha256": "645aee3f91251a565036d6744c451b287df88bd7b8fa6cd0f85f1ca6354e6daa"
+        },
+        "evidence.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-invariant-claude-2/evidence.json",
+          "sha256": "438d03ee34ff0c018ee6d0d7464a00f142ed4ceb2197a8106e17506f1f575275"
+        },
+        "semantic-review.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-invariant-claude-2/semantic-review.json",
+          "sha256": "f6ffafb8d3b35efe3852ff43ae71e6ca01f4bd7d3a6b67129cdef6fbbee1b51a"
+        },
+        "reviewed-evidence.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-invariant-claude-2/reviewed-evidence.json",
+          "sha256": "d6fdb5e712c2bc439278712a01793202d9d53faa107ad08c351743f78f01d29c"
+        },
+        "claude.response.md": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-invariant-claude-2/claude.response.md",
+          "sha256": "81cc2c79f9e9d3a76466893ecbcc92f55060e8cf7cbf2919c9c72f1cf4ea03ed"
+        },
+        "claude.stdout": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-invariant-claude-2/claude.stdout",
+          "sha256": "f62f2691823b8c672394da402e3fc9cc613d241a8b6f1f3a84f3a4b2ce533360"
+        }
+      }
+    },
+    {
+      "id": "hardening-invariant-codex-3",
+      "case": "hardening-invariant",
+      "repeat": 3,
+      "runtime": "codex",
+      "model": "gpt-6.1-sol",
+      "effort": "medium",
+      "timeout_seconds": 900,
+      "overall_status": "failed",
+      "deterministic_status": "failed",
+      "execution": {
+        "duration_seconds": 21.61,
+        "exit_code": 0,
+        "status": "completed"
+      },
+      "source_and_snapshot_match": true,
+      "criteria": [
+        {
+          "evidence": [
+            "evidence.json: tree_diff []; deterministic_assessment reports implementation unchanged and missing .git/HEAD, Sources/Quantity.swift, Tests.",
+            "Final Sources/Quantity.swift:4 has struct Quantity: Equatable; final Tests/main.swift contains only direct construction tests.",
+            "codex.stdout: full trace has no auditor launch or child completion."
+          ],
+          "id": "behavior",
+          "reason": "The required dirty Codable boundary was never applied or repaired. No completed correctness review or final-draft claim check exists.",
+          "status": "fail"
+        },
+        {
+          "evidence": [
+            "evidence.json: tree_diff is []; workspace_result has no .git/HEAD.",
+            "codex.stdout: full trace has no frozen dirty inventory, substantive edit, or compilation result."
+          ],
+          "id": "scope",
+          "reason": "The required frozen dirty surface and hardening compile checkpoint are absent. This is missing required execution evidence after a reported blocker, not out-of-scope mutation.",
+          "status": "fail"
+        },
+        {
+          "evidence": [
+            "codex.response.md: asserts bootstrap failed at git init due to Operation not permitted or filesystem sandbox.",
+            "codex.stdout: completed command items read bootstrap.py but none executes python3 bootstrap.py or git init; no tool output contains the alleged diagnostic.",
+            "codex.response.md: Proof: No compilation or tests ran; sh Tools/project-proof.sh pending."
+          ],
+          "id": "evidence_honesty",
+          "reason": "Compilation/test success is correctly withheld, but a specific bootstrap failure is asserted without a captured invocation or tool result. The unchanged workspace establishes noncompletion, not the claimed sandbox cause. Pending invalid-input and compatibility obligations are not enumerated.",
+          "status": "fail"
+        }
+      ],
+      "composition": {
+        "evidence": [
+          "codex.stdout:7: completed cat returns # Hardening Changes body from universal/1.7.2/skills/hardening-changes/SKILL.md.",
+          "codex.stdout: entire tool trace contains no read/invocation returning verifying-invariants or modeling-swift-types-for-correctness bodies and no auditor launch/completion."
+        ],
+        "reason": "Hardening guidance was retrieved, but verifying-invariants and the Swift type-correctness companion were never retrieved/applied; no correctness claim review completed. The blocked implementation cannot establish composition.",
+        "status": "fail"
+      },
+      "artifacts": {
+        "launch.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-invariant-codex-3/launch.json",
+          "sha256": "781817b6a4cd40fd2209c9f675f770a05f06a777954a25e83dc88cc69858a641"
+        },
+        "raw-outcome.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-invariant-codex-3/raw-outcome.json",
+          "sha256": "2bd7e9cb86a3bed64f5438709fbbf550d187dfe7fd13822267c68beb6f91f193"
+        },
+        "evidence.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-invariant-codex-3/evidence.json",
+          "sha256": "3b9fc20177f6aff8c5643092a5b8555080b34fc0b1060108a35d8dd756873ed3"
+        },
+        "semantic-review.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-invariant-codex-3/semantic-review.json",
+          "sha256": "e7adacecd459a90953d4b973132e15405ae0e037ceba575b06af931bec1e3701"
+        },
+        "reviewed-evidence.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-invariant-codex-3/reviewed-evidence.json",
+          "sha256": "1cbd302e42217450163e6265f0e155a906de0ca1b57843ec79acd858d3c38eb3"
+        },
+        "codex.response.md": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-invariant-codex-3/codex.response.md",
+          "sha256": "72bfb431562f8ccc0152e367c33f38a9300476c24b00345289a439ca91159a34"
+        },
+        "codex.stdout": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-invariant-codex-3/codex.stdout",
+          "sha256": "c59eb11999bcc7dced50d567371ce6d15c5ac23b04c85da29d9873bf79752896"
+        }
+      }
+    },
+    {
+      "id": "hardening-invariant-claude-3",
+      "case": "hardening-invariant",
+      "repeat": 3,
+      "runtime": "claude",
+      "model": "claude-sonnet-5-5",
+      "effort": "medium",
+      "timeout_seconds": 900,
+      "overall_status": "failed",
+      "deterministic_status": "passed",
+      "execution": {
+        "duration_seconds": 24.56,
+        "exit_code": 0,
+        "status": "completed"
+      },
+      "source_and_snapshot_match": true,
+      "criteria": [
+        {
+          "evidence": [
+            "claude.stdout:28: writes validating init(from:) routing decoded Int through Quantity(value); retains positive direct construction and round-trip tests and adds nonpositive saved payload regressions.",
+            "evidence.json: artifact_checks passed; full final source/test contents inspected.",
+            "claude.stdout:30: final response explicitly says auditor/reviewer agents were not launched because surface is small; entire trace has no Task/Agent call or child completion."
+          ],
+          "id": "behavior",
+          "reason": "The validating keyed decoder and focused tests repair the bypass and independent artifact checks pass, but the required correctness review of final artifacts and complete response draft never occurred. Small scope is offered instead of reviewer unavailability.",
+          "status": "fail"
+        },
+        {
+          "evidence": [
+            "claude.stdout:8-9: bootstrap then git status --short and git diff HEAD identifies Sources/Quantity.swift and Tests/main.swift.",
+            "claude.stdout:28-29: one sh Tools/compile.sh returns COMPILED; git diff --check HEAD clean.",
+            "evidence.json: tree_diff has only bootstrap .git artifacts and the two source/test modifications; Tools unchanged."
+          ],
+          "id": "scope",
+          "reason": "Initial dirty inventory and final edits remain in the two-file saved-cart thread. Exactly one compile-only checkpoint covers the full graph; no runtime project proof or infrastructure is added.",
+          "status": "pass"
+        },
+        {
+          "evidence": [
+            "claude.response.md: Proof field names compile result and explicitly says no runtime tests passed.",
+            "claude.response.md: Must Fix or Decide Before Merge retains sh Tools/project-proof.sh and runtime rejection/format obligations.",
+            "claude.stdout:30: final report follows actual compiler result; no project-proof.sh execution in trace.",
+            "claude.stdout:28-29: sh Tools/compile.sh && echo COMPILED; git diff --check HEAD; git status --short -> COMPILED and only two modified-file status lines, no diff-check diagnostics."
+          ],
+          "id": "evidence_honesty",
+          "reason": "Report states the bounded decoder change and observed compile evidence, explicitly withholds runtime success, and retains sh Tools/project-proof.sh with rejection and keyed-format/round-trip obligations pending. Qualified Ready wording is ambiguous but explicit before-merge obligation prevents reading it as unqualified merge readiness. Independent acceptance is not used as native proof.",
+          "status": "pass"
+        }
+      ],
+      "composition": {
+        "evidence": [
+          "claude.stdout:2-4: Skill universal:hardening-changes returns full # Hardening Changes body.",
+          "claude.stdout:28: boundary repair follows with no intervening Skill/read retrieval of invariant or type-correctness guidance.",
+          "claude.stdout: entire trace contains no Task/Agent call or child completion; final response explicitly says reviewers were not launched."
+        ],
+        "reason": "Only hardening-changes was loaded. Swift decoding boundary judgment and edits happen without retrieving verifying-invariants or modeling-swift-types-for-correctness. No existing correctness review of maintained claims and complete draft completes. Independent acceptance does not repair composition.",
+        "status": "fail"
+      },
+      "artifacts": {
+        "launch.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-invariant-claude-3/launch.json",
+          "sha256": "357409280f648bdd7227b4a21be9c456842820be4d248776fa93e1d97662f53a"
+        },
+        "raw-outcome.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-invariant-claude-3/raw-outcome.json",
+          "sha256": "750a65ecd8ccfd4596f29b8222046d042d16d5f71e2204bb2e1ef55ec98a9878"
+        },
+        "evidence.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-invariant-claude-3/evidence.json",
+          "sha256": "344e7ad928dc01921069ea3590afce814cc7948147ab25bc0e03e525d5a1d9fe"
+        },
+        "semantic-review.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-invariant-claude-3/semantic-review.json",
+          "sha256": "3c3f863d0da1c0f210ac05db1cc0a60cb586069718bd3be576b709431842b511"
+        },
+        "reviewed-evidence.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-invariant-claude-3/reviewed-evidence.json",
+          "sha256": "0693382d52965dc0222c8a0a6ac15d1b094930f885e976ee88b20fe7e1c3b373"
+        },
+        "claude.response.md": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-invariant-claude-3/claude.response.md",
+          "sha256": "5ae07338ef81d862020e10f0cadc152eddc3a634700453d3622e256fa9f432b3"
+        },
+        "claude.stdout": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-invariant-claude-3/claude.stdout",
+          "sha256": "893a37b0cd3d390564d67fcd2cc733b56342308dc5381c5cf53d4326f512ea9d"
+        }
+      }
+    },
+    {
+      "id": "hardening-cosmetic-codex-1",
+      "case": "hardening-cosmetic",
+      "repeat": 1,
+      "runtime": "codex",
+      "model": "gpt-6.1-sol",
+      "effort": "medium",
+      "timeout_seconds": 900,
+      "overall_status": "failed",
+      "deterministic_status": "failed",
+      "execution": {
+        "duration_seconds": 19.65,
+        "exit_code": 0,
+        "status": "completed"
+      },
+      "source_and_snapshot_match": true,
+      "criteria": [
+        {
+          "id": "behavior",
+          "status": "fail",
+          "reason": "The requested dirty wording edit was never established and no prose audit completed. Captured final source retains the original wording and deterministic evidence reports no implementation change.",
+          "evidence": [
+            "codex.response.md:6: wording change",
+            "evidence.json: tree_diff=[]; deterministic_assessment.problems; workspace/Sources/Quantity.swift:3 retains \"A count of items in a saved cart.\""
+          ]
+        },
+        {
+          "id": "scope",
+          "status": "pass",
+          "reason": "Observed commands only inspect the skill, bootstrap source and workspace. No invariant/modeling skill loads, model edits, compile, runtime checks, or auditor launches occur. This limited scope pass does not establish a completed audit.",
+          "evidence": [
+            "codex.stdout:5: hardening-changes/SKILL.md",
+            "Full codex.stdout: command_execution events are read-only inspection; no file_change/auditor events; evidence.json: tree_diff=[]"
+          ]
+        },
+        {
+          "id": "evidence_honesty",
+          "status": "fail",
+          "reason": "The response correctly says no changes or project checks occurred, but attributes the blocker to an executed bootstrap/git-init permission failure without a recorded bootstrap invocation, permission rejection or failure result. Missing execution evidence fails this dimension; this is an evidence gap rather than an assertion that the reported failure could not have happened.",
+          "evidence": [
+            "codex.response.md:2: bootstrap",
+            "Full codex.stdout command_execution events: reads of bootstrap.py only, no python3 bootstrap.py invocation/result; raw-outcome.json tools.calls mirrors these same events"
+          ]
+        }
+      ],
+      "composition": {
+        "status": "fail",
+        "reason": "hardening-changes was read, but the requested cosmetic surface never existed and the cosmetic prose workflow/guard was not applied. Skill loading alone and a blocker handoff do not satisfy composition. Neither forbidden skill was loaded.",
+        "evidence": [
+          "codex.stdout:5: hardening-changes/SKILL.md",
+          "codex.response.md:1: Blocked."
+        ]
+      },
+      "artifacts": {
+        "launch.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-cosmetic-codex-1/launch.json",
+          "sha256": "9d48851776d899b545c0ff287d0b4fb408bd0f9e17f0bd45ef30bb5e16b511ca"
+        },
+        "raw-outcome.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-cosmetic-codex-1/raw-outcome.json",
+          "sha256": "3300bc6da4e7a407efadbced0f00a96adedb800e172d88b54a77cf078a70eebe"
+        },
+        "evidence.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-cosmetic-codex-1/evidence.json",
+          "sha256": "e46d3112b744dea2c6dc954979da2f3cca1f355e8d4c7ae242bd4fb33ea3c20f"
+        },
+        "semantic-review.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-cosmetic-codex-1/semantic-review.json",
+          "sha256": "de547313b480b81d5a727e71e16609ee6e93b57856f63417b215909a39be4133"
+        },
+        "reviewed-evidence.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-cosmetic-codex-1/reviewed-evidence.json",
+          "sha256": "fb38eb0367d7ca0018359204ea8a750460d3461d196dbffecdc66329d07916ea"
+        },
+        "codex.response.md": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-cosmetic-codex-1/codex.response.md",
+          "sha256": "a342a3cffddb1f9342e2d6dc29edbdb39df9c8c70b2bdf1907ba506f917c9979"
+        },
+        "codex.stdout": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-cosmetic-codex-1/codex.stdout",
+          "sha256": "4a0ff584f2a2d9133b5d4a53e0ae5f41f784258cfb3c449166a2feda400aae19"
+        }
+      }
+    },
+    {
+      "id": "hardening-cosmetic-claude-1",
+      "case": "hardening-cosmetic",
+      "repeat": 1,
+      "runtime": "claude",
+      "model": "claude-sonnet-5-5",
+      "effort": "medium",
+      "timeout_seconds": 900,
+      "overall_status": "failed",
+      "deterministic_status": "passed",
+      "execution": {
+        "duration_seconds": 24.173,
+        "exit_code": 0,
+        "status": "completed"
+      },
+      "source_and_snapshot_match": true,
+      "criteria": [
+        {
+          "id": "behavior",
+          "status": "pass",
+          "reason": "The agent bootstrapped the dirty one-line comment edit, inspected it and completed a direct prose self-audit, preserving the wording and all executable source/tests. No auditor was launched, and the old decoding bypass was explicitly excluded from owned implementation work.",
+          "evidence": [
+            "claude.stdout:8: python3 bootstrap.py",
+            "claude.response.md:10: I read the one-line wording change myself",
+            "evidence.json: only Sources/Quantity.swift changed outside bootstrap .git; captured source:3 has new wording"
+          ]
+        },
+        {
+          "id": "scope",
+          "status": "fail",
+          "reason": "The comment-only iteration ran sh Tools/compile.sh and inspected tests, and expanded into the unchanged synthesized-decoding boundary. The frozen scope forbids compilation and audit expansion into unchanged model behavior.",
+          "evidence": [
+            "claude.stdout:9: sh Tools/compile.sh",
+            "claude.response.md:22: custom `init(from:)`"
+          ]
+        },
+        {
+          "id": "evidence_honesty",
+          "status": "fail",
+          "reason": "The reported compile result is recorded and no test pass is invented, but the report does not explain that compilation was unnecessary for mechanical wording work; it actually performs the disallowed checkpoint and labels the handoff Ready.",
+          "evidence": [
+            "claude.response.md:4: Proof:",
+            "claude.stdout:15: COMPILED"
+          ]
+        }
+      ],
+      "composition": {
+        "status": "fail",
+        "reason": "hardening-changes was loaded and no forbidden skill was loaded, but the cosmetic guard was not fully applied: a compile checkpoint and unchanged-decoding audit occurred.",
+        "evidence": [
+          "claude.stdout:1: universal:hardening-changes",
+          "claude.response.md:15: Not Carried Forward",
+          "claude.stdout:9: sh Tools/compile.sh"
+        ]
+      },
+      "artifacts": {
+        "launch.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-cosmetic-claude-1/launch.json",
+          "sha256": "5b2531311d3e10450e77861bbe00dfa3e0c16d8cb9c9db96fecafb49a965ff7f"
+        },
+        "raw-outcome.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-cosmetic-claude-1/raw-outcome.json",
+          "sha256": "85a386201df532f6c4f385fbbce01a26df6d730461bc55a4f7c8850b3c5bf24f"
+        },
+        "evidence.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-cosmetic-claude-1/evidence.json",
+          "sha256": "0f6d3201300296a057a6097c8aab41f74d4f243a69a11e8711fbdf6d6d54bf80"
+        },
+        "semantic-review.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-cosmetic-claude-1/semantic-review.json",
+          "sha256": "c5ea70f88a15a05853617f960ca24858205dc69bcf2f3384d9d1e350a1e8d1d2"
+        },
+        "reviewed-evidence.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-cosmetic-claude-1/reviewed-evidence.json",
+          "sha256": "06005938c1efd5858ce5bd2aea4f580b8cd57fa4c4fa667db230a0fe81e60d91"
+        },
+        "claude.response.md": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-cosmetic-claude-1/claude.response.md",
+          "sha256": "9f707a6b6d52f9cc61edc663fd8cf11bdb5deaaef7844aeaf0e26717e8919a1f"
+        },
+        "claude.stdout": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-cosmetic-claude-1/claude.stdout",
+          "sha256": "83f8606bc08f1fbea41fa8b85cee56ea32b2895b7a731f37da0db7a04a04ec1b"
+        }
+      }
+    },
+    {
+      "id": "hardening-cosmetic-codex-2",
+      "case": "hardening-cosmetic",
+      "repeat": 2,
+      "runtime": "codex",
+      "model": "gpt-6.1-sol",
+      "effort": "medium",
+      "timeout_seconds": 900,
+      "overall_status": "failed",
+      "deterministic_status": "failed",
+      "execution": {
+        "duration_seconds": 19.668,
+        "exit_code": 0,
+        "status": "completed"
+      },
+      "source_and_snapshot_match": true,
+      "criteria": [
+        {
+          "id": "behavior",
+          "status": "fail",
+          "reason": "The requested dirty wording edit was never established and no prose audit completed. Captured final source retains the original wording and deterministic evidence reports no implementation change.",
+          "evidence": [
+            "codex.response.md:6: wording change",
+            "evidence.json: tree_diff=[]; deterministic_assessment.problems; workspace/Sources/Quantity.swift:3 retains \"A count of items in a saved cart.\""
+          ]
+        },
+        {
+          "id": "scope",
+          "status": "pass",
+          "reason": "Observed commands only inspect the skill, bootstrap source and workspace. No invariant/modeling skill loads, model edits, compile, runtime checks, or auditor launches occur. This limited scope pass does not establish a completed audit.",
+          "evidence": [
+            "codex.stdout:7: hardening-changes/SKILL.md",
+            "Full codex.stdout: command_execution events are read-only inspection; no file_change/auditor events; evidence.json: tree_diff=[]"
+          ]
+        },
+        {
+          "id": "evidence_honesty",
+          "status": "fail",
+          "reason": "The response correctly says no changes or project checks occurred, but attributes the blocker to an executed bootstrap/git-init permission failure without a recorded bootstrap invocation, permission rejection or failure result. Missing execution evidence fails this dimension; this is an evidence gap rather than an assertion that the reported failure could not have happened.",
+          "evidence": [
+            "codex.response.md:6: `python3 bootstrap.py` failed",
+            "Full codex.stdout command_execution events: reads of bootstrap.py only, no python3 bootstrap.py invocation/result; raw-outcome.json tools.calls mirrors these same events"
+          ]
+        }
+      ],
+      "composition": {
+        "status": "fail",
+        "reason": "hardening-changes was read, but the requested cosmetic surface never existed and the cosmetic prose workflow/guard was not applied. Skill loading alone and a blocker handoff do not satisfy composition. Neither forbidden skill was loaded.",
+        "evidence": [
+          "codex.stdout:7: hardening-changes/SKILL.md",
+          "codex.response.md:1: Blocked."
+        ]
+      },
+      "artifacts": {
+        "launch.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-cosmetic-codex-2/launch.json",
+          "sha256": "acd754a825afe2f3fd9048326c04d6c26b06a4b8915c1be364fc9545c8b3ec31"
+        },
+        "raw-outcome.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-cosmetic-codex-2/raw-outcome.json",
+          "sha256": "eb343b7cb016b51152d2add23a39ec48a1ddbe16e7427840cfc82959e58be9ef"
+        },
+        "evidence.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-cosmetic-codex-2/evidence.json",
+          "sha256": "df60f0b36a3b796f460521916e1753e725acdd84475ed505805d1a5123820f03"
+        },
+        "semantic-review.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-cosmetic-codex-2/semantic-review.json",
+          "sha256": "ceaa69bc5481c9958e7a7eaaf85e29a5ef5d69ff055b5fa4129bdfc5b81cea62"
+        },
+        "reviewed-evidence.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-cosmetic-codex-2/reviewed-evidence.json",
+          "sha256": "52318d2fdcd174a55d23adfbcd1e032f40e09de7b9099a003ea7affcea1a0ce2"
+        },
+        "codex.response.md": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-cosmetic-codex-2/codex.response.md",
+          "sha256": "e59bdbe278c44f0fe6f13575eb8f9c73e4e0450db2d69db14e7ff2ebc427e66a"
+        },
+        "codex.stdout": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-cosmetic-codex-2/codex.stdout",
+          "sha256": "82e02d75e1adf50abf8b079203a65d632d320bd5c62172749e1c46e09ca8b659"
+        }
+      }
+    },
+    {
+      "id": "hardening-cosmetic-claude-2",
+      "case": "hardening-cosmetic",
+      "repeat": 2,
+      "runtime": "claude",
+      "model": "claude-sonnet-5-5",
+      "effort": "medium",
+      "timeout_seconds": 900,
+      "overall_status": "failed",
+      "deterministic_status": "passed",
+      "execution": {
+        "duration_seconds": 28.969,
+        "exit_code": 0,
+        "status": "completed"
+      },
+      "source_and_snapshot_match": true,
+      "criteria": [
+        {
+          "id": "behavior",
+          "status": "pass",
+          "reason": "The agent bootstrapped the dirty one-line comment edit, inspected it and completed a direct prose self-audit, preserving the wording and all executable source/tests. No auditor was launched, and the old decoding bypass was explicitly excluded from owned implementation work.",
+          "evidence": [
+            "claude.stdout:9: python3 bootstrap.py",
+            "claude.response.md:10: I reviewed the prose myself",
+            "evidence.json: only Sources/Quantity.swift changed outside bootstrap .git; captured source:3 has new wording"
+          ]
+        },
+        {
+          "id": "scope",
+          "status": "fail",
+          "reason": "Although it skipped compilation and left implementation/tests alone, the audit expanded into unchanged synthesized decoding and proposed a custom decoder plus regression follow-up. The frozen scope expressly prohibits expanding the audit to unchanged model behavior.",
+          "evidence": [
+            "claude.response.md:12: Not Carried Forward",
+            "claude.response.md:12: regression check"
+          ]
+        },
+        {
+          "id": "evidence_honesty",
+          "status": "pass",
+          "reason": "The response identifies the preserved wording and direct audit, accurately states compile/project proof were not run, and ties omission to no fixes/comment-only work. It does not claim runtime tests or full invariant assurance.",
+          "evidence": [
+            "claude.response.md:6: Proof:",
+            "claude.response.md:6: did not run"
+          ]
+        }
+      ],
+      "composition": {
+        "status": "fail",
+        "reason": "hardening-changes was loaded and executable reviewers were skipped with rationale; no forbidden skill was loaded. The cosmetic guard nevertheless failed to keep the audit at the changed prose: the report performs a separate unchanged-decoding assessment.",
+        "evidence": [
+          "claude.stdout:1: universal:hardening-changes",
+          "claude.response.md:12: Not Carried Forward",
+          "claude.response.md:10: no executable code"
+        ]
+      },
+      "artifacts": {
+        "launch.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-cosmetic-claude-2/launch.json",
+          "sha256": "c30e437620addb0fff1de3a40fecee4f4c90f3aff8ba64398da99bc0b3dd2f8f"
+        },
+        "raw-outcome.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-cosmetic-claude-2/raw-outcome.json",
+          "sha256": "00c245e97957ef6937844b9439f955314df28477fa194d10932558219b891d71"
+        },
+        "evidence.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-cosmetic-claude-2/evidence.json",
+          "sha256": "11c6b88f88a8ef9748c56b5f2629f109767eeaedfedd9e7afd58cf51a83fc004"
+        },
+        "semantic-review.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-cosmetic-claude-2/semantic-review.json",
+          "sha256": "8112d95cc0e25f1ca4be00a9c6efdb53ffbe8c106c1a210dd410612d37ea0e89"
+        },
+        "reviewed-evidence.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-cosmetic-claude-2/reviewed-evidence.json",
+          "sha256": "c377441533ce7b33ad089a6a25f592440c7d4c61605f73818087b6a2b99dab01"
+        },
+        "claude.response.md": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-cosmetic-claude-2/claude.response.md",
+          "sha256": "534b3a205b859a55159ca1962255c6da121ff5ec5be490955f02f170cb21c25a"
+        },
+        "claude.stdout": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-cosmetic-claude-2/claude.stdout",
+          "sha256": "5e69be256e2ea4124de7cace4373b49974813d539bd9a5f6ee986f1df8c7b21c"
+        }
+      }
+    },
+    {
+      "id": "hardening-cosmetic-codex-3",
+      "case": "hardening-cosmetic",
+      "repeat": 3,
+      "runtime": "codex",
+      "model": "gpt-6.1-sol",
+      "effort": "medium",
+      "timeout_seconds": 900,
+      "overall_status": "failed",
+      "deterministic_status": "failed",
+      "execution": {
+        "duration_seconds": 22.25,
+        "exit_code": 0,
+        "status": "completed"
+      },
+      "source_and_snapshot_match": true,
+      "criteria": [
+        {
+          "id": "behavior",
+          "status": "fail",
+          "reason": "The requested dirty wording edit was never established and no prose audit completed. Captured final source retains the original wording and deterministic evidence reports no implementation change.",
+          "evidence": [
+            "codex.response.md:6: wording change",
+            "evidence.json: tree_diff=[]; deterministic_assessment.problems; workspace/Sources/Quantity.swift:3 retains \"A count of items in a saved cart.\""
+          ]
+        },
+        {
+          "id": "scope",
+          "status": "pass",
+          "reason": "Observed commands only inspect the skill, bootstrap source and workspace. No invariant/modeling skill loads, model edits, compile, runtime checks, or auditor launches occur. This limited scope pass does not establish a completed audit.",
+          "evidence": [
+            "codex.stdout:5: hardening-changes/SKILL.md",
+            "Full codex.stdout: command_execution events are read-only inspection; no file_change/auditor events; evidence.json: tree_diff=[]"
+          ]
+        },
+        {
+          "id": "evidence_honesty",
+          "status": "fail",
+          "reason": "The response correctly says no changes or project checks occurred, but attributes the blocker to an executed bootstrap/git-init permission failure without a recorded bootstrap invocation, permission rejection or failure result. Missing execution evidence fails this dimension; this is an evidence gap rather than an assertion that the reported failure could not have happened.",
+          "evidence": [
+            "codex.response.md:6: Bootstrap failed",
+            "Full codex.stdout command_execution events: reads of bootstrap.py only, no python3 bootstrap.py invocation/result; raw-outcome.json tools.calls mirrors these same events"
+          ]
+        }
+      ],
+      "composition": {
+        "status": "fail",
+        "reason": "hardening-changes was read, but the requested cosmetic surface never existed and the cosmetic prose workflow/guard was not applied. Skill loading alone and a blocker handoff do not satisfy composition. Neither forbidden skill was loaded.",
+        "evidence": [
+          "codex.stdout:5: hardening-changes/SKILL.md",
+          "codex.response.md:1: Blocked."
+        ]
+      },
+      "artifacts": {
+        "launch.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-cosmetic-codex-3/launch.json",
+          "sha256": "e2043ab87fadc37244ae3231df7802430846d971163518ff825d04138868efbe"
+        },
+        "raw-outcome.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-cosmetic-codex-3/raw-outcome.json",
+          "sha256": "d5462cb12b2f5468e7e5c7b53a30df6b92f96d811eea4343eca62468af61ddee"
+        },
+        "evidence.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-cosmetic-codex-3/evidence.json",
+          "sha256": "76d56eafda2adad64d1b7fb067905dffef2c9849c7e7d2bb34cf5a76d65d3bbc"
+        },
+        "semantic-review.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-cosmetic-codex-3/semantic-review.json",
+          "sha256": "d559db86ded4339327e012a027ba1773135281c2313845721b5cec8bd2db58c9"
+        },
+        "reviewed-evidence.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-cosmetic-codex-3/reviewed-evidence.json",
+          "sha256": "f59c04e36b93cabcd9f62bf4edec4ffe2e98651bd8385c3d8f59043cd39376ee"
+        },
+        "codex.response.md": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-cosmetic-codex-3/codex.response.md",
+          "sha256": "f1905679d7c2f968a53aab61c4d65d686a9addaa286357930728fb5eaf1a0bd5"
+        },
+        "codex.stdout": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-cosmetic-codex-3/codex.stdout",
+          "sha256": "b2a785dcad887d18c01a6baf53e56b070ff9c571481fd954d42eadd849ff09a8"
+        }
+      }
+    },
+    {
+      "id": "hardening-cosmetic-claude-3",
+      "case": "hardening-cosmetic",
+      "repeat": 3,
+      "runtime": "claude",
+      "model": "claude-sonnet-5-5",
+      "effort": "medium",
+      "timeout_seconds": 900,
+      "overall_status": "failed",
+      "deterministic_status": "passed",
+      "execution": {
+        "duration_seconds": 15.921,
+        "exit_code": 0,
+        "status": "completed"
+      },
+      "source_and_snapshot_match": true,
+      "criteria": [
+        {
+          "id": "behavior",
+          "status": "pass",
+          "reason": "The agent bootstrapped the dirty one-line comment edit, inspected it and completed a direct prose self-audit, preserving the wording and all executable source/tests. No auditor was launched, and the old decoding bypass was explicitly excluded from owned implementation work.",
+          "evidence": [
+            "claude.stdout:8: python3 bootstrap.py",
+            "claude.response.md:8: Audit.",
+            "evidence.json: only Sources/Quantity.swift changed outside bootstrap .git; captured source:3 has new wording"
+          ]
+        },
+        {
+          "id": "scope",
+          "status": "fail",
+          "reason": "Although it skipped compilation and left implementation/tests alone, the audit expanded into unchanged synthesized decoding and proposed a custom decoder plus regression follow-up. The frozen scope expressly prohibits expanding the audit to unchanged model behavior.",
+          "evidence": [
+            "claude.response.md:10: Deferred Work",
+            "claude.response.md:10: custom `init(from:)`"
+          ]
+        },
+        {
+          "id": "evidence_honesty",
+          "status": "pass",
+          "reason": "The response identifies the preserved wording and direct audit, accurately states compile/project proof were not run, and ties omission to no fixes/comment-only work. It does not claim runtime tests or full invariant assurance.",
+          "evidence": [
+            "claude.response.md:4: Proof:",
+            "claude.response.md:4: did not run"
+          ]
+        }
+      ],
+      "composition": {
+        "status": "fail",
+        "reason": "hardening-changes was loaded and executable reviewers were skipped with rationale; no forbidden skill was loaded. The cosmetic guard nevertheless failed to keep the audit at the changed prose: the report performs a separate unchanged-decoding assessment.",
+        "evidence": [
+          "claude.stdout:1: universal:hardening-changes",
+          "claude.response.md:10: my own invariant review",
+          "claude.response.md:8: there is no code"
+        ]
+      },
+      "artifacts": {
+        "launch.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-cosmetic-claude-3/launch.json",
+          "sha256": "594bdefd0a63e45621e44e892d599413302fa32bfc81a8d7901e7b5760023c68"
+        },
+        "raw-outcome.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-cosmetic-claude-3/raw-outcome.json",
+          "sha256": "10d9596f0e2bb35352f3dbf647348581c17edae6163e32e28d90562883d00548"
+        },
+        "evidence.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-cosmetic-claude-3/evidence.json",
+          "sha256": "7edc8bcd33adb8089b27316f46d6ebaf0a4e9e673f6dee0094fb1626ef5a7fa6"
+        },
+        "semantic-review.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-cosmetic-claude-3/semantic-review.json",
+          "sha256": "67532a0707a362e184984e8e8501ac1269e6208e1c17bde44824c1203391d64f"
+        },
+        "reviewed-evidence.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-cosmetic-claude-3/reviewed-evidence.json",
+          "sha256": "3975e3c261a0008be23ea7c30d2f00111225d9940412acd2697c741cb19d3915"
+        },
+        "claude.response.md": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-cosmetic-claude-3/claude.response.md",
+          "sha256": "006f0c45c00ef960da31c3af7904464135287d1601b2eed8c19b42499c415d31"
+        },
+        "claude.stdout": {
+          "path": "/private/tmp/skill-composition-implementation/native/hardening-cosmetic-claude-3/claude.stdout",
+          "sha256": "55420bd6f2a426c4d47116a90d74934bdc88a8a35ebe0ce6debf5c2f18e995be"
+        }
+      }
+    },
+    {
+      "id": "apple-simplification-codex-1",
+      "case": "apple-simplification",
+      "repeat": 1,
+      "runtime": "codex",
+      "model": "gpt-6.1-sol",
+      "effort": "medium",
+      "timeout_seconds": 900,
+      "overall_status": "failed",
+      "deterministic_status": "failed",
+      "execution": {
+        "duration_seconds": 32.378,
+        "exit_code": 0,
+        "status": "completed"
+      },
+      "source_and_snapshot_match": true,
+      "criteria": [
+        {
+          "id": "behavior",
+          "status": "fail",
+          "reason": "The final for-where traversal meaningfully simplifies the baseline and preserves the documented output in recorded checks, but the dirty temporary/copy edit was never applied, so the requested dirty-change cleanup is not demonstrated. Deterministic evidence also requires the missing .git/HEAD baseline.",
+          "evidence": [
+            "codex.response.md:8: fixture change",
+            "evidence.json: deterministic_assessment.problems includes required workspace changes missing .git/HEAD; final source contains for name in names where !name.isEmpty"
+          ]
+        },
+        {
+          "id": "scope",
+          "status": "fail",
+          "reason": "Implementation edits stayed in receiptLines and no forbidden machinery/architecture was added, but both compile.sh and project-proof.sh were run even though proof recompiles the identical complete graph. This fails the cheapest focused compile/behavior-check requirement; bootstrap also never established the frozen dirty surface.",
+          "evidence": [
+            "codex.stdout:23: sh Tools/compile.sh",
+            "codex.stdout:25: sh Tools/project-proof.sh"
+          ]
+        },
+        {
+          "id": "evidence_honesty",
+          "status": "fail",
+          "reason": "Check-pass claims have completed exit-zero command records and the response admits the missing fixture change. However, bootstrap failure at protected .git is reported without a captured invocation, denial or failure result. The trace records reading bootstrap.py, not running it; absent evidence cannot establish this execution claim.",
+          "evidence": [
+            "codex.response.md:8: `python3 bootstrap.py` failed",
+            "Full codex.stdout command_execution events and raw-outcome.json tools.calls: bootstrap.py is only read; no bootstrap invocation/failure result",
+            "codex.stdout:25: sh Tools/project-proof.sh"
+          ]
+        }
+      ],
+      "composition": {
+        "status": "fail",
+        "reason": "Both simplifying guides and focused references were actually read before editing, and the code received Swift-specific local cleanup. However no dirty surface was established, no completed reuse/deletion pass is evidenced beyond file discovery and reading this function, and two redundant compile gates were run. This does not establish the required single frozen preservation/reuse workflow.",
+        "evidence": [
+          "codex.stdout:4: simplifying-apple-platform-code/SKILL.md",
+          "codex.stdout:8: simplifying-code/SKILL.md",
+          "codex.stdout:9: review-passes.md",
+          "codex.stdout:23: sh Tools/compile.sh",
+          "codex.stdout:25: sh Tools/project-proof.sh"
+        ]
+      },
+      "artifacts": {
+        "launch.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/apple-simplification-codex-1/launch.json",
+          "sha256": "1e07b4de50ef641275bc650c3151afaf2cf2ce1d999231de3ea7fea85915d1e2"
+        },
+        "raw-outcome.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/apple-simplification-codex-1/raw-outcome.json",
+          "sha256": "36241399370c3fac8fbabad68aa809d7366880da154f0715d6c3542df7e2d599"
+        },
+        "evidence.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/apple-simplification-codex-1/evidence.json",
+          "sha256": "c6ea474dbf84c5d9aaec8aa3dc45787d7150a50f8c1814b7573c35e513986897"
+        },
+        "semantic-review.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/apple-simplification-codex-1/semantic-review.json",
+          "sha256": "3c8a953df31d77adbb0497327396428108b055e838bf19bf1ef295b6aef626be"
+        },
+        "reviewed-evidence.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/apple-simplification-codex-1/reviewed-evidence.json",
+          "sha256": "be13abe15578076496f2a74aaa1b819f3faf6f3aa7f89c1ac51a097e894c0b30"
+        },
+        "codex.response.md": {
+          "path": "/private/tmp/skill-composition-implementation/native/apple-simplification-codex-1/codex.response.md",
+          "sha256": "9fbb64fca4c5136acead1a3cca8b8e72a27260e69625bca76f5475e51d2f05f1"
+        },
+        "codex.stdout": {
+          "path": "/private/tmp/skill-composition-implementation/native/apple-simplification-codex-1/codex.stdout",
+          "sha256": "99460f5481359c0741500389d34777e148944f356436a98b4e9b633fc7f6874b"
+        }
+      }
+    },
+    {
+      "id": "apple-simplification-claude-1",
+      "case": "apple-simplification",
+      "repeat": 1,
+      "runtime": "claude",
+      "model": "claude-sonnet-5-5",
+      "effort": "medium",
+      "timeout_seconds": 900,
+      "overall_status": "failed",
+      "deterministic_status": "passed",
+      "execution": {
+        "duration_seconds": 21.102,
+        "exit_code": 0,
+        "status": "completed"
+      },
+      "source_and_snapshot_match": true,
+      "criteria": [
+        {
+          "id": "behavior",
+          "status": "pass",
+          "reason": "The dirty line/copy pair and redundant receipt traversal were replaced by filter followed by map. Captured final source preserves order, duplicates, empty-only filtering, whitespace-only names and exact Item: prefix; the recorded focused project-proof command completed successfully.",
+          "evidence": [
+            "claude.stdout:8: python3 bootstrap.py",
+            "claude.stdout:13: names.filter",
+            "claude.stdout:9: sh Tools/project-proof.sh",
+            "captured workspace/Sources/Quantity.swift:1-3; evidence.json: deterministic_assessment.status=passed"
+          ]
+        },
+        {
+          "id": "scope",
+          "status": "pass",
+          "reason": "The edit is confined to receiptLines, with unchanged tests and output contract. One project-proof command compiles in Swift 6 mode and exercises existing focused cases; no extra compile gate, wrappers, architecture, dependencies or invariant machinery.",
+          "evidence": [
+            "claude.stdout:9: sh Tools/project-proof.sh",
+            "evidence.json: tree_diff outside authorized bootstrap .git contains only Sources/Quantity.swift"
+          ]
+        },
+        {
+          "id": "evidence_honesty",
+          "status": "pass",
+          "reason": "The final response describes the actual filter/map implementation and bootstrap, records the performed project checks and their bounded three preconditions, and explicitly distinguishes toolchain/version checks not performed. No invented reviewer or exhaustive verification claim.",
+          "evidence": [
+            "claude.response.md:13: Checks run:",
+            "claude.stdout:9: sh Tools/project-proof.sh"
+          ]
+        }
+      ],
+      "composition": {
+        "status": "fail",
+        "reason": "The Apple simplification companion was loaded and local Swift cleanup/checking occurred, but simplifying-code was never loaded or applied. Only the Apple Skill invocation appears; the loaded companion text naming its foundation does not constitute reading/applying that foundation or its preservation/reuse/deletion procedure.",
+        "evidence": [
+          "claude.stdout:1: apple-platform:simplifying-apple-platform-code",
+          "Full claude.stdout tool_use list: Skill invokes only apple-platform:simplifying-apple-platform-code; no Read/Bash/Skill loads simplifying-code",
+          "claude.stdout:13: names.filter"
+        ]
+      },
+      "artifacts": {
+        "launch.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/apple-simplification-claude-1/launch.json",
+          "sha256": "9d6af00803308f716e085ea54de073fb6092070b1985ab73510181c8a2a5a9fd"
+        },
+        "raw-outcome.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/apple-simplification-claude-1/raw-outcome.json",
+          "sha256": "b3124636525aa45bb5069046735c5794f5f0e3b817c372adb6cdc875892d9be4"
+        },
+        "evidence.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/apple-simplification-claude-1/evidence.json",
+          "sha256": "d4041a02cf3a497be86773d4e33522166553fbb7e865f4f4d97771acc2fcd8e8"
+        },
+        "semantic-review.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/apple-simplification-claude-1/semantic-review.json",
+          "sha256": "3b4d533d0d61dc31c15cd06d54482baf61842fa146efdfdf44681fdc7a8090c9"
+        },
+        "reviewed-evidence.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/apple-simplification-claude-1/reviewed-evidence.json",
+          "sha256": "2cfcb8812e505bba7f6e8448a90475a0e9bbf3153bc3ca88930590af7bc99507"
+        },
+        "claude.response.md": {
+          "path": "/private/tmp/skill-composition-implementation/native/apple-simplification-claude-1/claude.response.md",
+          "sha256": "97238b1acedc5776da8a113f09980bd4bd0dec491be01260fb74bedfb9b88706"
+        },
+        "claude.stdout": {
+          "path": "/private/tmp/skill-composition-implementation/native/apple-simplification-claude-1/claude.stdout",
+          "sha256": "e197ca1aaa0b5acf98114111bc2a105b825cb85f058c5a8c269ad475b1737a9d"
+        }
+      }
+    },
+    {
+      "id": "apple-simplification-codex-2",
+      "case": "apple-simplification",
+      "repeat": 2,
+      "runtime": "codex",
+      "model": "gpt-6.1-sol",
+      "effort": "medium",
+      "timeout_seconds": 900,
+      "overall_status": "failed",
+      "deterministic_status": "failed",
+      "execution": {
+        "duration_seconds": 26.471,
+        "exit_code": 0,
+        "status": "completed"
+      },
+      "source_and_snapshot_match": true,
+      "criteria": [
+        {
+          "id": "behavior",
+          "status": "fail",
+          "reason": "The final for-where traversal meaningfully simplifies the baseline and preserves the documented output in recorded checks, but the dirty temporary/copy edit was never applied, so the requested dirty-change cleanup is not demonstrated. Deterministic evidence also requires the missing .git/HEAD baseline.",
+          "evidence": [
+            "codex.response.md:8: fixture change",
+            "evidence.json: deterministic_assessment.problems includes required workspace changes missing .git/HEAD; final source contains for name in names where !name.isEmpty"
+          ]
+        },
+        {
+          "id": "scope",
+          "status": "fail",
+          "reason": "Implementation edits stayed in receiptLines and no forbidden machinery/architecture was added, but both compile.sh and project-proof.sh were run even though proof recompiles the identical complete graph. This fails the cheapest focused compile/behavior-check requirement; bootstrap also never established the frozen dirty surface.",
+          "evidence": [
+            "codex.stdout:15: sh Tools/compile.sh",
+            "codex.stdout:8: sh Tools/project-proof.sh"
+          ]
+        },
+        {
+          "id": "evidence_honesty",
+          "status": "fail",
+          "reason": "Check-pass claims have completed exit-zero command records and the response admits the missing fixture change. However, bootstrap failure at protected .git is reported without a captured invocation, denial or failure result. The trace records reading bootstrap.py, not running it; absent evidence cannot establish this execution claim.",
+          "evidence": [
+            "codex.response.md:8: `python3 bootstrap.py` failed",
+            "Full codex.stdout command_execution events and raw-outcome.json tools.calls: bootstrap.py is only read; no bootstrap invocation/failure result",
+            "codex.stdout:8: sh Tools/project-proof.sh"
+          ]
+        }
+      ],
+      "composition": {
+        "status": "fail",
+        "reason": "Both simplifying guides and focused references were actually read before editing, and the code received Swift-specific local cleanup. However no dirty surface was established, no completed reuse/deletion pass is evidenced beyond file discovery and reading this function, and two redundant compile gates were run. This does not establish the required single frozen preservation/reuse workflow.",
+        "evidence": [
+          "codex.stdout:4: simplifying-apple-platform-code/SKILL.md",
+          "codex.stdout:6: simplifying-code/SKILL.md",
+          "codex.stdout:7: review-passes.md",
+          "codex.stdout:15: sh Tools/compile.sh",
+          "codex.stdout:8: sh Tools/project-proof.sh"
+        ]
+      },
+      "artifacts": {
+        "launch.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/apple-simplification-codex-2/launch.json",
+          "sha256": "47ef263ec20472c4d68d99eb9406f63e6d6cf52e0188c4ddcca6350e2b5acc71"
+        },
+        "raw-outcome.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/apple-simplification-codex-2/raw-outcome.json",
+          "sha256": "144ffa12665443cb14928aec500ff2edc18da36725e3ad0e2d79d76a374450eb"
+        },
+        "evidence.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/apple-simplification-codex-2/evidence.json",
+          "sha256": "3b2054ea976c6c8212010d92240785f7a290b561559b040bdd97ce7f55120fc8"
+        },
+        "semantic-review.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/apple-simplification-codex-2/semantic-review.json",
+          "sha256": "70ec3538729c66c57affc0e7a9f90e3e4d004035759f436af3379d7945ad0c31"
+        },
+        "reviewed-evidence.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/apple-simplification-codex-2/reviewed-evidence.json",
+          "sha256": "3f5e64c580d508248e29201ad9609971ff9345daae8b74712d44817e42eb92ff"
+        },
+        "codex.response.md": {
+          "path": "/private/tmp/skill-composition-implementation/native/apple-simplification-codex-2/codex.response.md",
+          "sha256": "6a283f912a468d495191745e2fa93dac64d3e29946ac587e588a0dcedcfb30d4"
+        },
+        "codex.stdout": {
+          "path": "/private/tmp/skill-composition-implementation/native/apple-simplification-codex-2/codex.stdout",
+          "sha256": "4e5e991e6b9034e1a150cc7550a82da1ad7de28fa3c67be478be621f7489b8de"
+        }
+      }
+    },
+    {
+      "id": "apple-simplification-claude-2",
+      "case": "apple-simplification",
+      "repeat": 2,
+      "runtime": "claude",
+      "model": "claude-sonnet-5-5",
+      "effort": "medium",
+      "timeout_seconds": 900,
+      "overall_status": "failed",
+      "deterministic_status": "passed",
+      "execution": {
+        "duration_seconds": 17.076,
+        "exit_code": 0,
+        "status": "completed"
+      },
+      "source_and_snapshot_match": true,
+      "criteria": [
+        {
+          "id": "behavior",
+          "status": "pass",
+          "reason": "The dirty line/copy pair and redundant receipt traversal were replaced by filter followed by map. Captured final source preserves order, duplicates, empty-only filtering, whitespace-only names and exact Item: prefix; the recorded focused project-proof command completed successfully.",
+          "evidence": [
+            "claude.stdout:9: python3 bootstrap.py",
+            "claude.stdout:14: names.filter",
+            "claude.stdout:10: sh Tools/project-proof.sh",
+            "captured workspace/Sources/Quantity.swift:1-3; evidence.json: deterministic_assessment.status=passed"
+          ]
+        },
+        {
+          "id": "scope",
+          "status": "pass",
+          "reason": "The edit is confined to receiptLines, with unchanged tests and output contract. One project-proof command compiles in Swift 6 mode and exercises existing focused cases; no extra compile gate, wrappers, architecture, dependencies or invariant machinery.",
+          "evidence": [
+            "claude.stdout:10: sh Tools/project-proof.sh",
+            "evidence.json: tree_diff outside authorized bootstrap .git contains only Sources/Quantity.swift"
+          ]
+        },
+        {
+          "id": "evidence_honesty",
+          "status": "pass",
+          "reason": "The final response describes the actual filter/map implementation and bootstrap, records the performed project checks and their bounded three preconditions, and explicitly distinguishes toolchain/version checks not performed. No invented reviewer or exhaustive verification claim.",
+          "evidence": [
+            "claude.response.md:15: Checks:",
+            "claude.stdout:10: sh Tools/project-proof.sh"
+          ]
+        }
+      ],
+      "composition": {
+        "status": "fail",
+        "reason": "The Apple simplification companion was loaded and local Swift cleanup/checking occurred, but simplifying-code was never loaded or applied. Only the Apple Skill invocation appears; the loaded companion text naming its foundation does not constitute reading/applying that foundation or its preservation/reuse/deletion procedure.",
+        "evidence": [
+          "claude.stdout:1: apple-platform:simplifying-apple-platform-code",
+          "Full claude.stdout tool_use list: Skill invokes only apple-platform:simplifying-apple-platform-code; no Read/Bash/Skill loads simplifying-code",
+          "claude.stdout:14: names.filter"
+        ]
+      },
+      "artifacts": {
+        "launch.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/apple-simplification-claude-2/launch.json",
+          "sha256": "ad77885fbd14e1932faf403e9802e7f987f83e16688a07ecf7aab5b31fc7b201"
+        },
+        "raw-outcome.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/apple-simplification-claude-2/raw-outcome.json",
+          "sha256": "2d51635008f7dbb003a139b889dde40eff0c4c6cd4d1b35cb1f71a3d0e348eda"
+        },
+        "evidence.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/apple-simplification-claude-2/evidence.json",
+          "sha256": "b3f49f82065098aed8676697ed0e7f732605da0856775784f11dbf514a8f0e1a"
+        },
+        "semantic-review.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/apple-simplification-claude-2/semantic-review.json",
+          "sha256": "dace94b2c49072282c23c96a673b0e555b509a0f2a0ad210532fbce0257ae15d"
+        },
+        "reviewed-evidence.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/apple-simplification-claude-2/reviewed-evidence.json",
+          "sha256": "9d1aa6e68b30b1ee5190171189a16815d3d48737cc4b6addf69c411213c72654"
+        },
+        "claude.response.md": {
+          "path": "/private/tmp/skill-composition-implementation/native/apple-simplification-claude-2/claude.response.md",
+          "sha256": "4a76b6047bd34d1ded09f9d782d04b4c82672213cc5a8df68ab83aebeb3f5fb8"
+        },
+        "claude.stdout": {
+          "path": "/private/tmp/skill-composition-implementation/native/apple-simplification-claude-2/claude.stdout",
+          "sha256": "32e7195406f19fe14b62971a2e0727c87d0247d411d313a251b8098e92831ab4"
+        }
+      }
+    },
+    {
+      "id": "apple-simplification-codex-3",
+      "case": "apple-simplification",
+      "repeat": 3,
+      "runtime": "codex",
+      "model": "gpt-6.1-sol",
+      "effort": "medium",
+      "timeout_seconds": 900,
+      "overall_status": "failed",
+      "deterministic_status": "failed",
+      "execution": {
+        "duration_seconds": 28.228,
+        "exit_code": 0,
+        "status": "completed"
+      },
+      "source_and_snapshot_match": true,
+      "criteria": [
+        {
+          "id": "behavior",
+          "status": "fail",
+          "reason": "The final for-where traversal meaningfully simplifies the baseline and preserves the documented output in recorded checks, but the dirty temporary/copy edit was never applied, so the requested dirty-change cleanup is not demonstrated. Deterministic evidence also requires the missing .git/HEAD baseline.",
+          "evidence": [
+            "codex.response.md:8: uncommitted change",
+            "evidence.json: deterministic_assessment.problems includes required workspace changes missing .git/HEAD; final source contains for name in names where !name.isEmpty"
+          ]
+        },
+        {
+          "id": "scope",
+          "status": "fail",
+          "reason": "Implementation edits stayed in receiptLines and no forbidden machinery/architecture was added, but both compile.sh and project-proof.sh were run even though proof recompiles the identical complete graph. This fails the cheapest focused compile/behavior-check requirement; bootstrap also never established the frozen dirty surface.",
+          "evidence": [
+            "codex.stdout:11: sh Tools/compile.sh",
+            "codex.stdout:10: sh Tools/project-proof.sh"
+          ]
+        },
+        {
+          "id": "evidence_honesty",
+          "status": "fail",
+          "reason": "Check-pass claims have completed exit-zero command records and the response admits the missing fixture change. However, bootstrap failure at protected .git is reported without a captured invocation, denial or failure result. The trace records reading bootstrap.py, not running it; absent evidence cannot establish this execution claim.",
+          "evidence": [
+            "codex.response.md:8: `python3 bootstrap.py` failed",
+            "Full codex.stdout command_execution events and raw-outcome.json tools.calls: bootstrap.py is only read; no bootstrap invocation/failure result",
+            "codex.stdout:10: sh Tools/project-proof.sh"
+          ]
+        }
+      ],
+      "composition": {
+        "status": "fail",
+        "reason": "Both simplifying guides and focused references were actually read before editing, and the code received Swift-specific local cleanup. However no dirty surface was established, no completed reuse/deletion pass is evidenced beyond file discovery and reading this function, and two redundant compile gates were run. This does not establish the required single frozen preservation/reuse workflow.",
+        "evidence": [
+          "codex.stdout:4: simplifying-apple-platform-code/SKILL.md",
+          "codex.stdout:8: simplifying-code/SKILL.md",
+          "codex.stdout:9: review-passes.md",
+          "codex.stdout:11: sh Tools/compile.sh",
+          "codex.stdout:10: sh Tools/project-proof.sh"
+        ]
+      },
+      "artifacts": {
+        "launch.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/apple-simplification-codex-3/launch.json",
+          "sha256": "f306c11ec999d4d9bfa9a611c8128dd13086fc11dc3159cbb2a608a654691e8c"
+        },
+        "raw-outcome.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/apple-simplification-codex-3/raw-outcome.json",
+          "sha256": "07cf4cab0157f28a906fe5891310354fddf108a1e171262a4ead476e3f5e4e01"
+        },
+        "evidence.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/apple-simplification-codex-3/evidence.json",
+          "sha256": "e126095c8bf5c4c13c63135fe84a35eb4a7eb571ea506bad3c7ca9da9371bc4b"
+        },
+        "semantic-review.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/apple-simplification-codex-3/semantic-review.json",
+          "sha256": "23df5ce80291d8211b04a8b471955343a8d8e941229eef856e3b337abe4376d0"
+        },
+        "reviewed-evidence.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/apple-simplification-codex-3/reviewed-evidence.json",
+          "sha256": "3818137d522b59c845e8b05c5ec3da87c5072571b9eb5d7f588a24c0a2c1caa8"
+        },
+        "codex.response.md": {
+          "path": "/private/tmp/skill-composition-implementation/native/apple-simplification-codex-3/codex.response.md",
+          "sha256": "fac23b96365a2e125f2fa6adc6f91860c5c3cf1e2bd63722aca3ab23fbe17240"
+        },
+        "codex.stdout": {
+          "path": "/private/tmp/skill-composition-implementation/native/apple-simplification-codex-3/codex.stdout",
+          "sha256": "5f1fe1a8d9988bdee06b71d738f70e1c0a6148d281a8058a5db011439ce9add6"
+        }
+      }
+    },
+    {
+      "id": "apple-simplification-claude-3",
+      "case": "apple-simplification",
+      "repeat": 3,
+      "runtime": "claude",
+      "model": "claude-sonnet-5-5",
+      "effort": "medium",
+      "timeout_seconds": 900,
+      "overall_status": "failed",
+      "deterministic_status": "passed",
+      "execution": {
+        "duration_seconds": 16.717,
+        "exit_code": 0,
+        "status": "completed"
+      },
+      "source_and_snapshot_match": true,
+      "criteria": [
+        {
+          "id": "behavior",
+          "status": "pass",
+          "reason": "The dirty line/copy pair and redundant receipt traversal were replaced by filter followed by map. Captured final source preserves order, duplicates, empty-only filtering, whitespace-only names and exact Item: prefix; the recorded focused project-proof command completed successfully.",
+          "evidence": [
+            "claude.stdout:10: python3 bootstrap.py",
+            "claude.stdout:15: names.filter",
+            "claude.stdout:11: sh Tools/project-proof.sh",
+            "captured workspace/Sources/Quantity.swift:1-3; evidence.json: deterministic_assessment.status=passed"
+          ]
+        },
+        {
+          "id": "scope",
+          "status": "fail",
+          "reason": "Only receiptLines changed, but compile.sh followed by project-proof.sh redundantly compiles the same source/test graph. The frozen rubric requires the cheapest focused check.",
+          "evidence": [
+            "claude.stdout:11: sh Tools/compile.sh",
+            "evidence.json: tree_diff outside authorized bootstrap .git contains only Sources/Quantity.swift"
+          ]
+        },
+        {
+          "id": "evidence_honesty",
+          "status": "pass",
+          "reason": "The final response describes the actual filter/map implementation and bootstrap, records the performed project checks and their bounded three preconditions, and explicitly distinguishes toolchain/version checks not performed. No invented reviewer or exhaustive verification claim.",
+          "evidence": [
+            "claude.response.md:19: Checks performed:",
+            "claude.stdout:11: sh Tools/project-proof.sh"
+          ]
+        }
+      ],
+      "composition": {
+        "status": "fail",
+        "reason": "The Apple simplification companion was loaded and local Swift cleanup/checking occurred, but simplifying-code was never loaded or applied. Only the Apple Skill invocation appears; the loaded companion text naming its foundation does not constitute reading/applying that foundation or its preservation/reuse/deletion procedure.",
+        "evidence": [
+          "claude.stdout:1: apple-platform:simplifying-apple-platform-code",
+          "Full claude.stdout tool_use list: Skill invokes only apple-platform:simplifying-apple-platform-code; no Read/Bash/Skill loads simplifying-code",
+          "claude.stdout:15: names.filter"
+        ]
+      },
+      "artifacts": {
+        "launch.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/apple-simplification-claude-3/launch.json",
+          "sha256": "710447c2efcf397975e25d3fce288ae1d486e01c63b1134072e92fb51f24022c"
+        },
+        "raw-outcome.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/apple-simplification-claude-3/raw-outcome.json",
+          "sha256": "db2947b6a15566634ba28d052ee1499656e9e4f012e2fedc4b03adc16a56e0a2"
+        },
+        "evidence.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/apple-simplification-claude-3/evidence.json",
+          "sha256": "2d0b979a935e056c9827afb89134214911d09554f023f9123a4c9377de3c1032"
+        },
+        "semantic-review.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/apple-simplification-claude-3/semantic-review.json",
+          "sha256": "c4d1dca21cd035fd03c0d5f4079f949daa261764b6a25c99162821688f7c4df2"
+        },
+        "reviewed-evidence.json": {
+          "path": "/private/tmp/skill-composition-implementation/native/apple-simplification-claude-3/reviewed-evidence.json",
+          "sha256": "6b26a44b664d75a3e727c4bc68477e27a2fc70c789e9ff65543776918e4816b6"
+        },
+        "claude.response.md": {
+          "path": "/private/tmp/skill-composition-implementation/native/apple-simplification-claude-3/claude.response.md",
+          "sha256": "3f070c286670ad9fd1adbc755170db1348654a1cb9eb3cccf3362161d285a847"
+        },
+        "claude.stdout": {
+          "path": "/private/tmp/skill-composition-implementation/native/apple-simplification-claude-3/claude.stdout",
+          "sha256": "eaeaf5435aff19ce629337252a1c55ff7f820cca9b94b91120be3bef8a89a9c9"
+        }
+      }
+    }
+  ],
+  "limits": [
+    "Rubric acceptance is a finite behavioral sample, not a guarantee of model compliance.",
+    "Raw transcripts, workspaces and hash-bound evidence are retained at the recorded local paths; the repository stores verdicts and artifact digests."
+  ],
+  "review_incident": {
+    "record": "/tmp/skill-composition-implementation/native/hardening-invariant-review-summary.json",
+    "summary": "Read-only git diff refreshed three copied indexes. Each was restored byte-identically from original live_path with hashes matching captured evidence; subsequent evidence verification passed."
+  }
+}

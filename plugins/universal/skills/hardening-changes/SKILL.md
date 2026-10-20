@@ -5,7 +5,11 @@ description: "Harden an owned branch or working tree for a PR through an audit-a
 
 # Hardening Changes
 
-Run an audit-fix loop before pull request creation: make the work safer, simpler, and more correct, and leave every subsystem it touches whole. The size of the result is bounded by the thread the branch owns, not by a review budget; where the project has reviewers, the handoff carries every judgment call so review effort lands on decisions rather than mechanics.
+Prepare the owned changes through the five phases below: audit, decide, fix, compile checkpoint, and re-audit. The orchestrator owns fixes and dispositions; installed reviewers supply the audits. Obtain their completed findings before fixing. Do not replace available reviewers with self-review because the patch is small. If delegation is unavailable, record that limit and perform the same scoped review directly.
+
+Inspect the diff to freeze the changed surface and select its concerns before judging correctness. For wording-only changes, review the changed meaning; surrounding claims do not become owned work. A new or strengthened behavioral claim needs a scoped truth check.
+
+For a changed construction boundary, invariant claim, enforcement gap, legal transition, or explicit proof request, load [verifying-invariants](../verifying-invariants/SKILL.md) and the installed language/type-correctness companion before boundary judgments or edits. Reuse active guidance within this workflow.
 
 Two boundaries hold:
 
@@ -82,12 +86,12 @@ Launch the implicated auditors in parallel against the surface. The roster is a 
 
 Platform plugins and projects commonly add reviewers for concerns such as codified standards compliance, type-system enforcement, complexity and cognitive load, and async-test determinism. Launch every installed reviewer agent whose concern the surface implicates; record the concerns you had no reviewer for.
 
-When the work explicitly requests invariant proof, or changes an enforcement model or state transition, use [verifying-invariants](../verifying-invariants/SKILL.md) to define the bounded evidence. This does not add an auditor, a registry, or another build/test gate: audit workers remain read-only, the one compile checkpoint stays in Phase 4, and the project's test gate remains separate.
+Apply the opening scope and activation rules to the auditor contracts. Investigate domain values and legal transitions introduced, altered, or newly exposed by substantive changes. Consider a stronger representation when it prevents concrete misuse at a justified complexity cost. This adds no reviewer or verification loop: the compile checkpoint stays in Phase 4 and project proof follows hardening.
 
 Pass this contract to every auditor:
 
 ```text
-Audit the chosen surface. In branch mode, use the base-branch diff plus any uncommitted working-tree edits. In working-tree mode, use git status --short, git diff HEAD --find-renames=20%, and direct reads of untracked files. If this launch names an explicit scoped file list, audit only those files.
+Audit the changed meaning within the chosen surface. Check a new or strengthened behavioral claim against relevant implementation evidence; a wording-only edit does not authorize tracing the surrounding model for pre-existing defects. Report only issues introduced, extended, or destabilized by the owned change. In branch mode, use the base-branch diff plus any uncommitted working-tree edits. In working-tree mode, use git status --short, git diff HEAD --find-renames=20%, and direct reads of untracked files. If this launch names an explicit scoped file list, audit only those files.
 
 Remain read-only. Do not modify files and do not build, test, or run the project. Recommend the narrowest relevant verification command to the orchestrator instead.
 
@@ -98,7 +102,7 @@ You may suggest a disposition, but the orchestrator owns final classification. P
 
 Auditors do not propose Drop — an auditor that believes a finding is not worth reporting omits it. All launched auditors must complete; re-launch any that fails rather than proceeding with missing results.
 
-Collect every finding, including Deferral Candidates, into the ledger. Deduplicate: if two auditors flagged the same file and concern, keep the finding from the auditor that owns that concern and remove the duplicate. Close completed auditor sessions if the runtime keeps them active.
+Collect every finding, including Deferral Candidates, into the ledger. Deduplicate by underlying failure, including findings across files or concern labels: an invariant bypass and a type-based way to prevent it share one finding and disposition. Correctness owns the failure evidence and impact; the type specialist supplies representation choices and tradeoffs; the orchestrator decides the fix. Preserve distinct failures as distinct findings. Close completed auditor sessions if the runtime keeps them active.
 
 ### Phase 2: Decide
 
@@ -116,7 +120,7 @@ Run this **once**, after the first substantive fix batch, and only if the fixes 
 
 Use the narrowest command that compiles the full dependent graph of the touched modules — a whole-app or whole-workspace build, or the unit-test build when test targets changed. **Not an incremental, changed-module-only build**: it does not compile the changed module's dependents, which is precisely where the failures this checkpoint exists to catch appear. The incremental build is the iteration loop; the checkpoint needs the graph.
 
-Purely mechanical iterations — formatting, ordering, whitespace — skip this phase.
+Purely mechanical iterations — formatting, ordering, whitespace — skip this phase. Once the checkpoint passes, later audit fixes do not start another compile/test gate; carry any new verification obligations to the project ship gate. Only the compiler-caused repair exception below permits a retry.
 
 On failure:
 
@@ -155,43 +159,18 @@ Return to Phase 1, scoped by what changed:
 
 ### Final Manager Handoff
 
-Optimize for someone who did not watch the implementation — a reviewer or the author later — reading on a phone, deciding the next action in under a minute. Use file paths, symbols, and package names rather than abstract labels.
-
-Open with the status block. These four fields really are one line each:
-
-```text
-Status: [Ready | Needs decision | Blocked].
-Next: [continue with X | track deferred work in the issue tracker | no action needed | blocked on Z].
-Changed: [one line, 1-3 short bullets, or "No code changes were needed."]
-Proof: [compile checkpoint result, or "none needed — mechanical only"].
-```
-
-**Everything after the status block is prose. Write complete sentences.** Terse means no padding, not no grammar. A decision that needs two sentences gets two sentences. Compressing one into a dense line with em dashes standing in for verbs produces something nobody can read, which defeats the entire point of the handoff.
-
-Do not chain slots with em dashes, write label-colon fragments where a sentence belongs, use semicolon lists, or restate the section heading in the line beneath it.
-
-The difference, on a real decision:
-
-> **Good.** I changed how the audit surface grows. Before, a fix could reach into a file outside the audited set, and the next round then audited that file for new problems, so every round enlarged the area under audit. Fixes can still reach outside the set, but those files no longer become fair game for new findings.
-
-> **Bad.** `hardening-changes` surface — froze at Phase 1 over letting fixes ratchet the next iteration's territory.
-
-Same decision. The second one is unreadable.
-
-Use these sections only when they have content:
-
-**Judgment Calls.** Every judgment fix, so the reviewer or author can audit the call after the fact. Say what you changed and why. Name the alternative only where a reader would otherwise assume you never considered it.
-
-**Must Fix or Decide Before Merge.** Blockers and anything the project's ship gate still has to prove. Give the risk, the specific next action, and the evidence behind it. While this section has content, do not imply the PR is ready.
-
-**Deferred Work.** Only work that passed the floorboards test — most runs have none, and at most 6 appear. Each item needs its impact, why it exceeds this PR, the first implementation step and the modules it touches, rough effort (`S`/`M`/`L`/`XL`), and the finding it came from. Write that as a short paragraph rather than a field list. Omit any item that cannot supply all of it.
-
-**Not Carried Forward.** Optional. What an auditor raised that you fixed, dropped, or judged not worth tracking, and why.
-
-In attended runs, when the project has an issue tracker configured, offer to file the deferred work once — at most 6 options, each with a 1-5 word label and a description naming problem, impact, effort, and scope reason.
+Read [Manager handoff](references/manager-handoff.md) before preparing the final response. It defines stage status, pending project proof, and the complete-draft claim check when invariant verification applies. Finish all intended sections before that check; emit the reviewed draft with supported corrections instead of composing a new report afterward.
 
 ## Decision Ledger
 
 A running record in conversational state, not a file. Three entry types — **Deferred** (surface, concern, rationale, handoff fields), **Dropped** (surface, concern, one-line rationale), and **Judgment call** (surface, choice, strongest alternative, rationale).
 
 The ledger accumulates across iterations and settles decisions: a re-audit finding that matches an entry keeps its prior disposition, so the loop neither re-litigates a deferral nor flips an applied judgment call between valid designs. The only escape is concrete new evidence. Mechanical findings never enter the ledger; codified rules cannot be deferred or dropped.
+
+## Reference Map
+
+Read the reference at the phase that needs it:
+
+- [Manager handoff](references/manager-handoff.md): final status, required sections, conditional claim review, and completion checklist.
+
+Before finishing, apply its completion checklist to the handoff and retained evidence.

@@ -51,7 +51,7 @@ Use severity, not taste, to prioritize feedback:
 3. Structure that prevents the reader from completing the job.
 4. Voice, consistency, grammar, and concision.
 
-For deeper reviews, read `references/review-checklist.md` and optionally run `scripts/lint_technical_writing.py` against Markdown or Swift files.
+For deeper reviews, read `references/review-checklist.md`. For optional automated hints or additional terminology rules, read [Linter usage](references/linter-usage.md).
 
 ## Voice
 
@@ -146,7 +146,7 @@ Cover the parts that affect correct use:
 
 Do not write comments that restate the next line of code. Use implementation comments for invariants, workarounds, surprising behavior, or bug-prone constraints.
 
-For platform-specific documentation conventions — for example Swift, DocC, and Apple-platform prose — compose with a platform-specific documentation skill when one is available, and let its rules win for that platform.
+For platform-specific documentation conventions, compose with a platform companion when one is available, and let its rules win for that platform.
 
 ## Markdown Formatting
 
@@ -186,3 +186,4 @@ Read the reference that matches the deliverable or unresolved writing decision:
 - [Document patterns](references/document-patterns.md): README, ADR, RFC, runbook, migration, troubleshooting, PR, and release-note structure.
 - [Style examples](references/style-examples.md): examples of pronouns, tense, and Markdown callouts.
 - [Review checklist](references/review-checklist.md): final checks for a substantial draft or requested review.
+- [Linter usage](references/linter-usage.md): optional checks, additional rule files, and exit statuses.

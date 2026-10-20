@@ -5,7 +5,15 @@ description: "Write or review Swift doc comments, DocC, and Apple-platform devel
 
 # Writing Apple Platform Documentation
 
-Run this as the Apple-platform companion to the universal `writing-technical-prose` skill. It layers Apple-specific documentation rules — terminology, doc comments, DocC fields, availability, and privacy wording — on top of the universal voice, structure, and truth rules. When this guidance conflicts with a generic prose rule for Apple-platform prose, this guidance wins. Keep it subordinate to project conventions and Apple's current terminology when verified.
+Write or review Apple-platform documentation using the terminology, doc-comment, DocC, availability, and privacy rules below. Compose with `writing-technical-prose` when available for general voice and structure. This skill also supports manual review on its own. When this guidance conflicts with a generic prose rule for Apple-platform prose, this guidance wins. Keep it subordinate to project conventions and Apple's current terminology when verified.
+
+## Review workflow
+
+Check the draft against the declarations, implementation, deployment targets, and existing project documentation. Review terminology and caller-facing contracts using the sections below. Report incorrect claims and missing constraints before wording suggestions, with concrete replacements where possible.
+
+If `writing-technical-prose` is already active in this review, reuse its guidance and continue the same review without restarting its workflow.
+
+When the Universal linter is available, read [Terminology checks](references/terminology-checks.md) to combine its generic checks with this skill's Apple rules. Otherwise, review capitalization against the terminology and corrections below, and verify availability, ownership, concurrency, and privacy claims directly against source material. Automated checks are optional.
 
 ## Terminology and Capitalization
 
@@ -168,3 +176,11 @@ For logs and diagnostics, specify what is redacted.
 ```markdown
 Diagnostics include request timing and HTTP status codes. They do not include access tokens, image contents, or user-entered text.
 ```
+
+## Reference Map
+
+Read the reference that matches the check being performed:
+
+- [Terminology checks](references/terminology-checks.md): optional combined linter usage and its limits.
+
+Before finishing, check terminology, caller constraints, verified availability, and privacy wording against the sections above.

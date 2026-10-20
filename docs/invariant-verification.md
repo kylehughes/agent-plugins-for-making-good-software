@@ -6,11 +6,31 @@ Apple Platform's `modeling-swift-types-for-correctness` owns Swift representatio
 checked construction, decoding, access control, and compiler restrictions. Swift
 testing skills continue to own assertions and deterministic synchronization.
 
-The existing design, review, simplification, hardening, and goal workflows link
-to this procedure only for explicit invariant claims or changes to enforcement
-models and transitions. No reviewer was added and no agent unconditionally
-preloads it. Hardening retains its single compile checkpoint and separate project
-test gate. Review-only work does not gain permission to mutate a project.
+The following describes the workflow contract, not guaranteed agent compliance.
+The [composition evaluation results](../evals/skill-composition/results.md) report
+observed behavior and remaining failures separately.
+
+Design, review, simplification, hardening, and goal workflows use this procedure
+for concrete invariant claims or enforcement changes. Hardening begins by
+investigating domain values and legal transitions introduced, changed, or newly
+exposed by its owned work. A concrete gap activates the focused procedure;
+cosmetic work does not activate an invariant audit of neighboring models.
+Stronger representations must prevent a concrete misuse at a justified cost.
+
+Composition runs within one workflow. Apple companions name their Universal
+foundations; Universal skills request platform capabilities without naming a
+platform. Active guidance, frozen scope, decisions, and evidence are reused.
+Apple simplification directly routes Swift enforcement boundaries to the type
+modeling skill and remains usable when Universal is absent.
+
+A bypass and its type-based prevention share one finding and disposition.
+Correctness owns failure evidence and impact, the type specialist supplies
+representation choices and tradeoffs, and the orchestrator decides the fix.
+No reviewer was added and no agent unconditionally preloads invariant verification.
+Hardening retains its single compile checkpoint and separate project test gate.
+Its handoff names pending invariant obligations, their owner, and the next action;
+hardening completion does not establish full invariant verification. Review-only
+work does not gain permission to mutate a project.
 
 Implementation tasks choose a bounded claim check before editing. An available
 correctness reviewer assesses maintained claims in the scoped final files and
@@ -89,6 +109,19 @@ outside the responding agent's workspace and are never included in its prompt.
 | Universal alone | Ordinary import-boundary fix | Fix the source and add tests without creating a registry or CI workflow. |
 | Universal alone | Explicit durable contract | Create the requested registry and CI checks; this is the positive control for the ordinary no-registry default. |
 
+Use the [current composition run guide](../evals/skill-composition/RUNNING.md)
+for launch, review, and evidence-retention instructions. The suite's original
+README preserves the historical initial protocol.
+
+The [composition suite](../evals/skill-composition/cases.json) adds hardening with
+an implicit invariant gap, cosmetic-only hardening, and Apple-only simplification
+invocation with both plugins installed. Its [frozen criteria](../evals/skill-composition/frozen-criteria.json)
+require three independent attempts per case and runtime. Each declared batch has
+its own denominator; later passes do not replace earlier failures. The
+[prepared protocol](../evals/skill-composition/followup-plan.json) and
+[persisted-session protocol](../evals/skill-composition/persisted-plan.json) record
+setup corrections and source snapshots separately from those unchanged criteria.
+
 All assessment cases have write tools available. An empty workspace diff
 therefore measures scope preservation rather than a tool restriction. The Swift
 implementation cases allow source and test edits, but reject an unsolicited
@@ -140,6 +173,15 @@ python3 scripts/run_invariant_behavior.py \
   --effort high --timeout 900 --codex-auth-source "$HOME/.codex/auth.json"
 ```
 
+For the composition suite, add `--config evals/skill-composition/cases.json`,
+choose one of its case IDs, and use medium effort. Add `--fixture-bootstrap` to
+prepare its disposable Git baseline and dirty change before the native agent
+starts. This opt-in executes the copied fixture script on the host, retains a
+setup receipt and streams, and binds them and the source script to the evidence.
+The native sandbox stays unchanged; its later bootstrap call is idempotent. A
+failed setup prevents native launch. Use this flag only for an inspected,
+authorized fixture script.
+
 The launcher creates an unrelated random runtime directory containing the
 fixture project, selected plugins without evaluation assets, and temporary
 Codex home. It verifies that the plugin copy matches its source and uses native
@@ -153,7 +195,12 @@ to the copied plugin references. Non-writable configurations omit editing, shell
 and delegation tools. Delegated assistant prose stays in the complete transcript
 and is excluded from the root response; child tool calls retain their parent
 context. A reviewer invocation alone is not evidence that its review completed.
-Codex uses its workspace-write sandbox. Raw transcripts, responses, stderr,
+Codex uses workspace-write for write-capable cases and read-only otherwise.
+Write-capable cases retain session files inside the isolated Codex home because
+native delegation may need the parent rollout; read-only cases remain ephemeral.
+The prepared composition runs recorded missing-rollout errors in native
+delegation, so session persistence is part of the subsequent evaluation protocol.
+Raw transcripts, responses, stderr,
 runtime setup, and every failed or timed-out outcome remain in the output
 directory. The runtime directory is retained because evidence binds its live
 workspace. `launch.json` records its absolute path and any Codex home. Keep both

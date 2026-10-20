@@ -22,6 +22,8 @@ Implementation is complete only after this sequence finishes:
 
 Reuse a correctness review only when it covers the same final artifacts, evidence, and complete response draft. During hardening, attach this concern to its existing correctness review; never add a reviewer or audit loop.
 
+An enclosing workflow may hand off full project verification to a later stage. Respect that boundary: finish its authorized checks and bounded claim review, then name pending obligations, their owner, and next actions in the handoff. That completes the enclosing stage, not the invariant implementation sequence above; a compile checkpoint alone does not discharge runtime or transition obligations.
+
 ## Workflow
 
 ### 1. State the Obligation and Load Its Semantics

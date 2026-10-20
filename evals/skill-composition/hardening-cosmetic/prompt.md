@@ -1,0 +1,1 @@
+Use $hardening-changes to prepare my wording cleanup for a PR. First run `python3 bootstrap.py`; I authorize that script to create a disposable Git baseline commit and apply my uncommitted change once in this fixture. That baseline setup is the only commit allowed. Harden the dirty work in scope. Work unattended and leave me a clear handoff.

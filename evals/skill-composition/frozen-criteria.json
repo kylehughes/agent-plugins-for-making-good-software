@@ -1,0 +1,206 @@
+{
+  "schema_version": 1,
+  "suite": "skill-composition",
+  "state": "frozen-before-native-runs",
+  "dimensions": [
+    "behavior",
+    "scope",
+    "evidence_honesty",
+    "composition"
+  ],
+  "acceptance": "All 18 predeclared runs must be accepted; retain every failure; missing evidence fails.",
+  "files_sha256": {
+    "README.md": "79904088653b7ef2b9faa5efb6082e13eb73b2954e6294a1ae4042aaac25eedb",
+    "apple-simplification/acceptance/Assertions.swift": "48492317c2f1f57de96861113a23220ff993eeaad892fedc5d6f0f28018c6680",
+    "apple-simplification/prompt.md": "c40d2aba2befd7b2eaa6590146c1c2e63d752b9c90b37dd1571317863bd50a04",
+    "apple-simplification/rubric.md": "ec3dcb0dda5337d919a9c6b537dd0e7f0dc209c4c1b42ff4ad96f9546117af55",
+    "apple-simplification/workspace/AGENTS.md": "a24088501d1fa7549db655071c00e3f65a2c325d7ba2320ce6d9adb91e7046ec",
+    "apple-simplification/workspace/Sources/Quantity.swift": "00de05da139b4d703af1c03c2a9ad7f618028656bf8bddb9962c5b6c48c8a987",
+    "apple-simplification/workspace/Tests/main.swift": "c62a3b2f1c1d879693732d2582702546ea0ad67860a68b03b689dd85720b5c76",
+    "apple-simplification/workspace/Tools/compile.sh": "fd2ca256b7f7fa076a0d62e18140a00c8bc0710a66a74a47e548c4b767e5e244",
+    "apple-simplification/workspace/Tools/project-proof.sh": "a1e54ae3a1bcd91a5eaeeb680d7ad1e2a72369f8e885461bb56fca480a00af7e",
+    "apple-simplification/workspace/bootstrap.py": "a4982961bf7e21cff233b1dc064619dc0ad71892da2c716b53295cd8c4167675",
+    "cases.json": "679a4ce6f87ece1591e2c524c6f29fb3719618b0c1136e1bf4253e7cefa49e73",
+    "hardening-cosmetic/prompt.md": "7ad5ba04a83af25e532cc7e5b62c5ede4598aa522fbeaf1a115af9f7db5d5915",
+    "hardening-cosmetic/rubric.md": "4db9f43319f93ddd3bc55216e259acd36f902d0e2cb2e9635238d7317a9545a6",
+    "hardening-cosmetic/workspace/AGENTS.md": "917ece905e0a3283858fd0da4554412815f4a9cd82efa0c28c87b2133d48383b",
+    "hardening-cosmetic/workspace/Sources/Quantity.swift": "88e77598f22e170f6d7085b12bcf35995ce1892db09b3eb3b79057afc92b236c",
+    "hardening-cosmetic/workspace/Tests/main.swift": "22f5092a12b230520e29963242dd71068ba0b267f95d624384abd7b9ca2a6d1c",
+    "hardening-cosmetic/workspace/Tools/compile.sh": "fd2ca256b7f7fa076a0d62e18140a00c8bc0710a66a74a47e548c4b767e5e244",
+    "hardening-cosmetic/workspace/Tools/project-proof.sh": "a1e54ae3a1bcd91a5eaeeb680d7ad1e2a72369f8e885461bb56fca480a00af7e",
+    "hardening-cosmetic/workspace/bootstrap.py": "94fd08fe254c2d098adf8f73fa3549fddb737e539e200edab1c432a93000b916",
+    "hardening-invariant/acceptance/Assertions.swift": "a939e45f724a78479a27b1c43941795f6aeffb7341d77c1c9dac5cf804c6b328",
+    "hardening-invariant/prompt.md": "7bd950d5398c431f401e99a903f52028cfd023446414495626e823c7e212532e",
+    "hardening-invariant/rubric.md": "c86d9b255ad0aa6341fb27d65c5715e78a2dea3d7665df3b9160765a18ca38ba",
+    "hardening-invariant/workspace/AGENTS.md": "917ece905e0a3283858fd0da4554412815f4a9cd82efa0c28c87b2133d48383b",
+    "hardening-invariant/workspace/Sources/Quantity.swift": "7dcc92214643995ec006cb7d16ef19542e26079b75add9699119a6b6d9ad8f1a",
+    "hardening-invariant/workspace/Tests/main.swift": "3f78c923f1bcc443b5ffa76bcf2f10729262ff483e88ca2a42821325903f9d5b",
+    "hardening-invariant/workspace/Tools/compile.sh": "fd2ca256b7f7fa076a0d62e18140a00c8bc0710a66a74a47e548c4b767e5e244",
+    "hardening-invariant/workspace/Tools/project-proof.sh": "a1e54ae3a1bcd91a5eaeeb680d7ad1e2a72369f8e885461bb56fca480a00af7e",
+    "hardening-invariant/workspace/bootstrap.py": "e980b95b9f9bd3f8e3d6cecaad1e1357ca656b9c9acfb695c8e2c97a249ad88e"
+  },
+  "runs": [
+    {
+      "id": "hardening-invariant-codex-1",
+      "case": "hardening-invariant",
+      "repeat": 1,
+      "runtime": "codex",
+      "model": "gpt-6.1-sol",
+      "effort": "medium",
+      "timeout_seconds": 900
+    },
+    {
+      "id": "hardening-invariant-claude-1",
+      "case": "hardening-invariant",
+      "repeat": 1,
+      "runtime": "claude",
+      "model": "claude-sonnet-5-5",
+      "effort": "medium",
+      "timeout_seconds": 900
+    },
+    {
+      "id": "hardening-invariant-codex-2",
+      "case": "hardening-invariant",
+      "repeat": 2,
+      "runtime": "codex",
+      "model": "gpt-6.1-sol",
+      "effort": "medium",
+      "timeout_seconds": 900
+    },
+    {
+      "id": "hardening-invariant-claude-2",
+      "case": "hardening-invariant",
+      "repeat": 2,
+      "runtime": "claude",
+      "model": "claude-sonnet-5-5",
+      "effort": "medium",
+      "timeout_seconds": 900
+    },
+    {
+      "id": "hardening-invariant-codex-3",
+      "case": "hardening-invariant",
+      "repeat": 3,
+      "runtime": "codex",
+      "model": "gpt-6.1-sol",
+      "effort": "medium",
+      "timeout_seconds": 900
+    },
+    {
+      "id": "hardening-invariant-claude-3",
+      "case": "hardening-invariant",
+      "repeat": 3,
+      "runtime": "claude",
+      "model": "claude-sonnet-5-5",
+      "effort": "medium",
+      "timeout_seconds": 900
+    },
+    {
+      "id": "hardening-cosmetic-codex-1",
+      "case": "hardening-cosmetic",
+      "repeat": 1,
+      "runtime": "codex",
+      "model": "gpt-6.1-sol",
+      "effort": "medium",
+      "timeout_seconds": 900
+    },
+    {
+      "id": "hardening-cosmetic-claude-1",
+      "case": "hardening-cosmetic",
+      "repeat": 1,
+      "runtime": "claude",
+      "model": "claude-sonnet-5-5",
+      "effort": "medium",
+      "timeout_seconds": 900
+    },
+    {
+      "id": "hardening-cosmetic-codex-2",
+      "case": "hardening-cosmetic",
+      "repeat": 2,
+      "runtime": "codex",
+      "model": "gpt-6.1-sol",
+      "effort": "medium",
+      "timeout_seconds": 900
+    },
+    {
+      "id": "hardening-cosmetic-claude-2",
+      "case": "hardening-cosmetic",
+      "repeat": 2,
+      "runtime": "claude",
+      "model": "claude-sonnet-5-5",
+      "effort": "medium",
+      "timeout_seconds": 900
+    },
+    {
+      "id": "hardening-cosmetic-codex-3",
+      "case": "hardening-cosmetic",
+      "repeat": 3,
+      "runtime": "codex",
+      "model": "gpt-6.1-sol",
+      "effort": "medium",
+      "timeout_seconds": 900
+    },
+    {
+      "id": "hardening-cosmetic-claude-3",
+      "case": "hardening-cosmetic",
+      "repeat": 3,
+      "runtime": "claude",
+      "model": "claude-sonnet-5-5",
+      "effort": "medium",
+      "timeout_seconds": 900
+    },
+    {
+      "id": "apple-simplification-codex-1",
+      "case": "apple-simplification",
+      "repeat": 1,
+      "runtime": "codex",
+      "model": "gpt-6.1-sol",
+      "effort": "medium",
+      "timeout_seconds": 900
+    },
+    {
+      "id": "apple-simplification-claude-1",
+      "case": "apple-simplification",
+      "repeat": 1,
+      "runtime": "claude",
+      "model": "claude-sonnet-5-5",
+      "effort": "medium",
+      "timeout_seconds": 900
+    },
+    {
+      "id": "apple-simplification-codex-2",
+      "case": "apple-simplification",
+      "repeat": 2,
+      "runtime": "codex",
+      "model": "gpt-6.1-sol",
+      "effort": "medium",
+      "timeout_seconds": 900
+    },
+    {
+      "id": "apple-simplification-claude-2",
+      "case": "apple-simplification",
+      "repeat": 2,
+      "runtime": "claude",
+      "model": "claude-sonnet-5-5",
+      "effort": "medium",
+      "timeout_seconds": 900
+    },
+    {
+      "id": "apple-simplification-codex-3",
+      "case": "apple-simplification",
+      "repeat": 3,
+      "runtime": "codex",
+      "model": "gpt-6.1-sol",
+      "effort": "medium",
+      "timeout_seconds": 900
+    },
+    {
+      "id": "apple-simplification-claude-3",
+      "case": "apple-simplification",
+      "repeat": 3,
+      "runtime": "claude",
+      "model": "claude-sonnet-5-5",
+      "effort": "medium",
+      "timeout_seconds": 900
+    }
+  ]
+}

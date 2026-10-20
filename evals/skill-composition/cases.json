@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "suite": "skill-composition",
+  "frozen_criteria": "frozen-criteria.json",
+  "cases": [
+    {
+      "id": "hardening-invariant",
+      "mode": "write",
+      "configuration": "combined",
+      "prompt": "hardening-invariant/prompt.md",
+      "workspace_fixture": "hardening-invariant/workspace",
+      "plugin_paths": [
+        "plugins/universal",
+        "plugins/apple-platform"
+      ],
+      "write_tools_available": true,
+      "allowed_change_paths": [
+        ".git",
+        "Sources/Quantity.swift",
+        "Tests"
+      ],
+      "required_change_paths": [
+        ".git/HEAD",
+        "Sources/Quantity.swift",
+        "Tests"
+      ],
+      "rubric": "hardening-invariant/rubric.md",
+      "expected_skills": [
+        "hardening-changes",
+        "verifying-invariants",
+        "modeling-swift-types-for-correctness"
+      ],
+      "forbidden_skills": [],
+      "artifact_checker": "hardening-invariant/acceptance/Assertions.swift"
+    },
+    {
+      "id": "hardening-cosmetic",
+      "mode": "write",
+      "configuration": "combined",
+      "prompt": "hardening-cosmetic/prompt.md",
+      "workspace_fixture": "hardening-cosmetic/workspace",
+      "plugin_paths": [
+        "plugins/universal",
+        "plugins/apple-platform"
+      ],
+      "write_tools_available": true,
+      "allowed_change_paths": [
+        ".git",
+        "Sources/Quantity.swift"
+      ],
+      "required_change_paths": [
+        ".git/HEAD",
+        "Sources/Quantity.swift"
+      ],
+      "rubric": "hardening-cosmetic/rubric.md",
+      "expected_skills": [
+        "hardening-changes"
+      ],
+      "forbidden_skills": [
+        "verifying-invariants",
+        "modeling-swift-types-for-correctness"
+      ]
+    },
+    {
+      "id": "apple-simplification",
+      "mode": "write",
+      "configuration": "combined",
+      "prompt": "apple-simplification/prompt.md",
+      "workspace_fixture": "apple-simplification/workspace",
+      "plugin_paths": [
+        "plugins/universal",
+        "plugins/apple-platform"
+      ],
+      "write_tools_available": true,
+      "allowed_change_paths": [
+        ".git",
+        "Sources/Quantity.swift",
+        "Tests"
+      ],
+      "required_change_paths": [
+        ".git/HEAD",
+        "Sources/Quantity.swift"
+      ],
+      "rubric": "apple-simplification/rubric.md",
+      "expected_skills": [
+        "simplifying-code",
+        "simplifying-apple-platform-code"
+      ],
+      "forbidden_skills": [
+        "verifying-invariants",
+        "modeling-swift-types-for-correctness"
+      ],
+      "artifact_checker": "apple-simplification/acceptance/Assertions.swift"
+    }
+  ]
+}

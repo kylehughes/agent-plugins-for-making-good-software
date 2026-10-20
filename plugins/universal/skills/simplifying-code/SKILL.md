@@ -27,7 +27,7 @@ This skill is deliberately universal. It should not contain detailed rules for a
 At the start of the task, infer the target stack from file extensions, manifests, project files, imports, package managers, test files, and the user's wording. If a more specific skill is available for that stack, compose with it:
 
 1. Use this skill to establish the review surface, behavior-preservation contract, reuse/deletion pass, and verification discipline.
-2. Use the platform-specific skill as an additional checklist for availability, lifecycle, concurrency, UI, framework, build-system, and compatibility hazards.
+2. Use the platform-specific skill as an additional checklist for availability, lifecycle, concurrency, UI, framework, build-system, and compatibility hazards. Reuse already active guidance, the frozen surface, decisions, and evidence in one workflow; neither skill restarts the other. When called from a larger workflow, respect its review and verification boundaries.
 3. If the universal checklist and the platform-specific checklist conflict, the more specific rule wins for that platform.
 4. Do not copy platform-specific rules into this skill. Keep this skill neutral so it remains valid across languages and ecosystems.
 5. If no platform-specific skill is available, infer the analogous checks from the language, runtime, dependency manager, concurrency model, test runner, framework lifecycle, and compatibility mechanism.
@@ -121,9 +121,9 @@ When editing:
 
 ### 7. Verify
 
-Choose verification based on the touched files and repository conventions. Prefer documented commands over guesses.
+Choose verification based on the touched files and repository conventions. Prefer documented commands over guesses. Select only checks that add needed evidence; this is not a command sequence. If a focused behavior check already compiles the same dependent graph, do not also run a compile-only command on the unchanged snapshot. Reuse completed evidence from the enclosing workflow.
 
-General order:
+Choose among:
 
 1. Fast static checks for the touched language or package.
 2. Targeted unit tests for changed behavior.
@@ -133,7 +133,7 @@ General order:
 
 If no command is obvious, inspect project files to discover one. If discovery is expensive or ambiguous, run the narrowest safe build/test command and report the limitation.
 
-Include the command and result in the final response. If a command fails for an unrelated pre-existing reason, report that separately from issues introduced by the cleanup.
+Include the command and result in the final response. Capture verification results separately: the exit status of a compound shell command belongs to its final operation unless earlier statuses were recorded explicitly. If a command fails for an unrelated pre-existing reason, report that separately from issues introduced by the cleanup.
 
 Before finalizing, confirm the [compact checklist](references/compact-checklist.md).
 

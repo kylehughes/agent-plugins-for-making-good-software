@@ -1,0 +1,1 @@
+Use $simplifying-apple-platform-code to simplify my receipt-list cleanup without changing what it returns. First run `python3 bootstrap.py`; I authorize that script to create a disposable Git baseline commit and apply my uncommitted change once in this fixture. That baseline setup is the only commit allowed. Keep the cleanup focused and report the checks you actually performed.

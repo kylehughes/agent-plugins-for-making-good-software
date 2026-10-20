@@ -1,0 +1,27 @@
+[
+  {
+    "code": "apple-apns",
+    "pattern": "\\bAPNS\\b",
+    "message": "Use 'APNs'."
+  },
+  {
+    "code": "apple-ios",
+    "pattern": "\\bIOS\\b",
+    "message": "Use 'iOS'."
+  },
+  {
+    "code": "apple-macos",
+    "pattern": "\\b(MacOS|OSX)\\b",
+    "message": "Use 'macOS'."
+  },
+  {
+    "code": "apple-xcode",
+    "pattern": "\\bxcode\\b",
+    "message": "Use 'Xcode' when naming the Apple tool."
+  },
+  {
+    "code": "apple-swiftui",
+    "pattern": "\\bswiftui\\b",
+    "message": "Use 'SwiftUI'."
+  }
+]

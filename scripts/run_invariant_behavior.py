@@ -21,7 +21,7 @@ import tempfile
 import time
 from pathlib import Path
 
-from invariant_behavior import HarnessError, assess, prepare_case, sha256_file, snapshot_files, tree_sha256
+from invariant_behavior import HarnessError, assess, prepare_case, relative_files, sha256_file, snapshot_files, tree_sha256
 
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -121,6 +121,78 @@ def run_process(argv, cwd, env, timeout_seconds, output_dir, label):
         "stdout": stdout_path.name,
         "stderr": stderr_path.name,
     }
+
+
+def prepare_fixture_bootstrap(case, bundle, config_path, project, output_dir, env, timeout_seconds=60):
+    """Run an explicitly requested fixture bootstrap before native execution.
+
+    Preserve the original workspace baseline and keep setup evidence outside the
+    runtime root. This removes agent-owned setup work without changing its tools,
+    prompt, or sandbox.
+    """
+    receipt_path = output_dir / "fixture-bootstrap.json"
+    receipt = {
+        "schema_version": 1,
+        "case_id": bundle["case_id"],
+        "workspace": str(project.resolve()),
+        "status": "failed",
+    }
+    try:
+        fixture = case.get("workspace_fixture")
+        if not isinstance(fixture, str):
+            raise HarnessError("fixture bootstrap requires a workspace_fixture")
+        source = config_path.resolve().parent / fixture / "bootstrap.py"
+        script = project / "bootstrap.py"
+        if any(path.is_symlink() or not path.is_file() for path in (source, script)):
+            raise HarnessError("fixture bootstrap requires regular source and copied bootstrap.py files")
+        source_bytes = source.read_bytes()
+        source_hash = hashlib.sha256(source_bytes).hexdigest()
+        source_content = source_bytes.decode("utf-8")
+        baseline = bundle["workspace"]
+        if (
+            baseline["baseline_files"].get("bootstrap.py") != "file:" + source_hash
+            or sha256_file(script) != source_hash
+        ):
+            raise HarnessError("fixture bootstrap source does not match the prepared copy and baseline")
+        before_hash = tree_sha256(relative_files(project))
+        if before_hash != baseline["baseline_tree_sha256"]:
+            raise HarnessError("workspace changed before fixture bootstrap")
+        receipt.update({"source": str(source.resolve()), "source_sha256": source_hash,
+                        "before_tree_sha256": before_hash})
+        result = run_process(
+            [sys.executable, str(script.resolve())], project, env, timeout_seconds,
+            output_dir, "fixture-bootstrap",
+        )
+        receipt["execution"] = result
+        receipt["after_tree_sha256"] = tree_sha256(relative_files(project))
+        if sha256_file(source) != source_hash or sha256_file(script) != source_hash:
+            raise HarnessError("fixture bootstrap source or copied script changed during setup")
+        if not setup_succeeded([result]):
+            raise HarnessError("fixture bootstrap did not complete successfully")
+        # Generic acceptance-input bindings already participate in freshness and
+        # retained-evidence verification; setup needs no new grading schema.
+        inputs = {"fixture_bootstrap_source": {
+            "path": str(source.resolve()), "content": source_content, "sha256": source_hash,
+        }}
+        for label, path in (
+            ("fixture_bootstrap_stdout", output_dir / result["stdout"]),
+            ("fixture_bootstrap_stderr", output_dir / result["stderr"]),
+        ):
+            content = path.read_text(encoding="utf-8")
+            inputs[label] = {"path": str(path.resolve()), "content": content, "sha256": sha256_file(path)}
+        receipt["status"] = "completed"
+    except (HarnessError, OSError, UnicodeError) as error:
+        receipt["reason"] = str(error)
+        write_json(receipt_path, receipt)
+        raise HarnessError("fixture bootstrap failed: " + str(error)) from error
+    write_json(receipt_path, receipt)
+    inputs["fixture_bootstrap_receipt"] = {
+        "path": str(receipt_path.resolve()),
+        "content": receipt_path.read_text(encoding="utf-8"),
+        "sha256": sha256_file(receipt_path),
+    }
+    bundle["acceptance_inputs"].update(inputs)
+    bundle["fixture_bootstrap"] = receipt
 
 
 def command_available(command):
@@ -379,7 +451,10 @@ def launch_claude(prompt, snapshot, project, output_dir, model, effort, timeout,
 
 def codex_argv(project, model, effort, write_tools, final):
     sandbox = "workspace-write" if write_tools else "read-only"
-    return ["codex", "-a", "never", "exec", "--json", "--ephemeral", "--skip-git-repo-check", "--sandbox", sandbox, "--cd", str(project), "--model", model, "-c", f'model_reasoning_effort="{effort}"', "--output-last-message", str(final), "-"]
+    # Write-capable cases may delegate; retain rollouts in their isolated home
+    # so native workers can load parent context. Read-only cases stay ephemeral.
+    persistence = [] if write_tools else ["--ephemeral"]
+    return ["codex", "-a", "never", "exec", "--json", *persistence, "--skip-git-repo-check", "--sandbox", sandbox, "--cd", str(project), "--model", model, "-c", f'model_reasoning_effort="{effort}"', "--output-last-message", str(final), "-"]
 
 
 def launch_codex(prompt, snapshot, project, output_dir, model, effort, timeout, auth_source, write_tools, env=None, home=None):
@@ -417,6 +492,7 @@ def main(argv=None):
     parser.add_argument("--effort", choices=EFFORT_CHOICES, default=DEFAULT_EFFORT)
     parser.add_argument("--repo-root", type=Path, default=REPO_ROOT)
     parser.add_argument("--codex-auth-source", help="optional existing auth.json to symlink privately")
+    parser.add_argument("--fixture-bootstrap", action="store_true", help="run the fixture's bootstrap.py on the host before native execution")
     args = parser.parse_args(argv)
     model = args.model or DEFAULT_MODELS[args.runtime]
     try:
@@ -450,6 +526,8 @@ def main(argv=None):
         write_tools = bundle["requirements"]["write_tools_available"]
         home = runtime_root / "codex-home"
         env = runtime_env(project, args.repo_root, output, home if args.runtime == "codex" else None)
+        if args.fixture_bootstrap:
+            prepare_fixture_bootstrap(case, bundle, args.config, project, output, env)
         if args.runtime == "claude":
             result = launch_claude(prompt, snapshot, project, output, model, args.effort, args.timeout, write_tools, env)
         else:

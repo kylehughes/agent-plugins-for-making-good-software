@@ -23,7 +23,7 @@ One sentence describing what this project/package/tool does and who it is for.
 
 | Requirement | Version | Notes |
 |-------------|---------|-------|
-| Xcode       | 16.0+   | Example; verify before publishing. |
+| Build tool  | Verified version | Replace with the project's actual requirement. |
 
 ## Getting Started
 

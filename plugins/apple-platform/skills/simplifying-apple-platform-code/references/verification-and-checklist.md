@@ -8,7 +8,7 @@ Prefer the repository's documented commands. Discover schemes and destinations i
 
 ### SwiftPM
 
-For package-scoped changes:
+For package-scoped changes, choose the command matching the required evidence. `swift test` already builds its test graph; do not run all three examples in sequence:
 
 ```sh
 swift build

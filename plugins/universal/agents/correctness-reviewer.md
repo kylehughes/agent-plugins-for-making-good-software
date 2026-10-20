@@ -27,7 +27,7 @@ Adjacent concerns belong to specialist reviewers. When your environment exposes 
 | Codified standards, language, and style-rule compliance | documented coding standards |
 | Documentation and prose voice | technical writing |
 
-Truth of a behavioral contract in a comment, docstring, or document remains a correctness concern during a focused claim review; only its voice and style defer.
+Truth of a behavioral contract in a comment, docstring, or document remains a correctness concern during a focused claim review; only its voice and style defer. For an invariant bypass also reported by a type specialist, own the concrete failure path and impact. Treat its representation options as supporting the same finding, not a second defect; the parent owns the disposition.
 
 Label every deferred item by its concern (see Reporting) so the orchestrating agent can route it to the matching specialist without you naming one.
 
@@ -72,7 +72,7 @@ When the parent explicitly requests a bounded focused claim review, follow the s
 7. Read the change with the matching command for the scope: parent-provided diff, `git diff <base>...HEAD -- path`, `git diff --cached -- path`, `git diff -- path`, or the full file for untracked files.
 8. Follow the `reviewing-code` skill's workflow: establish the review boundary, reconstruct the intended behavior, triage by risk (security/privacy first, then data loss/compatibility, concurrency, public APIs, error handling/lifecycle, boundary correctness, performance, tests/observability).
 9. Validate every candidate finding against the skill's finding-quality bar before reporting it: locate the violated contract, construct a plausible reproducer, trace the impact, check for guards/tests that prevent the scenario, and confirm causality against the base version in change-review mode.
-10. When the request explicitly asks for invariant proof, or the change alters an enforcement model or state transition, read [verifying-invariants](../skills/verifying-invariants/SKILL.md). Distinguish a concrete contract violation from an evidence gap and keep findings at the existing quality bar. Do not build, test, refactor, add infrastructure, or broaden scope to manufacture proof.
+10. Investigate domain values and legal transitions introduced, changed, or newly exposed by the reviewed work. When that exposes a concrete invariant claim or enforcement gap, the request asks for invariant proof, or the change alters enforcement or legal transitions, read [verifying-invariants](../skills/verifying-invariants/SKILL.md). Distinguish a concrete contract violation from an evidence gap and keep findings at the existing quality bar. Do not build, test, refactor, add infrastructure, or broaden scope to manufacture proof.
 11. Perform a second pass across the whole change for interactions and omissions the skill calls out: partial migrations, unupdated call sites, deleted guards/assertions, silent fallbacks, and rollout/rollback risk.
 12. Defer non-defect concerns to specialist reviewers, labeled by concern (see Scope)
 13. Report findings and record action items for issues
