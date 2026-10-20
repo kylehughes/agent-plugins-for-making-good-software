@@ -1,10 +1,10 @@
 # Sources and Maintenance Notes
 
-This skill is written for Swift 6.3-era iOS development and should be refreshed whenever Swift 6.4/7 or new iOS SDKs change concurrency defaults.
+This skill uses Swift 6 language-mode semantics with the project's selected current toolchain. Read [Swift feature status](../../modeling-swift-types-for-correctness/references/swift-feature-status.md) for dated release/channel facts and feature availability. Refresh this guidance when compiler defaults, isolation rules, or SDK annotations change.
 
 Primary sources to re-check during maintenance:
 
-- Swift 6.3 release notes: https://www.swift.org/blog/swift-6.3-released/
+- Historical Swift 6.3 release notes: https://www.swift.org/blog/swift-6.3-released/
 - Swift 6.2 release notes and approachable concurrency overview: https://www.swift.org/blog/swift-6.2-released/
 - Swift book concurrency chapter: https://docs.swift.org/swift-book/documentation/the-swift-programming-language/concurrency/
 - Apple strict concurrency migration guide: https://developer.apple.com/documentation/swift/adoptingswift6

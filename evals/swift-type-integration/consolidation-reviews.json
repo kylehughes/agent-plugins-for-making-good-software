@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "scope": "Independent Fable5.1 static reviews of construction, progressive disclosure, ownership, and currentness. Does not certify Swift facts or all native behavior.",
+  "reviews": [
+    {
+      "stage": "initial",
+      "verdict": "APPROVE WITH NONBLOCKING FOLLOW-UPS",
+      "model": "claude-fable-5-1",
+      "effort": "medium",
+      "tools": [
+        "Glob",
+        "Grep",
+        "Read"
+      ],
+      "subtype": "success",
+      "is_error": false,
+      "permission_denials": [],
+      "plugin_snapshot_sha256": "79ff584615f0ceb44246765b6130a78baceec9f30d783a400ea92c881c52022a",
+      "artifacts": {
+        "launch.json": {
+          "path": "/var/folders/5f/brg0gp5d1bbbrq122wfpvs340000gn/T/swift-consolidation-fable-ioqt36zb/launch.json",
+          "sha256": "511e8eb450bf7b94a942634331b4d2f3d0589fc011fb6909eb63b8e82c6657aa"
+        },
+        "prompt.txt": {
+          "path": "/var/folders/5f/brg0gp5d1bbbrq122wfpvs340000gn/T/swift-consolidation-fable-ioqt36zb/prompt.txt",
+          "sha256": "e6ce9adf9491975eefcf814ea6c6522b129691d1c3791a85dd65035c550920d3"
+        },
+        "receipt.json": {
+          "path": "/var/folders/5f/brg0gp5d1bbbrq122wfpvs340000gn/T/swift-consolidation-fable-ioqt36zb/receipt.json",
+          "sha256": "a15c1878dd5c5e81153d14c013641913f02cc2ff208673525840e23d783568e3"
+        },
+        "review.md": {
+          "path": "/var/folders/5f/brg0gp5d1bbbrq122wfpvs340000gn/T/swift-consolidation-fable-ioqt36zb/review.md",
+          "sha256": "8c5347edb9d3cba6f02f2a92f6bcffacb28861ab1a11b977c6dea09e992af816"
+        },
+        "transcript.jsonl": {
+          "path": "/var/folders/5f/brg0gp5d1bbbrq122wfpvs340000gn/T/swift-consolidation-fable-ioqt36zb/transcript.jsonl",
+          "sha256": "3191a0c2592c7dd214d1e61656b2dbbb660d72bf8f3966470c350f06ed1fa2a4"
+        }
+      }
+    },
+    {
+      "stage": "followup",
+      "verdict": "APPROVE",
+      "model": "claude-fable-5-1",
+      "effort": "medium",
+      "tools": [
+        "Glob",
+        "Grep",
+        "Read"
+      ],
+      "subtype": "success",
+      "is_error": false,
+      "permission_denials": [],
+      "plugin_snapshot_sha256": "73f52dffa52092bf440353212ad14e46f92b5277a01020694d1e86081bb8d008",
+      "artifacts": {
+        "launch.json": {
+          "path": "/var/folders/5f/brg0gp5d1bbbrq122wfpvs340000gn/T/swift-consolidation-fable-followup-eotpg7nf/launch.json",
+          "sha256": "2718c1c3eae3b29ab45093213e45ef0449cb145e50dc41918645cb9ab9cbd965"
+        },
+        "prompt.txt": {
+          "path": "/var/folders/5f/brg0gp5d1bbbrq122wfpvs340000gn/T/swift-consolidation-fable-followup-eotpg7nf/prompt.txt",
+          "sha256": "81162a09d341d7305452a3c6b1cfeaae63e5c358d55e2c8aa98eb3fccad18f19"
+        },
+        "receipt.json": {
+          "path": "/var/folders/5f/brg0gp5d1bbbrq122wfpvs340000gn/T/swift-consolidation-fable-followup-eotpg7nf/receipt.json",
+          "sha256": "229cfb56bb669aa705c8589354b69473d03add013080eed1832f1dc96f5ecdbe"
+        },
+        "review.md": {
+          "path": "/var/folders/5f/brg0gp5d1bbbrq122wfpvs340000gn/T/swift-consolidation-fable-followup-eotpg7nf/review.md",
+          "sha256": "d2b2fa98fcfd194882b8f59edf5098b71ff68ae61db608b461f98d8a3a637b03"
+        },
+        "transcript.jsonl": {
+          "path": "/var/folders/5f/brg0gp5d1bbbrq122wfpvs340000gn/T/swift-consolidation-fable-followup-eotpg7nf/transcript.jsonl",
+          "sha256": "fd088a8fac9480d97d92ea91362e67ee48a38cd2cd90eff145ee51558370e38b"
+        }
+      }
+    }
+  ]
+}

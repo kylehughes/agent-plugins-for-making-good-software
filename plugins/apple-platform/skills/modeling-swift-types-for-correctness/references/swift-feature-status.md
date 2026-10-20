@@ -2,22 +2,27 @@
 
 Use this reference before recommending a recent Swift type-system feature. It separates language/compiler support from standard-library deployment availability and records what the supplied Swift 6.4 research archive can and cannot establish.
 
-Last checked against primary sources: **2026-10-19**.
+This file owns dated Swift/Xcode release facts and feature availability for the Apple Platform plugin. Compatibility references link here rather than maintaining their own snapshots.
+
+Release/channel snapshot rechecked against primary sources: **2026-10-20**. Feature rows retain the **2026-10-19** primary-source review unless a row says otherwise; this consolidation does not claim every proposal or API was rechecked.
 
 ## Evidence vocabulary
 
 - **Shipped** means the Swift Evolution proposal says `Implemented` for a released Swift version, or an official release announcement documents the released behavior. No experimental flag is required for the scoped form unless the row says otherwise.
 - **Experimental** means the feature requires the exact frontend flag shown. An accepted proposal is not enough to call a feature shipped.
 - **Unavailable** means the scoped form is absent, rejected, returned for revision, or deliberately declined. A nearby feature may still be usable.
-- **Fresh** evidence was checked directly in an official release page, Swift Evolution proposal, Apple documentation page, or tagged Swift source on the date above.
+- **Fresh** evidence was checked directly in an official release page, Swift Evolution proposal, Apple documentation page, or tagged Swift source on the recorded review date. It is source inspection, not compiler execution.
 - **Supplied** evidence comes from the companion archive's saved Ubuntu compiler reports. It is useful corroboration, not a fresh compiler run.
+- **Local compiler evidence** means the separately recorded Apple Swift corpus run; it does not relabel supplied Linux reports as fresh runs.
 - **Unknown** means the available primary evidence does not establish the claim. Do not turn `unknown` into a deployment promise.
 
 Swift Evolution acceptance establishes a design decision. It does not establish implementation in a released toolchain or Apple deployment support. A Linux `swift-frontend -emit-sil -swift-version 6` probe establishes only the recorded source/compiler/arguments outcome. Compilation does not prove arbitrary correctness, semantic protocol laws, resource cleanup, exactly-once completion, progress, or liveness.
 
 ## Swift 6.4 release matrix
 
-The shipped baseline is Swift 6.4.1, released on 2026-10-13. The archive also names official Swift 6.4.0 and 6.4.1 Ubuntu toolchains, but those binaries were not run for this integration. “No flag” below means no experimental feature flag for the scoped released form; ordinary `-swift-version 6` and the selected compilation phase still matter.
+The current stable Swift.org download is Swift 6.4.1, announced on 2026-10-13. Apple lists Xcode 27.1 (27A9275), released 2026-10-15, and Xcode 27.2 RC (27B48), dated 2026-10-19. The RC remains a preview lane until a project deliberately promotes it. Xcode 27 (27A266a) includes Swift 6.4 and the iOS 27 SDK. These release/channel facts were rechecked on 2026-10-20 against [Apple releases](https://developer.apple.com/news/releases/), [Xcode 27 notes](https://developer.apple.com/documentation/xcode-release-notes/xcode-27-release-notes), [Swift macOS downloads](https://www.swift.org/install/macos/), and the [6.4.1 announcement](https://forums.swift.org/t/announcing-swift-6-4-1/90029).
+
+Record `xcodebuild -version`, the selected developer directory, and `xcrun swift --version` for the actual build. A Swift.org download version does not identify Xcode's bundled compiler. The archive also names official Swift 6.4.0 and 6.4.1 Ubuntu toolchains, but those binaries were not run for this integration. “No flag” below means no experimental feature flag for the scoped released form; ordinary `-swift-version 6` and the selected compilation phase still matter.
 
 <a id="release-01"></a>
 ### 1. Compiler and language baseline
@@ -187,6 +192,20 @@ The shipped baseline is Swift 6.4.1, released on 2026-10-13. The archive also na
 - **Apple availability:** Language feature; no blanket OS floor.
 - **Evidence:** Fresh proposal status — [SE-0518](https://github.com/swiftlang/swift-evolution/blob/main/proposals/0518-tilde-sendable.md). The feature suppresses inferred unconditional conformance. It is neither a negative generic constraint nor a substitute for region-transfer and isolation analysis.
 
+## Platform adapter availability
+
+These deployment floors retain the 2026-10-19 documentation review. Check the selected SDK declarations, including individual members and producers, before changing deployment promises. The [source index](sources.md#apple-api-availability) links the official symbol documentation.
+
+| Symbol/framework | iOS floor | Compatibility obligation |
+|---|---:|---|
+| `Synchronization.Mutex` | 18+ | Gate the declaration or use a baseline adapter |
+| `OSAllocatedUnfairLock` | 16+ | Keep synchronous locking behind an audited adapter |
+| Typed NotificationCenter messages | 26+ | Provide a legacy notification adapter when needed |
+| Observation / `@Observable` | 17+ | Provide a baseline observation adapter when needed |
+| SwiftData | 17+ | Keep persistence adapters separate from domain types |
+
+Language syntax has no blanket OS floor; library types and their individual operations can have one. The release rows above own the floors for `Span`, `InlineArray`, `Ref`, `UniqueBox`, `UniqueArray`, and `Iterable`.
+
 <a id="frontier"></a>
 ## Frontier family rubric
 
@@ -311,15 +330,12 @@ Retain frontier concepts as design vocabulary even when Swift cannot express the
 
 ## Conflict decisions and evidence limits
 
-| Question | Decision | Evidence classification |
-|---|---|---|
-| Are `core_validation.json` and `core_validation_641.json` independent 6.4.0/6.4.1 evidence? | No. They are byte-identical (`aeef6ae6…` in the supplied checksum file) and contain no per-record compiler identity. Treat them as one supplied result set of unknown toolchain provenance. | Supplied; content identity observed locally; toolchain provenance unknown |
-| Do the performance experiments prove no allocation, no locks, or semantic effects? | No. `performance_experiments/modeling_gap_validation.json` records typecheck, optimized SIL, and SIL with `-experimental-performance-annotations`. `noalloc_array` and `nolocks_mutex` already fail in optimized SIL without that flag; `effects_lie` compiles. The subdirectory README names 6.4.0 while the package README describes a 6.4.1 baseline; the report records neither compiler identity nor target, so its toolchain provenance is unknown. These are unsupported compile-only probes, not performance measurements. | Supplied report inspected; compiler/target unknown; no fresh compiler execution |
-| Does the Swift 6.4 release blog prove SE-0532 APIs shipped? | No. The accepted proposal, implementation-status report, and supplied official-release probes say the scoped APIs were absent. Record the release-blog list as contradicted for those APIs. | Fresh primary decision/status plus supplied compiler evidence |
-| Does the retained SE-0527 manuscript or Apple `UniqueArray` prose prove public `RigidArray` exists? | No. The steering-group acceptance decision declined it, and the supplied public-name probe rejects it. | Fresh primary decision plus supplied compiler evidence |
-| Do accepted proposals or Linux SIL probes establish Apple deployment support? | No. Use Apple symbol documentation or the selected SDK interface. Mark the floor unknown when neither establishes it. | Evidence rule |
-| Does compilation establish arbitrary correctness or liveness? | No. It establishes only the checked compiler rule for the exact source, phase, flags, and toolchain. Runtime validation, semantic laws, cleanup, progress, and exactly-once behavior need separate evidence. | Evidence rule |
+- SE-0532's release-blog mention does not override its accepted-but-unimplemented status and the scoped compiler rejections; see [release row 15](#release-15).
+- SE-0527's retained manuscript and Apple prose do not override the steering group's decision to decline public `RigidArray`; see [release row 16](#release-16).
+- Duplicate supplied core reports count as one result set with unknown toolchain provenance. The supplied performance report also lacks compiler/target identity. Neither establishes independent release coverage or measured allocation, locking, latency, purity, or constant-time behavior.
+- Accepted proposals and Linux SIL probes do not establish Apple deployment support. Use Apple symbol documentation or the selected SDK interface; otherwise mark the floor unknown.
+- Compilation proves only the checked rule for the exact source, phase, arguments, and toolchain. Validation, semantic laws, cleanup, progress, and exactly-once behavior need separate evidence.
 
-The companion archive was inspected as supplied; no archived compiler corpus or runtime suite was accepted or rerun. Its `release_matrix.json`, README, HTML catalog, saved reports, tagged checksums, and proposal links informed the conflict inventory. Primary-source status wins over descriptive archive prose, while supplied compiler outcomes remain explicitly scoped corroboration.
+The original source review inspected the archive without running its corpus. Later Apple corpus verification established the recorded 89 compiler outcomes and 15 controls under Apple Swift 6.4, with a macOS 27.0 compile-only target; two runtime sources separately built and ran with the host-compatible target. These are distinct evidence sets. Neither result proves older deployment support or execution of macOS 27 APIs on the verification host. Use [the corpus runner contract](compile-check-runner.md) and a new target-specific report for a new deployment claim.
 
-The performance interpretation also follows the freshly inspected [Swift underscored-attribute reference](https://github.com/swiftlang/swift/blob/main/docs/ReferenceGuides/UnderscoredAttributes.md#_effectseffectname): `_effects` supplies optimizer assumptions, and violating them can cause undefined behavior. The original [performance-annotation pitch](https://forums.swift.org/t/performance-annotations/54441) describes compiler diagnostics, not stable general effect types. Neither source turns the supplied probes into a latency, allocation-count, purity, or constant-time proof.
+For performance annotations, the [Swift underscored-attribute reference](https://github.com/swiftlang/swift/blob/main/docs/ReferenceGuides/UnderscoredAttributes.md#_effectseffectname) describes optimizer assumptions whose violation can cause undefined behavior. The [performance-annotation pitch](https://forums.swift.org/t/performance-annotations/54441) concerns compiler diagnostics, not stable general effect types. Unsupported compile-only probes remain outside performance evidence.

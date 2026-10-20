@@ -13,34 +13,9 @@ integration ledger; the catalog is not a prerequisite for using these recipes.
 Use products for facts that coexist, sums for exclusive alternatives, and a
 required prefix plus a collection for a minimum cardinality. The invariant is
 structural: a value contains precisely the payload required by its selected case.
-See [sum and product construction](algebraic-and-refined-values.md#sum-types-model-alternatives-directly)
-for the baseline implementation rules.
+For case and payload mechanics, use [sum and product construction](algebraic-and-refined-values.md#sum-types-model-alternatives-directly).
 
-```swift
-enum Patch<Value> {
-    case unchanged
-    case remove
-    case set(Value)
-}
-
-struct NonEmpty<Element> {
-    let head: Element
-    let tail: [Element]
-
-    func map<Output>(_ transform: (Element) -> Output) -> NonEmpty<Output> {
-        NonEmpty<Output>(head: transform(head), tail: tail.map(transform))
-    }
-
-    func filter(_ keep: (Element) -> Bool) -> [Element] {
-        ([head] + tail).filter(keep)
-    }
-}
-```
-
-Construction supplies the head; mapping preserves it; filtering deliberately
-forgets nonemptiness. Serialization must distinguish all three patch cases.
-Erasing a patch into `Value?` loses a state; exposing an array setter loses the
-nonempty invariant. Refining the payload is separate from choosing the case.
+For a three-way update, use `Patch<Value>` to distinguish unchanged, removal, and replacement. For a nonempty traversal, a required head plus tail makes construction structural; `map` retains nonemptiness and `filter` weakens the result to an ordinary array. Use the [patch and cardinality examples](algebraic-and-refined-values.md#absence-removal-and-structural-cardinality) when implementing either representation. Refining a payload is separate from choosing its case.
 
 For exactly two positions, a named pair is usually clearer than a counted array.
 For a small finite key domain, use one property per key or an exhaustive switch;
@@ -54,7 +29,7 @@ represent partial completion or cancellation. `Never` removes a normally
 constructible payload, but a function returning it can trap or diverge. `Void`
 and empty structs carry presence, not authority; caseless tags distinguish types
 without supplying values. Decide public enum resilience deliberately and keep
-owned switches exhaustive; see [public evolution](algebraic-and-refined-values.md#public-api-resilience).
+owned switches exhaustive; see [public evolution](#public-evolution).
 The cost is more named cases and explicit adapters. Prefer `Optional` when there
 really are only two meanings. Test serialization, case selection, and traversal
 limits rather than claiming the enum proves business semantics.
@@ -62,57 +37,13 @@ limits rather than claiming the enum proves business semantics.
 <a id="val"></a>
 ## Refined values: make successful construction carry the input
 
-Use a nominal refined value when callers repeatedly depend on a runtime
-predicate. Its invariant is that every admitted instance satisfies the predicate;
-the trusted constructor establishes that fact, and the API preserves it. A
-boolean validation result loses the connection to the checked input.
+Use a nominal refined value when downstream callers depend on a runtime predicate. Successful construction carries the checked input; every admitted instance must satisfy the predicate. Keep editable input in a draft until it can satisfy that contract. For one field, use the [validated newtype and separate draft examples](algebraic-and-refined-values.md#validated-newtypes); for persisted values, go directly to [validated decoding](algebraic-and-refined-values.md#codable-and-refined-types).
 
-```swift
-struct NonblankLabel {
-    let text: String
+For cross-field predicates, construct and update one aggregate. A sorted list must control comparator policy and element mutation; a unique list must control equality and hashing. See [collection invariants](algebraic-and-refined-values.md#collection-invariants) for the construction and mutation choices. Dividing positive integers can yield zero; overflow can trap, and floating values admit NaN, infinity, and underflow. Return a weaker type or revalidate when an operation is not closed over the predicate; [numeric bounds](algebraic-and-refined-values.md#numeric-bounds-and-floating-point-traps) owns the scalar rules.
 
-    init?(_ text: String) {
-        guard text.contains(where: { !$0.isWhitespace }) else { return nil }
-        self.text = text
-    }
-}
+Canonicalization is a domain policy: Unicode normalization, locale casing, path resolution, and unit conversion are not interchangeable. Record losses and version dependencies; use the [canonicalization rules](algebraic-and-refined-values.md#validation-versus-canonicalization) for scalar construction. Generic `Validated<Value, Rule>` wrappers help when several operations share a stable predicate vocabulary, but a public `Rule` protocol is open to dishonest witnesses. Seal evidence-producing policies; do not infer logical implication between distinct rule types. A concrete wrapper is cheaper when there is only one useful predicate.
 
-// Editable input remains a legitimate separate representation.
-struct LabelDraft { var text: String }
-```
-
-Keep all constructing paths in the audit, including generated initializers,
-fixtures, property-wrapper projections, database hydration, and decoding.
-For persisted refinements, use the existing [keyed decoding recipe](algebraic-and-refined-values.md#codable-and-refined-types)
-and its historical-payload, predicate-reaching-invalid-input, and round-trip
-controls. Do not replace the wire format while repairing validation. A read-only
-primitive projection can discard evidence for downstream calls, but does not
-mutate the wrapper; a referenced class or writable projection can reopen it.
-
-For cross-field predicates, construct and update one aggregate. A sorted list
-must control both comparator policy and element mutation; a unique list must
-control equality and hashing. Numeric closure needs scrutiny: dividing positive
-integers can yield zero, overflow can trap, and floating values admit NaN,
-infinity, and underflow. Return a weaker type or revalidate when an operation is
-not closed over the predicate. See [collection invariants](algebraic-and-refined-values.md#collection-invariants)
-and [numeric limits](algebraic-and-refined-values.md#numeric-bounds-and-floating-point-traps).
-
-Canonicalization is a domain policy: Unicode normalization, locale casing, path
-resolution, and unit conversion are not interchangeable. Record losses and
-version dependencies. Generic `Validated<Value, Rule>` wrappers help when several
-operations share a stable predicate vocabulary, but a public `Rule` protocol is
-open to dishonest witnesses. Seal evidence-producing policies; do not infer
-logical implication between distinct rule types. A concrete wrapper is cheaper
-when there is only one useful predicate.
-
-Property wrappers mediate local writes; they do not automatically make the
-unwrapped primitive an invariant-bearing value. Literal macros can diagnose
-constant syntax and emit a refined value; runtime strings still need a checked
-constructor. Secret, escaped-HTML, SQL-parameter, and path-component wrappers
-belong to their exact sinks: see [trust boundaries](security-and-resource-modeling.md#trust-types-are-interpreter-specific).
-Residual obligations are predicate correctness, normalization policy, external
-freshness, and every bypass. Costs include adapters, rejection handling, and
-migration of stored values; avoid blanket primitive wrapping.
+Property wrappers mediate local writes; they do not automatically make the unwrapped primitive an invariant-bearing value. Literal macros can diagnose constant syntax and emit a refined value; runtime strings still need a checked constructor. Secret, escaped-HTML, SQL-parameter, and path-component wrappers belong to their exact sinks: see [trust boundaries](security-and-resource-modeling.md#trust-types-are-interpreter-specific). Residual obligations are predicate correctness, normalization policy, external freshness, and every bypass. Costs include adapters, rejection handling, and migration of stored values; avoid blanket primitive wrapping.
 
 <a id="rel"></a>
 ## Relationships: bind evidence to the right subject
@@ -330,3 +261,25 @@ check is the simpler alternative when proof machinery adds no useful rejection.
 Public ABI and source evolution remain review obligations even when all local
 clients compile. Compilation establishes neither arbitrary correctness nor
 liveness.
+
+### Equality and hashing
+
+Equality must match domain identity and canonicalization.
+
+- If canonical storage is lowercased, synthesized equality may be correct.
+- If original presentation is preserved separately, exclude it from identity when appropriate.
+- Do not make mutable reference-backed state part of a hash key.
+- Do not change fields participating in `Hashable` while a value is in a set or dictionary.
+- For floating point, understand that `NaN != NaN`; reject NaN in value types that require ordinary equivalence.
+
+### Public evolution
+
+For public libraries:
+
+- Adding an enum case can be source-breaking for exhaustive client switches unless the enum is nonfrozen across a resilient boundary.
+- Changing a struct's stored properties is an ABI concern when layout is exposed or library evolution is disabled.
+- Adding validation can reject previously accepted source or persisted data.
+- Changing canonicalization can alter equality, hashes, database keys, and wire output.
+- A public unchecked initializer becomes permanent API debt.
+
+Record these as compatibility changes, not internal implementation details.

@@ -1,6 +1,6 @@
 # Modern iOS Content Configuration Reference
 
-This reference expands the skill entry point with complete Swift 6.3 templates for UIKit content configuration in iOS 16+ applications.
+This reference expands the skill entry point with UIKit content configuration templates for iOS 16+ applications using the selected current Swift compiler in Swift 6 language mode.
 
 ## Availability and scope
 
@@ -15,7 +15,7 @@ This reference expands the skill entry point with complete Swift 6.3 templates f
 | `UIHostingConfiguration` | iOS 16+ | Prefer for SwiftUI cell content. |
 | `UIContentUnavailableConfiguration` | iOS 17+ | Gate with `#available(iOS 17.0, *)` if the app still supports iOS 16. |
 
-When the deployment target is iOS 16, generated code should be clean Swift 6.3 with availability checks only for APIs above iOS 16. Do not add fallback branches for older systems unless the user asks.
+When the deployment target is iOS 16, use Swift 6 language mode with availability checks for APIs above iOS 16. Do not add fallback branches for older systems unless the user asks. Use the selected stable Xcode and SDK by default; for recent compiler features or a proposed preview channel, consult the shared [feature-status guidance](../modeling-swift-types-for-correctness/references/swift-feature-status.md#swift-64-release-matrix).
 
 ## Architecture model
 

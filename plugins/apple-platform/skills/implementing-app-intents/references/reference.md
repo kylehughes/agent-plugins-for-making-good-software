@@ -48,7 +48,7 @@ Use these as implementation buckets, not a substitute for SDK availability check
 
 ### Forward-looking or selected-SDK-gated surfaces
 
-The following symbols are absent from the iPhoneOS 26.5 SDK. Treat them as iOS 27-era/beta/selected-SDK-dependent, and do not include source that references them in a target compiled by the 26.5 SDK:
+The following symbols are absent from the iPhoneOS 26.5 SDK. Do not reference them in a target compiled by that SDK. Verify their declarations and runtime availability in a newer selected SDK before using them; an OS version number alone does not establish preview status:
 
 - SwiftUI per-view `.appEntityIdentifier(...)`, selection annotation modifiers, UIKit table/collection annotation data sources, and UIKit custom-canvas entity element providers.
 - `ValueRepresentation` / `IntentValueRepresentation` for transferring entities as system-known structured values across apps.

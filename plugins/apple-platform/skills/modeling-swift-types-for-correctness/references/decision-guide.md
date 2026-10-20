@@ -2,6 +2,25 @@
 
 Use this reference when the correct construct is unclear, when a proposed design feels too clever, or when reviewing whether an invariant is actually enforced.
 
+## Find the authoritative treatment
+
+Select the problem first, then read only its implementation section. The domain recipes own compound model decisions and contracts; the focused references own the underlying construction rules.
+
+| Problem | Start here |
+|---|---|
+| Exclusive variants, correlated fields, absence, or cardinality | [Algebraic values](algebraic-and-refined-values.md#sum-types-model-alternatives-directly) |
+| Scalar validation or canonicalization | [Validated newtypes](algebraic-and-refined-values.md#validated-newtypes) |
+| Validation of saved or network values | [Codable construction](algebraic-and-refined-values.md#codable-and-refined-types) |
+| Same-representation IDs or basic staged APIs | [Nominal identity](identity-typestate-capabilities.md#nominal-identity) or [typestate](identity-typestate-capabilities.md#typestate) |
+| Issuer-created permission | [Capability construction](identity-typestate-capabilities.md#capability-tokens) |
+| Subject-bound evidence, policy indices, or transform composition | [Compound relationships](domain-modeling-recipes.md#rel) |
+| Recoverable state transition | [Workflow outcomes](domain-modeling-recipes.md#flow) |
+| Typed caches, endpoints, queries, or import pipelines | [Applied model decisions](domain-modeling-recipes.md#app) |
+| Public proof boundary, conformance laws, or evolution | [Public contracts](domain-modeling-recipes.md#api) |
+| Generic type equations, static dimensions, or typed languages | [Correlated types](generic-proof-recipes.md#gen), [dimensions](generic-proof-recipes.md#sizes-packs), or [expression proofs](generic-proof-recipes.md#adv) |
+| Borrowed storage or changing facts across suspension | [Complete ownership section](ownership-effect-recipes.md#ownership) or [reservation and settlement](ownership-effect-recipes.md#isolation) |
+| Failure transport or required completion | [Typed errors](ownership-effect-recipes.md#effects) or [completion obligations](ownership-effect-recipes.md#resources) |
+
 ## Start With the Failure You Want
 
 A useful type change should cause a specific bad operation to fail in one of three places:
@@ -119,24 +138,7 @@ Avoid typestate when it creates many generic axes, requires type erasure immedia
 
 ## Choosing Between Wrapper and Phantom Tag
 
-### Use distinct wrappers
-
-```swift
-struct UserID: Hashable, Sendable { let rawValue: UUID }
-struct WorkspaceID: Hashable, Sendable { let rawValue: UUID }
-```
-
-This is clearest when domains have different validation, behavior, visibility, or serialization.
-
-### Use a phantom-tagged implementation
-
-```swift
-struct Identifier<Domain>: Hashable, Sendable {
-    let rawValue: UUID
-}
-```
-
-This reduces repetition when representation and behavior are genuinely identical. Phantom tags create nominal separation; they do not grant authority or restrict construction of the wrapper. Internal APIs can keep tag types nonpublic. Public APIs may need visible marker types, for which an uninhabited enum is often suitable. If raw construction must be restricted, seal the wrapper initializer or expose a checked factory separately. Never make conformance to a public marker protocol sufficient to grant permission.
+Choose distinct wrappers when domains differ in validation, behavior, visibility, or serialization. Choose a phantom-tagged implementation when the representation and behavior are genuinely shared. Use [nominal identity and tag sealing](identity-typestate-capabilities.md#nominal-identity) for the examples and construction rules. A tag prevents substitution; [capability construction](identity-typestate-capabilities.md#capability-tokens) is a separate authority decision.
 
 ## Choosing an Error Model
 
@@ -154,47 +156,19 @@ Typed throws is not automatically “more correct.” It is a source-compatibili
 
 ## Choosing Actor, Lock, or Immutable Value
 
-1. Prefer an immutable `Sendable` value when mutation need not be shared.
-2. Prefer an actor for logically owned mutable state and asynchronous access.
-3. Prefer a lock only when access must remain synchronous or profiling shows actor hops are material.
-4. Prefer `OSAllocatedUnfairLock` for an iOS 16 baseline; use `Synchronization.Mutex` only where iOS 18+ is acceptable or availability is isolated.
-5. Never hold a lock across `await`, callbacks that can re-enter, or unknown client code.
+Prefer an immutable `Sendable` value when shared mutation is unnecessary, an actor for asynchronous ownership, and a lock for required synchronous access or measured cost. Use [ownership of mutable state](ownership-concurrency-errors.md#concurrency-invariants-begin-with-ownership-of-mutable-state) for construction, availability, reentrancy, and lock rules. For an operation that validates facts before suspension, use [reservation and settlement](ownership-effect-recipes.md#isolation).
 
 ## Choosing Resource-Lifetime Enforcement
 
-1. Prefer a fixed operation that keeps the handle or pointer private.
-2. Use `defer` and cancellation handlers to centralize runtime cleanup on every exit path.
-3. Treat an ordinary closure-scoped API as lifetime documentation and cleanup structure, not proof that a copyable value cannot escape.
-4. Use noncopyable/nonescapable types only when copies or escape are genuinely invalid and the compiler can see the owner dependency.
-5. Specify close failure, partial transition, callback, suspension, and asynchronous cleanup behavior before claiming ownership safety.
+Start with a fixed operation that keeps its handle private. Escalate to ownership or lifetime types only when copying or escape is itself invalid. Use [resource modeling](security-and-resource-modeling.md#native-and-file-handles-need-one-ownership-story) for cleanup, failure, and cancellation, or [borrowed projections](ownership-effect-recipes.md#ownership) when a client must temporarily access storage.
 
 ## Construction-Closure Checklist
 
-A claimed invariant is closed only when all answers are satisfactory:
-
-- Can a memberwise initializer be synthesized or called?
-- Can public stored properties be modified after construction?
-- Does `Decodable` invoke validation?
-- Does a macro synthesize a bypassing initializer or setter?
-- Can test helpers or previews create invalid values and escape into production code?
-- Can Objective-C/KVC mutate the representation?
-- Can persistence hydrate an object without the checked path?
-- Can an external module conform to a marker protocol and forge a state or capability?
-- Does an unchecked initializer have more callers than the boundary that justifies it?
-- Does a reference-semantic field mutate behind an apparently immutable value?
-- Does `@unchecked Sendable` rely on a lock or actor that is actually used for every access?
-- Can availability fallback and modern implementations diverge semantically?
+Audit every path that constructs, mutates, restores, or bridges the value with the [Swift construction checklist](../SKILL.md#close-swift-construction-and-mutation). Go directly to [validated decoding](algebraic-and-refined-values.md#codable-and-refined-types) for synthesized-decoder claims; private storage alone does not close that route.
 
 ## Security Boundary Warning
 
-Types improve API discipline but do not replace authorization, cryptographic verification, server enforcement, sandboxing, or input validation. A capability token is useful only when:
-
-- Construction is controlled.
-- The issuer performs the real authorization check.
-- The token cannot be replayed beyond its intended scope or lifetime when that matters.
-- The protected operation still validates server-side or system-side authority.
-
-Do not advertise a client-side Swift type as a security boundary against a hostile client.
+A type constrains ordinary API callers within an inspected access boundary. Use [security enforcement limits](security-and-resource-modeling.md#types-narrow-misuse-they-do-not-replace-enforcement) when the claim includes authorization, hostile clients, revocation, cryptography, or replay.
 
 ## Overmodeling Signals
 

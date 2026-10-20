@@ -4,7 +4,7 @@ Use this reference before making broad concurrency changes or when a fix depends
 
 ## Baseline for this skill
 
-The default target is Swift 6.3, Swift language mode 6, strict concurrency, and iOS 16+ runtime support. Latest Swift syntax is allowed. Runtime framework APIs still obey deployment target availability.
+The default target uses the project's selected current toolchain, Swift 6 language mode, and iOS 16+ runtime support. [Swift feature status](../../modeling-swift-types-for-correctness/references/swift-feature-status.md) owns the dated compiler/Xcode snapshot and API availability; [iOS versioning](../../modeling-swift-types-for-correctness/references/ios-versioning.md) owns deployment policy. Latest Swift syntax is allowed. Runtime framework APIs still obey deployment target availability.
 
 Separate these concepts every time:
 
@@ -22,14 +22,14 @@ Do not gate Swift language syntax with `#available(iOS ...)`. Do gate framework 
 For app/UI targets:
 
 - Swift Language Mode: Swift 6.
-- Strict Concurrency Checking: Complete.
+- Swift 6 enforces complete strict-concurrency checking; migration settings do not replace the language mode.
 - Default Actor Isolation: `MainActor` when the target mostly contains UI and app orchestration.
-- Enable `NonisolatedNonsendingByDefault` and `InferIsolatedConformances` when available, matching the approachable concurrency model.
+- Adopt caller-isolation and isolated-conformance behavior deliberately. Check which upcoming features the selected language mode already enables before adding flags.
 
 For reusable domain, networking, persistence, and algorithm packages:
 
 - Swift Language Mode: Swift 6.
-- Strict Concurrency Checking: Complete.
+- Swift 6 enforces complete strict-concurrency checking; migration settings do not replace the language mode.
 - Default Actor Isolation: usually `nonisolated` unless the package is explicitly UI-only.
 - Enable `NonisolatedNonsendingByDefault` and `InferIsolatedConformances` deliberately; avoid accidental `@MainActor` inference in DTO/model packages.
 
@@ -40,7 +40,7 @@ For test targets:
 
 ## SwiftPM settings shape
 
-For a UI package or feature target that intentionally defaults to the main actor:
+The examples show explicit behavior choices for a tools-version manifest that supports them. Check the selected compiler and language mode before copying upcoming-feature settings; remove a setting that is already enabled or rejected as redundant. For a UI package or feature target that intentionally defaults to the main actor:
 
 ```swift
 .target(
@@ -74,15 +74,15 @@ For a domain package that should remain nonisolated by default:
 
 Many concurrency language features are compiler/runtime features and are usable in an iOS 16 app built with a modern toolchain. Many newer Apple frameworks are not.
 
-Common availability traps:
+Check [platform adapter availability](../../modeling-swift-types-for-correctness/references/swift-feature-status.md#platform-adapter-availability) for the documented floors. Common compatibility choices:
 
 | Feature/API | Guidance for iOS 16-compatible code |
 |---|---|
-| `@Observable` / Observation framework | iOS 17+. Use `ObservableObject`/`@Published` or gate Observation-backed models. |
+| `@Observable` / Observation framework | Use `ObservableObject`/`@Published` or gate Observation-backed models below its documented floor. |
 | `Synchronization.Mutex` | Newer OS only. For iOS 16 Apple-only code, prefer `OSAllocatedUnfairLock` when a lock is required. |
-| SwiftData | iOS 17+. Keep Core Data or another persistence fallback for iOS 16. |
+| SwiftData | Keep Core Data or another persistence fallback below the documented floor. |
 | New Foundation typed notification APIs | Gate with `#available` and keep string/name-based fallback if supporting iOS 16. |
-| iOS 26/27 SDK frameworks | Gate with `#available`, `canImport`, or adapter modules. Keep beta code isolated. |
+| APIs introduced after the deployment baseline | Gate module presence and runtime availability separately; isolate preview code. |
 
 When the stored type differs by OS version, do not try to switch stored-property types with `if #available` inside one type. Use an abstraction, a separate implementation type, or set a higher deployment target.
 
@@ -201,7 +201,7 @@ For APIs available only in the selected preview SDK (determine release status fr
 ## Review checklist
 
 - Is the target UI, domain, service, test, or mixed? Are default isolation settings appropriate for that role?
-- Are Swift 6.3 language features separated from iOS runtime availability?
+- Are Swift language features separated from iOS runtime availability?
 - Is any iOS 17+ or beta API used unconditionally in iOS 16-compatible code?
 - Is `@preconcurrency` localized and documented?
 - Are locks chosen with deployment target and synchronous-access needs in mind?

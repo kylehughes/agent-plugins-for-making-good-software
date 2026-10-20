@@ -70,6 +70,31 @@ enum ServerStatus: Equatable, Sendable {
 
 Fail decoding instead when an unknown value means the payload is unsafe to use. Choose deliberately.
 
+### Absence, removal, and structural cardinality
+
+```swift
+enum Patch<Value> {
+    case unchanged
+    case remove
+    case set(Value)
+}
+
+struct NonEmpty<Element> {
+    let head: Element
+    let tail: [Element]
+
+    func map<Output>(_ transform: (Element) -> Output) -> NonEmpty<Output> {
+        NonEmpty<Output>(head: transform(head), tail: tail.map(transform))
+    }
+
+    func filter(_ keep: (Element) -> Bool) -> [Element] {
+        ([head] + tail).filter(keep)
+    }
+}
+```
+
+`Patch` distinguishes unchanged, removed, and replaced values; serialization must retain all three cases. `NonEmpty` requires a head by construction. Mapping preserves its cardinality, while filtering returns an ordinary array because it may remove every element. Exposing an array setter would reopen the invariant. For collection adapters and mutation rules, see [collection invariants](#collection-invariants).
+
 ## Product Types: Bind Values That Form One Fact
 
 A struct is a product: every stored property is present together.
@@ -147,14 +172,25 @@ The bound is part of this type's fixed meaning, so callers cannot select a weake
 
 The checked initializer proves only what its implementation and access control preserve. For a struct, a custom initializer declared in the primary type body suppresses the synthesized memberwise initializer; an initializer declared only in an extension preserves memberwise synthesis. Confirm which declarations exist before reporting a memberwise bypass. A visible `let` property permits reading, not post-initialization assignment. These rules do not suppress synthesized `Decodable`, which is a separate construction path.
 
-Audit:
+Audit all construction and mutation routes with the [skill construction checklist](../SKILL.md#close-swift-construction-and-mutation), including canonicalization and reference-backed storage.
 
-- Stored properties are not publicly writable.
-- No memberwise or alternate initializer bypasses validation.
-- `Decodable` calls the checked path.
-- Internal unchecked construction is narrow and documented.
-- Reference-typed storage cannot mutate behind the wrapper.
-- Canonicalization is deterministic and appropriate for the domain.
+### Keep editable input separate
+
+```swift
+struct NonblankLabel {
+    let text: String
+
+    init?(_ text: String) {
+        guard text.contains(where: { !$0.isWhitespace }) else { return nil }
+        self.text = text
+    }
+}
+
+// Editable input remains a legitimate separate representation.
+struct LabelDraft { var text: String }
+```
+
+Successful construction retains the checked input; a boolean validation result does not. A read-only primitive projection discards evidence for downstream calls without mutating the wrapper. A writable projection or referenced class can reopen it. For cross-field policies and rule-indexed values, use [compound refinement decisions](domain-modeling-recipes.md#val).
 
 ### Validation versus canonicalization
 
@@ -449,36 +485,12 @@ Never assume that “we only encode valid values” proves all future decoded by
 
 ## Hashing and Equality
 
-Equality must match domain identity and canonicalization.
-
-- If canonical storage is lowercased, synthesized equality may be correct.
-- If original presentation is preserved separately, exclude it from identity when appropriate.
-- Do not make mutable reference-backed state part of a hash key.
-- Do not change fields participating in `Hashable` while a value is in a set or dictionary.
-- For floating point, understand that `NaN != NaN`; reject NaN in value types that require ordinary equivalence.
+Use the [public contract laws](domain-modeling-recipes.md#equality-and-hashing) when choosing identity, canonical storage, and hash-key mutation rules.
 
 ## Public API Resilience
 
-For public libraries:
-
-- Adding an enum case can be source-breaking for exhaustive client switches unless the enum is nonfrozen across a resilient boundary.
-- Changing a struct's stored properties is an ABI concern when layout is exposed or library evolution is disabled.
-- Adding validation can reject previously accepted source or persisted data.
-- Changing canonicalization can alter equality, hashes, database keys, and wire output.
-- A public unchecked initializer becomes permanent API debt.
-
-Record these as compatibility changes, not internal implementation details.
+Use [public evolution](domain-modeling-recipes.md#public-evolution) when changing enum cases, layout, validation, canonicalization, or unchecked construction.
 
 ## Review Checklist
 
-- Is the state space finite and represented by cases rather than flags?
-- Are correlated values constructed together?
-- Is derived state computed rather than stored?
-- Does each refined type state its exact guarantee without overstating standards compliance?
-- Are bounds and floating-point edge cases explicit?
-- Are construction and mutation sealed?
-- Does decoding call validation?
-- Are unknown external enum values handled intentionally?
-- Are money, units, dates, and locale concepts separated correctly?
-- Does equality follow canonical identity?
-- Is a layout-oriented type being used only for measured layout needs?
+Use the [Swift checklist](../SKILL.md#checklist) for boundary closure and evidence; use [public contracts](domain-modeling-recipes.md#api) for equality, evolution, and conformance obligations.

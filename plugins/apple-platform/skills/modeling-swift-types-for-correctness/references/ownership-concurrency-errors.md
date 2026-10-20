@@ -2,6 +2,13 @@
 
 Use this reference when copying, lifetime, task isolation, synchronization, cancellation, or failure typing is part of the invariant.
 
+This guide owns ownership, isolation, and error mechanisms. Read the matching applied section when assessing an invariant:
+
+- [Ownership and borrowed lifetimes](ownership-effect-recipes.md#ownership): read the complete section for construction, live and stable storage, aliases, escape, and reentry obligations.
+- [Isolation](ownership-effect-recipes.md#isolation): reservations, authority, and consistency across suspension.
+- [Effect transport](ownership-effect-recipes.md#effects): failure precision through adapters and tasks, cancellation mappings, and compiler/runtime controls.
+- [Completion](ownership-effect-recipes.md#resources) or [byte representation](ownership-effect-recipes.md#representation): cleanup and abandonment, or raw-storage and domain-validation boundaries.
+
 ## Concurrency Invariants Begin With Ownership of Mutable State
 
 Ask three questions:
@@ -237,23 +244,32 @@ This establishes unique Swift ownership only if `NativeHandle` is itself a verif
 
 ### Ownership modifiers
 
-- `borrowing`: temporary read access without taking ownership.
-- `consuming`: takes ownership; the caller cannot use a noncopyable argument afterward.
-- `inout`: exclusive mutable access for the duration of a call.
-
 Use modifiers to communicate semantics, not as performance folklore. Measure copies and ARC traffic before complicating ordinary value APIs.
+
+When generalizing, suppress `Copyable` on the wrapper, payload, protocol, caller,
+and applicable extension where needed. `~Copyable` permits copyable *and*
+noncopyable arguments. Associated-type capabilities are independent of `Self`;
+primary associated-type defaults can reappear at use sites. Ownership-preserving
+existentials must preserve suppressed capabilities and required relationships.
+A `Hashable` conformance proves neither semantic laws nor compatibility with
+every container. Review [status and generalized protocols](swift-feature-status.md#release-08)
+before adopting newer ownership-polymorphic APIs.
+
+Choose the operation by what its caller retains:
+
+| Operation | What to inspect |
+|---|---|
+| `borrowing` a parameter or enum payload | Temporary read access without ownership transfer; referenced objects can still mutate through their allowed API. A borrowing switch and optional binding need not have identical ownership behavior. |
+| `consuming` a parameter | Takes ownership; the caller cannot use a noncopyable argument afterward. |
+| `inout` access | Exclusive mutable access for the duration of the call. |
+| `consume` a binding or switch payload | Ends that binding's current lifetime; earlier copies/aliases survive. A consumed `inout` slot must be reinitialized. |
+| `copy` a borrowed copyable value | Explicitly creates ownership; does not promise deep cloning or low cost. |
+| Split an aggregate | Partial consumption depends on layout visibility and destructor restrictions; do not dismantle a destructor-bearing wrapper as an arbitrary record. |
+| Destroy a resource | Audit release and cycles; destruction is not a lexical deadline, external success guarantee, or recovery from process termination. |
 
 ### Destruction and partial transitions
 
-A noncopyable resource type needs a complete terminal-state story:
-
-- What happens on ordinary scope exit?
-- Can `deinit` perform the required cleanup?
-- Is cleanup allowed to fail?
-- What happens if a consuming transition throws after partially acting?
-- Is rollback automatic, explicit, or impossible?
-
-Swift destructors cannot provide asynchronous cleanup. Async resources often need an explicit `close()`/`finish()` operation plus a defensive synchronous `deinit` fallback where possible.
+For a resource assessment, read [completion, abandonment, and recovery](ownership-effect-recipes.md#resources). That section owns terminal-state, cleanup, and consuming-failure obligations.
 
 ## Nonescapable Values and Lifetimes
 

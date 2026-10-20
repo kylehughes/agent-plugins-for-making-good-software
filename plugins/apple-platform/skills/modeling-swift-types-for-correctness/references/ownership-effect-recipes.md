@@ -9,14 +9,14 @@ The snippets illustrate boundaries, not newly executed compiler acceptance.
 <a id="ownership"></a>
 ## Ownership: lend access without surrendering the invariant
 
-For a borrowed-view assessment, read this complete ownership section. Isolated keyword matches can omit the construction and storage obligations that qualify a lifetime guarantee.
+For a borrowed-view assessment, read this complete ownership section: construction, lifetime dependencies, aliasing, mutation, and reentry jointly determine the guarantee.
 
 Use noncopyable ownership for a handle whose duplication would violate a local
 lifecycle rule. Use borrowing for temporary inspection and consuming operations
 for transfer. The invariant is at most one consuming use of a noncopyable value
 within the checked Swift boundary. It does not establish unique ownership of
-external storage or mandatory use. See [ownership fundamentals](ownership-concurrency-errors.md)
-for the established resource patterns.
+external storage or mandatory use. See [ownership fundamentals](ownership-concurrency-errors.md#ownership-use-it-when-copying-is-the-bug)
+for modifiers and resource mechanics.
 
 ```swift
 struct ResourceSlot<Resource: ~Copyable>: ~Copyable {
@@ -36,24 +36,7 @@ an audited destructor establish release behavior. Noncopyability cannot fix a
 second wrapper around the same file descriptor or an aliased class inside it.
 Erasing into an ordinary copyable box must not recreate an ownership capability.
 
-When generalizing, suppress `Copyable` on the wrapper, payload, protocol, caller,
-and applicable extension where needed. `~Copyable` permits copyable *and*
-noncopyable arguments. Associated-type capabilities are independent of `Self`;
-primary associated-type defaults can reappear at use sites. Ownership-preserving
-existentials must preserve suppressed capabilities and required relationships.
-A `Hashable` conformance proves neither semantic laws nor compatibility with
-every container. Review [status and generalized protocols](swift-feature-status.md#release-08)
-before adopting newer ownership-polymorphic APIs.
-
-Choose the operation by what its caller retains:
-
-| Operation | What to inspect |
-|---|---|
-| Borrow a parameter or enum payload | No ownership transfer; referenced objects can still mutate through their allowed API. A borrowing switch and optional binding need not have identical ownership behavior. |
-| `consume` a binding or switch payload | Ends that binding's current lifetime; earlier copies/aliases survive. A consumed `inout` slot must be reinitialized. |
-| `copy` a borrowed copyable value | Explicitly creates ownership; does not promise deep cloning or low cost. |
-| Split an aggregate | Partial consumption depends on layout visibility and destructor restrictions; do not dismantle a destructor-bearing wrapper as an arbitrary record. |
-| Destroy a resource | Audit release and cycles; destruction is not a lexical deadline, external success guarantee, or recovery from process termination. |
+For ownership-polymorphic wrappers, inspect [capability propagation and ownership operations](ownership-concurrency-errors.md#ownership-modifiers) across the wrapper, payload, protocol, caller, and eraser.
 
 For borrowed storage, distinguish using a supplied `Span` from defining custom
 lifetime-dependent returns. `MutableSpan` and mutable raw spans protect scoped
@@ -62,7 +45,14 @@ shared access without ownership; `MutableRef` lends exclusive access. Neither
 makes a class deeply immutable or authorizes extending the storage lifetime.
 Custom projections and returns need their separately recorded lifetime support.
 
-When assessing a borrowed view, cover construction, unsafe extraction or erasure, escaping captures, foreign aliases, and mutation or reentry. State who keeps the storage alive and what keeps its bytes stable for the whole access interval. Lifetime checking cannot stop C code or another unchecked alias from freeing or mutating that storage. Treat these as adapter obligations until its implementation and foreign contract have been inspected; the view's type alone is not evidence that they hold.
+Assess the complete access interval at the adapter boundary:
+
+- Trace construction and the lifetime dependency; name the owner that keeps the storage alive.
+- State what keeps the bytes stable through mutation, callbacks, and reentry.
+- Inspect unsafe extraction or erasure and escaping captures; a view's restrictions may be lost at those boundaries.
+- Inspect foreign and unchecked aliases that can free or mutate storage outside Swift's lifetime checks.
+
+These remain adapter obligations until its implementation and foreign contract have been inspected. The view's type alone is not evidence that storage stays live and stable.
 
 A generation or validity guard checks only accesses routed through its checked
 wrapper. A copied raw pointer can bypass that guard entirely; extracting it is
@@ -166,8 +156,8 @@ a simpler alternative when live shared mutation is unnecessary.
 Use typed errors when callers need a closed domain failure vocabulary or a
 generic wrapper must preserve its callback's error type. The invariant restricts
 the throwable type; it does not establish error provenance, which input causes
-which case, or whether an operation completes. See [typed errors](ownership-concurrency-errors.md)
-for the basic signature choices.
+which case, or whether an operation completes. See [error modeling](ownership-concurrency-errors.md#error-modeling)
+for basic signature choices and translation, and [public error resilience](ownership-concurrency-errors.md#public-error-resilience) before publishing the failure family.
 
 ```swift
 enum ReadFailure: Error { case missing, invalid }
@@ -189,9 +179,8 @@ func explain(_ text: String?) -> String {
 }
 ```
 
-Use an unconditional catch with an exhaustive inner switch when case-pattern
-catch clauses do not establish exhaustiveness for the selected compiler. For
-higher-order code, write explicit `throws(Failure)` closure or receiving-function
+For exhaustive handling, follow the [catch rules](ownership-concurrency-errors.md#exhaustive-handling).
+For higher-order code, write explicit `throws(Failure)` closure or receiving-function
 types rather than assuming inference preserves the narrow type everywhere.
 `rethrows` tracks dependence on throwing callbacks; it is not a general
 first-class effect variable. See [typed-error seams](swift-feature-status.md#release-20).
@@ -213,13 +202,16 @@ dependency-specific cancellation form before the generic failure fallback. A
 dependency's distinct cancellation error when the current task's flag is clear;
 letting that case reach a generic domain mapping disguises cancellation.
 
-Trace the chosen failure type through every signature, starting at the dependency
-mapping boundary. If a wrapper separates domain failures from cancellation, the
-core must return that wrapper or an equivalent explicit outcome before either
-case is lost. An outer cancellation case is unreachable for in-flight cancellation
-when the inner operation can report only domain failures and every catch wraps
-them as such. A preflight cancellation check does not repair that path. Keep
-the signature sketch, mapping code, and cancellation test consistent.
+When recommending a failure-preserving adapter, explain the loss it repairs:
+identify the incoming failure type, the signature or bridge that broadens it,
+and the caller capability lost at that boundary. If no implementation is
+available, present a minimal illustrative path and mark it as hypothetical.
+
+For example, suppose a wrapper calls `readLabel` but declares
+`func readLater(_ text: String?) async throws -> String`. Its untyped `throws`
+broadens `ReadFailure` to `any Error`, so callers lose exhaustive handling of
+`.missing` and `.invalid` without a fallback. The thrown value may still be a
+`ReadFailure`; the wrapper's signature no longer promises it.
 
 Where direct `Task` or `async let` throwing paths erase the error, materialize
 `Result<Output, Failure>` inside the work and unwrap after awaiting it. A
@@ -247,6 +239,40 @@ func startRead(_ text: String?) -> Task<Result<String, ReadFailure>, Never> {
 This uses the `ReadFailure` and `readLabel` declarations above. Preserve the
 explicit failure type when replacing the synchronous read with an awaited
 operation or generalizing it to a `Failure` parameter.
+
+That example transports domain failures only. If cancellation is a separate
+outcome, the core operation must expose it before the task adapter:
+
+```swift
+enum ReadOutcome: Sendable {
+    case completed(Result<String, ReadFailure>)
+    case cancelled
+}
+
+func startCancellableRead(
+    _ read: @escaping @Sendable () async -> ReadOutcome
+) -> Task<ReadOutcome, Never> {
+    Task { await read() }
+}
+```
+
+Trace the chosen failure type through every signature, starting at the dependency
+mapping boundary. Here that boundary translates dependency cancellation into
+`ReadOutcome.cancelled`, which the task carries unchanged. An operation restricted
+to `async throws(ReadFailure) -> String` cannot report this separate outcome.
+An outer cancellation case is unreachable for in-flight cancellation when the
+inner operation can report only domain failures and every catch wraps them as
+such. A preflight cancellation check does not repair that path. Keep the signature
+sketch, mapping code, and cancellation test consistent. Check that cancellation
+reported by the dependency reaches the owner even when the task's flag is clear.
+
+Before presenting a complete adapter implementation, compile that exact proposal
+with a caller that constructs and awaits it when compiler execution is authorized
+and available. A hypothetical design can use minimal stand-ins for dependencies;
+preserve the proposed access control, generic constraints, throwing signatures,
+and cancellation wrapper. Checking only an easier transport fragment leaves the
+proposed API unverified. If execution is unavailable or outside scope, label the
+implementation unchecked and keep the proposed checks explicit.
 
 Verify the failure axis with paired compiler controls under the same phase and
 shared arguments: one valid adapter and caller must preserve and exhaustively
@@ -280,6 +306,16 @@ Use a structured scope when child work or resource cleanup belongs to one
 operation. Use a consuming permit when reusing local authority is the invalid
 operation. These enforce different facts: scoped child lifetime, at-most-once
 consumption, and runtime completion must not be conflated.
+
+A noncopyable resource type needs a complete terminal-state story:
+
+- What happens on ordinary scope exit?
+- Can `deinit` perform the required cleanup?
+- Is cleanup allowed to fail?
+- What happens if a consuming transition throws after partially acting?
+- Is rollback automatic, explicit, or impossible?
+
+Swift destructors cannot provide asynchronous cleanup. Async resources often need an explicit `close()`/`finish()` operation plus a defensive synchronous `deinit` fallback where possible.
 
 ```swift
 func withHandle<Value>(

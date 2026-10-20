@@ -30,6 +30,18 @@ Exit statuses:
 
 `scripts/check_examples.sh` is the compatibility entry point. It passes `--allow-unavailable` by default. `REQUIRE_SWIFTC=1 scripts/check_examples.sh` preserves unavailable status as a failure.
 
+## Scratch compiler checks
+
+Keep allocation, cleanup registration, compilation, and execution in one tool command. Use a scoped temporary-directory API or register an exit trap immediately after allocation:
+
+```sh
+scratch_dir=$(mktemp -d) || exit 1
+trap 'rm -rf -- "$scratch_dir"' EXIT
+# Compile into "$scratch_dir", then run the check in this shell.
+```
+
+Keep scratch sources and binaries outside the project. Cleanup chained only after success does not cover compiler failure. Report compiler runs, tests, file changes, and cleanup only when completed tool results confirm them.
+
 ## Manifest Schema
 
 The manifest is a closed JSON object. Unknown fields are errors so a misspelled setting cannot be silently ignored. Required string values must contain at least one non-whitespace character; values are validated without being rewritten.

@@ -9,10 +9,10 @@ description: "Organize Swift declarations, extensions, conformances, access cont
 
 These conventions apply to Swift source for iOS projects.
 
-- Target Swift 6.3. Do not write compatibility branches for older Swift compilers or older Swift language syntax.
+- Use the selected current Swift compiler. Do not write compatibility branches for older Swift compilers or older Swift language syntax.
 - Assume Swift 6 language mode unless project settings explicitly prove otherwise. Do not optimize style for Swift 5-era limitations.
 - Target iOS 16 as the minimum runtime unless a file or target explicitly states a higher minimum.
-- Support the latest stable iOS 26 SDKs. Treat iOS 27 as beta: do not use iOS 27-only APIs, beta SDK behavior, or Swift 6.4+ syntax unless the user explicitly asks for beta code.
+- Use the selected stable Xcode and SDK by default; use a preview channel only after an explicit project decision. When a compiler feature or SDK channel affects organization, consult the shared [feature-status guidance](../modeling-swift-types-for-correctness/references/swift-feature-status.md#swift-64-release-matrix).
 - A newer compiler or SDK does not make newer OS APIs available on iOS 16. Guard every post-iOS-16 API at runtime or isolate it behind an available declaration.
 - This skill governs organization. For detailed symbol ordering inside a declaration, apply the `ordering-symbols` skill when available. If that skill is unavailable, use deterministic ordering: compiler-required declarations first, then lexicographic order by symbol name. Never compensate for missing ordering rules with MARK comments.
 

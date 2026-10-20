@@ -132,7 +132,7 @@ nonisolated protocol LoginCoordinator {
 }
 ```
 
-In Swift 6.3, a global-actor-isolated closure is normally inferred `@Sendable`. Still, include `@Sendable` if it clarifies an API boundary or if a generic/storage context requires it.
+In Swift 6 language mode, a global-actor-isolated closure is normally inferred `@Sendable`. Still, include `@Sendable` if it clarifies an API boundary or if a generic/storage context requires it.
 
 ## Actors conforming to protocols
 

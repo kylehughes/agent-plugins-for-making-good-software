@@ -9,7 +9,7 @@ Use this skill to produce Swift concurrency code that is correct under strict co
 
 ## Scope and assumptions
 
-- Use the project's selected compiler and Swift 6 language mode. References retain their recorded Swift 6.3 baseline; consult [feature status](../modeling-swift-types-for-correctness/references/swift-feature-status.md) for newer mechanisms only when the task needs them.
+- Use the project's selected compiler and Swift 6 language mode. [Feature status](../modeling-swift-types-for-correctness/references/swift-feature-status.md) owns dated support and availability facts; consult it when a mechanism depends on toolchain or SDK support.
 - Assume iOS 16 is the lowest supported runtime unless the user states a higher minimum. Code may use current Swift language features, but framework APIs introduced after iOS 16 need availability gates or fallbacks.
 - Determine stable versus preview support from the selected SDK and official release evidence. Gate newer APIs by their declaration availability; compiler support alone does not establish iOS 16 deployment.
 - Prefer portable Swift and Apple-platform APIs that are available on iOS 16+. If using a newer API such as Observation, Synchronization.Mutex, typed notifications, or beta frameworks, call out the availability implication.
@@ -30,8 +30,8 @@ For a claim about ownership, representable state, typed failure, or mandatory co
 
 | Read | When |
 |---|---|
-| `references/platform-and-build-baseline.md` | Choosing build settings, Swift 6.3 defaults, iOS 16+ availability, SPM/Xcode settings, beta SDK boundaries, or deployment-target-safe primitives. |
-| `references/swift-6.3-concurrency-model.md` | Understanding `nonisolated(nonsending)`, `@concurrent`, `Task.immediate`, actor inheritance, region isolation, `sending`, isolated parameters, or where code runs. |
+| `references/platform-and-build-baseline.md` | Choosing build settings, Swift 6 semantic settings, iOS 16+ availability, SPM/Xcode settings, beta SDK boundaries, or deployment-target-safe primitives. |
+| `references/concurrency-model.md` | Understanding `nonisolated(nonsending)`, `@concurrent`, `Task.immediate`, actor inheritance, region isolation, `sending`, isolated parameters, or where code runs. |
 | `references/ui-and-mainactor.md` | SwiftUI/UIKit/AppKit-style UI state, view models, view lifecycle tasks, `@Observable`/`ObservableObject`, main-thread work, deinit cleanup, or UI callback isolation. |
 | `references/task-lifecycle-and-cancellation.md` | Choosing between structured, unstructured, immediate, and detached tasks; cancellation; task handles; priorities; parent-child relationships; task groups. |
 | `references/actor-decisions.md` | Choosing `actor`, `@MainActor`, `class` with lock, value type, custom global actor, or no isolation; reviewing a new custom actor. |

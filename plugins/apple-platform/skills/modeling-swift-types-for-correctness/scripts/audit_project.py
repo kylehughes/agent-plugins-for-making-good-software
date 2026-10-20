@@ -240,7 +240,7 @@ def current_swift_policy_issues(
         version = swift_version(selected)
         if version is not None and version < (6, 3):
             issues.append(
-                f"selected compiler is below the current Swift 6.3 baseline: {selected.splitlines()[0]}"
+                f"selected compiler is below the bundled fixtures' Swift 6.3 minimum: {selected.splitlines()[0]}"
             )
 
     return sorted(set(issues))
@@ -269,7 +269,7 @@ def build_report(root: Path, *, include_toolchains: bool = True) -> dict[str, ob
         "toolchains_checked": include_toolchains,
         "toolchains": toolchains,
         "current_swift_policy": {
-            "toolchain": "selected current Xcode/Swift compiler (Swift 6.3+ at this snapshot)",
+            "toolchain": "project-selected current Xcode/Swift compiler; bundled fixtures require Swift 6.3+",
             "language_mode": "Swift 6 only",
             "issues": policy_issues,
         },
@@ -283,7 +283,7 @@ def build_report(root: Path, *, include_toolchains: bool = True) -> dict[str, ob
         "caveats": [
             "These are textual findings, not fully resolved per-target/per-configuration build settings.",
             "Verify Xcode targets and schemes with xcodebuild -showBuildSettings on a machine with Xcode.",
-            "This skill uses one selected current Swift compiler (Swift 6.3+ at this snapshot) and Swift 6 language mode; anything else is migration work.",
+            "This skill uses the project-selected current Swift compiler and Swift 6 language mode. The fixture minimum is Swift 6.3; consult references/swift-feature-status.md for the dated release snapshot.",
             "Deployment target, SDK/runtime availability, Swift semantic settings, and ABI policy remain independent axes.",
             "A declaration that compiles can still require an availability annotation or runtime fallback.",
             "This offline audit cannot determine whether the installed compiler is the newest release; verify the selected Xcode channel separately.",

@@ -1,6 +1,6 @@
-# Swift 6.3 Concurrency Model
+# Swift Concurrency Model
 
-Use this reference when reasoning about where async code runs, why a Sendable diagnostic appears, or how modern Swift 6.3 features change older Swift concurrency intuition.
+Use this reference when reasoning about where async code runs, why a Sendable diagnostic appears, or how isolation settings affect concurrency behavior. For dated toolchain and availability facts, consult [feature status](../../modeling-swift-types-for-correctness/references/swift-feature-status.md) when needed.
 
 ## The core model
 
@@ -223,7 +223,7 @@ Task {
 }
 ```
 
-Do not redundantly write `@MainActor @Sendable` unless the API contract needs to communicate Sendability to a human or an older toolchain. In Swift 6.3-only code, the global actor annotation is normally enough.
+In Swift 6 language mode, the global actor annotation normally supplies the closure's inferred sendability. Write `@MainActor @Sendable` explicitly when the API contract or a generic/storage context needs it.
 
 ## Where code runs: quick table
 

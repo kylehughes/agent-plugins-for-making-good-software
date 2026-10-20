@@ -2,6 +2,13 @@
 
 Use this reference when the invariant is a relationship among types, associated values, implementations, arity, or generated API—not merely a property of one stored value.
 
+This guide owns language mechanisms and API choices. For an applied invariant assessment, read the relevant recipe section as well:
+
+- [Preserved correlations](generic-proof-recipes.md#gen) and [abstraction boundaries](generic-proof-recipes.md#abs) when related inputs, outputs, or implementations cross an API.
+- [Static sizes and packs](generic-proof-recipes.md#sizes-packs) when shape is the claimed proof; the section separates dimensions from numerical results, runtime index bounds, and layout.
+- [Typed DSLs](generic-proof-recipes.md#dsl) for generated languages and updates; [explicit proof evidence](generic-proof-recipes.md#adv) for recursive result sorts, equality witnesses, and indexed structures.
+- [Specialized encodings](generic-proof-recipes.md#gap) for typed reconstruction, labels, information flow, or resource budgets.
+
 ## Start With Closed Versus Open World
 
 Use an enum when the module owns a finite set of alternatives and consumers should switch over them. Use a protocol when third parties or independent modules must add implementations and behavior is the abstraction.

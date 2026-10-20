@@ -1,6 +1,6 @@
-# Identity, Typestate, Capabilities, and Generic Relationships
+# Identity, Typestate, and Capabilities
 
-Use this reference for nominal IDs, phantom tags, staged APIs, trust states, authorization capabilities, protocol design, existentials, type erasure, and builders.
+Use this reference for nominal IDs, phantom tags, staged APIs, capability construction, trust-state APIs, and builders. For compound relationships, go directly to [relationship recipes](domain-modeling-recipes.md#rel); for recoverable consuming transitions, use [workflow outcomes](domain-modeling-recipes.md#flow). Protocol and erasure mechanics belong to [advanced generics](advanced-generics-and-protocols.md).
 
 ## Nominal Identity
 
@@ -189,7 +189,7 @@ extension SingleUseRegistration where State == ReadyRegistration {
 
 This requires a complete destruction and error story. A fixed operation on a service that keeps the mutable state private is often simpler. An ordinary closure-scoped API can centralize sequencing and cleanup, but it does not prove that a copyable value was not retained or submitted elsewhere. If resubmission or inspection is valid, keep the type copyable and omit `consuming`.
 
-Avoid a generic `transition(to:)` that accepts any state. Define only legal edges.
+Avoid a generic `transition(to:)` that accepts any state. Define only legal edges. For a transition that must return a usable prior state on failure, use [recovering workflows](domain-modeling-recipes.md#flow); that recipe owns success, recovery, cancellation, and completion obligations.
 
 ## Staged Builders
 
@@ -324,7 +324,7 @@ Parameterized APIs are usually stronger than escaped-string APIs. For SQL, prefe
 
 Phantom tags and typestate already rely on generics, but they rarely require a protocol hierarchy. Add protocols, associated types, existentials, type erasure, parameter packs, or macros only when an open implementation set or reusable static relationship justifies them.
 
-For detailed selection rules, dispatch hazards, primary associated types, constrained existentials, `some` versus `any`, conditional conformance, witness structs, packs, key paths, and macro audits, load `references/advanced-generics-and-protocols.md` directly from the skill reference map.
+For dispatch hazards, associated types, `some` versus `any`, conditional conformance, witness structs, packs, key paths, and macro audits, use [advanced generics and protocols](advanced-generics-and-protocols.md).
 
 ## Generic Explosion Control
 

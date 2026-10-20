@@ -1,4 +1,4 @@
-# Current Swift with iOS 16–27 Runtime Availability
+# Current Swift and iOS Runtime Availability
 
 Use this reference whenever an app is compiled with the current Swift toolchain but must run from iOS 16 through current or preview OS releases.
 
@@ -14,16 +14,11 @@ This skill supports one Swift source baseline:
 
 A lower deployment target does not require an earlier Swift language mode. Compile current Swift source, then isolate every API or standard-library symbol whose runtime availability starts after iOS 16.
 
-## Verified Toolchain Snapshot
+## Current release facts
 
-Verified on **2026-10-19**:
+Read [Swift feature status](swift-feature-status.md) for the dated Swift/Xcode release snapshot, stable versus preview channels, feature flags, and Apple API floors. This reference owns deployment policy and compatibility patterns.
 
-- Swift.org lists Swift 6.4.1 as the latest stable downloadable compiler.
-- Apple lists Xcode 27.1 (27A9275) as the current released Xcode. Xcode 27 (27A266a) is also a released toolchain whose release notes identify Swift 6.4 and the iOS 27 SDK.
-
-For an Apple-platform build, `xcrun swift --version`, `xcodebuild -version`, and the selected Xcode path are authoritative. Do not substitute the separately installed Swift.org toolchain for the compiler that actually builds the Xcode target.
-
-Version numbers in this document are a dated snapshot. Recheck [sources.md](sources.md) before making a time-sensitive recommendation.
+For an Apple-platform build, `xcrun swift --version`, `xcodebuild -version`, and the selected Xcode path identify the actual compiler. Do not substitute the separately installed Swift.org toolchain for the compiler that builds the Xcode target.
 
 ## The Relevant Axes
 
@@ -96,25 +91,6 @@ struct InlineStorage<Element: ~Copyable, let Count: Int>: ~Copyable {
 
 Any declaration that mentions an unavailable type in its signature or stored representation must itself carry compatible availability.
 
-## Current-Swift Feature and Runtime Matrix
-
-| Feature or API | Swift/toolchain status | iOS runtime floor | Guidance for an iOS 16 app |
-|---|---|---:|---|
-| Typed throws, ownership modifiers, noncopyable types, primary associated types, constrained existentials, parameter packs | Current Swift language features | No blanket higher floor | Use directly when the model benefits; check any APIs used alongside them |
-| Strict concurrency and default actor isolation controls | Current build semantics/settings | No blanket higher floor | Configure per target; fix actual isolation boundaries |
-| Strict memory safety | Opt-in compiler audit mode | Build-time only | Add a current-toolchain CI audit lane; marked unsafe code still needs a proof |
-| `BitwiseCopyable` | Current Swift representation contract | No blanket higher floor | Never treat it as serialization, C layout, endianness, or arbitrary-byte validity |
-| `Span` type | Current standard-library lifetime type | Specially back-deployed to iOS 12.2; producers vary | Verify each producer API and lifetime dependency |
-| `InlineArray` | Current fixed-size standard-library type | iOS 26+ | Keep it out of iOS 16 signatures and storage unless the declaration is available-gated |
-| `Synchronization.Mutex` | Current Synchronization API | iOS 18+ | Use an actor or an iOS 16 lock adapter below iOS 18 |
-| `OSAllocatedUnfairLock` | Current OS synchronization API | iOS 16+ | Valid low-level baseline when synchronous locking is justified |
-| Typed NotificationCenter messages | Current Foundation API | iOS 26+ | Hide behind a domain event adapter with an iOS 16 implementation |
-| Observation framework / `@Observable` | Current observation API | iOS 17+ | Keep an iOS 16 `ObservableObject` or manual observation adapter when needed |
-| SwiftData | Current persistence framework | iOS 17+ | Keep domain models independent from the persistence adapter |
-| Recent and experimental Swift features | Varies by proposal and compiler flag | No inherent blanket floor | Check [Swift feature status](swift-feature-status.md); referenced APIs still need their own availability checks |
-
-The key distinction is not “old Swift versus new Swift.” It is current source semantics versus runtime symbols that may not exist on the minimum OS.
-
 ## Feature Notes
 
 ### Typed throws
@@ -125,7 +101,7 @@ Be explicit where closure or generic inference becomes difficult. A typed failur
 
 ### `InlineArray`
 
-`InlineArray` is available on iOS 26 and later. Therefore:
+`InlineArray` has a later runtime floor than this skill's default baseline; see [release row 11](swift-feature-status.md#release-11). For a baseline app:
 
 - Do not place it in an unannotated stored property, parameter, return type, or generic constraint of an iOS 16 declaration.
 - Put the entire declaration that mentions it behind `@available(iOS 26, *)`.
@@ -141,13 +117,13 @@ A nonescapable spelling is not itself a lifetime proof. Confirm that the compile
 
 ### Synchronization
 
-`Synchronization.Mutex` starts at iOS 18, while `OSAllocatedUnfairLock` is available from iOS 16. Keep the primitive behind a concrete internal adapter so domain APIs do not encode its availability.
+Select the primitive using [the documented deployment floors](swift-feature-status.md#platform-adapter-availability). Keep the primitive behind a concrete internal adapter so domain APIs do not encode its availability.
 
 Prefer an actor unless the operation must be synchronous or profiling demonstrates that a lock is justified. Never hold a lock across `await` or arbitrary callbacks.
 
 ### Typed notifications
 
-Foundation’s typed notification messages start at iOS 26. Define one domain event and provide modern and legacy adapters. Consumers should not branch on OS version or receive two payload shapes.
+Check [typed notification availability](swift-feature-status.md#platform-adapter-availability) before selecting the modern adapter. Define one domain event and provide modern and legacy adapters. Consumers should not branch on OS version or receive two payload shapes.
 
 ### Default actor isolation
 
@@ -220,7 +196,7 @@ This architecture preserves current Swift source quality without allowing one mo
 
 ## Preview Lane
 
-Use a beta Xcode, Swift development snapshot, or preview SDK only when the repository explicitly opts in. Xcode 27 and the iOS 27 SDK are released at this document's verification date; a later beta channel remains a separate lane.
+Use a beta Xcode, Swift development snapshot, or preview SDK only when the repository explicitly opts in. Use [feature status](swift-feature-status.md#swift-64-release-matrix) to distinguish a released SDK from the current preview channel; an OS number alone does not identify a beta.
 
 Requirements:
 
@@ -245,7 +221,7 @@ Use one Swift source/toolchain baseline per channel and vary runtime coverage:
 | Current production Xcode with strict memory safety enabled for audited targets | Unsafe-code inventory |
 | Minimum iOS 16 runtime or direct fallback-adapter tests | Oldest supported behavior |
 | iOS 17 and iOS 18 runtime or direct adapter tests | Observation/persistence and synchronization boundaries |
-| Current iOS 27 runtime | Modern production adapter path |
+| Current production iOS runtime | Modern production adapter path |
 | Current production Xcode archive | Linkage, release configuration, and distribution surface |
 | Selected beta Xcode optional job | Preview diagnostics and next-SDK behavior only |
 

@@ -173,7 +173,7 @@ between new and fallback paths.
 Do not overuse `#if os(...)`. Prefer capability checks such as `canImport`, shared protocols, and small platform adapters.
 Every conditional branch should compile in CI. Watch for `#if DEBUG` code that changes correctness rather than diagnostics.
 
-Compiler and language gates serve different purposes; see `swift-6.3.2.md`.
+Compiler and language gates serve different purposes; see `swift-compatibility.md`.
 
 ## Cross-Platform Source Design
 

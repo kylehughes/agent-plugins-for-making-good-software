@@ -2,7 +2,7 @@
     "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
     "name": "apple-platform",
     "displayName": "Apple Platform",
-    "version": "1.6.1",
+    "version": "2.0.0",
     "description": "Swift, UIKit, App Intents, localization, testing, review, and technical-writing tools for Apple platform development.",
     "author": {
         "name": "Kyle Hughes",

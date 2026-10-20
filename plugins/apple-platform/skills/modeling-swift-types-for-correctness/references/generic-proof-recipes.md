@@ -57,9 +57,7 @@ Recursive associated-type constraints work when a family member must itself supp
 
 ### Ask for the smallest capability
 
-Use a protocol refinement or composition for the operations the algorithm needs. Put behavior that must dispatch by conformer in a protocol requirement; an extension-only overload is not a substitute. See [Protocol extension dispatch hazard](advanced-generics-and-protocols.md#protocol-extension-dispatch-hazard).
-
-Use constrained members for conditional operations and conditional conformances for promises inherited from stored types. A policy with different semantics should be a nominal wrapper or policy parameter rather than a competing conformance. A metatype can connect a request for `T.self` to a `T` result, but it cannot turn runtime data into a fresh static type.
+Use a protocol refinement or composition for the operations the algorithm needs. Apply the mechanism guide's [dispatch](advanced-generics-and-protocols.md#protocol-extension-dispatch-hazard) and [conditional-conformance](advanced-generics-and-protocols.md#conditional-conformance) rules. A policy with different semantics should be a nominal wrapper or policy parameter rather than a competing conformance. A metatype can connect a request for `T.self` to a `T` result, but it cannot turn runtime data into a fresh static type.
 
 ### Pass an interpretation as data
 
@@ -80,13 +78,7 @@ The type parameter connects the operation to `Value`; private construction can a
 
 Use abstraction when implementations vary or should remain hidden, but callers still need part of their type relationship. The invariant is that every operation crossing the abstraction boundary retains the axes needed for later composition.
 
-Start with the baseline choice among [generic parameters, opaque results, and existentials](advanced-generics-and-protocols.md#some-versus-any), then choose the smallest erasure boundary:
-
-- Return `some P` when the implementation chooses one hidden concrete type and callers need its stable identity.
-- Use a named generic parameter when the caller chooses the type or multiple positions must share it. Two independent `some P` parameters do not express equality.
-- Use `any P<Axis>` when runtime heterogeneity is required and the preserved primary associated types are sufficient.
-- Let an [implicitly opened existential](advanced-generics-and-protocols.md#implicitly-opened-existentials) do local generic work only when the hidden type does not need to escape.
-- Use a closed enum when all legitimate alternatives are owned and finite.
+Choose who retains the concrete identity using the mechanism guide's [`some` versus `any`](advanced-generics-and-protocols.md#some-versus-any), [constrained existentials](advanced-generics-and-protocols.md#constrained-existentials), and [existential opening](advanced-generics-and-protocols.md#implicitly-opened-existentials) sections. Two independent `some P` parameters do not express equality. The recipes here own preserving a relationship across packaging and erasure.
 
 ### Package before erasing
 
@@ -211,7 +203,7 @@ extension Profile {
 
 The enum rejects a raw `String` and makes deletion distinct from no change. The application method still must preserve cross-field rules. For rendering, distinguish HTML text, attributes, URL segments, query components, and bound SQL parameters. A generic `Sanitized` wrapper erases the encoding context that makes the value safe to place.
 
-Macros and generators may emit constructors, mappings, or witnesses, but generated declarations are part of the construction surface. Audit inputs, expansion, access control, setters, decoding, raw escape hatches, and version binding.
+Macros and generators may emit constructors, mappings, or witnesses. Apply the [generated-API audit](advanced-generics-and-protocols.md#macros-and-generated-invariants) to that construction surface, including generator inputs, raw escape hatches, and version binding.
 
 **Residual obligations and cost.** The compiler checks the grammar encoded by builder methods, combinators, constructors, and generated declarations. It does not prove complete parsing, deployed-system truth, codec or optic laws, authorization, correct escaping implementations, interpreter behavior, or accessibility and semantic validity of rendered documents. Prefer an enum plus parser, an ordinary checked initializer, or generated nominal types when they reject the same errors with less machinery.
 

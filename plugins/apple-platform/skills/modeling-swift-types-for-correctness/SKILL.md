@@ -7,9 +7,9 @@ description: "Assess Swift invariants, validated decoding, legal transitions, bo
 
 Use Swift’s type system to remove invalid operations and state combinations from ordinary code paths. Prefer the lightest representation that produces a useful diagnostic at the misuse site.
 
-This skill owns Swift representation, construction closure, decoding, interop, ownership, isolation, availability, and compiler evidence. First distinguish a representation or enforcement claim from ordinary function behavior: testing a function's outputs, even with negative or boundary inputs, does not itself call for type modeling or invariant verification. Keep that work with the testing or defect-review skill.
+This skill owns Swift representation and its enforcement: construction, decoding, interop, ownership, and compiler evidence. The concurrency skill owns scheduling, isolation repair, and task lifecycle; the shared feature-status reference owns dated support and availability facts. First distinguish a representation or enforcement claim from ordinary function behavior: testing a function's outputs, even with negative or boundary inputs, does not itself call for type modeling or invariant verification. Keep that work with the testing or defect-review skill.
 
-For a representation claim or a change to an enforcement boundary, invoke `universal:verifying-invariants` if installed and not already active. Apply its procedure alongside the Swift rules here, including for a small initializer or decoding fix with a settled predicate. When Universal is absent, use this skill's Swift checklist and report the assessment's limits.
+For a representation claim or a change to an enforcement boundary, invoke `verifying-invariants` if installed and not already active. Apply its procedure alongside the Swift rules here, including for a small initializer or decoding fix with a settled predicate. When Universal is absent, use this skill's Swift checklist and report the assessment's limits.
 
 Swift cannot prove arbitrary facts about runtime input before validation. Refine untrusted input at a boundary, then pass the refined value inward. A validating initializer proves nothing if another initializer, decoder, mutation, or bridge bypasses it.
 
@@ -56,8 +56,12 @@ Before assessing or recommending a representation, read the focused reference fo
 
 - Validated decoding: [algebraic and refined values](references/algebraic-and-refined-values.md#codable-and-refined-types).
 - Recoverable state transitions: [domain modeling recipes](references/domain-modeling-recipes.md#flow).
-- Correlated types, expression result sorts, or static dimensions: [generic proof recipes](references/generic-proof-recipes.md).
-- Ownership, lifetime, or typed failures across concurrency: [ownership and effect recipes](references/ownership-effect-recipes.md).
+- Correlated types: [preserve generic relationships](references/generic-proof-recipes.md#gen).
+- Typed expression results: [explicit proof evidence](references/generic-proof-recipes.md#adv).
+- Static dimensions: [sizes and packs](references/generic-proof-recipes.md#sizes-packs).
+- Borrowed views and lifetimes: read the complete [ownership section](references/ownership-effect-recipes.md#ownership).
+- Typed failures across concurrency: [error transport](references/ownership-effect-recipes.md#effects).
+- Required completion or cleanup: [abandonment and recovery](references/ownership-effect-recipes.md#resources).
 
 For other concerns, use the Reference Map; use [the decision guide](references/decision-guide.md) when pattern selection remains open. Load only relevant sections and consult feature status only for mechanisms that depend on recent support.
 
@@ -102,13 +106,7 @@ Run the checks when execution is in scope. Keep one record for each of the three
 
 Describe a decoder repair with its container and keys as well as its validation path. If showing concrete decoder code, compile that exact proposal with the unchanged encoder and run the three controls when execution is available. Use the applicable project checks, or isolated scratch code for read-only work; existing equivalent checks suffice. This catches incompatible container APIs as well as schema changes. If execution is unavailable, distinguish the proposed implementation from a checked repair.
 
-For scratch compiler checks, keep allocation, cleanup registration, compilation, and execution in one tool command. Use a scoped temporary-directory API or register an exit trap immediately after allocation:
-```sh
-scratch_dir=$(mktemp -d) || exit 1
-trap 'rm -rf -- "$scratch_dir"' EXIT
-# Compile into "$scratch_dir", then run the check in this shell.
-```
-Keep scratch sources and binaries outside the project. Cleanup chained only after success does not cover compiler failure. Report compiler runs, tests, file changes, and cleanup only when completed tool results confirm them.
+For scratch compiler checks, keep allocation, cleanup registration, compilation, and execution in one tool command, outside the project. Use a scoped temporary-directory API or register an exit trap immediately after allocation; see [scratch compiler checks](references/compile-check-runner.md#scratch-compiler-checks). Cleanup must cover failure too. Report runs, changes, and cleanup only when completed tool results confirm them.
 
 Read [boundaries and interop](references/boundaries-and-interop.md) for networking, persistence, notifications, Objective-C, C, analytics, and public resilience.
 
@@ -158,7 +156,7 @@ Classify conclusions precisely:
 
 ## Checklist
 
-Before returning an invariant assessment or enforcement-boundary change, confirm that `universal:verifying-invariants` has been loaded when installed. If it was skipped, load it and reconcile the evidence and conclusion before finishing. Use the standalone checklist below when it is unavailable.
+Before returning an invariant assessment or enforcement-boundary change, confirm that `verifying-invariants` has been loaded when installed. If it was skipped, load it and reconcile the evidence and conclusion before finishing. Use the standalone checklist below when it is unavailable.
 
 - Environment and runtime lane are recorded.
 - The representation removes a named invalid operation or state.
@@ -175,23 +173,23 @@ Before returning an invariant assessment or enforcement-boundary change, confirm
 
 ## Reference Map
 
-Load only the reference that answers the changed Swift concern:
+Load the owner of the changed concern. Mechanism guides explain construction and language rules; recipes apply those rules to compound invariants. Follow their conditional links only when that supporting detail is needed:
 
 - [Decision guide](references/decision-guide.md): Swift pattern selection, representation strength, smells, and rollback.
-- [Algebraic and refined values](references/algebraic-and-refined-values.md): enums, products, validation, bounds, units, intervals, collections, and `Codable` traps.
+- [Algebraic and refined values](references/algebraic-and-refined-values.md): construction mechanics for sums, products, validated values, structural collections, and compatible decoding.
 - [Identity, typestate, and capabilities](references/identity-typestate-capabilities.md): nominal and phantom IDs, legal transitions, builders, capability values, and trust states.
 - [UI state, navigation, and effects](references/ui-state-navigation-and-effects.md): UI state, forms, effects, cancellation, routes, restoration, and observation adapters.
-- [Advanced generics and protocols](references/advanced-generics-and-protocols.md): constraints, associated types, existentials, witnesses, packs, key paths, and macros.
-- [Ownership, concurrency, and errors](references/ownership-concurrency-errors.md): isolation, locks, ownership, nonescapable values, strict memory safety, typed throws, and cancellation.
+- [Advanced generics and protocols](references/advanced-generics-and-protocols.md): language mechanics for constraints, protocols, abstraction, packs, key paths, and generated APIs.
+- [Ownership, concurrency, and errors](references/ownership-concurrency-errors.md): language mechanics for ownership operations, isolation boundaries, strict memory safety, and typed throws.
 - [Boundaries and interop](references/boundaries-and-interop.md): networking, persistence, notifications, Objective-C/C, analytics, and resilience.
 - [Security and resource modeling](references/security-and-resource-modeling.md): authority, secrets, paths, handles, cryptography, and unsafe-code audits.
-- [iOS versioning](references/ios-versioning.md): current-toolchain policy, runtime availability, stable versus preview Xcode, and feature availability.
+- [iOS versioning](references/ios-versioning.md): deployment policy, availability gates, adapters, and stable versus preview build lanes.
 - [Testing, migration, and review](references/testing-migration-and-review.md): Swift runtime tests, compile checks, migration, performance, and review.
 - [Compile-check runner](references/compile-check-runner.md): manifest schema, CLI, paths, module linkage, reports, exit statuses, and evidence limits.
-- [Domain modeling recipes](references/domain-modeling-recipes.md): cardinality, refined values, relationships, recovering workflows, applied boundaries, and public contracts.
+- [Domain modeling recipes](references/domain-modeling-recipes.md): compound domain policy, relationships, recovering workflows, applied boundaries, and public contracts.
 - [Generic proof recipes](references/generic-proof-recipes.md): preserving correlations, static sizes, typed DSLs, equality witnesses, higher-rank encodings, and restricted proof structures.
 - [Ownership and effect recipes](references/ownership-effect-recipes.md): borrowed projections, isolation, error transport, completion obligations, and binary representations.
-- [Feature status and frontier](references/swift-feature-status.md): release-specific support, flags, Apple availability, disputed evidence, and unavailable encodings.
+- [Feature status and frontier](references/swift-feature-status.md): the dated support and availability authority, experiment flags, evidence limits, and unavailable encodings.
 - [Sources](references/sources.md): primary specifications and official release documentation for time-sensitive guidance.
 
 ## Included utilities and fixtures

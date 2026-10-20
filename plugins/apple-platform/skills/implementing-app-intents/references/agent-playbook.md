@@ -8,7 +8,7 @@ Infer from the app domain when possible. Ask only when needed:
 
 - App domain and core user objects.
 - Minimum deployment target.
-- Which Xcode/iPhoneOS SDK is selected, and whether selected-SDK-gated iOS 27-era/beta APIs may be used.
+- Which Xcode/iPhoneOS SDK is selected, which deployment targets it supports, and whether the project permits preview SDK APIs. Use [feature status](../../modeling-swift-types-for-correctness/references/swift-feature-status.md) for the dated release/channel snapshot.
 - SwiftUI/UIKit/AppKit mix. For UIKit, determine scene lifecycle, storyboard/programmatic construction, navigation containers, multiwindow/account model, diffable data sources, custom canvases, drag/drop, and Objective-C boundaries.
 - Existing CoreSpotlight, SiriKit, WidgetKit, Shortcuts, or AppIntents code.
 - Privacy constraints.

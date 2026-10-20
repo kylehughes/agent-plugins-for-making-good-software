@@ -5,14 +5,14 @@ description: "Configure UIKit cell content, backgrounds, empty states, and Swift
 
 # Configuring iOS Content
 
-Use this skill for modern cell and content-view configuration in UIKit projects. The default project shape is Swift 6.3, UIKit/SwiftUI on the main actor, and an iOS deployment target of 16 or newer spanning current and beta iOS releases. Do not include Swift 5 compatibility branches or iOS 13-15 fallback code unless the user explicitly asks.
+Use this skill for modern cell and content-view configuration in UIKit projects. The default project shape uses the selected current Swift compiler in Swift 6 language mode, UIKit/SwiftUI on the main actor, and an iOS deployment target of 16 or newer. Do not include Swift 5 compatibility branches or iOS 13-15 fallback code unless the user explicitly asks.
 
 ## Baseline assumptions
 
 - Minimum deployment target: iOS 16 unless the user states otherwise.
 - Use `UIHostingConfiguration` freely for cell content because it is iOS 16+.
 - Gate iOS 17+ APIs, especially `UIContentUnavailableConfiguration`, with `#available(iOS 17.0, *)` when the target remains iOS 16.
-- For iOS 26/27-beta-specific APIs, do not invent availability or behavior. Use stable APIs unless the user provides beta docs or asks for a beta-only implementation.
+- Use the selected stable Xcode and SDK by default; use a preview channel only after an explicit project decision. When adopting a recent compiler or SDK feature, consult the shared [feature-status guidance](../modeling-swift-types-for-correctness/references/swift-feature-status.md#swift-64-release-matrix) and verify the specific API's availability and behavior.
 - Treat UIKit code as main-actor UI code. Do not update cells, configurations, snapshots, or views from background tasks.
 
 ## Decision order

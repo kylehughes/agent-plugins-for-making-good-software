@@ -1,0 +1,166 @@
+{
+  "checks": [
+    {
+      "check": "unittest",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "scripts",
+        "-p",
+        "test_*.py"
+      ],
+      "exit_code": 0,
+      "seconds": 44.671,
+      "log": "/tmp/swift-consolidation-final-checks/unittest.log"
+    },
+    {
+      "check": "validator",
+      "command": [
+        "python3",
+        "scripts/validate.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.304,
+      "log": "/tmp/swift-consolidation-final-checks/validator.log"
+    },
+    {
+      "check": "source-integration",
+      "command": [
+        "python3",
+        "scripts/check_swift_type_system_integration.py",
+        "--source-root",
+        "/tmp/swift-type-system-integration-source/Swift_Type_System_Companion"
+      ],
+      "exit_code": 0,
+      "seconds": 0.395,
+      "log": "/tmp/swift-consolidation-final-checks/source-integration.log"
+    },
+    {
+      "check": "skill-validator",
+      "command": [
+        "python3",
+        "plugins/apple-platform/skills/modeling-swift-types-for-correctness/scripts/validate_skill.py",
+        "--skip-swift"
+      ],
+      "exit_code": 1,
+      "seconds": 0.131,
+      "log": "/tmp/swift-consolidation-final-checks/skill-validator.log"
+    },
+    {
+      "check": "catalog",
+      "command": [
+        "python3",
+        "scripts/skill_catalog.py",
+        "--base",
+        "HEAD"
+      ],
+      "exit_code": 0,
+      "seconds": 0.7,
+      "log": "/tmp/swift-consolidation-final-checks/catalog.log"
+    },
+    {
+      "check": "claude-apple",
+      "command": [
+        "claude",
+        "plugin",
+        "validate",
+        "plugins/apple-platform"
+      ],
+      "exit_code": 0,
+      "seconds": 0.631,
+      "log": "/tmp/swift-consolidation-final-checks/claude-apple.log"
+    },
+    {
+      "check": "claude-universal",
+      "command": [
+        "claude",
+        "plugin",
+        "validate",
+        "plugins/universal"
+      ],
+      "exit_code": 0,
+      "seconds": 0.496,
+      "log": "/tmp/swift-consolidation-final-checks/claude-universal.log"
+    },
+    {
+      "check": "diff-check",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "seconds": 0.046,
+      "log": "/tmp/swift-consolidation-final-checks/diff-check.log"
+    },
+    {
+      "check": "manifest-json",
+      "path": ".claude-plugin/marketplace.json",
+      "exit_code": 0
+    },
+    {
+      "check": "manifest-json",
+      "path": ".agents/plugins/marketplace.json",
+      "exit_code": 0
+    },
+    {
+      "check": "manifest-json",
+      "path": "plugins/apple-platform/.claude-plugin/plugin.json",
+      "exit_code": 0
+    },
+    {
+      "check": "manifest-json",
+      "path": "plugins/apple-platform/.codex-plugin/plugin.json",
+      "exit_code": 0
+    },
+    {
+      "check": "manifest-json",
+      "path": "plugins/universal/.claude-plugin/plugin.json",
+      "exit_code": 0
+    },
+    {
+      "check": "manifest-json",
+      "path": "plugins/universal/.codex-plugin/plugin.json",
+      "exit_code": 0
+    }
+  ],
+  "unchanged_inputs": {
+    "criteria": {
+      "criteria_files": 26,
+      "hash_dictionary_unchanged_from_HEAD": true,
+      "criteria_digest_unchanged_from_HEAD": true,
+      "criteria_mismatches": {},
+      "criteria_sha256": "0574f95fd53d7c4c7dbda874f5bae4ee5858152981bc0da293bff8f4e80fd3fd"
+    },
+    "examples": {
+      "tracked_files": 32,
+      "changed_paths": [],
+      "untracked_paths": []
+    }
+  },
+  "skill_validator_cleanup": {
+    "cause": "Parent syntax check generated two Python bytecode files; removed exactly those files and their empty cache directory.",
+    "command": [
+      "python3",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/scripts/validate_skill.py",
+      "--skip-swift"
+    ],
+    "exit_code": 0,
+    "log": "/tmp/swift-consolidation-final-checks/skill-validator-after-cleanup.log",
+    "log_sha256": "0b5f7f7b2085dbaf1f1efed17223cd1bfa0d15f923534a310181863b9fc8181c",
+    "limits": "Compiler fixtures passed separately before wording-only utility changes. Optional skills-ref is unavailable."
+  },
+  "baseline_compiler_check": {
+    "command": [
+      "python3",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/scripts/validate_skill.py"
+    ],
+    "exit_code": 0,
+    "log": "/tmp/swift-consolidation-skill-validation.log",
+    "log_sha256": "76df5d6458b74ae35a611ba629c099501584fb670839d35350f596f9eb2ac6f7",
+    "scope": "Fresh baseline compiler controls, misuse fixtures, and runtime example passed before final wording-only edits. Original imported 89-case corpus unchanged; not rerun in this consolidation."
+  }
+}

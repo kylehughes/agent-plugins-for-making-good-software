@@ -11,7 +11,7 @@ Use this reference to run a systematic Swift Concurrency review or migration pas
 5. For each new framework API, check iOS 16 availability.
 6. For each escape hatch, demand a written invariant.
 
-## Migration pass from warnings to Swift 6.3 correctness
+## Migration pass to Swift 6 language mode
 
 Order matters:
 

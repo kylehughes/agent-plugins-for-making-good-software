@@ -21,9 +21,11 @@ their original owners. The maintained compiler corpus under
 archive. Supplied result files define comparison inputs; they do not establish
 fresh acceptance. Current compiler reports remain separate from those inputs.
 Supplied results are labeled separately from freshly inspected primary sources,
-and disputed claims are resolved in [feature status](references/swift-feature-status.md).
+and operational decisions for disputed claims are recorded in [feature status](references/swift-feature-status.md). Later Apple corpus checks are separate evidence; they do not change the provenance of saved Linux results.
 
 Repository maintainers can follow `docs/swift-type-system-integration.md` and its
 machine-readable map for original paths, fragments, source digests, item-level
 decisions, and coverage checks. The original archive is retained as the supplied
 attachment rather than copied into default skill context.
+
+The maintainer record `docs/swift-type-system-source-decisions.md` preserves the duplicate-report and performance-report provenance decisions. The shipped feature-status reference retains their operational limits, so using the plugin does not require that repository-only record.

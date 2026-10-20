@@ -169,6 +169,24 @@
       "prompt": "Profile image decoding with Instruments and identify the slowest stack frames.",
       "should_trigger": false,
       "reason": "Profiling without a type or invariant design request is outside scope."
+    },
+    {
+      "id": "generic-correlation",
+      "prompt": "A Swift import pipeline lets callers pair any file reader with any processor. We have accidentally sent decoded images to a processor that expects account records. Recommend a small API that prevents this mix-up while still letting us choose among different readers at runtime. Explain what remains to check; keep this assessment read-only.",
+      "should_trigger": true,
+      "reason": "The request needs a preserved input/output relationship across generic and runtime-selected boundaries."
+    },
+    {
+      "id": "typed-expression-sorts",
+      "prompt": "Our Swift rules editor builds expressions for text, numbers, and yes-or-no results. A text literal can currently be attached to a condition and crash evaluation later. Suggest the smallest model that prevents these mismatches and show how a valid condition would be evaluated. Keep the assessment read-only.",
+      "should_trigger": true,
+      "reason": "The request concerns expression result sorts, payload correlation, and the limits of an indexed representation."
+    },
+    {
+      "id": "borrowed-view-storage",
+      "prompt": "Our Swift media decoder lends a view into a reusable buffer during a callback. A caller queues that view for later work, and native code can refill or replace the buffer. Would changing the decoder handle to prevent copying make this safe? Recommend a small boundary and checks; keep the review read-only.",
+      "should_trigger": true,
+      "reason": "The request concerns borrowed-view lifetime, live and stable storage, and foreign aliasing beyond handle noncopyability."
     }
   ]
 }

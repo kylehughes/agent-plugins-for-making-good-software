@@ -13,8 +13,8 @@ This skill enforces the existing preference: order by declaration category, acce
 
 ## Version and Platform Assumptions
 
-- Use current Swift syntax and language behavior. Swift 6.3 is the relevant language version.
-- iOS projects commonly span iOS 16 through the latest stable SDKs, with newer/beta APIs guarded as needed. Availability gates are safety boundaries, not sorting keys.
+- Use the selected current Swift compiler in Swift 6 language mode. When a compiler feature or SDK channel affects a declaration, consult the shared [feature-status guidance](../modeling-swift-types-for-correctness/references/swift-feature-status.md#swift-64-release-matrix).
+- iOS projects commonly span iOS 16 through the selected stable SDK; use a preview channel only after an explicit project decision. Guard newer APIs by their documented availability. Availability gates are safety boundaries, not sorting keys.
 - Do not preserve old Swift-era conventions for compatibility with versions below the stated deployment target.
 - Do not remove, weaken, or reorder availability fallbacks merely to improve symbol ordering.
 

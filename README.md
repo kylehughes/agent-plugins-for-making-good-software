@@ -58,12 +58,14 @@ Skills and agent definitions for Apple-platform codebases.
 | `writing-apple-platform-documentation` | The Apple-platform companion to writing-technical-prose: DocC, Swift doc comments, terminology, availability, and privacy wording. |
 | `writing-swift` | Swift 6 standards for production code and packages. |
 
-The type-modeling skill starts with the lightest useful representation and routes to
-focused recipes for domain values, generic proofs, ownership, effects, and binary
-boundaries. Its feature-status reference separates shipped features, experiments,
-and Apple availability. The [Swift integration record](docs/swift-type-system-integration.md)
-tracks source coverage, corrections, and validation; it is maintainer evidence,
-not required reading for ordinary Swift work.
+The type-modeling skill starts with the lightest useful representation and routes
+directly to the relevant construction rule or design recipe. Domain modeling,
+generic proofs, ownership, and concurrency have distinct owners; one feature-status
+reference maintains dated compiler support and Apple availability. The
+[Swift knowledge-base guide](docs/swift-type-system-consolidation.md) explains that
+organization and its verification. The [integration record](docs/swift-type-system-integration.md)
+preserves research coverage, and the [source decisions](docs/swift-type-system-source-decisions.md)
+preserve historical evidence. These maintainer records are separate from ordinary skill loading.
 
 ### Agents
 

@@ -15,8 +15,8 @@ This script checks, across the whole repository:
    numbers, per AGENTS.md's "Version-free identity" rule.
 5. That every skill ships `agents/openai.yaml` with the Codex interface
    fields AGENTS.md requires.
-6. Link integrity of relative Markdown links and backticked
-   references/scripts/examples/assets/evals paths inside each SKILL.md.
+6. Local Markdown paths and section fragments in skill entrypoints, references,
+   and agents, plus backticked resource paths inside each SKILL.md.
 7. That every agent under `plugins/<p>/agents/*.md` has frontmatter whose
    `name` matches its filename stem, whose `skills:` entries exist as
    sibling skill directories, and whose optional `model:`/`effort:` values
@@ -50,6 +50,7 @@ import re
 import subprocess
 import sys
 from pathlib import Path
+from markdown_links import link_errors
 
 # Extend this pattern to teach every check about new platform/SDK version
 # vocabulary (for example a new OS name or toolchain). It matches tokens
@@ -369,7 +370,6 @@ def check_openai_yaml() -> list[Finding]:
     return findings
 
 
-_MARKDOWN_LINK_RE = re.compile(r"\[[^\]]*\]\(([^)]+)\)")
 _BACKTICK_PATH_RE = re.compile(
     r"`((?:references|scripts|examples|assets|evals)/[^`]+\.[A-Za-z0-9]+)`"
 )
@@ -377,17 +377,15 @@ _BACKTICK_PATH_RE = re.compile(
 
 def check_link_integrity() -> list[Finding]:
     findings: list[Finding] = []
+    documents: set[Path] = set((REPO_ROOT / "plugins").glob("*/agents/*.md"))
     for skill_dir in _iter_skill_dirs():
         skill_md, fields, body = _skill_frontmatter(skill_dir)
         if fields is None or body is None:
             continue  # Already reported by check_skill_shape.
+        documents.add(skill_md)
+        documents.update((skill_dir / "references").rglob("*.md"))
 
         targets: list[str] = []
-        for match in _MARKDOWN_LINK_RE.finditer(body):
-            target = match.group(1).strip()
-            if target.startswith(("http://", "https://", "mailto:", "#")):
-                continue
-            targets.append(target)
         for match in _BACKTICK_PATH_RE.finditer(body):
             targets.append(match.group(1))
 
@@ -400,6 +398,8 @@ def check_link_integrity() -> list[Finding]:
             resolved = (skill_dir / target_without_fragment).resolve()
             if not resolved.exists():
                 findings.append((_rel(skill_md), f"link target does not exist: {target!r}"))
+    for document in sorted(documents):
+        findings.extend((_rel(document), error) for error in link_errors(document))
     return findings
 
 

@@ -25,6 +25,19 @@ truncation. It does not preload skill bodies or change user settings. See
 [Claude Code's loading model](https://code.claude.com/docs/en/features-overview#understand-how-features-load)
 for the distinction between discovery metadata and activated content.
 
+## Swift knowledge ownership
+
+The [Swift knowledge-base guide](swift-type-system-consolidation.md) records the
+current ownership and routing contract. Entry points select a concern; mechanism
+guides explain construction rules; recipes apply them to compound invariants.
+Dated release and availability facts have one owner. Source archaeology and prior
+verification reports stay in maintainer documentation, outside ordinary activation.
+
+The repository validator checks local file targets and Markdown section fragments
+in skill entry points, references, and agent instructions. It ignores fenced
+examples and source snapshots; it does not verify external URLs or their fragments.
+The source-coverage checker uses the same anchor rules for ledger destinations.
+
 ## Context reduction baseline
 
 The baseline commit `f84580d` contained 26 skills with 12,586 description

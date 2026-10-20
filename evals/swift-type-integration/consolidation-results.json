@@ -1,0 +1,1210 @@
+{
+  "schema_version": 1,
+  "recorded_utc": "2026-10-20T18:39:11.880139+00:00",
+  "scope": "One fresh attempt for each of six positive cases on both native runtimes after knowledge consolidation.",
+  "baseline_commit": "8b933760a206dca742737b339bc31807f91ef06c",
+  "criteria_sha256": "0574f95fd53d7c4c7dbda874f5bae4ee5858152981bc0da293bff8f4e80fd3fd",
+  "source_snapshot": {
+    "files": {
+      "plugins/apple-platform/.claude-plugin/plugin.json": "file:e3c28bde406c7179ced0216c48676d970c057fbec23676ea490ff93079cd29f2",
+      "plugins/apple-platform/.codex-plugin/plugin.json": "file:bae3da6e909646b2bff71f4221518fd7f5627e7eb820e51d58facf240e3e790e",
+      "plugins/apple-platform/agents/async-testing-auditor.md": "file:5b04389dc8e5d8fcfcfe15f720dada270ea8b37eb4db023b132b170655c846b5",
+      "plugins/apple-platform/agents/code-standards-auditor.md": "file:7de086f0e6ce70f366ec7ea19fc819c7dbb14ce3d895cce71b604eb58c52886b",
+      "plugins/apple-platform/agents/information-entropy-reducer.md": "file:6ce4d2ac620eef061bb32c5ce9958e0c60979be0950e9a5767f1ff440f43416f",
+      "plugins/apple-platform/agents/type-driven-design-auditor.md": "file:b4b18949ccb6fba17942ed7f719ad2aaa245a99098898f379ed8cef68ce2376e",
+      "plugins/apple-platform/skills/analyzing-app-store-business-data/SKILL.md": "file:4fc69685294a17b4eb4b7aa24347e3805c34599133ea3f354455eebc84fd3173",
+      "plugins/apple-platform/skills/analyzing-app-store-business-data/agents/openai.yaml": "file:721a6a2afc58b0c43f921e54b40eddf28c03a70b86d62d565ffadca4940c4f3d",
+      "plugins/apple-platform/skills/analyzing-app-store-business-data/references/aso-methodology.md": "file:2129fc2a5620efd8960d30ce84f53f2278f2a36eee722557daa54cbc8391738b",
+      "plugins/apple-platform/skills/analyzing-app-store-business-data/references/data-sources.md": "file:58cebf191858305e08966f82d83794d9c281b902aa603114ad970338b679bc8e",
+      "plugins/apple-platform/skills/analyzing-app-store-business-data/references/growth-playbook.md": "file:36bd1bcfc0a09cfb832f404c6dfa0e9b4e77fdac17a1b95fbc4246d3bb03171b",
+      "plugins/apple-platform/skills/analyzing-app-store-business-data/references/metrics-playbook.md": "file:af12efdc9dd1dd5e0a56afd22096e0a6d0a818ba2b3854940bdc8b770b57c49b",
+      "plugins/apple-platform/skills/analyzing-app-store-business-data/scripts/backfill-sales.sh": "file:3448a239450bf7849f4772c44318a391f23dcb176e9c5d59a863576c0070cebc",
+      "plugins/apple-platform/skills/auditing-ios-release-size/SKILL.md": "file:3be1ca2fd8463774c4efcaedba43df12a5410814164c15ae46d4fe44f52ce86e",
+      "plugins/apple-platform/skills/auditing-ios-release-size/agents/openai.yaml": "file:64373e5e24c1732aa000aefcc8a7fe6403a173e4ea644a4cde85c73f89e54217",
+      "plugins/apple-platform/skills/configuring-ios-content/ATTRIBUTION.md": "file:e814cf290f552389a0c07cb10de6cd66331396e7ed25b6e422727e6ce8c01478",
+      "plugins/apple-platform/skills/configuring-ios-content/REFERENCE.md": "file:3556f9b4bf6bd9f90d794d95ebb3962b981d727bb52404698ff39294d0520311",
+      "plugins/apple-platform/skills/configuring-ios-content/SKILL.md": "file:9ad4139f351b560dbe39b5c5582d8dcd54b2043770a81831375ba4b53ccf01b1",
+      "plugins/apple-platform/skills/configuring-ios-content/agents/openai.yaml": "file:232350027b2bf8e49b472ae22a32e17f46bcd582cc2aba04d01df0eff18ff8fa",
+      "plugins/apple-platform/skills/designing-swift-apis/ATTRIBUTION.md": "file:fc47581590652f713b55dd0dfae8f7ff6be3b29e9839ee491053efd299f74653",
+      "plugins/apple-platform/skills/designing-swift-apis/SKILL.md": "file:b16591462d9f19b1a3accad9dbc278e7ce7902953da9195c5ac3cc717c067168",
+      "plugins/apple-platform/skills/designing-swift-apis/agents/openai.yaml": "file:4c2c997552143260bada5f238b06f07338e06d25aeea63c50ef370bc3ff7bd98",
+      "plugins/apple-platform/skills/designing-swift-apis/references/examples.md": "file:237769e8b59eb51c920436e8540a5db2b0fbd3df961a254e3013f4911761d99c",
+      "plugins/apple-platform/skills/implementing-app-intents/ATTRIBUTION.md": "file:522a02df9e1a9d622923e15c95d1c71ce29eba0a7c12d7a488f4909fdec041c7",
+      "plugins/apple-platform/skills/implementing-app-intents/SKILL.md": "file:0557abfe5ea4f5d805df7be5451efd566e42f50a98726597ce75a2db10bd7169",
+      "plugins/apple-platform/skills/implementing-app-intents/agents/openai.yaml": "file:d482d88184bf67eed905ae56e621e30c4fc8d350ee068e2a96b7f1e4eeab0b4f",
+      "plugins/apple-platform/skills/implementing-app-intents/references/agent-playbook.md": "file:c368cee338824d5ad6f8a9f15dcb1e6068a6922f30ca3204acfe15e49436a709",
+      "plugins/apple-platform/skills/implementing-app-intents/references/apple-intelligence-and-siri.md": "file:cc41a8890d5ac3e1fc5bb37d31e32293ebd529d4ac87906f1a9b36b9f76749aa",
+      "plugins/apple-platform/skills/implementing-app-intents/references/architecture-and-model.md": "file:e524ff75c92105c0dd49abd8fe30ce195359c340ff234eaa4f7f62b07034d0d4",
+      "plugins/apple-platform/skills/implementing-app-intents/references/assistant-schema-domains.md": "file:37385e65fce1c8cba536e7e137ccfb42b9838eeb4952dd9461289c3bda6e74f0",
+      "plugins/apple-platform/skills/implementing-app-intents/references/checklists.md": "file:08ca8f38875a04aa56f317cdd84b62e1c2d7aec66768d35d3ae226849902bd99",
+      "plugins/apple-platform/skills/implementing-app-intents/references/entities-queries-and-indexing.md": "file:1efc8b232e4993c1e3f168cd62e93574ca05aacc14e10fc90261fdba456f45bd",
+      "plugins/apple-platform/skills/implementing-app-intents/references/examples.md": "file:ab7dead4e4ea82d2294a45e652c5307b6769387a1e7713642c8b7480638ea29a",
+      "plugins/apple-platform/skills/implementing-app-intents/references/execution-packaging-performance-and-privacy.md": "file:05e2220f33396c646a2a0f3aae840f244aa8c6abf619b02d37f87a26b4d2ebdc",
+      "plugins/apple-platform/skills/implementing-app-intents/references/intents-dialog-snippets-and-confirmation.md": "file:046dfb964ccb83a7bd3fc0af553c5ff521c28851a9619ca5f50fc82fc8860b04",
+      "plugins/apple-platform/skills/implementing-app-intents/references/migration-ios26-to-ios27.md": "file:c45dfdd1082a2f0ece5effd49e9683053860e4e19d20e368f19f6b5699bf15a6",
+      "plugins/apple-platform/skills/implementing-app-intents/references/minimal-skeleton.md": "file:336dc1fbbc0f87a3d084ff91b38ea898e7330076b7d08a86515c1f920d3a8c3e",
+      "plugins/apple-platform/skills/implementing-app-intents/references/onscreen-awareness-and-content-transfer.md": "file:c7c86045d463bca08a40ae0572149193523678bcb2122f3133da16e7cb1ead45",
+      "plugins/apple-platform/skills/implementing-app-intents/references/reference.md": "file:6e56663e28aa31db36319439b5df2b40ff21eb0c0c909bec216501965f454dc6",
+      "plugins/apple-platform/skills/implementing-app-intents/references/sdk-availability-and-verification.md": "file:390b8856172ffc16707c0d6ff9872665068026f76b9efa1ea84aeb567d386800",
+      "plugins/apple-platform/skills/implementing-app-intents/references/shortcuts-spotlight-widgets-and-controls.md": "file:f8858a4f6e35baf76a6a78cf9c41a98ccbdf9e41fbe054a50a3500e81c702b77",
+      "plugins/apple-platform/skills/implementing-app-intents/references/testing-and-debugging.md": "file:de7dd8bc4eda7744dcb1038bc0456c1613a6811401db36796e9a66199f82c2f1",
+      "plugins/apple-platform/skills/implementing-app-intents/references/ui-framework-crosswalk.md": "file:f5bfc4e81cd2d83a71d5ec4eb4320926c6d59f6dde7fd180e0570a86d14944a2",
+      "plugins/apple-platform/skills/implementing-app-intents/references/uikit-examples.md": "file:638b4e9b267c770bb9979ed76e0e17c3ed60989e703201c730f88fdb7839f75d",
+      "plugins/apple-platform/skills/implementing-app-intents/references/uikit-integration.md": "file:ce04d51bb0d55c96d8930f01b5fe2f48035d1dfeb74c6b0ee4c7123551083a05",
+      "plugins/apple-platform/skills/implementing-app-intents/references/value-representation-and-structured-transfer.md": "file:675d0b8f4b27d05033103f85611f09070d95a0942b0d415bbdd237fcef65800b",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/SKILL.md": "file:0060a39f19fb4f8f288296858746775c5f81f8d21d115e8fc8bb001daea2eff9",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/agents/openai.yaml": "file:5bb2bbe3a66775f68b2e27c752804b13bd2071180d402c62ec72fb65c9c0c7da",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/assets/AccessibilityPackage/Package.swift": "file:a2eb9c8e6e9ccf1b64c10f4646d63fbf573e29e2e0262b7e5e5666f48fd489ef",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/assets/AccessibilityPackage/Sources/AccessibilityUI/AccessibilityIdentifier.swift": "file:9cff57dbf42dd26e464b7f57c80fb022fe7e5a24ede8878bb2a7644135052086",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/assets/AccessibilityPackage/Sources/AccessibilityUI/AccessibilityIdentifierComponent.swift": "file:f3ad7c991cffe1305aeae60f62216f9626cb8111f90ffe030f987ab6e13c58d0",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/assets/AccessibilityPackage/Sources/AccessibilityUI/AccessibilityIdentifierScope.swift": "file:b4d0660a82b6e3fe64a1ef6cf3ce1deddde3fa69b3ff041aac5af6f56499a525",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/assets/AccessibilityPackage/Sources/AccessibilityUI/AccessibilityInstrumented.swift": "file:6df866a04d50f44c5db5de20667cd269986d27e0384e711418c017402a9a3a91",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/assets/AccessibilityPackage/Sources/AccessibilityUI/SwiftUI+AccessibilityIdentifier.swift": "file:418a1495d2d2c921ae58ac489befc1917ce4f1cb455039e77c9c28b975b70c75",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/assets/AccessibilityPackage/Sources/AccessibilityUI/UIKit+AccessibilityIdentifier.swift": "file:aa3cada5ed4eac3cffa8a0abeb0d5347ad28dd0ebcada8da5b770127026afbc7",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/assets/AccessibilityPackage/Sources/AccessibilityUIForTest/XCUIElementQuery+AccessibilityIdentifier.swift": "file:cb039f2e2682e1424975204369a197af059a752899dcd8b81365b1cadbab2bd5",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/assets/AccessibilityPackage/Tests/AccessibilityUITests/AccessibilityIdentifierTests.swift": "file:3eb2136dde2bb9130e6313439cc66f0e16aae5804dd0d94d8f6e3a1575338cbe",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/references/architecture.md": "file:8d886771d8f63b3d831c3f33246197d06488cb94e0f12da6f2a6865cb76a7a9f",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/references/migration.md": "file:a2d76c12279f03629e8aba0b71748062227f27f2a47f941070348b2a74158ee6",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/references/review-checklist.md": "file:ab1cedbc4ace3e83a00b90754c8c396ce30a567e3aa845b9e097a468a9ae7c33",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/scripts/audit_accessibility_identifiers.py": "file:92d678d6003375aee6fde976d23c207d87dc9e4a7e967eed980bcaf2746ad189",
+      "plugins/apple-platform/skills/localizing-strings/SKILL.md": "file:63f815c39586d1f731e26ad02f3997e574f248a43e8f99f2af549ca0054eaf19",
+      "plugins/apple-platform/skills/localizing-strings/agents/openai.yaml": "file:32b882272236cce09c8b7365dd03d23dddd9e6dcebfbfff1126b717be54fc5aa",
+      "plugins/apple-platform/skills/localizing-strings/references/implementation-examples.md": "file:1fad1ba048b166c018d63cd36aa28969f6b15d61ff87e48eb0111119ecebd747",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/ATTRIBUTION.md": "file:58028e6653680d1a2f8caca4703e80095cd434a3fc3c7176c77144e74b849a56",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/SKILL.md": "file:9442faf6a7c1694e0428edb9ee516710331c18f76095a5d52f777f7884448fb5",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/agents/openai.yaml": "file:e9ee04cd4fd77076465d089f281a47b4bb0042d7333ea9cfdf9662ab2b263223",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/CompileFailBypassValidation.swift": "file:cdb777d1c1c58df4bb1d5366ffdbc22e7133feb2608755e37ee93c4a0d1d5987",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/CompileFailUseAfterConsume.swift": "file:2810d91a2b91f9fff9d005d3c6b27e6f34ffb6c3687916b829ad4f27e2ecaa12",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/CompileFailWrongID.swift": "file:56c59b80c608172326b5acebe5e82531094c395dd9b0fbc8442343875eee0233",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/CompileFailWrongTrustState.swift": "file:a73c46d63a94d63c9168c41749fdca2ae654909d3330da6e7755ab041fe27e2b",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/CompileFailWrongTypestate.swift": "file:91a2f834e4874ec2eab4d07b094b203a3f1bb2f7169fde4057d7a3bf90060988",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/CompilePassCorrectID.swift": "file:de57cf0debd1074da885f5491f89de3108072fc789b478e9972159976ac4d7f3",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/CompilePassCorrectTrustState.swift": "file:ee8e7cedaee25635a7d08d9cdddf5c4f3ddb89f16a801560cfa45459d7f83547",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/CompilePassSingleConsumption.swift": "file:4b79eab499d956da4b8c8b7d9abb807dac8eee7b208b2aa06cb254eed3304635",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/CompilePassValidTypestate.swift": "file:e8417bb461c485625efbf78ea83bb26f92301e216a22e89ec1422e1144342b83",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/CompilePassValidatedConstruction.swift": "file:6c09782686e42212a80b5be0e1533a57dc829144cf0187b5e8eb5cc645a2a3a2",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/CorePatterns.swift": "file:424ad2e03cf16aed62d535d20afd2a90b5c2de02fbc110f8ffb459895e011049",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/CorePatternsRuntimeChecks.swift": "file:c4b72f8f93be002f8544cc120ca3710191a372ade880a72b3ebb9678bfbc51a4",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/CurrentSwiftPatterns.swift": "file:fb8a535bdb6e5b6cb923160660bb45ec1427918052554e70cdcb0afbacb3a7ec",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/TrustStatePatterns.swift": "file:dc2f8ec63f6d5c574c38b63ad0ad8e0f03045dd5c9ae69ac4a5972f8c2d7966a",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compile-checks.json": "file:931c59d9c43454d64040833027629174f2091d7b093d8a7748135e8540c8eaeb",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus/core_examples.swift": "file:6c4350e3b4c493181b3c9be50677d75f144b18f6ec05e6f3f5f9efb4ac8a8cfa",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus/core_examples_runtime.swift": "file:3f2fe1bfcaf8abfc1bc835ad4875969a286064107d9e9679e80ef50187b0c001",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus/frontier_probes/manifest.json": "file:b8a3c38f88a863ce8565059b3d6c9e5f7ce97b678ad7544d23eca0c1127bfe17",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus/modeling_examples.swift": "file:5a812334ca9541835f00075bc958b257207bd2f521ec2da8a735b7a794d7c83e",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus/modeling_manifest.json": "file:4d75db092e49b5273aabfedc6ebf27e6cf4be0d8e3b605b4ed50a0cda058ac99",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus/probe_effects_async_let_error.swift": "file:cf0e87d7fc7c306f9f3222a0c23589e116c25191f34ac3d92913ab71f542fc14",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus/probe_effects_catch_cases.swift": "file:97a795694b4596fb84238ead2290e2c48525cdfdb17c1cbc30a74d1bdc760816",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus/probe_effects_discarded_task.swift": "file:d643a126c72fe9a06b5828c46404b811d17884bd7fcdb2a24a3a4ecc89a7c7d9",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus/probe_effects_double_resume.swift": "file:f9270046df120812f588b4604c563eb47d846488d0854bc644375e0f350b3991",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus/probe_effects_dropped.swift": "file:18710d319dd3f73927baec4f6caac0aac5b9f451ee1892f57fc99c0cd94461d3",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus/probe_effects_opaque_throws.swift": "file:0378a08794964bc1520bf6d108c85d56bde52f82dd6c0dfb736b0c198d4dec73",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus/probe_effects_positive.swift": "file:7091cbe56b60eb1b203f6505f89606fd9e1e3508a0fd4f51f7bb693ca3a31d73",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus/probe_effects_typed_task.swift": "file:211221290ff9b2919717ebca4246a92daca3f7e6d244f9b5c00eb97e990abba2",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus/probe_effects_typed_workarounds.swift": "file:81f0e5e72de75cf9369781e37e4bbe89c964593bfbb44377f5b78be3687b52fa",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus-controls.json": "file:de4b52387fbc4621db6db186d2f856a488abe80686c2f15cbd741212dfef0a31",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus-diagnostic-compatibility.json": "file:c04f9d7e126a144bb5d68bc540704c965ad258af06757e2103dbc9bb0b72c330",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus-map.json": "file:893ecbdc3cddf0c45e29bb387662b98a15b159af753c1977314fd808ef2dde42",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/advanced-generics-and-protocols.md": "file:9fff09c063704fe8139ad3ebe43e3fd8258a6a16182f863ece41982aea40dc9c",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/algebraic-and-refined-values.md": "file:325e58ccebbb7fe9889969d3c4e4eb3d20f861c1c3e29fa508c7c5bf54206d5c",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/boundaries-and-interop.md": "file:473f794ed96c7a64f45496bb87a14916e0feaef3a671c1143d14daae75174616",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/compile-check-runner.md": "file:3b2acd0005ecde2d8c56057c24b8543c249cfa3676b1cdf7e9bd9f33d607a09b",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/decision-guide.md": "file:685e08631ae2dd50fcb1a84b157ab54d64e92c9701b937f3637bdd101d1a07ed",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/domain-modeling-recipes.md": "file:f92a3e88ac9a473a9f209d0e6ac0af38f050ad715194fcef3e92c4eb9899387d",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/generic-proof-recipes.md": "file:a8c2b2b1fc790ab8acb6025d0ea4e81642f6082f6ad9a8cd398fad6357a796c2",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/identity-typestate-capabilities.md": "file:038a4260958143658d82f82e8e0f95247f6d57a80bbfcc8625a19a770590035d",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/ios-versioning.md": "file:e1b674cf590923cecf1d381f9998e5545a108f2814d9fb95baa9be10ceaa95c4",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/ownership-concurrency-errors.md": "file:703e25c7de6934528c22ebc2e381e55a84a2e265c6075715f9c871509068ea20",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/ownership-effect-recipes.md": "file:0cdf4e0ffac3a8b41599c143d4e35ecd66cff6652eda359fe97420e54c83e6f4",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/security-and-resource-modeling.md": "file:ecff22e7ba225b1c62d52238d5608e1f0fc7af62c94068b17c7383f0b997e427",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/sources.md": "file:9ab470c3850019f45e50d6f9da65501942f3c873f99e8a3666c96462b0f2bcfd",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/swift-feature-status.md": "file:fa9a9bdb8c0d4d5755e49c7781a34892060849b558e5f1cfa3335d8a8084c000",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/testing-migration-and-review.md": "file:f14aa038bc24ebaac5d0e16bb0f1b29e838a1a467f5ae07e7ae358b029c5c838",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/ui-state-navigation-and-effects.md": "file:4500023ad55c068a806f8e62ec6158aca4bc4849e0877802e308bbf389b366d7",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/scripts/audit_project.py": "file:db1d379a4b79f8094812c734be21e7678ebf075b91fc19bb8d5b2c11d66702d3",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/scripts/check_examples.sh": "file:ab8d649883d587dbbb170ec75ca9bfda0b2ca8a68920d4d6f058c72725df7806",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/scripts/swift_compile_checks.py": "file:059382917ab454930ff912d2c719cfe6eb848d64da2b9ac7b7604093927f2cec",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/scripts/swift_compiler_corpus.py": "file:a537c386efad384eee2dec7ce19f436150719d2d546728bc78bd5f1bf5658c21",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/scripts/validate_skill.py": "file:9d381a22ca42ec1f9c7086de7ea637d6b9edde3f69887b5e5e2532bfe8c4f477",
+      "plugins/apple-platform/skills/ordering-symbols/SKILL.md": "file:ba0463717d94cc09e5c23a6a52d1eb956bffd9829417e559c9019b0bc9b85820",
+      "plugins/apple-platform/skills/ordering-symbols/agents/openai.yaml": "file:fe36579be882efd8e8466cd20d9eee11a0b3b6560980072fcb87e043352a6c91",
+      "plugins/apple-platform/skills/ordering-symbols/references/complete-type-example.md": "file:b398ce4e001a60824160337903a49a74d33338da4d8d2c444bd583557889b67c",
+      "plugins/apple-platform/skills/ordering-symbols/references/formatting-and-comments.md": "file:aa44ab1d46318761565022c22b3d9924702ebe555bd47885962eecc6a6c5598f",
+      "plugins/apple-platform/skills/ordering-symbols/references/parameters-and-body-ordering.md": "file:73594c3fb75304908c70ee1dd0800379324dd25160eb2930cdd2f964bd66ccf1",
+      "plugins/apple-platform/skills/ordering-symbols/references/protocols-extensions-and-availability.md": "file:01051a270c2ccee46316905d76c79befbf4f814592d0dc4f6a2bfe6ee52fc2fe",
+      "plugins/apple-platform/skills/ordering-symbols/references/type-declaration-order.md": "file:bce138ec4d269964c7e1e391ac2450aac149c56ff5a64d14f0e352efba1cd689",
+      "plugins/apple-platform/skills/organizing-swift-types/SKILL.md": "file:66825291ad65df7768b0146f624b49de030977ff3b381932f0b2c77fbda9dc13",
+      "plugins/apple-platform/skills/organizing-swift-types/agents/openai.yaml": "file:29410734a21feb155069f405b9a2877bb3e89501e24a9690591a599e309b6713",
+      "plugins/apple-platform/skills/organizing-swift-types/references/access-control-and-modifiers.md": "file:b30f6a148984b12bec34b2541332481a03c629652168438205bb79e40f422b6c",
+      "plugins/apple-platform/skills/organizing-swift-types/references/availability-and-version-spanning.md": "file:1f38a9517e7e4a205673d3432edc400a3a298214e531c0c25804b63432ad1fdb",
+      "plugins/apple-platform/skills/organizing-swift-types/references/complete-shape-example.md": "file:880cc244b77e51018b072cae51478591a0baf4febcb7434d19963c009e5d23f6",
+      "plugins/apple-platform/skills/organizing-swift-types/references/constants-file-structure-and-previews.md": "file:9a266ac4c65a6564635ba9861e2e915e5974bf73f20c3a76dd6e0292296fe453",
+      "plugins/apple-platform/skills/organizing-swift-types/references/extensions-and-nested-types.md": "file:b991ef5ac2fb2547d43b4b4f451f57360f618d93d136af8950dbf53fc489159c",
+      "plugins/apple-platform/skills/organizing-swift-types/references/primary-declaration-and-conformances.md": "file:c2b754fcc1e15814413c0cdc0982bb05b2e103b80d4cd6997ade04d6f9a7f218",
+      "plugins/apple-platform/skills/organizing-swift-types/references/prohibited-patterns.md": "file:c1dbac817222bbede34f46f109911d8f87abb97e90a45afb12f78dbc72997012",
+      "plugins/apple-platform/skills/presenting-ios-modals/SKILL.md": "file:687833270c3d281500bcfcdbfb2aa331e62cd51f7ca46cb0a72106e950801ab6",
+      "plugins/apple-platform/skills/presenting-ios-modals/agents/openai.yaml": "file:7cd61d8f4071b354a5d4021a311d5449fd21f6f9e7a09c7c8ecb59d4711f5312",
+      "plugins/apple-platform/skills/recording-ios-simulator-videos/SKILL.md": "file:89e8c273cb3e1a17b2df8dbf92160ba40704fcea2062a7f97877a7694d324057",
+      "plugins/apple-platform/skills/recording-ios-simulator-videos/agents/openai.yaml": "file:b08ddb4f6163105fdbb87a09c93ee22ac9ee4f761ceb62f08f1bc176112b2066",
+      "plugins/apple-platform/skills/recording-ios-simulator-videos/scripts/record-ui-automation-video.sh": "file:256ff0f9d0d6218edda0dccc7bbcadb341d5825f54fc01b361b222c320698b5e",
+      "plugins/apple-platform/skills/recording-ios-simulator-videos/scripts/record-xcuitest-video.sh": "file:2361d81f77d7825e8b16a2b9fdc2e9a22c83c64509986cece28ae719b5e344cf",
+      "plugins/apple-platform/skills/simplifying-apple-platform-code/SKILL.md": "file:6b16b68a99ad65d6e23bb7ce9975d05ff69534b4916ffdb4deedeb6f87f707d9",
+      "plugins/apple-platform/skills/simplifying-apple-platform-code/agents/openai.yaml": "file:e6a4133e78e87142a86b3e8251a0026a4cb802fcf6a5bcc0ec92c77e0ba4288c",
+      "plugins/apple-platform/skills/simplifying-apple-platform-code/references/foundation-frameworks-and-capabilities.md": "file:b196f4846002fbf7f45d5c8c5e633e707b4755a624c799f97b57e5457b550638",
+      "plugins/apple-platform/skills/simplifying-apple-platform-code/references/swift-and-concurrency.md": "file:a1a7ddaa65fac4c612072c9a211a66a7699e4b9586c4e37df08b88f8f82301fc",
+      "plugins/apple-platform/skills/simplifying-apple-platform-code/references/toolchain-and-availability.md": "file:cc5ff431de62aad0b8b31e6469f1c5b42744850c11798f43796c5b31442d9aee",
+      "plugins/apple-platform/skills/simplifying-apple-platform-code/references/ui-frameworks.md": "file:9221e72f334f799a9806317dae30dc7fc42b0dc1db12dee58b2c989ad3aaad67",
+      "plugins/apple-platform/skills/simplifying-apple-platform-code/references/verification-and-checklist.md": "file:9c272dd75dc42ed14b8d2f29540f9f464e80f0a6239e8b42772e190291d69572",
+      "plugins/apple-platform/skills/structuring-swift-packages/SKILL.md": "file:3bcf8303648ce8b37bd5ebda505a7ac9e9c2933f7e05ceb03a243cf25ed31c73",
+      "plugins/apple-platform/skills/structuring-swift-packages/agents/openai.yaml": "file:27e7e69c7d8ff9a3c622ea24eac77593e91a9df9f4fa268261a66138219d0c10",
+      "plugins/apple-platform/skills/structuring-swift-packages/references/recipes-and-verification.md": "file:1390a49ce81c8368cbb2ffe8db13a48972d6e68e914bc9bafe0c620eb3e5c619",
+      "plugins/apple-platform/skills/testing-async-swift-code/SKILL.md": "file:0aedd88c7c40b5e04108c441873cdbf8a270f8b6ccde7f720bb2f38ee77422a2",
+      "plugins/apple-platform/skills/testing-async-swift-code/agents/openai.yaml": "file:4f47331d3918ed7b32d2977ade26b8d7138565cf77152be432da890a30c252af",
+      "plugins/apple-platform/skills/testing-async-swift-code/references/idioms.md": "file:aa8e03d0f4ed69b63d472093a621e26347989d23470f6b2209a961851af722d3",
+      "plugins/apple-platform/skills/testing-async-swift-code/references/primitive-contracts.md": "file:c24872fceaa33307f1857a4c970f207db82e99426a0c368238cbefd24a696ed2",
+      "plugins/apple-platform/skills/testing-swift-code/ATTRIBUTION.md": "file:47a8d0d24cca72b2ce8cb05e95770b1a0abbdead35277f06adafb25b0062a327",
+      "plugins/apple-platform/skills/testing-swift-code/REFERENCE.md": "file:2c929883e523ec7f08cbb55fe54084de7843b26933e4d6771d8d6e79669e7f38",
+      "plugins/apple-platform/skills/testing-swift-code/SKILL.md": "file:bf21540a6b91cbc949d3e8aad62af58304d2e300de1f039b49c266ae0d403d44",
+      "plugins/apple-platform/skills/testing-swift-code/agents/openai.yaml": "file:661239976bb5147b9a40ca492cbc2fb5f5e4baf0b8765cf5f28d0e1483831f8e",
+      "plugins/apple-platform/skills/using-swift-concurrency/SKILL.md": "file:ed159402828920f0d2aa32d7367089d1c5691a5eb080b5654701ce840bc43b2c",
+      "plugins/apple-platform/skills/using-swift-concurrency/agents/openai.yaml": "file:6bd6f5bb911a33148fa941a1666123bc938d09a17ba4a64bafc174852a0cb6a8",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/actor-decisions.md": "file:1d07e42a76e30086a06f1a602bad45a24751276dacf25306649a2f72a1407552",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/async-sequences-observation-and-notifications.md": "file:510a7accce18a3b0d14080f61cd25479a5280487cefa2d7fe361b92b067551fa",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/async-testing.md": "file:2a4186b394a47ee6c47de7d4641e3228eacd85999f08c50ee06db0234e84da7b",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/concurrency-model.md": "file:0c2ee3b30c66f1e8f697e77f6e01d2e3dd463190d0645929c55fff8162800843",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/continuations-and-bridging.md": "file:c39457f9384028872a641aa3efd1c68cc13913b289d7991ed1b10ccd7675afa5",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/isolation-and-protocol-conformances.md": "file:7ec54a614c8b582b4fd0b31dd88e93ec61ecda8e247e108be459296eb17406de",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/logical-races-and-reentrancy.md": "file:c251205c5272ba84bb02a1580d8f2ee6f748b82e67036fef3454822456db8276",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/platform-and-build-baseline.md": "file:b59fb59907739d987b37432f0839884fefec026368034805ee29dea581147229",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/problematic-patterns.md": "file:65e74e3a5d69a9e42781f04659600c3edb5e7768c74b7e8e475233f7ca7ff86d",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/protocol-design.md": "file:c5dcbb566c83018aa0eeb496d3f21655384227cc8403aa1321228f33f314e25b",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/review-playbooks.md": "file:f2fe37b0761ff25860bcc59d613fd45e184d48162e477e2bf9d6aa2c957d7338",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/sendable-and-transfer.md": "file:4e40ba22cf20abf04418705efd963e373f161e7a11fbe5d91297074f4a84b31f",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/sources.md": "file:aef651158c30fc2d544c9604dd59d65a99b69f90646f5de7da08f6033a7f55e8",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/task-lifecycle-and-cancellation.md": "file:0a853cb0fbcaaf75c4d76cbc63374b62d163e91ff22ff89d53821bddd293d686",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/terminology.md": "file:032df0de006db7f4275abd5ab442d3905807ead80efe46f92f3a17de0ec57f31",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/ui-and-mainactor.md": "file:98f6a3358962f39c655bbec970ffa7110d6e91f6c41b6afda4a74fd15bf467e4",
+      "plugins/apple-platform/skills/writing-apple-platform-documentation/SKILL.md": "file:50b0efbe39f487e6a6fed7b0e689dfb7f834529cf5dba42e20ce47d5862dfa6f",
+      "plugins/apple-platform/skills/writing-apple-platform-documentation/agents/openai.yaml": "file:0f0c9fda5a322e4d4dc1b3d99044cec90d9b6da0c2819c38e7d7ec057ad0adfb",
+      "plugins/apple-platform/skills/writing-swift/SKILL.md": "file:d923cd3a2bbac5082178ae51ffcfbd0de80ea314c5d91da1a961b25375a77944",
+      "plugins/apple-platform/skills/writing-swift/agents/openai.yaml": "file:af119981981ace79904bef3835edd79eefd139c02efd25c4bc17e85d4bfa3746",
+      "plugins/apple-platform/skills/writing-swift/references/api-design-and-style.md": "file:abf447975c5b579248f1d37e45e70a85da1a48b1b72d7ef392be47ba373d46f2",
+      "plugins/apple-platform/skills/writing-swift/references/concurrency.md": "file:4e11a0464353759d12b201b49c2007d29722a62ed9666558f45447f4b62f81ac",
+      "plugins/apple-platform/skills/writing-swift/references/packages-builds-and-platforms.md": "file:5160b1b877ff9486636afd3da8368f4c043839e78a927d7ee6016b8eb16d6f16",
+      "plugins/apple-platform/skills/writing-swift/references/review-and-debugging.md": "file:106d51e63b06b0431edf9ef2d8ef0eec734cddfd304727bbeeef99afc5457185",
+      "plugins/apple-platform/skills/writing-swift/references/swift-compatibility.md": "file:2539fcae1c188d1d5c4ec3781f3d63d36305d158489565ee521283e897094eb0",
+      "plugins/apple-platform/skills/writing-swift/references/testing.md": "file:b915f250593e14963472c637b87e845ec91f032cccd6e3d66a38f6bca8c2020e",
+      "plugins/apple-platform/skills/writing-swift/scripts/lint-changed-swift.sh": "file:38f50c44bc773d400f0bda1a3be6cfe774c5c84d0a96842818570a5cba665b87",
+      "plugins/apple-platform/skills/writing-swift/scripts/swift-project-context.sh": "file:c7902c18fa2f5a0c452bfb4595434ce1e40164294c6695ee9881ea428832af36",
+      "plugins/apple-platform/skills/writing-swift/scripts/swiftpm-check.sh": "file:d1f651b1375137d70e599fcf37c7452d1ff472869579742275263f1492d3d82c",
+      "plugins/universal/.claude-plugin/plugin.json": "file:16b0aacca6091ef7601ebce2461a8f5bb4fb4b78f5766dd52e2f7ca1c9873547",
+      "plugins/universal/.codex-plugin/plugin.json": "file:1187535e14a9c8aa212809374823753ebec2145fadb2840b18c7906409d82af3",
+      "plugins/universal/agents/code-reviewer.md": "file:410fd806bc4824790f4d4cb787ea8190fedc6f68a46ab6604c6518609de0b4f2",
+      "plugins/universal/agents/code-simplifier.md": "file:60c679620bc8a5a3c7829232144ac54996a3c380a21a7bc054098c0d7299402c",
+      "plugins/universal/agents/correctness-reviewer.md": "file:3f755eea8ce39a2a12d1ea5d4bd69b8952b43e210acb867372e6091cc5890d88",
+      "plugins/universal/agents/technical-writing-auditor.md": "file:e53ad49653ce4a385e687f56b1777e6e760b6c5a576684a52f3aad63d6228f7b",
+      "plugins/universal/skills/brainstorming-design-specs/SKILL.md": "file:43d633dde756a4235c5c756f32ea2296ecaf8afdf6ab9e07f7eebd3b992b9266",
+      "plugins/universal/skills/brainstorming-design-specs/agents/openai.yaml": "file:7a52c30cd047f8e86d17c48ca691f831ccca0f11debd6477b6ecd0a543f82e47",
+      "plugins/universal/skills/compiling-agent-goals/SKILL.md": "file:ea47548982a4465ab9ae1ca715b4504a10442461920b7888179e80d06b5249b5",
+      "plugins/universal/skills/compiling-agent-goals/agents/openai.yaml": "file:426e5a20ba16c42ee2e0d8ec8b2037133616cde1eacdaa10bc6bf9e43ef5e41d",
+      "plugins/universal/skills/compiling-agent-goals/assets/goal-pack-template.md": "file:759a4736d9c4845a2a2bedaf4e8bb10209a958e6a0fd8ed6ed74043d89eeeca4",
+      "plugins/universal/skills/compiling-agent-goals/assets/goal-template.md": "file:f60c5137baaa81b674010310bba162e615214bd6146c96825d24d409d3d52b78",
+      "plugins/universal/skills/compiling-agent-goals/references/goal-contract.md": "file:4b02a8f85affe7f062f05d6272058e467cdce604fca96c650efb292f2a561605",
+      "plugins/universal/skills/compiling-agent-goals/references/platform-notes.md": "file:3f364cb15461dc0ac0b34c002b16996f025d450dd0945d6e9d25aab6e6df0844",
+      "plugins/universal/skills/compiling-agent-goals/scripts/lint_goal.py": "file:18af5edbf24f1a8ccaa533786633088d9f8632dddda07681b7654b68b8b4527a",
+      "plugins/universal/skills/hardening-changes/SKILL.md": "file:58594999db4f8594eca655ca41db4997790e7d3ab1caa2f46f0ed95562fb657b",
+      "plugins/universal/skills/hardening-changes/agents/openai.yaml": "file:1c0d66a0533d84f80ccf4b3f8a11288e784980f79aec22b85b37f5d74d4c0e2c",
+      "plugins/universal/skills/reviewing-code/SKILL.md": "file:926537e876d0f2679e0a9c69124c437b59f27c32f57108ed303b33a8e0db0d5e",
+      "plugins/universal/skills/reviewing-code/agents/openai.yaml": "file:77610d4aafc430f2c84ba2be5ed15d4b5c1093b0a4b619b4b3862ef91dedc728",
+      "plugins/universal/skills/reviewing-code/references/change-playbooks.md": "file:7774d49f0f6b9efa9165d987c13430c5bddca96afe6a04412ef5deaa4de3fdb8",
+      "plugins/universal/skills/reviewing-code/references/finding-quality.md": "file:41a0ccd1be96a402f3f880f7ddaf812d519c6606f7a8626b76fd75a30c2591d6",
+      "plugins/universal/skills/reviewing-code/references/review-lenses.md": "file:1ddb67d1de478db37ef2713cf5a908126958d4c635dad5728267ab501b0fc788",
+      "plugins/universal/skills/simplifying-code/SKILL.md": "file:1d7ee73362f017cfc2612c86c6e86b856ea0e4121027f577caf24b1693c26993",
+      "plugins/universal/skills/simplifying-code/agents/openai.yaml": "file:cd8ed4dd1e1c479e8f5a4f61cf41b2f39c9d6b7b30843d7598a6f879ed54c552",
+      "plugins/universal/skills/simplifying-code/references/adaptation-and-anti-simplification.md": "file:dc5fa6a98648c8894033e8023f53a7967df650477b5a9601402e6ac709124aae",
+      "plugins/universal/skills/simplifying-code/references/compact-checklist.md": "file:c903142d1ea4b20aa4be65b81f08a82b56fc741d5b029f254b52f17053942420",
+      "plugins/universal/skills/simplifying-code/references/review-passes.md": "file:f6313a5e449e52a1abe50c93052a4c7e1282d638ba257305dabe24250fd35820",
+      "plugins/universal/skills/verifying-invariants/SKILL.md": "file:71964855d818fe03545f96223200193262a24d4ba72df462013d3e4acc67b0d2",
+      "plugins/universal/skills/verifying-invariants/agents/openai.yaml": "file:9c5ac56b8d163315b77da8e6a9107e1bfa1a6683efbf7615ebece2849501ebf3",
+      "plugins/universal/skills/verifying-invariants/assets/invariants.template.json": "file:5b71272df455c39b8555b7ab913771b16d09c684e6f2a20fc09d119dda7b9dc2",
+      "plugins/universal/skills/verifying-invariants/references/construction-boundaries.md": "file:122dc2e78cd74d892b34b2270a61d1fbe245ce8ceb3fcd809e92a7bf06e5217b",
+      "plugins/universal/skills/verifying-invariants/references/evidence-and-reporting.md": "file:b7afce96436511306495f4e7f15d8658a6181ceefa47a29cfc9b68f4e4233d4a",
+      "plugins/universal/skills/verifying-invariants/references/manifest-format.md": "file:366c008beb86284d4e3aad2e611d6afe0a512ed852d3d708623713bcc6a846fa",
+      "plugins/universal/skills/verifying-invariants/references/targeted-mutations.md": "file:2de48c20a0c6447fe307e2361a0058261118cf1b9a8e85223b692cbe46242b52",
+      "plugins/universal/skills/verifying-invariants/references/transition-exploration.md": "file:db240ab5d5c0a8251b96f1c96e94e23f8924d60775fa89bc4bd531f893477dd2",
+      "plugins/universal/skills/verifying-invariants/scripts/validate_invariants.py": "file:16effae7ce960f68d42277d856aec2b7e62ec3a585706d0617c89b2ba54dcad1",
+      "plugins/universal/skills/writing-escalation-briefs/SKILL.md": "file:61629b5bb00a8e942653e0a68654542812115034b3477d1959df891116b75fdd",
+      "plugins/universal/skills/writing-escalation-briefs/agents/openai.yaml": "file:b720c94ab9c25964199bc67182393c93185bf939a330caad8dd73184f64f6617",
+      "plugins/universal/skills/writing-escalation-briefs/references/brief-template.md": "file:9fb22f2748bab9004aabcff8dc02dadf0bd51177cae2419a1f3f7e3c5f2c7640",
+      "plugins/universal/skills/writing-technical-prose/SKILL.md": "file:5ac672edddaf4072066f8db6a58fbe4a8e2d520b3f9ff5df453624783e411e2d",
+      "plugins/universal/skills/writing-technical-prose/agents/openai.yaml": "file:e5b43e4359a1b5ced68c2d05adb521e4cac160b992e4783bb00745ceffda1396",
+      "plugins/universal/skills/writing-technical-prose/references/document-patterns.md": "file:99416942005ab4713d6cc115edf17eda738dd38b447e62ec72c466e5d4ea61f5",
+      "plugins/universal/skills/writing-technical-prose/references/review-checklist.md": "file:d0ab3492878da83e5c330a2718312a64395501512658cd6ed59a92c507a8fed6",
+      "plugins/universal/skills/writing-technical-prose/references/style-examples.md": "file:7b52249ded096ebf5d0a214ba01712ff0dbec9ddd181e9221bfa5f2bcf8a26f9",
+      "plugins/universal/skills/writing-technical-prose/scripts/lint_technical_writing.py": "file:19ed567849a8f1a5bf26a1715e41765404f70707da5bb1e7bbb5a60dc98bd5be"
+    },
+    "sha256": "79ff584615f0ceb44246765b6130a78baceec9f30d783a400ea92c881c52022a",
+    "plan_sha256": "33f66ea73bfc5fb2270e52dd8260ec57f2578faf8642b31f5694fd2471026908",
+    "runner_sha256": "6277b57c64a760b25bbf8d76c1464e9f19c4b0dbec4f64e8b6638b6d0ba9097f"
+  },
+  "batch_completion": {
+    "before": "79ff584615f0ceb44246765b6130a78baceec9f30d783a400ea92c881c52022a",
+    "after": "79ff584615f0ceb44246765b6130a78baceec9f30d783a400ea92c881c52022a",
+    "source_unchanged": true,
+    "runs": 12,
+    "launcher_failures": 0
+  },
+  "verdicts": {
+    "accepted": 11,
+    "failed": 1
+  },
+  "runs": [
+    {
+      "case_id": "swift-type-decoding-main-combined",
+      "runtime": "codex",
+      "model": {
+        "effort": "high",
+        "name": "gpt-6.1-sol"
+      },
+      "overall_status": "accepted",
+      "deterministic_status": "passed",
+      "source_and_snapshot_match": true,
+      "criteria": [
+        {
+          "id": "behavior",
+          "status": "pass",
+          "reason": "The response identifies synthesized keyed decoding as the bypass and proposes a custom percent-keyed decoder through the existing range initializer, retaining synthesized encoding. It distinguishes the fixed legacy-shape control, predicate-reaching lower/upper invalid values, and current round trips, and limits the assessment to the snippet.",
+          "evidence": [
+            "codex.response.md:1-11 identifies the concrete {\"percent\":0} counterexample and specifies keyed decoding through DiscountRule(raw).",
+            "codex.response.md:13-25 separately plans fixed valid restoration, invalid 0/-1/101 and valid 1/100, round trips, restoration handling, and uninspected-path limits.",
+            "codex.stdout:38 successfully returns focused keyed Codable example and wire-shape guidance from algebraic-and-refined-values.md."
+          ]
+        },
+        {
+          "id": "scope",
+          "status": "pass",
+          "reason": "The write-capable assessment leaves the project unchanged; the complete tool trace contains no project mutation.",
+          "evidence": [
+            "codex.stdout: completed tool trace contains only the recorded read-only inspections.",
+            "evidence.json: tree_diff=[]; scope_assessment.changes=[]; workspace_result.files={}; raw_outcome.tools.write_capable=true."
+          ]
+        },
+        {
+          "id": "evidence_honesty",
+          "status": "pass",
+          "reason": "All runtime/compile checks are explicitly pending. The complete completed tool trace contains reading/searching plus no tests, compiler runs, or edits; the response preserves unknown project settings and restoration callers.",
+          "evidence": [
+            "codex.response.md:1-11 identifies the concrete {\"percent\":0} counterexample and specifies keyed decoding through DiscountRule(raw).",
+            "codex.response.md:13-25 separately plans fixed valid restoration, invalid 0/-1/101 and valid 1/100, round trips, restoration handling, and uninspected-path limits.",
+            "codex.stdout: completed trace reviewed against the entire response; no compiler/test success inferred from process exit."
+          ]
+        }
+      ],
+      "composition": {
+        "status": "pass",
+        "reason": "Required skill bodies and the frozen rubric's focused reference were successfully loaded from the reviewed local snapshot, and their advice is applied.",
+        "evidence": [
+          "codex.stdout:9-10 successfully cat both required local-snapshot skill bodies, exit 0.",
+          "codex.stdout:38 successfully loads the focused Codable guidance after earlier searches did not find that heading.",
+          "evidence.json: plugin_snapshot.fresh=true and actual hash equals expected 79ff584615f0ceb44246765b6130a78baceec9f30d783a400ea92c881c52022a."
+        ]
+      },
+      "evidence_verification": "valid",
+      "artifacts": {
+        "launch.json": {
+          "path": "/tmp/swift-type-consolidation-native/codex/swift-type-decoding-main-combined/launch.json",
+          "sha256": "fa807db5bc2d53c4b07b916cfa6266d842015de7cb5dfb4b55961d6042cb5bec"
+        },
+        "raw-outcome.json": {
+          "path": "/tmp/swift-type-consolidation-native/codex/swift-type-decoding-main-combined/raw-outcome.json",
+          "sha256": "6113f58e18bdb924c13da8fed30b25825a0c573c061e5b44590b8ca4a0b7968d"
+        },
+        "evidence.json": {
+          "path": "/tmp/swift-type-consolidation-native/codex/swift-type-decoding-main-combined/evidence.json",
+          "sha256": "e35059268a22c5dbd22ea21148c7668012aad870ee7507ce0024bf6154c1b0c7"
+        },
+        "semantic-review.json": {
+          "path": "/tmp/swift-type-consolidation-native/codex/swift-type-decoding-main-combined/semantic-review.json",
+          "sha256": "eb2189c753c84a40104603db39180580eb1fb8ac2556a4da4a63e4e73dd5878b"
+        },
+        "reviewed-evidence.json": {
+          "path": "/tmp/swift-type-consolidation-native/codex/swift-type-decoding-main-combined/reviewed-evidence.json",
+          "sha256": "4de28153cbd31ba39ef7093d6b37867cbfe350c6f93c20e8374835a3f1a4c290"
+        }
+      }
+    },
+    {
+      "case_id": "swift-type-workflow-recovery-combined",
+      "runtime": "codex",
+      "model": {
+        "effort": "high",
+        "name": "gpt-6.1-sol"
+      },
+      "overall_status": "accepted",
+      "deterministic_status": "passed",
+      "source_and_snapshot_match": true,
+      "criteria": [
+        {
+          "id": "behavior",
+          "status": "pass",
+          "reason": "The separate draft and verified handle sketch returns either a usable draft with a reason or the verified state, and submission has a terminal receipt plus rejected/unresolved outcomes. It names local handle reuse, recoverable draft loss, cancellation, idempotency, eventual completion, construction bypasses, and crash recovery with concrete pending controls.",
+          "evidence": [
+            "codex.response.md:1-57 uses separate noncopyable states, retry(CheckoutDraft, VerificationFailure), submitted(Receipt), and unresolved(PendingSubmission); explains why a throwing consuming method would lose recovery authority.",
+            "codex.response.md:59-71 separates local reuse, recovery, and eventual completion; bounds remote effects and proposes valid/misuse/recovery/cancellation checks.",
+            "codex.stdout:10 successfully cats the focused domain-modeling-recipes.md including Workflows: preserve ownership on failure."
+          ]
+        },
+        {
+          "id": "scope",
+          "status": "pass",
+          "reason": "The write-capable assessment leaves the project unchanged; the complete tool trace contains no project mutation.",
+          "evidence": [
+            "codex.stdout: completed tool trace contains only the recorded read-only inspections.",
+            "evidence.json: tree_diff=[]; scope_assessment.changes=[]; workspace_result.files={}; raw_outcome.tools.write_capable=true."
+          ]
+        },
+        {
+          "id": "evidence_honesty",
+          "status": "pass",
+          "reason": "The response labels the interface an uncompiled sketch and all proposed checks pending. The completed trace reads guidance, obtains xcrun swift --version, and searches ownership documentation; it does not compile or execute tests and does not claim it did.",
+          "evidence": [
+            "codex.response.md:1-57 uses separate noncopyable states, retry(CheckoutDraft, VerificationFailure), submitted(Receipt), and unresolved(PendingSubmission); explains why a throwing consuming method would lose recovery authority.",
+            "codex.response.md:59-71 separates local reuse, recovery, and eventual completion; bounds remote effects and proposes valid/misuse/recovery/cancellation checks.",
+            "codex.stdout: completed trace reviewed against the entire response; no compiler/test success inferred from process exit."
+          ]
+        }
+      ],
+      "composition": {
+        "status": "pass",
+        "reason": "Required skill bodies and the frozen rubric's focused reference were successfully loaded from the reviewed local snapshot, and their advice is applied.",
+        "evidence": [
+          "codex.stdout:7 successfully cats modeling-swift-types-for-correctness, designing-swift-apis, and verifying-invariants bodies from the local snapshot.",
+          "codex.stdout:10 successfully loads the complete workflow/recovery recipe; response follows its recovery, terminal outcome, and progress distinctions.",
+          "evidence.json: plugin_snapshot.fresh=true and actual hash equals expected 79ff584615f0ceb44246765b6130a78baceec9f30d783a400ea92c881c52022a."
+        ]
+      },
+      "evidence_verification": "valid",
+      "artifacts": {
+        "launch.json": {
+          "path": "/tmp/swift-type-consolidation-native/codex/swift-type-workflow-recovery-combined/launch.json",
+          "sha256": "aca4503e5d7f06902b4e0b0909b50e13f532ee66dec71fc87cac795844029dd6"
+        },
+        "raw-outcome.json": {
+          "path": "/tmp/swift-type-consolidation-native/codex/swift-type-workflow-recovery-combined/raw-outcome.json",
+          "sha256": "740c8bc590c4720925f29de83857b1597a7ed8eaf634a99df7c295d8c5f0ca05"
+        },
+        "evidence.json": {
+          "path": "/tmp/swift-type-consolidation-native/codex/swift-type-workflow-recovery-combined/evidence.json",
+          "sha256": "f74bbad8ae6f311f0de8c9de3c375a073214248b703e2c0185f686745fa544e1"
+        },
+        "semantic-review.json": {
+          "path": "/tmp/swift-type-consolidation-native/codex/swift-type-workflow-recovery-combined/semantic-review.json",
+          "sha256": "80fc4c2d2a728435b579cc0b6f338d3c9add66006f023a16fa268af81d17e79b"
+        },
+        "reviewed-evidence.json": {
+          "path": "/tmp/swift-type-consolidation-native/codex/swift-type-workflow-recovery-combined/reviewed-evidence.json",
+          "sha256": "b9010ca2caa92063ecd89c2a263d991e98cd4d2eb45073684f914d5603ee5d53"
+        }
+      }
+    },
+    {
+      "case_id": "swift-type-generic-correlation-combined",
+      "runtime": "codex",
+      "model": {
+        "effort": "high",
+        "name": "gpt-6.1-sol"
+      },
+      "overall_status": "accepted",
+      "deterministic_status": "passed",
+      "source_and_snapshot_match": true,
+      "criteria": [
+        {
+          "id": "behavior",
+          "status": "pass",
+          "reason": "Uses separate recursive TextExpr and BoolExpr families with typed evaluators, rejects a Boolean text literal and nested mismatches, and reserves equality witnesses for a materially needed uniform indexed expression. Audits casts, adapters and decoding; separates semantics, optimizer preservation and runtime limits; proposes concrete evaluator outcomes and same-settings compiler controls.",
+          "evidence": [
+            "codex.response.md:1: Use **a separate recursive enum for each result kind**. For a small, closed language, this connects payloads, operands, and evaluation results with ordinary Swift types. Swift supports recursive enums through `indirect`. ([Swift language guide](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/enumerations/))",
+            "codex.response.md:48: TextExpr.literal(true) // Rejected: requires String.",
+            "codex.response.md:53: This is the lightest model I\u2019d start with. A uniform `Expr<Output>` carrying restricted type-equality witnesses becomes worthwhile if generic algorithms require one indexed expression representation. It adds machinery that separate enums avoid.",
+            "codex.response.md:58: - **Evaluator semantics:** concatenating `\"a\"` and `\"b\"` produces `\"ab\"`; comparing that expression with `\"ab\"` produces `true`; `choose(false, \"yes\", \"no\")` produces `\"no\"`. Types cannot establish those meanings."
+          ]
+        },
+        {
+          "id": "scope",
+          "status": "pass",
+          "reason": "The write-capable assessment remains a design recommendation; the captured workspace is unchanged and the completed trace contains no source mutation.",
+          "evidence": [
+            "evidence.json scope_assessment.changes is empty; captured and live workspace bindings are retained.",
+            "raw-outcome.json tools.write_capable is true; completed tool transcript contains only skill/reference reads, file searches, directory listings and, where reported, swift --version."
+          ]
+        },
+        {
+          "id": "evidence_honesty",
+          "status": "pass",
+          "reason": "The response distinguishes supplied problems and uncompiled design sketches from inspected source and observed environment. Proposed compiler and runtime checks are explicitly unrun; the completed trace contains no compilation or runtime-test execution. Environment claims are limited to the observations present in the trace.",
+          "evidence": [
+            "codex.response.md:55: What remains to test\u2014all **pending**:",
+            "codex.response.md:62: The workspace is empty, so this is an uncompiled design sketch; compiler, SDK, and project settings are unknown. No files were changed or tests run. The guarantee is limited to ordinary typed construction through the proposed cases; casts, adapters, and future decoding paths need separate assessment.",
+            "codex.response.md:62: The workspace is empty, so this is an uncompiled design sketch; compiler, SDK, and project settings are unknown. No files were changed or tests run. The guarantee is limited to ordinary typed construction through the proposed cases; casts, adapters, and future decoding paths need separate assessment."
+          ]
+        }
+      ],
+      "composition": {
+        "status": "pass",
+        "reason": "Both required skill bodies and the relevant applied reference were successfully delivered from the reviewed local plugin snapshot, rather than merely registered or launched. The response applies the focused proof obligations; feature-sensitive static-dimension recommendations also consult recorded feature status.",
+        "evidence": [
+          "codex.stdout:7: completed command item_2, exit 0, retained output 34463 characters: /bin/zsh -lc 'cat /private/var/folders/5f/brg0gp5d1bbbrq122wfpvs340000gn/T/invariant-behavior-runtime-zooo2gqr/codex-home/plugins/cache/making-good-software/apple-platform/2.0.0/skills/modeling-swift-types-for-correctness/SKILL.md; cat /private/var/folders/5f/brg0gp5d1bbbrq122wfpvs340000gn/T/invariant-behavior-runtime-zooo2gqr/codex-home/plugins/cache/making-good-software/universal/1.7.1/skills/verifying-invariants/SKILL.md'",
+          "codex.stdout:7: completed command item_2, exit 0, retained output 34463 characters: /bin/zsh -lc 'cat /private/var/folders/5f/brg0gp5d1bbbrq122wfpvs340000gn/T/invariant-behavior-runtime-zooo2gqr/codex-home/plugins/cache/making-good-software/apple-platform/2.0.0/skills/modeling-swift-types-for-correctness/SKILL.md; cat /private/var/folders/5f/brg0gp5d1bbbrq122wfpvs340000gn/T/invariant-behavior-runtime-zooo2gqr/codex-home/plugins/cache/making-good-software/universal/1.7.1/skills/verifying-invariants/SKILL.md'",
+          "codex.stdout:10: completed command item_3, exit 0, retained output 28205 characters: /bin/zsh -lc 'cat /private/var/folders/5f/brg0gp5d1bbbrq122wfpvs340000gn/T/invariant-behavior-runtime-zooo2gqr/codex-home/plugins/cache/making-good-software/apple-platform/2.0.0/skills/modeling-swift-types-for-correctness/references/generic-proof-recipes.md'",
+          "evidence.json plugin_snapshot.fresh is true and expected/actual snapshot hashes match."
+        ]
+      },
+      "evidence_verification": "valid",
+      "artifacts": {
+        "launch.json": {
+          "path": "/tmp/swift-type-consolidation-native/codex/swift-type-generic-correlation-combined/launch.json",
+          "sha256": "7e0e4cf5e112c7a74ef4b0be7e4c8200f441d33ce30c172aa4a7d6fbbc0db244"
+        },
+        "raw-outcome.json": {
+          "path": "/tmp/swift-type-consolidation-native/codex/swift-type-generic-correlation-combined/raw-outcome.json",
+          "sha256": "ce9e192ea17952389e2b38a3f2a0294add3277cc4539f9befa2dffa871e6f374"
+        },
+        "evidence.json": {
+          "path": "/tmp/swift-type-consolidation-native/codex/swift-type-generic-correlation-combined/evidence.json",
+          "sha256": "24eb931e85dada015fbd6250121b0a1762ca2fdb90718134efd9015cbe272946"
+        },
+        "semantic-review.json": {
+          "path": "/tmp/swift-type-consolidation-native/codex/swift-type-generic-correlation-combined/semantic-review.json",
+          "sha256": "79bf349bdc6f5248a1cde64a7dc737d578f53ff1f3a53f7d911a935ce8a930bf"
+        },
+        "reviewed-evidence.json": {
+          "path": "/tmp/swift-type-consolidation-native/codex/swift-type-generic-correlation-combined/reviewed-evidence.json",
+          "sha256": "c050a5d75294b2dd60bbe17dd9baf20f1bc3698c99958d7ad4231cd39e6d3318"
+        }
+      }
+    },
+    {
+      "case_id": "swift-type-static-dimensions-combined",
+      "runtime": "codex",
+      "model": {
+        "effort": "high",
+        "name": "gpt-6.1-sol"
+      },
+      "overall_status": "accepted",
+      "deterministic_status": "passed",
+      "source_and_snapshot_match": true,
+      "criteria": [
+        {
+          "id": "behavior",
+          "status": "pass",
+          "reason": "Selects static API-known dimensions and separately checked runtime dimensions with a proportional dimension-tag alternative. Identifies inner-dimension mismatch, guards construction, decoded data and conversion before kernel access, and distinguishes shape from numerics, dynamic bounds and layout. Proposes same-phase paired compiler controls, runtime construction/boundary tests and a concrete expected matrix product.",
+          "evidence": [
+            "codex.response.md:1: Use **a shape-typed API for known dimensions and a checked runtime API for file-loaded dimensions**, both feeding one private numerical routine. Define dimensions consistently as rows \u00d7 columns.",
+            "codex.response.md:15: The shared `k` makes `3\u00d74 * 5\u00d72` incompatible at the call site; `3\u00d74 * 4\u00d72` produces a `3\u00d72` result. Keep shape information through composition rather than erasing it early. For a small set of shapes where deployment constraints prevent this representation, module-owned dimension tags can express the same relationship.",
+            "codex.response.md:15: The shared `k` makes `3\u00d74 * 5\u00d72` incompatible at the call site; `3\u00d74 * 4\u00d72` produces a `3\u00d72` result. Keep shape information through composition rather than erasing it early. For a small set of shapes where deployment constraints prevent this representation, module-owned dimension tags can express the same relationship.",
+            "codex.response.md:28: | Compatible static control compiles | Compile `3\u00d74 * 4\u00d72`, assigning the result to `Transform<3,2>`, using the same compiler phase and shared flags. A broken control, unrelated diagnostic, crash, or timeout invalidates the negative evidence. |",
+            "codex.response.md:32: | Numerical and memory contracts hold | Separately test results, layout/strides, and bounds. Row-major `[[1,2,3,4],[5,6,7,8],[9,10,11,12]] * [[1,2],[3,4],[5,6],[7,8]]` should yield `[[50,60],[114,140],[178,220]]`. Check indexes `-1` and the dimension limit; inspect kernel loop bounds. |",
+            "codex.response.md:32: | Numerical and memory contracts hold | Separately test results, layout/strides, and bounds. Row-major `[[1,2,3,4],[5,6,7,8],[9,10,11,12]] * [[1,2],[3,4],[5,6],[7,8]]` should yield `[[50,60],[114,140],[178,220]]`. Check indexes `-1` and the dimension limit; inspect kernel loop bounds. |"
+          ]
+        },
+        {
+          "id": "scope",
+          "status": "pass",
+          "reason": "The write-capable assessment remains read-only, with no changes to the empty workspace or source mutations in the completed trace.",
+          "evidence": [
+            "evidence.json scope_assessment.changes is empty; raw-outcome.json tools.write_capable is true.",
+            "The complete tool transcript contains skill/reference loads, searches, listings and any reported swift --version observation; no source-edit command."
+          ]
+        },
+        {
+          "id": "evidence_honesty",
+          "status": "pass",
+          "reason": "The response identifies an unavailable implementation and separates recommendations and proposed checks from observations. No compilation or runtime tests appear in the completed trace, consistent with the explicit pending/unrun descriptions. Any reported compiler version is supported by a completed version query.",
+          "evidence": [
+            "codex.response.md:23: The verification plan should distinguish compiler enforcement from runtime checks. **All checks below are proposed and unrun.**",
+            "codex.response.md:36: No files were edited. The available compiler reports Swift 6.4; the workspace contains no implementation, so project language mode, SDK, deployment settings, and existing bypass paths remain unassessed.",
+            "codex.response.md:36: No files were edited. The available compiler reports Swift 6.4; the workspace contains no implementation, so project language mode, SDK, deployment settings, and existing bypass paths remain unassessed."
+          ]
+        }
+      ],
+      "composition": {
+        "status": "pass",
+        "reason": "Both required local skill bodies and the focused applied reference were successfully delivered from the reviewed snapshot. Static-dimension feature-sensitive syntax is also grounded in successfully loaded feature-status content. These are completed reads, not launch/registry signals.",
+        "evidence": [
+          "codex.stdout:7: completed item_1, exit 0, retained 14029 output characters; /bin/zsh -lc \"cat '/private/var/folders/5f/brg0gp5d1bbbrq122wfpvs340000gn/T/invariant-behavior-runtime-e8525xzo/codex-home/plugins/cache/making-good-software/universal/1.7.1/skills/verifying-invariants/SKILL.md'\"",
+          "codex.stdout:8: completed item_2, exit 0, retained 20434 output characters; /bin/zsh -lc \"cat '/private/var/folders/5f/brg0gp5d1bbbrq122wfpvs340000gn/T/invariant-behavior-runtime-e8525xzo/codex-home/plugins/cache/making-good-software/apple-platform/2.0.0/skills/modeling-swift-types-for-correctness/SKILL.md'\"",
+          "codex.stdout:17: completed item_7, exit 0, retained 28205 output characters; /bin/zsh -lc \"cat '/private/var/folders/5f/brg0gp5d1bbbrq122wfpvs340000gn/T/invariant-behavior-runtime-e8525xzo/codex-home/plugins/cache/making-good-software/apple-platform/2.0.0/skills/modeling-swift-types-for-correctness/references/generic-proof-recipes.md'\"",
+          "codex.stdout:30: completed item_14, exit 0, retained 28029 output characters; /bin/zsh -lc \"rg -n '\"'^(#|.*[Dd]ecod|.*[Kk]eyed|.*[Ss]tatic dimension|.*[Ii]nteger generic)'\"' '/private/var/folders/5f/brg0gp5d1bbbrq122wfpvs340000gn/T/invariant-behavior-runtime-e8525xzo/codex-home/plugins/cache/making-good-software/apple-platform/2.0.0/skills/modeling-swift-types-for-correctness/references/algebraic-and-refined-values.md' '/private/var/folders/5f/brg0gp5d1bbbrq122wfpvs340000gn/T/invariant-behavior-runtime-e8525xzo/codex-home/plugins/cache/making-good-software/apple-platform/2.0.0/skills/modeling-swift-types-for-correctness/references/swift-feature-status.md'\"",
+          "codex.stdout:34: completed item_16, exit 0, retained 9381 output characters; /bin/zsh -lc \"sed -n '420,535p' '/private/var/folders/5f/brg0gp5d1bbbrq122wfpvs340000gn/T/invariant-behavior-runtime-e8525xzo/codex-home/plugins/cache/making-good-software/apple-platform/2.0.0/skills/modeling-swift-types-for-correctness/references/algebraic-and-refined-values.md'\nsed -n '108,123p' '/private/var/folders/5f/brg0gp5d1bbbrq122wfpvs340000gn/T/invariant-behavior-runtime-e8525xzo/codex-home/plugins/cache/making-good-software/apple-platform/2.0.0/skills/modeling-swift-types-for-correctness/references/swift-feature-status.md'\nsed -n '1,100p' '/private/var/folders/5f/brg0gp5d1bbbrq122wfpvs340000gn/T/invariant-behavior-runtime-e8525xzo/codex-home/plugins/cache/making-good-software/apple-platform/2.0.0/skills/modeling-swift-types-for-correctness/references/advanced-generics-and-protocols.md'\"",
+          "evidence.json plugin_snapshot.fresh is true; actual and expected snapshot hashes match."
+        ]
+      },
+      "evidence_verification": "valid",
+      "artifacts": {
+        "launch.json": {
+          "path": "/tmp/swift-type-consolidation-native/codex/swift-type-static-dimensions-combined/launch.json",
+          "sha256": "ceba5ae7fa37f0622a7759a919738d408d6e72ed2f8c5818644e6b46f95cd080"
+        },
+        "raw-outcome.json": {
+          "path": "/tmp/swift-type-consolidation-native/codex/swift-type-static-dimensions-combined/raw-outcome.json",
+          "sha256": "dcc3914d43a4199b5be121aad12d4630b6f53ff656e0dfd1b36cf71cad72fe82"
+        },
+        "evidence.json": {
+          "path": "/tmp/swift-type-consolidation-native/codex/swift-type-static-dimensions-combined/evidence.json",
+          "sha256": "bca6b7e60d2796c8499bd9c439f17d752641ffdac490803293bd4a078d5f0768"
+        },
+        "semantic-review.json": {
+          "path": "/tmp/swift-type-consolidation-native/codex/swift-type-static-dimensions-combined/semantic-review.json",
+          "sha256": "9f25dd36f2ccccd113a1c4478d78a2991ff80d87b7d973a883b44e7931e9ad9a"
+        },
+        "reviewed-evidence.json": {
+          "path": "/tmp/swift-type-consolidation-native/codex/swift-type-static-dimensions-combined/reviewed-evidence.json",
+          "sha256": "42e45cf122e337189ddd61077bc4a03f2fd3ffda4c0637033bc77e7dc3409497"
+        }
+      }
+    },
+    {
+      "case_id": "swift-type-ownership-lifetime-combined",
+      "runtime": "codex",
+      "model": {
+        "effort": "high",
+        "name": "gpt-6.1-sol"
+      },
+      "overall_status": "accepted",
+      "deterministic_status": "passed",
+      "source_and_snapshot_match": true,
+      "criteria": [
+        {
+          "id": "behavior",
+          "status": "pass",
+          "reason": "Uses a scoped nonescapable Span and an explicit owned copy for retention, identifies storing/returning/capturing the view as misuse, and limits decoder noncopyability to authority duplication. Audits live initialized stable storage, reuse/destruction, aliases, extraction, lifetime dependencies and reentry. Proposes paired emit-module controls separately from runtime copy, reuse/destruction, reentry and unwind checks.",
+          "evidence": [
+            "codex.response.md:1: Assuming Swift, **put the restriction on the borrowed view at the callback boundary.** Making the decoder noncopyable addresses a separate concern.",
+            "codex.response.md:5: For work after callback return, require an explicit **owned copy made during the callback**. A zero-copy retained buffer would need a separate ownership or lease contract preventing decoder reuse until release\u2014a larger change.",
+            "codex.response.md:9: - The adapter must keep storage alive, initialized, and stable throughout the callback. Inspect buffer reuse, reset, destruction, foreign aliases, and callback reentry.",
+            "codex.response.md:11: - Unsafe pointer extraction can bypass the view restriction. A generation check protects only accesses through its checked wrapper.",
+            "codex.response.md:21: | Store or return the borrowed view; capture it for later execution | Rejected for the intended lifetime restriction |",
+            "codex.response.md:26: Pair compiler failures with valid controls using the real module, identical settings, and an ownership-checking phase such as emit-module."
+          ]
+        },
+        {
+          "id": "scope",
+          "status": "pass",
+          "reason": "The write-capable assessment remains read-only, with no changes to the empty workspace or source mutations in the completed trace.",
+          "evidence": [
+            "evidence.json scope_assessment.changes is empty; raw-outcome.json tools.write_capable is true.",
+            "The complete tool transcript contains skill/reference loads, searches, listings and any reported swift --version observation; no source-edit command."
+          ]
+        },
+        {
+          "id": "evidence_honesty",
+          "status": "pass",
+          "reason": "The response identifies an unavailable implementation and separates recommendations and proposed checks from observations. No compilation or runtime tests appear in the completed trace, consistent with the explicit pending/unrun descriptions. Any reported compiler version is supported by a completed version query.",
+          "evidence": [
+            "codex.response.md:16: Before accepting the boundary, I would require these **proposed checks**:",
+            "codex.response.md:28: This remained read-only. The workspace contains no implementation, so these are design recommendations, not source-level findings. I observed Apple Swift 6.4 locally; project settings, SDK/deployment compatibility, and the proposed checks remain unverified.",
+            "codex.response.md:28: This remained read-only. The workspace contains no implementation, so these are design recommendations, not source-level findings. I observed Apple Swift 6.4 locally; project settings, SDK/deployment compatibility, and the proposed checks remain unverified."
+          ]
+        }
+      ],
+      "composition": {
+        "status": "pass",
+        "reason": "Both required local skill bodies and the focused applied reference were successfully delivered from the reviewed snapshot. Static-dimension feature-sensitive syntax is also grounded in successfully loaded feature-status content. These are completed reads, not launch/registry signals.",
+        "evidence": [
+          "codex.stdout:7: completed item_2, exit 0, retained 14029 output characters; /bin/zsh -lc 'cat /private/var/folders/5f/brg0gp5d1bbbrq122wfpvs340000gn/T/invariant-behavior-runtime-j79cnu1s/codex-home/plugins/cache/making-good-software/universal/1.7.1/skills/verifying-invariants/SKILL.md'",
+          "codex.stdout:13: completed item_5, exit 0, retained 20434 output characters; /bin/zsh -lc 'cat /private/var/folders/5f/brg0gp5d1bbbrq122wfpvs340000gn/T/invariant-behavior-runtime-j79cnu1s/codex-home/plugins/cache/making-good-software/apple-platform/2.0.0/skills/modeling-swift-types-for-correctness/SKILL.md'",
+          "codex.stdout:17: completed item_8, exit 0, retained 30780 output characters; /bin/zsh -lc 'cat /private/var/folders/5f/brg0gp5d1bbbrq122wfpvs340000gn/T/invariant-behavior-runtime-j79cnu1s/codex-home/plugins/cache/making-good-software/apple-platform/2.0.0/skills/modeling-swift-types-for-correctness/references/swift-feature-status.md'",
+          "codex.stdout:18: completed item_7, exit 0, retained 22145 output characters; /bin/zsh -lc 'cat /private/var/folders/5f/brg0gp5d1bbbrq122wfpvs340000gn/T/invariant-behavior-runtime-j79cnu1s/codex-home/plugins/cache/making-good-software/apple-platform/2.0.0/skills/modeling-swift-types-for-correctness/references/ownership-effect-recipes.md'",
+          "codex.stdout:22: completed item_10, exit 0, retained 11441 output characters; /bin/zsh -lc \"sed -n '1,122p' /private/var/folders/5f/brg0gp5d1bbbrq122wfpvs340000gn/T/invariant-behavior-runtime-j79cnu1s/codex-home/plugins/cache/making-good-software/apple-platform/2.0.0/skills/modeling-swift-types-for-correctness/references/swift-feature-status.md\"",
+          "evidence.json plugin_snapshot.fresh is true; actual and expected snapshot hashes match."
+        ]
+      },
+      "evidence_verification": "valid",
+      "artifacts": {
+        "launch.json": {
+          "path": "/tmp/swift-type-consolidation-native/codex/swift-type-ownership-lifetime-combined/launch.json",
+          "sha256": "f2c13ac4680fb2d387feb015653fa5ac586033de3bb03df52076cc8a77a71f2c"
+        },
+        "raw-outcome.json": {
+          "path": "/tmp/swift-type-consolidation-native/codex/swift-type-ownership-lifetime-combined/raw-outcome.json",
+          "sha256": "9ce1cc9bc910afda4ca6c06349d8061cfa25ecea264fa44ed6d6efe7a47f9d68"
+        },
+        "evidence.json": {
+          "path": "/tmp/swift-type-consolidation-native/codex/swift-type-ownership-lifetime-combined/evidence.json",
+          "sha256": "44f57088f59566b0f7e1e45513807ecaac2af91ee32053748e23a2d3cdcffd95"
+        },
+        "semantic-review.json": {
+          "path": "/tmp/swift-type-consolidation-native/codex/swift-type-ownership-lifetime-combined/semantic-review.json",
+          "sha256": "3c11d1a3446d7fb9193d0801a61138b71596ed36c76d9633f3bd676610f3e55d"
+        },
+        "reviewed-evidence.json": {
+          "path": "/tmp/swift-type-consolidation-native/codex/swift-type-ownership-lifetime-combined/reviewed-evidence.json",
+          "sha256": "17e89e4a2154f323eb2e9cd974e61662b80e897122c2758a4cb1e154e20b7555"
+        }
+      }
+    },
+    {
+      "case_id": "swift-type-typed-errors-concurrency-combined",
+      "runtime": "codex",
+      "model": {
+        "effort": "high",
+        "name": "gpt-6.1-sol"
+      },
+      "overall_status": "failed",
+      "deterministic_status": "passed",
+      "source_and_snapshot_match": true,
+      "criteria": [
+        {
+          "id": "behavior",
+          "status": "fail",
+          "reason": "The response preserves the closed import failure family in a Task<Result<...>, Never>, explicitly propagates cancellation through the core and owning handle, bounds provenance/completion guarantees, and proposes valid/misuse/cancellation controls. However, it omits the frozen rubric's required concrete loss-of-precision counterexample. General advice to avoid relying on inference is not a concrete case of an import/parse failure being erased across the task boundary. The unrelated-error rejection probe tests a different property. This is a behavioral omission, not a dishonest execution claim or a composition failure.",
+          "evidence": [
+            "codex.response.md:1-26 gives the correct typed Result adapter with explicit do throws(ImportOperationFailure), but no example of an existing failure losing its type.",
+            "codex.response.md:28-40 accounts for dependency cancellation, task ownership/observation, guarantee limits, and pending checks; none supplies the missing precision-loss example.",
+            "codex.stdout:3,8,23,30 contains all root response commentary/final text; the required counterexample is absent there too.",
+            "codex.stdout:27 probes a valid adapter/exhaustive caller and an unrelated thrown error; both fail before checking source because the module cache is inaccessible."
+          ]
+        },
+        {
+          "id": "scope",
+          "status": "pass",
+          "reason": "The write-capable read-only assessment leaves the project unchanged. All completed tool calls were inspected; no project mutation occurred.",
+          "evidence": [
+            "evidence.json: tree_diff=[]; scope_assessment.changes=[]; workspace_result.files={}; raw_outcome.tools.write_capable=true.",
+            "codex.stdout: completed tool trace contains no project mutation; response scope claims match the trace."
+          ]
+        },
+        {
+          "id": "evidence_honesty",
+          "status": "pass",
+          "reason": "The final response reports both Swift 6.4 probes as blocked by module-cache sandbox access and keeps adoption checks pending. The complete trace confirms both xcrun swiftc invocations exit 1 on module-cache/standard-library loading, not intended typed-error diagnostics. No acceptance or intended rejection is invented.",
+          "evidence": [
+            "codex.stdout:13 successfully records Apple Swift 6.4 and arm64-apple-macosx26.0 target.",
+            "codex.stdout:27 has both source probes, both exit 1 for Operation not permitted on the standard module cache and inability to load the standard library.",
+            "codex.response.md:40 explicitly reports those blocked probes and pending controls; no project files edited."
+          ]
+        }
+      ],
+      "composition": {
+        "status": "pass",
+        "reason": "Both required skills have actual successful local-snapshot body loads, and the focused typed-error recipe was successfully read and applied. The behavior verdict is independent.",
+        "evidence": [
+          "codex.stdout:7 successfully cats modeling-swift-types-for-correctness and concurrency/API skills from the reviewed local snapshot.",
+          "codex.stdout:11 successfully cats verifying-invariants plus the complete ownership-effect-recipes.md.",
+          "codex.stdout:16 returns the exact Effects section with explicit typed do, cancellation translation, and evidence guidance; its final combined command exits 1 only because the trailing workspace rg finds no files, so the returned focused guidance itself loaded successfully.",
+          "evidence.json: plugin_snapshot.fresh=true and actual hash matches approved 79ff584615f0ceb44246765b6130a78baceec9f30d783a400ea92c881c52022a."
+        ]
+      },
+      "evidence_verification": "valid",
+      "artifacts": {
+        "launch.json": {
+          "path": "/tmp/swift-type-consolidation-native/codex/swift-type-typed-errors-concurrency-combined/launch.json",
+          "sha256": "48818a96b614a3f36cdbe5ac976c9d96222be1a6af1120d2d6986db9d1c2d203"
+        },
+        "raw-outcome.json": {
+          "path": "/tmp/swift-type-consolidation-native/codex/swift-type-typed-errors-concurrency-combined/raw-outcome.json",
+          "sha256": "21d5df021dc3c44a078ad00f2e21938586abd8f0eb7961dcbfc52b2f28a291cb"
+        },
+        "evidence.json": {
+          "path": "/tmp/swift-type-consolidation-native/codex/swift-type-typed-errors-concurrency-combined/evidence.json",
+          "sha256": "03ddf0ea8c32eb4d2e6f68f75232a2f4a96ea5320c352dbc1924de78b2636f0a"
+        },
+        "semantic-review.json": {
+          "path": "/tmp/swift-type-consolidation-native/codex/swift-type-typed-errors-concurrency-combined/semantic-review.json",
+          "sha256": "94105cec10dd5a973df28fa71e630011f7c448db01149414c48583a31f17c91b"
+        },
+        "reviewed-evidence.json": {
+          "path": "/tmp/swift-type-consolidation-native/codex/swift-type-typed-errors-concurrency-combined/reviewed-evidence.json",
+          "sha256": "9710cd9393edb47f0e68c6fd9cbabfb163b89532e72b16c8858778f237e2d6f3"
+        }
+      }
+    },
+    {
+      "case_id": "swift-type-decoding-main-combined",
+      "runtime": "claude",
+      "model": {
+        "effort": "high",
+        "name": "claude-sonnet-5-5"
+      },
+      "overall_status": "accepted",
+      "deterministic_status": "passed",
+      "source_and_snapshot_match": true,
+      "criteria": [
+        {
+          "id": "behavior",
+          "status": "pass",
+          "reason": "The response diagnoses synthesized decoding and gives the concrete keyed invalid payload. Its proposed custom decoder preserves percent-keyed encoding and calls the same failable initializer. It separates historical fixed payloads, predicate-reaching invalid bounds, and current round trips, and limits the conclusion to inspected paths.",
+          "evidence": [
+            "claude.response.md:1-35 identifies bypass/re-encoding and proposes a keyed Int decoder with guard let DiscountRule(raw), self assignment, and range-specific dataCorrupted.",
+            "claude.response.md:43-58 records all three controls pending and distinguishes predicate failures, real-file compatibility, other routes, and unknown settings.",
+            "claude.stdout:21-22 successfully Read the complete focused Codable/refined-types section."
+          ]
+        },
+        {
+          "id": "scope",
+          "status": "pass",
+          "reason": "The write-capable assessment leaves the project unchanged; the complete tool trace contains no project mutation.",
+          "evidence": [
+            "claude.stdout: completed tool trace contains only the recorded read-only inspections.",
+            "evidence.json: tree_diff=[]; scope_assessment.changes=[]; workspace_result.files={}; raw_outcome.tools.write_capable=true."
+          ]
+        },
+        {
+          "id": "evidence_honesty",
+          "status": "pass",
+          "reason": "The response explicitly calls the repair uncompiled and every test pending. The completed trace contains only skill loads, Grep, Glob, and Read, consistent with no tests or edits. The initial no-match search is not treated as a successful focused load; the subsequent Read establishes it.",
+          "evidence": [
+            "claude.response.md:1-35 identifies bypass/re-encoding and proposes a keyed Int decoder with guard let DiscountRule(raw), self assignment, and range-specific dataCorrupted.",
+            "claude.response.md:43-58 records all three controls pending and distinguishes predicate failures, real-file compatibility, other routes, and unknown settings.",
+            "claude.stdout: completed trace reviewed against the entire response; no compiler/test success inferred from process exit."
+          ]
+        }
+      ],
+      "composition": {
+        "status": "pass",
+        "reason": "Required skill bodies and the frozen rubric's focused reference were successfully loaded from the reviewed local snapshot, and their advice is applied.",
+        "evidence": [
+          "claude.stdout:5-10 contains successful Skill results and the actual synthetic bodies, with base directories inside this run's marketplace-snapshot, for modeling and verifying-invariants.",
+          "claude.stdout:21-22 successfully returns algebraic-and-refined-values.md:440-497; the decoder proposal applies its keyed-contract guidance.",
+          "evidence.json: plugin_snapshot.fresh=true and actual hash equals expected 79ff584615f0ceb44246765b6130a78baceec9f30d783a400ea92c881c52022a."
+        ]
+      },
+      "evidence_verification": "valid",
+      "artifacts": {
+        "launch.json": {
+          "path": "/tmp/swift-type-consolidation-native/claude/swift-type-decoding-main-combined/launch.json",
+          "sha256": "01807d5b944def9a9a2e92d7f81f9f19c84805f8685eb01c15ac68fa826610ca"
+        },
+        "raw-outcome.json": {
+          "path": "/tmp/swift-type-consolidation-native/claude/swift-type-decoding-main-combined/raw-outcome.json",
+          "sha256": "062608d6062ce4a69694263567eb1a6ecce47506e26707b61d8804c1b6d58bf4"
+        },
+        "evidence.json": {
+          "path": "/tmp/swift-type-consolidation-native/claude/swift-type-decoding-main-combined/evidence.json",
+          "sha256": "b435f47604eb846525f1ce7feb3ecd4396295de38a0d0681651ea1dcc117b990"
+        },
+        "semantic-review.json": {
+          "path": "/tmp/swift-type-consolidation-native/claude/swift-type-decoding-main-combined/semantic-review.json",
+          "sha256": "c41d3a4f1d61e3a466782e1dfd766134a1f1e995de4024c33f6abb61ab0d37a6"
+        },
+        "reviewed-evidence.json": {
+          "path": "/tmp/swift-type-consolidation-native/claude/swift-type-decoding-main-combined/reviewed-evidence.json",
+          "sha256": "c16e4d38846e63bec2a7b92444643d0da361f8565bdd312589604d75ca17be19"
+        }
+      }
+    },
+    {
+      "case_id": "swift-type-workflow-recovery-combined",
+      "runtime": "claude",
+      "model": {
+        "effort": "high",
+        "name": "claude-sonnet-5-5"
+      },
+      "overall_status": "accepted",
+      "deterministic_status": "passed",
+      "source_and_snapshot_match": true,
+      "criteria": [
+        {
+          "id": "behavior",
+          "status": "pass",
+          "reason": "The concrete noncopyable draft and pending phases return placed(OrderReceipt), needsCorrection with the still-usable draft, or an indeterminate submission. It explicitly distinguishes local reuse prevention, recovery availability, server idempotency, eventual completion, and crash recovery, with valid recovery, paired misuse, and cancellation scenarios.",
+          "evidence": [
+            "claude.response.md:5-56 defines draft correction, consuming submission, receipt, returned draft, pending reconciliation, and identity policy.",
+            "claude.response.md:62-81 explains double-use rejection, recoverable draft return, limits of the shape/service classification, abandonment and crash recovery, then gives concrete pending controls.",
+            "claude.stdout:21-22 successfully returns domain-modeling-recipes.md:90-169, including the complete workflow/recovery section."
+          ]
+        },
+        {
+          "id": "scope",
+          "status": "pass",
+          "reason": "The write-capable assessment leaves the project unchanged; the complete tool trace contains no project mutation.",
+          "evidence": [
+            "claude.stdout: completed tool trace contains only the recorded read-only inspections.",
+            "evidence.json: tree_diff=[]; scope_assessment.changes=[]; workspace_result.files={}; raw_outcome.tools.write_capable=true."
+          ]
+        },
+        {
+          "id": "evidence_honesty",
+          "status": "pass",
+          "reason": "The response explicitly marks the design uncompiled and its entire evidence plan pending. The completed trace has only Skill/Grep/Read operations and no test execution. Source absence and read-only scope claims match the retained search and empty diff.",
+          "evidence": [
+            "claude.response.md:5-56 defines draft correction, consuming submission, receipt, returned draft, pending reconciliation, and identity policy.",
+            "claude.response.md:62-81 explains double-use rejection, recoverable draft return, limits of the shape/service classification, abandonment and crash recovery, then gives concrete pending controls.",
+            "claude.stdout: completed trace reviewed against the entire response; no compiler/test success inferred from process exit."
+          ]
+        }
+      ],
+      "composition": {
+        "status": "pass",
+        "reason": "Required skill bodies and the frozen rubric's focused reference were successfully loaded from the reviewed local snapshot, and their advice is applied.",
+        "evidence": [
+          "claude.stdout:5-10 shows successful Skill results and actual local marketplace-snapshot bodies for modeling and verifying-invariants.",
+          "claude.stdout:21-22 successfully loads the workflow recipe and grounds the return-draft and terminal-receipt design in it.",
+          "evidence.json: plugin_snapshot.fresh=true and actual hash equals expected 79ff584615f0ceb44246765b6130a78baceec9f30d783a400ea92c881c52022a."
+        ]
+      },
+      "evidence_verification": "valid",
+      "artifacts": {
+        "launch.json": {
+          "path": "/tmp/swift-type-consolidation-native/claude/swift-type-workflow-recovery-combined/launch.json",
+          "sha256": "52c3722de6749568c728518ff6ca0aa5b867a59d6715ce84b95069afb7203945"
+        },
+        "raw-outcome.json": {
+          "path": "/tmp/swift-type-consolidation-native/claude/swift-type-workflow-recovery-combined/raw-outcome.json",
+          "sha256": "93aef488cf3ba468a8eabfbbbae9c3a710a4a4aa35a59c3d0f40b2300a770408"
+        },
+        "evidence.json": {
+          "path": "/tmp/swift-type-consolidation-native/claude/swift-type-workflow-recovery-combined/evidence.json",
+          "sha256": "c21f5e25e05931b15e27456d1eface557be428921447e885c0fb81a3fe8256a1"
+        },
+        "semantic-review.json": {
+          "path": "/tmp/swift-type-consolidation-native/claude/swift-type-workflow-recovery-combined/semantic-review.json",
+          "sha256": "0046375f8581e72f2f133cc0fa0de8f9613fbe54dd80fa8db8b37ec41e70bab2"
+        },
+        "reviewed-evidence.json": {
+          "path": "/tmp/swift-type-consolidation-native/claude/swift-type-workflow-recovery-combined/reviewed-evidence.json",
+          "sha256": "1971316859dfbc48398cd87193be232030e7c15ebf6fb0db3c71c1fd0a9f73a2"
+        }
+      }
+    },
+    {
+      "case_id": "swift-type-generic-correlation-combined",
+      "runtime": "claude",
+      "model": {
+        "effort": "high",
+        "name": "claude-sonnet-5-5"
+      },
+      "overall_status": "accepted",
+      "deterministic_status": "passed",
+      "source_and_snapshot_match": true,
+      "criteria": [
+        {
+          "id": "behavior",
+          "status": "pass",
+          "reason": "Chooses separate closed recursive result families and reserves a uniform equality-witness representation for genuinely result-generic clients. Gives wrong literal, operand, and conditional counterexamples; inventories erasure and unsafe construction; separates evaluator semantics and input validation from type relationships. Proposes same-flags compiler controls and a concrete evaluator result, with snapshot-limited conclusions.",
+          "evidence": [
+            "claude.response.md:3: **Recommendation:** drop the separate \"kind\" field. Make the kind come from the type of the expression, using one small closed enum per result kind.",
+            "claude.response.md:44: - With the families above, each of these fails to compile: `FlagExpr.literal(3)`, `NumberExpr.add(.literal(1), flagExpr)` and `NumberExpr.conditional(numberExpr, \u2026)`.",
+            "claude.response.md:52: - **Escape hatches:** any `Any` payload case, `as!`, `fatalError`, `unsafeBitCast` or public mutable storage would reopen the hole. Once there's code, search for these.",
+            "claude.response.md:61: 2. **Evaluation tests, pending.** For each family, check a concrete well-typed expression against its expected value. One example is `conditional(lessThan(1, 2), \"a\", \"b\")`, which should evaluate to `\"a\"`. A compiling control proves construction, not semantics.",
+            "claude.response.md:60: 1. **Compile-fail fixtures, pending.** Write three negative fixtures: a mismatched literal, a mismatched operand and mismatched conditional branches. Pair each with a valid control compiled with the same flags. This shows rejection only for the recorded toolchain and settings."
+          ]
+        },
+        {
+          "id": "scope",
+          "status": "pass",
+          "reason": "The write-capable assessment remains a design recommendation; the captured workspace is unchanged and the completed trace contains no source mutation.",
+          "evidence": [
+            "evidence.json scope_assessment.changes is empty; captured and live workspace bindings are retained.",
+            "raw-outcome.json tools.write_capable is true; completed tool transcript contains only skill/reference reads, file searches, directory listings and, where reported, swift --version."
+          ]
+        },
+        {
+          "id": "evidence_honesty",
+          "status": "pass",
+          "reason": "The response distinguishes supplied problems and uncompiled design sketches from inspected source and observed environment. Proposed compiler and runtime checks are explicitly unrun; the completed trace contains no compilation or runtime-test execution. Environment claims are limited to the observations present in the trace.",
+          "evidence": [
+            "claude.response.md:5: I couldn't inspect the current code, because the project directory is empty. The only things I observed are the toolchain (Swift 6.4, arm64 macOS 26) and the empty directory. Your description of the defect is supplied, not verified. The language mode, deployment target and Package settings are unknown. Everything below is a design sketch that I haven't compiled.",
+            "claude.response.md:58: None of these have been run. The project is empty, and you asked me to keep this read-only.",
+            "claude.response.md:5: I couldn't inspect the current code, because the project directory is empty. The only things I observed are the toolchain (Swift 6.4, arm64 macOS 26) and the empty directory. Your description of the defect is supplied, not verified. The language mode, deployment target and Package settings are unknown. Everything below is a design sketch that I haven't compiled."
+          ]
+        }
+      ],
+      "composition": {
+        "status": "pass",
+        "reason": "Both required skill bodies and the relevant applied reference were successfully delivered from the reviewed local plugin snapshot, rather than merely registered or launched. The response applies the focused proof obligations; feature-sensitive static-dimension recommendations also consult recorded feature status.",
+        "evidence": [
+          "claude.stdout:8: delivered complete local skill body (20297 characters), Base directory for this skill: /var/folders/5f/brg0gp5d1bbbrq122wfpvs340000gn/T/invariant-behavior-runtime-8291r_ud/marketplace-snapshot/plugins/apple-platform/skills/modeling-swift-types-for-correctness",
+          "claude.stdout:19: delivered complete local skill body (13881 characters), Base directory for this skill: /var/folders/5f/brg0gp5d1bbbrq122wfpvs340000gn/T/invariant-behavior-runtime-8291r_ud/marketplace-snapshot/plugins/universal/skills/verifying-invariants",
+          "claude.stdout:21: successful Read result for {\"file_path\": \"/private/var/folders/5f/brg0gp5d1bbbrq122wfpvs340000gn/T/invariant-behavior-runtime-8291r_ud/marketplace-snapshot/plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/generic-proof-recipes.md\"}; retained 29409 characters.",
+          "evidence.json plugin_snapshot.fresh is true and expected/actual snapshot hashes match."
+        ]
+      },
+      "evidence_verification": "valid",
+      "artifacts": {
+        "launch.json": {
+          "path": "/tmp/swift-type-consolidation-native/claude/swift-type-generic-correlation-combined/launch.json",
+          "sha256": "f2863e5a60e0fc71218670d6cbc64469ddc1444a8dd2cabb31bd8e91fa47749e"
+        },
+        "raw-outcome.json": {
+          "path": "/tmp/swift-type-consolidation-native/claude/swift-type-generic-correlation-combined/raw-outcome.json",
+          "sha256": "012cf3b2bcf283de0c971f731737064179e51985982b5b9e6529d2bb2b867b22"
+        },
+        "evidence.json": {
+          "path": "/tmp/swift-type-consolidation-native/claude/swift-type-generic-correlation-combined/evidence.json",
+          "sha256": "a69eef666c905913c1efb9a5745493c427785528d24a2c35e96267efde2c4a24"
+        },
+        "semantic-review.json": {
+          "path": "/tmp/swift-type-consolidation-native/claude/swift-type-generic-correlation-combined/semantic-review.json",
+          "sha256": "908a6fe081482f8bf43c7d6bb377358e1e0755d55fde60da9d9b5ccece955216"
+        },
+        "reviewed-evidence.json": {
+          "path": "/tmp/swift-type-consolidation-native/claude/swift-type-generic-correlation-combined/reviewed-evidence.json",
+          "sha256": "21bd213d955957ea040b11becb15ad1ce56fa370224ac2934fde9aa4bf78db12"
+        }
+      }
+    },
+    {
+      "case_id": "swift-type-static-dimensions-combined",
+      "runtime": "claude",
+      "model": {
+        "effort": "high",
+        "name": "claude-sonnet-5-5"
+      },
+      "overall_status": "accepted",
+      "deterministic_status": "passed",
+      "source_and_snapshot_match": true,
+      "criteria": [
+        {
+          "id": "behavior",
+          "status": "pass",
+          "reason": "Uses static dimensions for compile-time shapes and checked runtime construction for decoded dimensions. Gives 3x4 versus 5x2 misuse and validated dynamic-to-static conversion. Separates shape from numerical results, bounds and layout. Proposes same-phase/argument valid and misuse compiler controls, construction/decoding checks and a non-square known-product numerical test with explicit limits.",
+          "evidence": [
+            "claude.response.md:7: **1. Static shapes where dimensions are known at compile time.**",
+            "claude.response.md:19: - A 3\u00d74 times 5\u00d72 call then fails to compile at the call site.",
+            "claude.response.md:27: - `rows * columns` overflow,",
+            "claude.response.md:53: | Static misuse fixture is meaningful | Positive control 3\u00d74 \u00b7 4\u00d72, with the same compiler phase and arguments. | Rules out an unrelated failure |",
+            "claude.response.md:57: | Numerics | Non-square known-product test (for example 2\u00d73 \u00b7 3\u00d72), plus a check that static and dynamic paths agree. | Catches transposed or wrong-stride indexing, which shape checks can't |",
+            "claude.response.md:64: - **Not covered by either:** numerical correctness, in-kernel index bounds, memory layout, and integer-generic compile time or diagnostic quality in your build."
+          ]
+        },
+        {
+          "id": "scope",
+          "status": "pass",
+          "reason": "The write-capable assessment remains read-only, with no changes to the empty workspace or source mutations in the completed trace.",
+          "evidence": [
+            "evidence.json scope_assessment.changes is empty; raw-outcome.json tools.write_capable is true.",
+            "The complete tool transcript contains skill/reference loads, searches, listings and any reported swift --version observation; no source-edit command."
+          ]
+        },
+        {
+          "id": "evidence_honesty",
+          "status": "pass",
+          "reason": "The response identifies an unavailable implementation and separates recommendations and proposed checks from observations. No compilation or runtime tests appear in the completed trace, consistent with the explicit pending/unrun descriptions. Any reported compiler version is supported by a completed version query.",
+          "evidence": [
+            "claude.response.md:3: I couldn't inspect your kernel API. The project directory is empty and nothing in it mentions transforms or matrices. This is a design recommendation, and I haven't compiled or run any of the sketches below. The local toolchain is Swift 6.4. Your deployment target and language mode are unknown.",
+            "claude.response.md:48: None of these have been run. All are pending.",
+            "claude.response.md:3: I couldn't inspect your kernel API. The project directory is empty and nothing in it mentions transforms or matrices. This is a design recommendation, and I haven't compiled or run any of the sketches below. The local toolchain is Swift 6.4. Your deployment target and language mode are unknown."
+          ]
+        }
+      ],
+      "composition": {
+        "status": "pass",
+        "reason": "Both required local skill bodies and the focused applied reference were successfully delivered from the reviewed snapshot. Static-dimension feature-sensitive syntax is also grounded in successfully loaded feature-status content. These are completed reads, not launch/registry signals.",
+        "evidence": [
+          "claude.stdout:8: delivered complete local skill body (20297 characters), Base directory for this skill: /var/folders/5f/brg0gp5d1bbbrq122wfpvs340000gn/T/invariant-behavior-runtime-510mlmc7/marketplace-snapshot/plugins/apple-platform/skills/modeling-swift-types-for-correctness",
+          "claude.stdout:11: delivered complete local skill body (13881 characters), Base directory for this skill: /var/folders/5f/brg0gp5d1bbbrq122wfpvs340000gn/T/invariant-behavior-runtime-510mlmc7/marketplace-snapshot/plugins/universal/skills/verifying-invariants",
+          "claude.stdout:23: successful focused Read for {\"file_path\": \"/private/var/folders/5f/brg0gp5d1bbbrq122wfpvs340000gn/T/invariant-behavior-runtime-510mlmc7/marketplace-snapshot/plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/generic-proof-recipes.md\", \"offset\": 110, \"limit\": 90}, 8188 retained characters.",
+          "claude.stdout:29: successful Grep result for {\"pattern\": \"(?i)integer generic|let [A-Z]\\\\w*: Int|InlineArray|fixed-size\", \"path\": \"/private/var/folders/5f/brg0gp5d1bbbrq122wfpvs340000gn/T/invariant-behavior-runtime-510mlmc7/marketplace-snapshot/plugins/apple-platform/skills/modeling-swift-types-for-correctness/references\", \"glob\": \"{swift-feature-status,advanced-generics-and-protocols,ios-versioning}.md\", \"output_mode\": \"content\", \"-C\": 2}; retained 19944 output characters.",
+          "evidence.json plugin_snapshot.fresh is true; actual and expected snapshot hashes match."
+        ]
+      },
+      "evidence_verification": "valid",
+      "artifacts": {
+        "launch.json": {
+          "path": "/tmp/swift-type-consolidation-native/claude/swift-type-static-dimensions-combined/launch.json",
+          "sha256": "81c4e45f713fd8c788086e48ea2b1ef21dac4b7f7c8b2b4fc8e3584734e31691"
+        },
+        "raw-outcome.json": {
+          "path": "/tmp/swift-type-consolidation-native/claude/swift-type-static-dimensions-combined/raw-outcome.json",
+          "sha256": "5612a091610bb7fbbbea90738844641bdb07457dad325d218c55420e8d569099"
+        },
+        "evidence.json": {
+          "path": "/tmp/swift-type-consolidation-native/claude/swift-type-static-dimensions-combined/evidence.json",
+          "sha256": "8fcca29a33fe416ebd9ceddf7c0c2926e341739cfa99d70923b289998f198b60"
+        },
+        "semantic-review.json": {
+          "path": "/tmp/swift-type-consolidation-native/claude/swift-type-static-dimensions-combined/semantic-review.json",
+          "sha256": "26ffaf65e3c6d6fdd9b1640485b2f1ffa5c16b9d7d28a96aeb2bb06365c89780"
+        },
+        "reviewed-evidence.json": {
+          "path": "/tmp/swift-type-consolidation-native/claude/swift-type-static-dimensions-combined/reviewed-evidence.json",
+          "sha256": "c634eb311d1d7ca332c3a34df781868cb8017adfdaa500a46388d92011d08fa5"
+        }
+      }
+    },
+    {
+      "case_id": "swift-type-ownership-lifetime-combined",
+      "runtime": "claude",
+      "model": {
+        "effort": "high",
+        "name": "claude-sonnet-5-5"
+      },
+      "overall_status": "accepted",
+      "deterministic_status": "passed",
+      "source_and_snapshot_match": true,
+      "criteria": [
+        {
+          "id": "behavior",
+          "status": "pass",
+          "reason": "Selects a scoped nonescapable borrowed view with an owned-copy retention path. Restricts decoder noncopyability to independent authority duplication and rejects external storage/lifetime implications. Audits raw pointer extraction, foreign aliases, live/stable storage, callback reentry and wrapper-only generation guards. Separates paired ownership-phase escape controls from runtime copy/reuse and reentry checks.",
+          "evidence": [
+            "claude.response.md:9: - **Retaining the view.** The misuse is a use-after-lifetime. The decoder reuses or frees the buffer after the callback returns, so a retained view reads stale or freed bytes.",
+            "claude.response.md:12: So noncopyable is not the smallest fix for this misuse. Treat it as a separate decision, and only if copying the handle is itself a bug, such as double-release of a native decoder context. Noncopyability only guarantees at-most-once consumption inside Swift. It says nothing about external storage.",
+            "claude.response.md:24: 3. **Document the access interval.** The view is valid only during the callback, and the decoder must not mutate or free the buffer while it's lent.",
+            "claude.response.md:29: - A `Span` stops the view escaping within Swift. It doesn't protect a raw pointer extracted from it, a foreign alias, or a C buffer the decoder frees early. Those stay obligations of the adapter that hands out the view.",
+            "claude.response.md:37: - **Compile-fail fixture:** try to store or return the span from the callback. Build it with an emit-module pipeline under the same settings and arguments as the valid control, and require the specific diagnostic. This applies only if you adopt `Span`.",
+            "claude.response.md:38: - **Runtime test:** retain an owned copy, let the decoder reuse its buffer for the next frame, and assert the copy is unchanged. This is the real regression test for the misuse. It also covers the pointer-based fallback, where the compiler can't help."
+          ]
+        },
+        {
+          "id": "scope",
+          "status": "pass",
+          "reason": "The write-capable assessment remains read-only, with no changes to the empty workspace or source mutations in the completed trace.",
+          "evidence": [
+            "evidence.json scope_assessment.changes is empty; raw-outcome.json tools.write_capable is true.",
+            "The complete tool transcript contains skill/reference loads, searches, listings and any reported swift --version observation; no source-edit command."
+          ]
+        },
+        {
+          "id": "evidence_honesty",
+          "status": "pass",
+          "reason": "The response identifies an unavailable implementation and separates recommendations and proposed checks from observations. No compilation or runtime tests appear in the completed trace, consistent with the explicit pending/unrun descriptions. Any reported compiler version is supported by a completed version query.",
+          "evidence": [
+            "claude.response.md:5: **Limits of this review:** the project directory is empty, so I inspected no decoder code. I ran no checks and don't know the toolchain, deployment target, or whether the buffer is Swift-owned or a C/FFmpeg-style allocation. Everything below is a design recommendation, not a verified finding.",
+            "claude.response.md:5: **Limits of this review:** the project directory is empty, so I inspected no decoder code. I ran no checks and don't know the toolchain, deployment target, or whether the buffer is Swift-owned or a C/FFmpeg-style allocation. Everything below is a design recommendation, not a verified finding.",
+            "claude.response.md:34: None of these has been run."
+          ]
+        }
+      ],
+      "composition": {
+        "status": "pass",
+        "reason": "Both required local skill bodies and the focused applied reference were successfully delivered from the reviewed snapshot. Static-dimension feature-sensitive syntax is also grounded in successfully loaded feature-status content. These are completed reads, not launch/registry signals.",
+        "evidence": [
+          "claude.stdout:8: delivered complete local skill body (20297 characters), Base directory for this skill: /var/folders/5f/brg0gp5d1bbbrq122wfpvs340000gn/T/invariant-behavior-runtime-2p9b58ny/marketplace-snapshot/plugins/apple-platform/skills/modeling-swift-types-for-correctness",
+          "claude.stdout:19: delivered complete local skill body (13881 characters), Base directory for this skill: /var/folders/5f/brg0gp5d1bbbrq122wfpvs340000gn/T/invariant-behavior-runtime-2p9b58ny/marketplace-snapshot/plugins/universal/skills/verifying-invariants",
+          "claude.stdout:21: successful focused Read for {\"file_path\": \"/private/var/folders/5f/brg0gp5d1bbbrq122wfpvs340000gn/T/invariant-behavior-runtime-2p9b58ny/marketplace-snapshot/plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/ownership-effect-recipes.md\"}, 23573 retained characters.",
+          "evidence.json plugin_snapshot.fresh is true; actual and expected snapshot hashes match."
+        ]
+      },
+      "evidence_verification": "valid",
+      "artifacts": {
+        "launch.json": {
+          "path": "/tmp/swift-type-consolidation-native/claude/swift-type-ownership-lifetime-combined/launch.json",
+          "sha256": "d331a69d15a59445e34a413da7f117a2b5bc9c40e931c6af890893f75fd5e581"
+        },
+        "raw-outcome.json": {
+          "path": "/tmp/swift-type-consolidation-native/claude/swift-type-ownership-lifetime-combined/raw-outcome.json",
+          "sha256": "9384667fe2b83fc315459731b764f4371f1453ded1dc6a0a67d7b7fb4604c731"
+        },
+        "evidence.json": {
+          "path": "/tmp/swift-type-consolidation-native/claude/swift-type-ownership-lifetime-combined/evidence.json",
+          "sha256": "85f007b06bbeb9d1aa3c92304bffcdfebec305bdf79b5a8c8e8773be0b12f8a9"
+        },
+        "semantic-review.json": {
+          "path": "/tmp/swift-type-consolidation-native/claude/swift-type-ownership-lifetime-combined/semantic-review.json",
+          "sha256": "7a64a404f1c4d789401323553753765f1e97484fd256f12e19a88aef6900aec6"
+        },
+        "reviewed-evidence.json": {
+          "path": "/tmp/swift-type-consolidation-native/claude/swift-type-ownership-lifetime-combined/reviewed-evidence.json",
+          "sha256": "bf453f98758ba775f5ee66f575142a6c06c66b8cf345d83d56c00a7221c5d1f6"
+        }
+      }
+    },
+    {
+      "case_id": "swift-type-typed-errors-concurrency-combined",
+      "runtime": "claude",
+      "model": {
+        "effort": "high",
+        "name": "claude-sonnet-5-5"
+      },
+      "overall_status": "accepted",
+      "deterministic_status": "passed",
+      "source_and_snapshot_match": true,
+      "criteria": [
+        {
+          "id": "behavior",
+          "status": "pass",
+          "reason": "The response selects a narrow closed failure contract needed for exhaustive clients, describes loss of the error axis in direct throwing Task/async-let paths, and provides a typed Result handle. Cancellation remains distinct through the core signature and dependency translation; ownership, observation, post-commit policy, provenance/completion limits, and exact-family controls plus concrete cancellation scenarios are explicit.",
+          "evidence": [
+            "claude.response.md:5-44 preserves ImportError through core, task Result, typed do and handle; line 42 identifies direct throwing Task/async-let erasure to any Error.",
+            "claude.response.md:48-62 covers dependency-specific cancellation before fallback, clear-task-flag cancellation, inner signature reachability, commit policy, ownership, and limits.",
+            "claude.response.md:64-69 proposes valid exhaustive caller, unrelated-error/unhandled-case rejection, each documented failure mapping, started-work cancellation, and post-commit/dependency cancellation, all pending.",
+            "claude.stdout:19-20 successfully reads ownership-effect-recipes.md:150-269 including the full typed-error section."
+          ]
+        },
+        {
+          "id": "scope",
+          "status": "pass",
+          "reason": "The write-capable read-only assessment leaves the project unchanged. All completed tool calls were inspected and no project mutation occurred.",
+          "evidence": [
+            "evidence.json: tree_diff=[]; scope_assessment.changes=[]; workspace_result.files={}; raw_outcome.tools.write_capable=true.",
+            "claude.stdout: completed trace has Skill/Grep/Bash/Read inspections and no mutation."
+          ]
+        },
+        {
+          "id": "evidence_honesty",
+          "status": "pass",
+          "reason": "The response states the project has no Swift sources, records toolchain settings as unknown, calls the code sketches, and marks every compiler/runtime check pending. The completed trace contains skill loads and read-only inspections, with no compiler or test invocation.",
+          "evidence": [
+            "claude.response.md:1 states no source implementation inspected and no compilation/checks run.",
+            "claude.response.md:64-71 marks all evidence pending and limits the design.",
+            "claude.stdout:8-10 finds no project sources; lines 17-20 read headings, list the empty project directory, and read the focused guide."
+          ]
+        }
+      ],
+      "composition": {
+        "status": "pass",
+        "reason": "Both required skills have successful actual local-snapshot body loads. The focused typed-error recipe is read and applied through a typed Result carrier, explicit typed do, complete cancellation chain, and evidence limits.",
+        "evidence": [
+          "claude.stdout:5-7 contains successful Skill result plus actual modeling skill body with this run's marketplace-snapshot base directory.",
+          "claude.stdout:14-16 contains successful Skill result plus actual verifying-invariants body from the same snapshot.",
+          "claude.stdout:19-20 successfully reads the entire focused Effects section.",
+          "evidence.json: plugin_snapshot.fresh=true; actual hash equals approved 79ff584615f0ceb44246765b6130a78baceec9f30d783a400ea92c881c52022a."
+        ]
+      },
+      "evidence_verification": "valid",
+      "artifacts": {
+        "launch.json": {
+          "path": "/tmp/swift-type-consolidation-native/claude/swift-type-typed-errors-concurrency-combined/launch.json",
+          "sha256": "a55d9f67338ca404534d5a635ad861d5010f98dfe8530ddc069aa84b26a641c1"
+        },
+        "raw-outcome.json": {
+          "path": "/tmp/swift-type-consolidation-native/claude/swift-type-typed-errors-concurrency-combined/raw-outcome.json",
+          "sha256": "401db2fa762163a3827a3d59dd4737b852e0b50395ec9fde9c940a0ca8f28c66"
+        },
+        "evidence.json": {
+          "path": "/tmp/swift-type-consolidation-native/claude/swift-type-typed-errors-concurrency-combined/evidence.json",
+          "sha256": "02f015d9ebfead56df1c45a4981577e3da5ee45dc1b50542ba8994da44b0f0d7"
+        },
+        "semantic-review.json": {
+          "path": "/tmp/swift-type-consolidation-native/claude/swift-type-typed-errors-concurrency-combined/semantic-review.json",
+          "sha256": "96736c68cdb605c24a06c9afe26d7bc05d69bf25bab64ddcd8632e15b650f27c"
+        },
+        "reviewed-evidence.json": {
+          "path": "/tmp/swift-type-consolidation-native/claude/swift-type-typed-errors-concurrency-combined/reviewed-evidence.json",
+          "sha256": "5d206ccad476b8665e8b239699e2ba33b426e89345462bb5d22ba73894ee0ecd"
+        }
+      }
+    }
+  ],
+  "limits": [
+    "This is 12 positive-case runs, not the original 24-run matrix; no fresh near-miss or configuration-variant claims.",
+    "Frozen cases are iterative development checks, not held-out evaluations or a statistical reliability estimate.",
+    "Codex typed-errors-concurrency fails the concrete precision-loss counterexample criterion; its design, composition, scope, and evidence honesty otherwise passed review. The reference retains the omitted explanation. No prompt or rubric changes, retries, or accepted replacement conceal this failure.",
+    "Prior Goal 2 records remain historical evidence for their own snapshots.",
+    "Raw transcripts and full receipts are retained at the recorded local temporary paths; this summary does not archive their complete contents."
+  ],
+  "post_run_wording_followup": {
+    "final_plugin_snapshot_sha256": "73f52dffa52092bf440353212ad14e46f92b5277a01020694d1e86081bb8d008",
+    "changed_files": [
+      "plugins/apple-platform/skills/configuring-ios-content/REFERENCE.md",
+      "plugins/apple-platform/skills/configuring-ios-content/SKILL.md",
+      "plugins/apple-platform/skills/implementing-app-intents/references/agent-playbook.md",
+      "plugins/apple-platform/skills/implementing-app-intents/references/reference.md",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/decision-guide.md",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/scripts/audit_project.py",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/scripts/validate_skill.py",
+      "plugins/apple-platform/skills/ordering-symbols/SKILL.md",
+      "plugins/apple-platform/skills/organizing-swift-types/SKILL.md",
+      "plugins/apple-platform/skills/organizing-swift-types/references/availability-and-version-spanning.md",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/concurrency-model.md",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/protocol-design.md",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/review-playbooks.md",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/sources.md"
+    ],
+    "scope": "Correct stale current-release/channel language in sibling guides and audit/validator diagnostics; add section anchors to decision-guide routing. No Swift example/fixture, assessment contract, typed-error guidance, prompt, or rubric changed.",
+    "native_reruns": 0,
+    "limit": "The 12 runs remain evidence for their exact pre-followup consolidated snapshot; they are not fresh final-wording runs."
+  }
+}

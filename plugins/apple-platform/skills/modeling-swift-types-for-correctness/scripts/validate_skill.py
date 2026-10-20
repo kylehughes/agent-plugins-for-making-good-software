@@ -256,7 +256,7 @@ def validate_metadata(root: Path, validation: Validation) -> None:
     if isinstance(verified, str) and not re.fullmatch(r"\d{4}-\d{2}-\d{2}", verified):
         validation.error("metadata.last-verified must use YYYY-MM-DD")
     if swift_baseline != "6.3+":
-        validation.error("metadata.swift-baseline must match the current verified baseline: 6.3+")
+        validation.error("metadata.swift-baseline must match the bundled fixture compiler floor: 6.3+")
     if swift_language_mode != "6":
         validation.error("metadata.swift-language-mode must be 6")
 
@@ -291,7 +291,7 @@ def validate_compile_manifest(root: Path, validation: Validation) -> None:
     if not isinstance(arguments, list) or "-emit-module" not in arguments:
         validation.error("compile-check manifest must use the emit-module ownership-checking phase")
     if data.get("minimum_swift_version") != "6.3":
-        validation.error("compile-check manifest must require the current Swift 6.3 baseline")
+        validation.error("compile-check manifest must retain its Swift 6.3 minimum compiler requirement")
     if not isinstance(support_sources, list) or not support_sources:
         validation.error("compile-check manifest must compile fixtures with shared production sources")
     if not isinstance(arguments, list) or not all(

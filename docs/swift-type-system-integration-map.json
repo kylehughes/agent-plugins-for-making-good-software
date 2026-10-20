@@ -98,8 +98,8 @@
       "section_id": "ALG",
       "source_title": "Precise absence and three-way patches",
       "decision": "integrated",
-      "destination": "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/domain-modeling-recipes.md#alg",
-      "reason": "Integrated in the ALG recipe family, retaining the representation choice and its stated proof boundary.",
+      "destination": "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/algebraic-and-refined-values.md#absence-removal-and-structural-cardinality",
+      "reason": "Precise patch cases and their serialization distinction are implemented with the canonical algebraic construction example.",
       "source_html_path": "Swift_6_4_Type_System_Reference.html",
       "source_html_fragment": "ALG04",
       "source_urls": [
@@ -128,8 +128,8 @@
       "section_id": "ALG",
       "source_title": "Nonempty structures",
       "decision": "integrated",
-      "destination": "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/domain-modeling-recipes.md#alg",
-      "reason": "Integrated in the ALG recipe family, retaining the representation choice and its stated proof boundary.",
+      "destination": "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/algebraic-and-refined-values.md#absence-removal-and-structural-cardinality",
+      "reason": "Structural nonempty construction and the map/filter result distinction are maintained with the canonical algebraic example and collection-adapter link.",
       "source_html_path": "Swift_6_4_Type_System_Reference.html",
       "source_html_fragment": "ALG06",
       "source_urls": [
@@ -263,8 +263,8 @@
       "section_id": "VAL",
       "source_title": "Nominal newtypes",
       "decision": "integrated",
-      "destination": "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/domain-modeling-recipes.md#val",
-      "reason": "Integrated in the VAL recipe family, retaining the representation choice and its stated proof boundary.",
+      "destination": "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/identity-typestate-capabilities.md#nominal-identity",
+      "reason": "Nominal wrappers, the typealias counterexample, and raw-overload bypasses are maintained in the identity construction guidance; nominal separation alone does not validate a payload.",
       "source_html_path": "Swift_6_4_Type_System_Reference.html",
       "source_html_fragment": "VAL01",
       "source_urls": [
@@ -278,8 +278,8 @@
       "section_id": "VAL",
       "source_title": "Smart constructors",
       "decision": "integrated",
-      "destination": "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/domain-modeling-recipes.md#val",
-      "reason": "Integrated in the VAL recipe family, retaining the representation choice and its stated proof boundary.",
+      "destination": "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/algebraic-and-refined-values.md#validated-newtypes",
+      "reason": "Checked construction, canonical storage, initializer synthesis, and validation-route limits are maintained in the refined-value construction guidance.",
       "source_html_path": "Swift_6_4_Type_System_Reference.html",
       "source_html_fragment": "VAL02",
       "source_urls": [
@@ -293,8 +293,8 @@
       "section_id": "VAL",
       "source_title": "Unforgeable validation evidence",
       "decision": "integrated",
-      "destination": "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/domain-modeling-recipes.md#val",
-      "reason": "Integrated in the VAL recipe family, retaining the representation choice and its stated proof boundary.",
+      "destination": "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/algebraic-and-refined-values.md#validated-newtypes",
+      "reason": "Controlled construction and its ordinary-client access boundary are maintained with the refined-value example and construction-route audit.",
       "source_html_path": "Swift_6_4_Type_System_Reference.html",
       "source_html_fragment": "VAL03",
       "source_urls": [
@@ -308,8 +308,8 @@
       "section_id": "VAL",
       "source_title": "Validated decoding and database hydration",
       "decision": "integrated",
-      "destination": "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/domain-modeling-recipes.md#val",
-      "reason": "Integrated in the VAL recipe family, retaining the representation choice and its stated proof boundary.",
+      "destination": "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/algebraic-and-refined-values.md#codable-and-refined-types",
+      "reason": "The canonical keyed decoder reuses checked construction, preserves the wire shape, and specifies historical, invalid-input, and round-trip controls.",
       "source_html_path": "Swift_6_4_Type_System_Reference.html",
       "source_html_fragment": "VAL04",
       "source_urls": [
@@ -323,8 +323,8 @@
       "section_id": "VAL",
       "source_title": "Immutable validated storage",
       "decision": "integrated",
-      "destination": "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/domain-modeling-recipes.md#val",
-      "reason": "Integrated in the VAL recipe family, retaining the representation choice and its stated proof boundary.",
+      "destination": "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/algebraic-and-refined-values.md#validated-newtypes",
+      "reason": "Immutable refined storage, read-only projections, and reference-backed mutation limits are maintained with the refined-value construction guidance.",
       "source_html_path": "Swift_6_4_Type_System_Reference.html",
       "source_html_fragment": "VAL05",
       "source_urls": [
@@ -474,8 +474,8 @@
       "section_id": "VAL",
       "source_title": "Constructive parsing instead of Boolean validation",
       "decision": "integrated",
-      "destination": "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/domain-modeling-recipes.md#val",
-      "reason": "Integrated in the VAL recipe family, retaining the representation choice and its stated proof boundary.",
+      "destination": "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/algebraic-and-refined-values.md#keep-editable-input-separate",
+      "reason": "The successful constructor retains the accepted input instead of a detached Boolean; projections and the raw editable form have explicit evidence limits.",
       "source_html_path": "Swift_6_4_Type_System_Reference.html",
       "source_html_fragment": "VAL15",
       "source_urls": [
@@ -519,8 +519,8 @@
       "section_id": "VAL",
       "source_title": "Explicit invalid intermediate representations",
       "decision": "integrated",
-      "destination": "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/domain-modeling-recipes.md#val",
-      "reason": "Integrated in the VAL recipe family, retaining the representation choice and its stated proof boundary.",
+      "destination": "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/algebraic-and-refined-values.md#keep-editable-input-separate",
+      "reason": "The canonical label and draft example keeps legitimate editable input separate from the checked domain value.",
       "source_html_path": "Swift_6_4_Type_System_Reference.html",
       "source_html_fragment": "VAL18",
       "source_urls": [
@@ -4241,7 +4241,7 @@
       "source_locator": "heading-001",
       "source_fragment": null,
       "heading_level": "h1",
-      "heading": "Modeling domainswith Swift’s type system",
+      "heading": "Modeling domainswith Swift\u2019s type system",
       "decision": "merged",
       "destination": "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/domain-modeling-recipes.md#alg",
       "reason": "Merged into the ALG recipe/status entry; this heading supplies context or a boundary for the retained guidance.",
@@ -4529,8 +4529,8 @@
       "heading_level": "h2",
       "heading": "Worked example 1: a validation boundary that survives decoding",
       "decision": "merged",
-      "destination": "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/domain-modeling-recipes.md#val",
-      "reason": "Merged into the VAL recipe/status entry; this heading supplies context or a boundary for the retained guidance.",
+      "destination": "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/algebraic-and-refined-values.md#codable-and-refined-types",
+      "reason": "The validation-boundary worked example is maintained with the canonical checked decoding implementation and wire-contract controls.",
       "source_enclosing_id": "top"
     },
     {
@@ -4540,8 +4540,8 @@
       "heading_level": "h2",
       "heading": "Worked example 2: cardinality and deliberate loss of evidence",
       "decision": "merged",
-      "destination": "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/domain-modeling-recipes.md#alg",
-      "reason": "Merged into the ALG recipe/status entry; this heading supplies context or a boundary for the retained guidance.",
+      "destination": "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/algebraic-and-refined-values.md#absence-removal-and-structural-cardinality",
+      "reason": "The cardinality worked example is maintained with structural NonEmpty construction and the map/filter evidence distinction.",
       "source_enclosing_id": "top"
     },
     {
@@ -4738,8 +4738,8 @@
       "heading_level": "h4",
       "heading": "Precise absence and three-way patches",
       "decision": "merged",
-      "destination": "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/domain-modeling-recipes.md#alg",
-      "reason": "Merged into the ALG recipe/status entry; this heading supplies context or a boundary for the retained guidance.",
+      "destination": "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/algebraic-and-refined-values.md#absence-removal-and-structural-cardinality",
+      "reason": "Precise patch cases and their serialization distinction are implemented with the canonical algebraic construction example.",
       "source_enclosing_id": "ALG04"
     },
     {
@@ -4760,8 +4760,8 @@
       "heading_level": "h4",
       "heading": "Nonempty structures",
       "decision": "merged",
-      "destination": "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/domain-modeling-recipes.md#alg",
-      "reason": "Merged into the ALG recipe/status entry; this heading supplies context or a boundary for the retained guidance.",
+      "destination": "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/algebraic-and-refined-values.md#absence-removal-and-structural-cardinality",
+      "reason": "Structural nonempty construction and the map/filter result distinction are maintained with the canonical algebraic example and collection-adapter link.",
       "source_enclosing_id": "ALG06"
     },
     {
@@ -4870,8 +4870,8 @@
       "heading_level": "h4",
       "heading": "Nominal newtypes",
       "decision": "merged",
-      "destination": "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/domain-modeling-recipes.md#val",
-      "reason": "Merged into the VAL recipe/status entry; this heading supplies context or a boundary for the retained guidance.",
+      "destination": "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/identity-typestate-capabilities.md#nominal-identity",
+      "reason": "Nominal wrappers, the typealias counterexample, and raw-overload bypasses are maintained in the identity construction guidance; nominal separation alone does not validate a payload.",
       "source_enclosing_id": "VAL01"
     },
     {
@@ -4881,8 +4881,8 @@
       "heading_level": "h4",
       "heading": "Smart constructors",
       "decision": "merged",
-      "destination": "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/domain-modeling-recipes.md#val",
-      "reason": "Merged into the VAL recipe/status entry; this heading supplies context or a boundary for the retained guidance.",
+      "destination": "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/algebraic-and-refined-values.md#validated-newtypes",
+      "reason": "Checked construction, canonical storage, initializer synthesis, and validation-route limits are maintained in the refined-value construction guidance.",
       "source_enclosing_id": "VAL02"
     },
     {
@@ -4892,8 +4892,8 @@
       "heading_level": "h4",
       "heading": "Unforgeable validation evidence",
       "decision": "merged",
-      "destination": "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/domain-modeling-recipes.md#val",
-      "reason": "Merged into the VAL recipe/status entry; this heading supplies context or a boundary for the retained guidance.",
+      "destination": "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/algebraic-and-refined-values.md#validated-newtypes",
+      "reason": "Controlled construction and its ordinary-client access boundary are maintained with the refined-value example and construction-route audit.",
       "source_enclosing_id": "VAL03"
     },
     {
@@ -4903,8 +4903,8 @@
       "heading_level": "h4",
       "heading": "Validated decoding and database hydration",
       "decision": "merged",
-      "destination": "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/domain-modeling-recipes.md#val",
-      "reason": "Merged into the VAL recipe/status entry; this heading supplies context or a boundary for the retained guidance.",
+      "destination": "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/algebraic-and-refined-values.md#codable-and-refined-types",
+      "reason": "The canonical keyed decoder reuses checked construction, preserves the wire shape, and specifies historical, invalid-input, and round-trip controls.",
       "source_enclosing_id": "VAL04"
     },
     {
@@ -4914,8 +4914,8 @@
       "heading_level": "h4",
       "heading": "Immutable validated storage",
       "decision": "merged",
-      "destination": "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/domain-modeling-recipes.md#val",
-      "reason": "Merged into the VAL recipe/status entry; this heading supplies context or a boundary for the retained guidance.",
+      "destination": "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/algebraic-and-refined-values.md#validated-newtypes",
+      "reason": "Immutable refined storage, read-only projections, and reference-backed mutation limits are maintained with the refined-value construction guidance.",
       "source_enclosing_id": "VAL05"
     },
     {
@@ -5024,8 +5024,8 @@
       "heading_level": "h4",
       "heading": "Constructive parsing instead of Boolean validation",
       "decision": "merged",
-      "destination": "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/domain-modeling-recipes.md#val",
-      "reason": "Merged into the VAL recipe/status entry; this heading supplies context or a boundary for the retained guidance.",
+      "destination": "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/algebraic-and-refined-values.md#keep-editable-input-separate",
+      "reason": "The successful constructor retains the accepted input instead of a detached Boolean; projections and the raw editable form have explicit evidence limits.",
       "source_enclosing_id": "VAL15"
     },
     {
@@ -5057,8 +5057,8 @@
       "heading_level": "h4",
       "heading": "Explicit invalid intermediate representations",
       "decision": "merged",
-      "destination": "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/domain-modeling-recipes.md#val",
-      "reason": "Merged into the VAL recipe/status entry; this heading supplies context or a boundary for the retained guidance.",
+      "destination": "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/algebraic-and-refined-values.md#keep-editable-input-separate",
+      "reason": "The canonical label and draft example keeps legitimate editable input separate from the checked domain value.",
       "source_enclosing_id": "VAL18"
     },
     {

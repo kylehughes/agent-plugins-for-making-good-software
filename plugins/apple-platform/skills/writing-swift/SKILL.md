@@ -14,7 +14,7 @@ Write correct, idiomatic Swift while respecting the repository's compatibility c
 3. Keep toolchain version, language mode, SwiftPM tools version, deployment target, dependency versions, and Xcode requirements separate. Never raise them silently.
 4. Preserve user changes and public behavior. Inspect `git status --short`; never discard edits, create commits, or run broad migrations unless requested.
 
-For compatibility decisions, use [Swift compatibility](references/swift-6.3.2.md) for the version axes and its recorded baseline. For newer type-system features, consult [feature status](../modeling-swift-types-for-correctness/references/swift-feature-status.md) only when needed; do not silently upgrade the project.
+For compatibility decisions, use [Swift compatibility](references/swift-compatibility.md) for the version axes and build policy. For dated compiler, SDK, or type-system support, consult [feature status](../modeling-swift-types-for-correctness/references/swift-feature-status.md) only when needed; do not silently upgrade the project.
 
 For broad orientation, run [the project-context script](scripts/swift-project-context.sh). Resolve bundled paths relative to this skill directory.
 
@@ -35,7 +35,7 @@ State the behavior or diagnostic, identify the owning layer, make the narrowest 
 
 Load only the concern-specific guidance needed for the task. Use repository instructions first, then the focused companion skill, then this hub's defaults. Prefer the focused sibling skill when available; otherwise use the matching bundled reference. Do not load both by default.
 
-- Swift version, language mode, availability, or compatibility: [Swift compatibility](references/swift-6.3.2.md).
+- Swift version, language mode, availability, or compatibility: [Swift compatibility](references/swift-compatibility.md).
 - Concurrency, isolation, `Sendable`, tasks, actors, cancellation, or async sequences: `using-swift-concurrency`; if unavailable, use [Concurrency](references/concurrency.md) for repair patterns or consult it only for an unresolved detail.
 - Test structure and assertions: `testing-swift-code`; if unavailable, use [Testing Swift](references/testing.md) or consult it only for an unresolved detail.
 - Timing, observers, cancellation, or async-test determinism: `testing-async-swift-code`; if unavailable, use the async portions of [Testing Swift](references/testing.md) or consult them only for an unresolved detail.
@@ -67,7 +67,7 @@ Before finishing, confirm requested behavior, repository instructions, compatibi
 
 Read only the references relevant to the requested work. The focused companion skills above are preferred routers.
 
-- [Swift compatibility](references/swift-6.3.2.md): version model, manifest settings, language/runtime gates.
+- [Swift compatibility](references/swift-compatibility.md): version model, manifest settings, language/runtime gates.
 - [Concurrency](references/concurrency.md): isolation, `Sendable`, tasks, actors, cancellation, continuations, streams, and repairs.
 - [Testing Swift](references/testing.md): Swift Testing, XCTest, deterministic async tests, migration, and review.
 - [API design and style](references/api-design-and-style.md): naming, types, errors, access, docs, formatting, and organization.

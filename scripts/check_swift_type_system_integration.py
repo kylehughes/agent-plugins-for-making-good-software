@@ -11,6 +11,7 @@ import sys
 from collections import Counter
 from html.parser import HTMLParser
 from pathlib import Path
+from markdown_links import markdown_anchors
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -21,28 +22,6 @@ SOURCE_FILES = (
     "Swift_6_4_Type_System_Reference.html",
     "release_matrix.json",
 )
-
-
-def heading_anchor(heading: str) -> str:
-    """Return GitHub's ordinary Markdown anchor for this repository's headings."""
-    normalized = heading.lower().replace("`", "")
-    normalized = re.sub(r"[^\w\s-]", "", normalized, flags=re.UNICODE)
-    return re.sub(r"[\s-]+", "-", normalized).strip("-")
-
-
-def markdown_anchors(path: Path) -> set[str]:
-    anchors: set[str] = set()
-    counts: Counter[str] = Counter()
-    for line in path.read_text(encoding="utf-8").splitlines():
-        # The recipes use explicit anchors for stable, concise provenance links.
-        anchors.update(re.findall(r'<a\s+id=["\']([^"\']+)["\']\s*></a>', line))
-        match = re.match(r"^#{1,6}\s+(.+?)\s*#*\s*$", line)
-        if not match:
-            continue
-        base = heading_anchor(match.group(1))
-        counts[base] += 1
-        anchors.add(base if counts[base] == 1 else f"{base}-{counts[base] - 1}")
-    return anchors
 
 
 class HeadingParser(HTMLParser):

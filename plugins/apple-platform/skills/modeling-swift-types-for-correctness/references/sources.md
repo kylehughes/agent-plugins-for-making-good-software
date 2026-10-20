@@ -2,7 +2,7 @@
 
 This file records the primary specifications and official documentation used to verify time-sensitive or easily conflated guidance. Re-check availability in the actual SDK because documentation and beta behavior evolve.
 
-Last verified: **2026-10-19**.
+This is the primary-source index. [Swift feature status](swift-feature-status.md) owns dated verification scope, current release/channel facts, feature support, and Apple availability floors. The original index was reviewed on 2026-10-19; individual links are not a claim of fresh compiler execution.
 
 ## Agent Skills
 
@@ -33,13 +33,15 @@ Key structural constraints reflected in this package:
 - SwiftPM `SwiftSetting` reference: https://docs.swift.org/swiftpm/documentation/packagedescription/swiftsetting/
 - SwiftPM changelog: https://github.com/swiftlang/swift-package-manager/blob/main/CHANGELOG.md
 
-Snapshot used by this version:
+For Apple-platform builds, record the compiler from the selected Xcode. A standalone Swift.org toolchain and an Xcode toolchain are separate selections. Read [iOS versioning](ios-versioning.md) for deployment and build-setting rules.
 
-- Xcode 27.1 (27A9275): current released Apple toolchain.
-- Xcode 27 (27A266a): released Apple toolchain with Swift 6.4 and the iOS 27 SDK.
-- Swift.org latest stable download: Swift 6.4.1.
+Historical release sources retained for upgrade and workaround investigations:
 
-For Apple-platform builds, the compiler reported by the selected Xcode via `xcrun swift --version` is authoritative. This skill uses one current Swift 6 language baseline rather than preserving source compatibility with another language mode.
+- Swift 6.2 release: https://www.swift.org/blog/swift-6.2-released/
+- Swift 6.3 release: https://www.swift.org/blog/swift-6.3-released/
+- Swift 6.3.2 announcement: https://forums.swift.org/t/announcing-swift-6-3-2/86698
+- Swift language-mode migration: https://www.swift.org/migration/documentation/swift-6-concurrency-migration-guide/
+- PackageDescription: https://docs.swift.org/package-manager/PackageDescription/PackageDescription.html
 
 ## Swift Evolution
 
@@ -93,12 +95,12 @@ Important proposal details reflected in the skill:
 - Typed throws does not provide universally complete or ergonomic inference; prefer explicit signatures at brittle generic and closure boundaries.
 - `BitwiseCopyable` is a permanent representation promise, not a serialization or C-layout guarantee.
 - Integer generic parameters and new standard-library nominal types can have Apple-platform runtime availability independent of source syntax.
-- `InlineArray` has an iOS 26 deployment requirement; recheck its current protocol conformances and iteration APIs in the selected toolchain.
+- `InlineArray` has runtime availability independent of integer-generic syntax; check the status matrix and selected SDK for its members and conformances.
 - Strict memory safety is opt-in and inventories unsafe operations; it does not verify the programmer's proof inside `unsafe` expressions.
 - Default actor isolation is a module-level setting, not a universal property of Swift 6 source.
 - A nonescapable type requires valid lifetime dependencies; spelling `~Escapable` is not by itself an owner-lifetime proof.
 - Swift 6.4 language support, experimental flags, unavailable forms, and Apple deployment floors are tracked in [Swift feature status](swift-feature-status.md). Accepted proposals and compiler probes do not establish Apple deployment support.
-- SE-0516 is implemented in Swift 6.4. Its `Iterable` APIs have a separate iOS 27 deployment floor, and borrowing iteration does not promise stable borrows across iterator mutation.
+- Borrowing iteration does not promise stable borrows across iterator mutation; implementation status and deployment floors are recorded in the feature matrix.
 
 ## Apple API Availability
 
@@ -123,20 +125,7 @@ Important proposal details reflected in the skill:
 - File system programming guide: https://developer.apple.com/library/archive/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/
 - Security-scoped bookmarks and resources: https://developer.apple.com/documentation/foundation/nsurl/bookmark_creation_options
 
-Availability facts used by the compatibility guidance:
-
-| Symbol/framework | Documented Apple-platform availability relevant to iOS |
-|---|---:|
-| `InlineArray` | iOS 26+ |
-| `Span` type | iOS 12.2+ through special back deployment; producer APIs vary |
-| `Ref` / `MutableRef` | iOS 27+ |
-| `UniqueBox` / `UniqueArray` | iOS 27+ |
-| `Iterable` | iOS 27+ |
-| `Synchronization.Mutex` | iOS 18+ |
-| `OSAllocatedUnfairLock` | iOS 16+ |
-| Typed NotificationCenter message APIs | iOS 26+ |
-| Observation framework | iOS 17+ |
-| SwiftData | iOS 17+ |
+Use [the feature matrix](swift-feature-status.md) for the maintained availability facts. A symbol's documentation does not establish the availability of every producer or operation that mentions it.
 
 ## Verification Policy
 
@@ -150,4 +139,4 @@ When this skill is updated:
 6. Check accepted Swift Evolution proposals for current semantics, limitations, and future directions.
 7. Type-check fixtures in Swift 6 mode with the selected current compiler.
 8. Run `python3 scripts/validate_skill.py .`.
-9. Update `metadata.last-verified` and this file only after the checks pass.
+9. Update the relevant dates and evidence scopes in [feature status](swift-feature-status.md) only for completed checks. Preserve earlier or supplied evidence labels for checks not repeated.
