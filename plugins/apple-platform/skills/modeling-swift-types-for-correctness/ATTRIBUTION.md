@@ -16,10 +16,12 @@ attributed through the integration inventory and [source reference](references/s
 
 The integration paraphrases and organizes the material by developer task. Small
 examples adapt the supplied proof shapes; existing repository rules remain with
-their original owners. The original compiler corpus and saved result files are
-implementation context, not shipped acceptance evidence. Supplied results are
-labeled separately from freshly inspected primary sources, and disputed claims
-are resolved in [feature status](references/swift-feature-status.md).
+their original owners. The maintained compiler corpus under
+`examples/compiler-corpus/` derives its sources and expected outcomes from the
+archive. Supplied result files define comparison inputs; they do not establish
+fresh acceptance. Current compiler reports remain separate from those inputs.
+Supplied results are labeled separately from freshly inspected primary sources,
+and disputed claims are resolved in [feature status](references/swift-feature-status.md).
 
 Repository maintainers can follow `docs/swift-type-system-integration.md` and its
 machine-readable map for original paths, fragments, source digests, item-level

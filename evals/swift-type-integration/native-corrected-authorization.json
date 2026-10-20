@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "authorization": "Approve the 24 runs with corrected guidance",
+  "destinations": [
+    "OpenAI",
+    "Anthropic"
+  ],
+  "approved_snapshot_sha256": "a019340855f539914507e777c1201f8f16a7d1c1d72629044f6a19a93ae51a98",
+  "criteria_sha256": "0574f95fd53d7c4c7dbda874f5bae4ee5858152981bc0da293bff8f4e80fd3fd",
+  "scope": "24 evaluations, unchanged frozen prompts and rubrics; corrected plugin guidance; rubrics and credentials excluded from evaluation payloads",
+  "batch_root": "/tmp/swift-type-integration-goal2/native-corrected-01",
+  "wrapper": "/tmp/swift-type-integration-goal2/run_corrected_01.py",
+  "wrapper_sha256": "fc87a5ad10f6977488fc1109c124d8a6e55e97485e34ef042c92538f66b4f55c",
+  "concurrent_children": 4,
+  "automatic_retries": false
+}

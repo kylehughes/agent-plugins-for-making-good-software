@@ -1,0 +1,22 @@
+{
+  "commands": [
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "scripts",
+        "-p",
+        "test_*.py"
+      ],
+      "cwd": "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins",
+      "exit_code": 1,
+      "duration_seconds": 26.409,
+      "log": "/tmp/swift-type-integration-goal2/checks-xcode27.1/00.log",
+      "log_sha256": "ffb13d5aacc5ddd3eceb8c547fc805da982a744a10b7e1dbc870f301bc22288d"
+    }
+  ],
+  "failure_cause": "Sandbox denied writes to the existing Swift compiler module cache; retained failed attempt. The same checks passed with standard cache access."
+}

@@ -1,0 +1,42 @@
+{
+  "status": "pass",
+  "command": [
+    "python3",
+    "/tmp/swift-type-integration-goal2/count_corpus.py"
+  ],
+  "script_sha256": "17978d7c170284a4f3a9cc7a15812350e5d921c39bf22aa9f8663a9410a91cfc",
+  "manifest": "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus-map.json",
+  "manifest_sha256": "893ecbdc3cddf0c45e29bb387662b98a15b159af753c1977314fd808ef2dde42",
+  "source_index_sha256": "f1ae5ba753586a9163b91db3573839230cc6ed390f8f63ae000fd46b4af9fd26",
+  "compiler_cases": 89,
+  "source_expected_acceptances": 31,
+  "source_expected_rejections": 58,
+  "lanes": {
+    "default": 81,
+    "experimental": 8
+  },
+  "suites": {
+    "core": 15,
+    "modeling": 10,
+    "effects": 9,
+    "frontier": 55
+  },
+  "runtime_sources": 2,
+  "source_file_hashes": {
+    "probe_effects_async_let_error.swift": "cf0e87d7fc7c306f9f3222a0c23589e116c25191f34ac3d92913ab71f542fc14",
+    "probe_effects_catch_cases.swift": "97a795694b4596fb84238ead2290e2c48525cdfdb17c1cbc30a74d1bdc760816",
+    "probe_effects_dropped.swift": "18710d319dd3f73927baec4f6caac0aac5b9f451ee1892f57fc99c0cd94461d3",
+    "core_examples.swift": "6c4350e3b4c493181b3c9be50677d75f144b18f6ec05e6f3f5f9efb4ac8a8cfa",
+    "probe_effects_discarded_task.swift": "d643a126c72fe9a06b5828c46404b811d17884bd7fcdb2a24a3a4ecc89a7c7d9",
+    "probe_effects_typed_task.swift": "211221290ff9b2919717ebca4246a92daca3f7e6d244f9b5c00eb97e990abba2",
+    "modeling_manifest.json": "4d75db092e49b5273aabfedc6ebf27e6cf4be0d8e3b605b4ed50a0cda058ac99",
+    "probe_effects_typed_workarounds.swift": "81f0e5e72de75cf9369781e37e4bbe89c964593bfbb44377f5b78be3687b52fa",
+    "core_examples_runtime.swift": "3f2fe1bfcaf8abfc1bc835ad4875969a286064107d9e9679e80ef50187b0c001",
+    "probe_effects_double_resume.swift": "f9270046df120812f588b4604c563eb47d846488d0854bc644375e0f350b3991",
+    "probe_effects_positive.swift": "7091cbe56b60eb1b203f6505f89606fd9e1e3508a0fd4f51f7bb693ca3a31d73",
+    "modeling_examples.swift": "5a812334ca9541835f00075bc958b257207bd2f521ec2da8a735b7a794d7c83e",
+    "probe_effects_opaque_throws.swift": "0378a08794964bc1520bf6d108c85d56bde52f82dd6c0dfb736b0c198d4dec73",
+    "frontier_probes/manifest.json": "b8a3c38f88a863ce8565059b3d6c9e5f7ce97b678ad7544d23eca0c1127bfe17"
+  },
+  "scope": "Exact indexed identities, supplied expectations, copied original file bytes, core/modeling appended counterexamples, frontier source digests, and two runtime source identities. Does not establish compiler outcomes or control adequacy."
+}

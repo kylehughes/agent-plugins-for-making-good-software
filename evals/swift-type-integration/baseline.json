@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-10-20T03:33:26.713053+00:00",
+  "head": "0fd5fff2e373026c8b22e5a96b9dc544c414cf3b",
+  "starting_worktree": "clean",
+  "goal_1_evidence": "docs/swift-type-system-validation.md",
+  "source_archive": "/tmp/codex-remote-attachments/01a1575b-3db7-79a3-a2fb-635e61289808/2DECCA2C-9682-41FD-8957-FABE293A5575/1-Swift_6_4_Type_System_Companion.zip",
+  "source_archive_sha256": "4454c583ec5a9cc4dd80487ff19a9a2dc9925e5249588db8e4a06482bf35eb13",
+  "checks": [
+    {
+      "argv": [
+        "git",
+        "status",
+        "--short"
+      ],
+      "cwd": "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins",
+      "exit_code": 0,
+      "duration_seconds": 1.406,
+      "log": "/tmp/swift-type-integration-goal2/baseline/00.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins",
+      "exit_code": 0,
+      "duration_seconds": 0.037,
+      "log": "/tmp/swift-type-integration-goal2/baseline/01.log",
+      "log_sha256": "0658803589dd4c9be268f7df1f673b9451948df7c88aa704d5fb9f726a2e2dc7"
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "scripts",
+        "-p",
+        "test_*.py"
+      ],
+      "cwd": "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins",
+      "exit_code": 0,
+      "duration_seconds": 45.19,
+      "log": "/tmp/swift-type-integration-goal2/baseline/02.log",
+      "log_sha256": "6926cae4d49422157439c23d6d9106259c1d02114daa2e6939b99e6d9dc574ca"
+    },
+    {
+      "argv": [
+        "python3",
+        "scripts/validate.py"
+      ],
+      "cwd": "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins",
+      "exit_code": 0,
+      "duration_seconds": 3.577,
+      "log": "/tmp/swift-type-integration-goal2/baseline/03.log",
+      "log_sha256": "a47ae0142c84327ad2e8853eb11dfe746f92579467ea419fbdc6688cce873029"
+    },
+    {
+      "argv": [
+        "python3",
+        "scripts/skill_catalog.py",
+        "--base",
+        "HEAD"
+      ],
+      "cwd": "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins",
+      "exit_code": 0,
+      "duration_seconds": 0.736,
+      "log": "/tmp/swift-type-integration-goal2/baseline/04.log",
+      "log_sha256": "c21940773c6e2d250bc1ecb51c8399bd04f20ddbab1c18d9d61d1484450c1e37"
+    },
+    {
+      "argv": [
+        "python3",
+        "scripts/check_swift_type_system_integration.py",
+        "--source-root",
+        "/tmp/swift-type-system-integration-source/Swift_Type_System_Companion"
+      ],
+      "cwd": "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins",
+      "exit_code": 0,
+      "duration_seconds": 0.282,
+      "log": "/tmp/swift-type-integration-goal2/baseline/05.log",
+      "log_sha256": "0c2e4908dd500039ff56150cd2060ec9eccc17b7458e9242bfea22e0b555df62"
+    },
+    {
+      "argv": [
+        "sh",
+        "-c",
+        "REQUIRE_SWIFTC=1 plugins/apple-platform/skills/modeling-swift-types-for-correctness/scripts/check_examples.sh"
+      ],
+      "cwd": "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins",
+      "exit_code": 0,
+      "duration_seconds": 7.883,
+      "log": "/tmp/swift-type-integration-goal2/baseline/06.log",
+      "log_sha256": "78e6ab46a0cf377013fae5e27d91d4667bd55d01d1834289bdebe6d7295b83f6"
+    }
+  ],
+  "unit_tests": 127,
+  "baseline_failures": [],
+  "context_costs": {
+    "skills": 27,
+    "skill_description_chars": 5442,
+    "skill_body_chars": 264665,
+    "skill_body_lines": 3786,
+    "agents": 8,
+    "agent_description_chars": 1630,
+    "agent_preloaded_body_chars": 79448
+  },
+  "claim_check": "One bounded independent review of final coverage links, maintained claims, fixtures, acceptance evidence, and complete final response draft. Parent resolves in-scope findings against the same evidence.",
+  "limits": [
+    "Baseline checks do not establish the new 89-case compiler corpus or the 24 native behavioral runs.",
+    "Raw command logs are retained in the local temporary evidence directory, not packaged as plugin content."
+  ]
+}

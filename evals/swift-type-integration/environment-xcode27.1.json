@@ -1,0 +1,51 @@
+{
+  "checked_at": "2026-10-20T05:24:43.911793+00:00",
+  "commands": [
+    {
+      "argv": [
+        "xcode-select",
+        "-p"
+      ],
+      "exit_code": 0,
+      "stdout": "/Applications/Xcode-27.1.0.app/Contents/Developer\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "xcrun",
+        "--show-sdk-path"
+      ],
+      "exit_code": 0,
+      "stdout": "/Applications/Xcode-27.1.0.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/Applications/Xcode-27.1.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swift-frontend",
+        "-version"
+      ],
+      "exit_code": 0,
+      "stdout": "Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)\nTarget: arm64-apple-macosx26.0\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "sw_vers"
+      ],
+      "exit_code": 0,
+      "stdout": "ProductName:\t\tmacOS\nProductVersion:\t\t26.6.2\nBuildVersion:\t\t25G83\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "uname",
+        "-m"
+      ],
+      "exit_code": 0,
+      "stdout": "arm64\n",
+      "stderr": ""
+    }
+  ],
+  "supersedes_access_blocker": true,
+  "scope": "Installed compiler and SDK identity. Corpus acceptance is established separately."
+}

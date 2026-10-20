@@ -105,6 +105,8 @@ if is_negative:
         print("Reject.swift:2: error: line failure", file=sys.stderr)
     if mode == "driver-summary":
         print("error: emit-module command failed with exit code 1 (use -v to see invocation)", file=sys.stderr)
+    if mode == "rendered-tree-error":
+        print("    |      |- error: intended diagnostic", file=sys.stderr)
     if mode == "unparsed-error":
         print("compiler prefix error: unclassified failure", file=sys.stderr)
     raise SystemExit(1)
@@ -265,6 +267,10 @@ class SwiftCompileChecksTests(unittest.TestCase):
 
     def test_emit_module_driver_summary_is_allowed_after_expected_error(self):
         report = json.loads(self.run_runner("driver-summary").stdout)
+        self.assertEqual(report["status"], "pass")
+
+    def test_rendered_diagnostic_tree_line_is_not_a_second_error(self):
+        report = json.loads(self.run_runner("rendered-tree-error").stdout)
         self.assertEqual(report["status"], "pass")
 
     def test_unparsed_error_line_fails_closed(self):

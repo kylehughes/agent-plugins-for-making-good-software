@@ -9,6 +9,8 @@ The snippets illustrate boundaries, not newly executed compiler acceptance.
 <a id="ownership"></a>
 ## Ownership: lend access without surrendering the invariant
 
+For a borrowed-view assessment, read this complete ownership section. Isolated keyword matches can omit the construction and storage obligations that qualify a lifetime guarantee.
+
 Use noncopyable ownership for a handle whose duplication would violate a local
 lifecycle rule. Use borrowing for temporary inspection and consuming operations
 for transfer. The invariant is at most one consuming use of a noncopyable value
@@ -59,6 +61,28 @@ access, not valid indices, business invariants, or foreign aliases. `Ref` lends
 shared access without ownership; `MutableRef` lends exclusive access. Neither
 makes a class deeply immutable or authorizes extending the storage lifetime.
 Custom projections and returns need their separately recorded lifetime support.
+
+When assessing a borrowed view, cover construction, unsafe extraction or erasure, escaping captures, foreign aliases, and mutation or reentry. State who keeps the storage alive and what keeps its bytes stable for the whole access interval. Lifetime checking cannot stop C code or another unchecked alias from freeing or mutating that storage. Treat these as adapter obligations until its implementation and foreign contract have been inspected; the view's type alone is not evidence that they hold.
+
+A generation or validity guard checks only accesses routed through its checked
+wrapper. A copied raw pointer can bypass that guard entirely; extracting it is
+not made safe by checking the view's later accessors. The guard's own storage
+must also remain valid. Describe such a check as a bounded diagnostic, never as
+protection for arbitrary unsafe aliases.
+
+Keep callback reentry separate from actor isolation. Reentering a mutating value
+operation while its exclusive access remains active can produce an overlapping-
+access diagnostic or trap, depending on what the compiler can establish. Actor
+isolation serializes access to actor state; it does not turn synchronous same-
+actor callback reentry into a value-exclusivity error. Actor reentrancy is the
+different problem of other work entering at a suspension point. In every case,
+the adapter must keep borrowed storage alive and stable for the documented access
+interval. Verify the actual rejection or runtime policy instead of assuming that
+adding isolation makes callback reentry fail.
+
+A `borrowing` parameter does not by itself grant exclusive access to a referenced
+object's mutable state. Identify the actual value access or synchronization rule
+that prevents invalidating reentry, and verify that specific boundary.
 
 A `borrow` accessor projects existing storage; a `mutate` accessor admits all
 writes permitted by the component type. Expose mutation only when that component
@@ -183,7 +207,19 @@ An operation protocol can correlate `Output` and `Failure`. Async sequences can
 retain element and failure axes, but bridges may erase them and library
 availability matters. A sequence type proves neither ordering, backpressure,
 finite length, nor eventual yield. Translate infrastructure failures at one
-boundary and decide how cancellation remains visible.
+boundary and decide how cancellation remains visible. Translate each known
+dependency-specific cancellation form before the generic failure fallback. A
+`CancellationError` cast or `Task.isCancelled` check alone does not recognize a
+dependency's distinct cancellation error when the current task's flag is clear;
+letting that case reach a generic domain mapping disguises cancellation.
+
+Trace the chosen failure type through every signature, starting at the dependency
+mapping boundary. If a wrapper separates domain failures from cancellation, the
+core must return that wrapper or an equivalent explicit outcome before either
+case is lost. An outer cancellation case is unreachable for in-flight cancellation
+when the inner operation can report only domain failures and every catch wraps
+them as such. A preflight cancellation check does not repair that path. Keep
+the signature sketch, mapping code, and cancellation test consistent.
 
 Where direct `Task` or `async let` throwing paths erase the error, materialize
 `Result<Output, Failure>` inside the work and unwrap after awaiting it. A
@@ -191,6 +227,38 @@ Where direct `Task` or `async let` throwing paths erase the error, materialize
 an owner for cancellation and observation. Async `Result(catching:)` itself does
 not create work; check its independent availability. Keep release/probe evidence
 qualified rather than treating proposal intent as implemented behavior.
+
+Keep the `do` block's failure type explicit inside a task closure, even when the
+task's `Result` type is explicit. An unannotated `do`/`catch` can infer `any Error`
+there and make `.failure(error)` incompatible with the promised failure family:
+
+```swift
+func startRead(_ text: String?) -> Task<Result<String, ReadFailure>, Never> {
+    Task {
+        do throws(ReadFailure) {
+            return .success(try readLabel(text))
+        } catch {
+            return .failure(error)
+        }
+    }
+}
+```
+
+This uses the `ReadFailure` and `readLabel` declarations above. Preserve the
+explicit failure type when replacing the synchronous read with an awaited
+operation or generalizing it to a `Failure` parameter.
+
+Verify the failure axis with paired compiler controls under the same phase and
+shared arguments: one valid adapter and caller must preserve and exhaustively
+handle the declared family, while a misuse that throws an unrelated error must
+fail for the intended typed-error diagnostic. Separately exercise cancellation
+at runtime: arrange for launched work to signal that it started, cancel through
+the owning handle, await that handle, and assert the selected cancellation
+outcome. If cancellation after a commit boundary may still produce success, add
+that scenario with its expected result. A typechecked cancellation branch proves
+neither that cancellation is observed nor that the outcome reaches the owner.
+When checks have not run, including during a read-only assessment, keep them
+explicitly proposed or pending rather than implying execution.
 
 A synchronous signature forbids suspension in its body, not blocking or hidden
 unstructured tasks. Swift's typed throws is not a general effect-row or purity

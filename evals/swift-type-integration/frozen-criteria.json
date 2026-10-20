@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "suite": "swift-type-integration",
+  "state": "frozen-before-native-runs",
+  "prior_freeze": {
+    "cases_json_sha256": "6fa06221458665ffc687fd0e93ecffb010fda73db12306bd1e18c5e5fde56088",
+    "criteria_sha256": "8c39569232d746c538b45351cf97869e685947ffc6aab3ace4a328cf30cd88c5",
+    "suite_sha256": "f1801e07774920561592b93ff0372533fae4ce42a162f3af64b9c721e33583fc",
+    "reason": "Pre-run review narrowed required reference loads, corrected the compile-defect rubric, and made the trivial prose owner optional."
+  },
+  "main_case_ids": [
+    "swift-type-decoding-main-combined",
+    "swift-type-workflow-recovery-combined",
+    "swift-type-generic-correlation-combined",
+    "swift-type-static-dimensions-combined",
+    "swift-type-ownership-lifetime-combined",
+    "swift-type-typed-errors-concurrency-combined",
+    "swift-type-near-miss-output-tests-combined",
+    "swift-type-near-miss-api-naming-combined",
+    "swift-type-near-miss-prose-editing-combined",
+    "swift-type-near-miss-defect-review-combined"
+  ],
+  "configuration_variant_ids": [
+    "swift-type-decoding-apple-variant",
+    "swift-type-decoding-combined-variant"
+  ],
+  "run_matrix": {
+    "main": [
+      "claude",
+      "codex"
+    ],
+    "configuration_variants": [
+      "claude",
+      "codex"
+    ]
+  },
+  "policy": "Do not rerun a main accepted case as a configuration variant. Each evaluation is read-only while write-capable tools remain available.",
+  "prompt_metadata_revision": {
+    "prior_criteria_sha256": "ce8039e975e94f53505fb2bc2004560ff2a064ce0b97477d1e824b84e2c9f48f",
+    "reason": "Prompt IDs moved from HTML comments to frontmatter, which the existing natural_prompt parser strips. Case IDs and rubric semantics stay unchanged; no native runs preceded the change."
+  }
+}

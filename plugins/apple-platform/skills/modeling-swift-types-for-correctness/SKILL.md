@@ -1,6 +1,6 @@
 ---
 name: modeling-swift-types-for-correctness
-description: "Model and assess Swift invariants, validated decoding, legal transitions, ownership, and type relationships. Use before judging or changing enforcement boundaries, including small fixes. Covers practical and advanced encodings; excludes ordinary output tests and naming."
+description: "Assess Swift invariants, validated decoding, legal transitions, borrowed-view lifetimes, ownership, typed failures, and generic relationships. Required before judging or changing these enforcement boundaries, including small fixes; excludes ordinary output tests and naming."
 ---
 
 # Model Swift Types for Correctness
@@ -52,7 +52,14 @@ Apply the settled invariant to Swift with these defaults:
 
 A comment, `typealias`, naming convention, boolean permission, `RawRepresentable`, or freely conformable marker protocol documents intent without enforcing it.
 
-Use [the decision guide](references/decision-guide.md) for pattern selection and rollback, then the narrowest concern in the Reference Map. The recipe guides compose existing rules for a specific task; do not load them as a complete compendium. Consult feature status only when the selected mechanism depends on recent compiler or library support.
+Before assessing or recommending a representation, read the focused reference for the claim, even for a read-only design sketch. The skill body does not replace these construction rules and proof limits:
+
+- Validated decoding: [algebraic and refined values](references/algebraic-and-refined-values.md#codable-and-refined-types).
+- Recoverable state transitions: [domain modeling recipes](references/domain-modeling-recipes.md#flow).
+- Correlated types, expression result sorts, or static dimensions: [generic proof recipes](references/generic-proof-recipes.md).
+- Ownership, lifetime, or typed failures across concurrency: [ownership and effect recipes](references/ownership-effect-recipes.md).
+
+For other concerns, use the Reference Map; use [the decision guide](references/decision-guide.md) when pattern selection remains open. Load only relevant sections and consult feature status only for mechanisms that depend on recent support.
 
 ## Close Swift construction and mutation
 
@@ -139,7 +146,7 @@ Report, in proportion to the task:
 3. The selected Swift representation and why it is the lightest adequate model.
 4. The constructors, mutations, decoders, persistence paths, and interop routes that preserve or bypass it.
 5. The migration and compatibility impact.
-6. Runtime tests and compiler checks, with their exact limits.
+6. Concrete valid-use, misuse, and runtime scenarios for the selected guarantee, including recovery or cancellation where relevant. Mark each check run or pending and state its limit; a list of obligations alone is not an evidence plan.
 
 Classify conclusions precisely:
 
@@ -190,8 +197,8 @@ Load only the reference that answers the changed Swift concern:
 ## Included utilities and fixtures
 
 - `scripts/audit_project.py`: inventories Swift/Xcode compatibility settings.
-- `scripts/swift_compile_checks.py`: runs manifest-defined positive, negative, and runtime checks with human or JSON reporting.
-- `examples/compile-checks.json`: declares the Swift 6.3 fixture snapshot and compiler inputs.
+- `scripts/swift_compile_checks.py` and `swift_compiler_corpus.py`: run paired baseline fixtures and the imported corpus, with separate compiler/runtime evidence.
+- `examples/compile-checks.json` and `compiler-corpus-map.json`: declare the baseline fixtures and 89 imported cases; corpus controls and experimental lanes remain explicit.
 - `scripts/check_examples.sh`: compatibility entry point with optional skip and `REQUIRE_SWIFTC=1` behavior.
 - `scripts/validate_skill.py`: validates metadata, links, evals, manifest wiring, and fixtures.
 - `examples/CorePatterns.swift`, `CurrentSwiftPatterns.swift`, and `TrustStatePatterns.swift`: shared sources used by controls and misuse fixtures.

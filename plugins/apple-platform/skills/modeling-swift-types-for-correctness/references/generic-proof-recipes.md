@@ -129,6 +129,10 @@ Use a static size when a literal dimension is part of the API contract. Use a pa
 
 The invariant is equality of declared dimensions or positional pack shapes. It is not arithmetic correctness, bounds safety for arbitrary runtime indexes, or proof that runtime input has the advertised shape.
 
+In a shape-based design assessment, name the remaining checks separately: numerical results, dynamic-index bounds, storage layout or strides, and validation of decoded dimensions. Matching dimensions and element counts do not establish an indexing formula or memory-layout convention. Give a concrete numerical-result test alongside the compatible and incompatible shape controls.
+
+A valid `Rows × Columns` shape still admits an invalid runtime row such as `-1` or `Rows`. State how subscripts and kernel loops establish each index bound; a shape precondition alone does not prove that every access is in bounds. Keep this obligation visible even when indexing remains inside a private implementation.
+
 ### Carry a shape equation
 
 The following is illustrative syntax; compile it under the selected toolchain before treating it as production code:
@@ -244,6 +248,10 @@ enum Expression<Output> {
 The case payload prevents constructing text as `Expression<Bool>` through the safe API. Evaluation still needs an explicit transport, and the evaluator still owns the meaning of each case. Keep both directions if clients need symmetric transport; the one-way excerpt only illustrates the construction seal.
 
 For a finite language, separate associated syntax families are often simpler: `TextSyntax` evaluates to `String`, `FlagSyntax` evaluates to `Bool`, and cross-sort cases mention the other family directly. Use an equality-carrying enum when one uniform indexed representation matters. Use associated families when inspectable closed syntax and ordinary switches matter more.
+
+Apply that choice to the whole expression, including operator operands and its evaluation result. A scalar value enum plus a checked kind tag only closes literal construction; it does not establish the recursive expression's result relationship. Runtime parsing can validate into a closed syntax family, so dynamic input alone is not a reason to discard typed construction. State why the simpler family suffices and what requirement would justify a uniform indexed form; reserve equality witnesses for that requirement rather than ruling them out categorically.
+
+Pair a rejected ill-typed expression with a concrete well-typed expression and its expected evaluator result. A valid compilation control establishes construction and type relationships; evaluating the example checks a separate semantic claim. Even a read-only recommendation should specify both examples and mark their execution status.
 
 Typed environments extend the same idea: a heterogeneous product stores values, while `Here` and `There<Rest>` witnesses select a position and its element type. This can reject unbound variables, wrong stack transitions, or reconstruction into a hole of the wrong sort. Dynamic environments require validation and existential packaging.
 

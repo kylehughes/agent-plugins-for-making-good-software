@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "frozen_at": "2026-10-20T03:37:01.558089+00:00",
+  "criteria_files": {
+    "cases.json": "fdfcf83589300f10e7bbe7b2fc9f04065d6f1a305d65a5f036d72e19cb265d6e",
+    "decoding-apple-variant/prompt.md": "161fc23526f231b5178c1adf3af8bf08ecdc608b3b9764496447cdf72c4bde04",
+    "decoding-apple-variant/rubric.md": "3f791c505fa2fa34bb64eaa46e8e2dd5039f6bd1c261f1045528017cc3d4e3f2",
+    "decoding-combined-variant/prompt.md": "6a96675db11730d07832f440db2e930a3ae6f2a5628a631a23b5a096c1379695",
+    "decoding-combined-variant/rubric.md": "343886ecf2ae21b140cb2a7533757064d66698b5695451fd4e20f05c33014b19",
+    "decoding-main/prompt.md": "bc53e332366b7298c28d10e2b2ff03e7393060dc7b98b17bae307a2174a316e5",
+    "decoding-main/rubric.md": "ab5e0992ac171a869293c8727011b3c36d157bdb2bf66b53eefc88eda204428d",
+    "frozen-criteria.json": "ed856014bd31f32cde9d165e69e4d60105e978462ef790f7d4549aeb5e1bcfd8",
+    "generic-correlation/prompt.md": "4595e34b4c4da057537270be2c263590479e4c5ee53242599d52714df6e97905",
+    "generic-correlation/rubric.md": "b030551792aa70cb405cfaba46cb05af737a9dd701ab8caaed5f7db63df0f0e6",
+    "near-miss-api-naming/prompt.md": "be36560071b0f8b26ef2f19b3767f65da948f59d5e91676a5a03094ed854986e",
+    "near-miss-api-naming/rubric.md": "aec4eb85d35663e9dcb955d6c5793adc93240c5edf402b8ed9addffa877fa930",
+    "near-miss-defect-review/prompt.md": "a08c74e305b344053b964a15172d155a9e75a54f19d3ab92e43937b970063337",
+    "near-miss-defect-review/rubric.md": "5a35327c6d14f5af4415ddafde4e742a603f2d030f3add67776e42f13d3aafe6",
+    "near-miss-output-tests/prompt.md": "938c3c4cf847f92146bfaa9c9519f0b2735f0a2287f31ebf672976712947c1c0",
+    "near-miss-output-tests/rubric.md": "b0c13335beae87ab48ebacb8d640749f8973d4c7764ec3e14d9550aac0a0008c",
+    "near-miss-prose-editing/prompt.md": "82c5a9feaca8c86a3e9eaaeb24a61c4d2a25e292b96208730235ddde7eb46f79",
+    "near-miss-prose-editing/rubric.md": "45c4225b50cd7e680991ab9d9a46fff453f5a02bdfd2f52ebb54e4944785551e",
+    "ownership-lifetime/prompt.md": "49bae2475704ddc7c31e629c9014f8fd591caaae3811cc2d8f37b6e23ec5976e",
+    "ownership-lifetime/rubric.md": "14094dbd39ed31daae65a94290646f9ba588bf2ccd37bf3dce30b388790fb99e",
+    "static-dimensions/prompt.md": "2c6a7baafae17f2c1e45cf64bc7c88e9d4f1373832caac77f48cf0e6b6858ae2",
+    "static-dimensions/rubric.md": "ac6656852458cb04f488ad46bf7c050c433298efe49669dcabd39aeb63e521ae",
+    "typed-errors-concurrency/prompt.md": "75b79df81e150132d4e05b9d4a2e6baf5611777384e5aa5d262901daa1fc53ec",
+    "typed-errors-concurrency/rubric.md": "6e4ea068818f53c1e674a3752814dcdd605d6f47fbaa9cbb66600362ed7ab480",
+    "workflow-recovery/prompt.md": "e34317493fa9672aab19fbe59e88e68a7a3b8c79e5dd106a74532413ef9a3778",
+    "workflow-recovery/rubric.md": "bea7f37719274e90a83995bfe81dec4fe80b5e01968f2bcc9253dc96bf59a25f"
+  },
+  "criteria_sha256": "0574f95fd53d7c4c7dbda874f5bae4ee5858152981bc0da293bff8f4e80fd3fd",
+  "main_case_ids": [
+    "swift-type-decoding-main-combined",
+    "swift-type-workflow-recovery-combined",
+    "swift-type-generic-correlation-combined",
+    "swift-type-static-dimensions-combined",
+    "swift-type-ownership-lifetime-combined",
+    "swift-type-typed-errors-concurrency-combined",
+    "swift-type-near-miss-output-tests-combined",
+    "swift-type-near-miss-api-naming-combined",
+    "swift-type-near-miss-prose-editing-combined",
+    "swift-type-near-miss-defect-review-combined"
+  ],
+  "configuration_variant_ids": [
+    "swift-type-decoding-apple-variant",
+    "swift-type-decoding-combined-variant"
+  ],
+  "main_case_count": 10,
+  "positive_case_count": 6,
+  "near_miss_count": 4,
+  "configuration_variant_count": 2,
+  "required_main_accepted_runs": 20,
+  "required_additional_configuration_accepted_runs": 4,
+  "repetitions_per_case_runtime": 1,
+  "runtime_settings": {
+    "codex": {
+      "model": "gpt-6.1-sol",
+      "effort": "high",
+      "timeout_seconds": 900
+    },
+    "claude": {
+      "model": "claude-sonnet-5-5",
+      "effort": "high",
+      "timeout_seconds": 900,
+      "skill_metadata_character_budget": 24000
+    }
+  },
+  "settings_reason": "Use the existing accepted invariant matrix settings for comparison. High effort gives the generic, ownership, and error-boundary assessments room to check scoped proof claims; these runs make no claim about medium-effort behavior.",
+  "acceptance": "Only reviewed evidence with overall_status accepted and a passing verify-evidence command counts. Require successful local-snapshot skill/reference loads for positives and no type/invariant workflow for near misses. Retain all failed attempts. After fixes, rerun affected cases against the final snapshot.",
+  "snapshot_policy": "Freeze and record final plugin file maps after compiler fixture work and version bumps, before native runs. Compare source and copied plugin snapshots for every run and guard source before/after batch.",
+  "semantic_review": "Review the complete response and tool transcript against the frozen rubric; record behavior, scope, evidence_honesty, and composition independently. Do not infer success from process exit.",
+  "evidence_root": "/tmp/swift-type-integration-goal2/native"
+}

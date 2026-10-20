@@ -1,0 +1,193 @@
+{
+  "schema_version": 1,
+  "interpretation": "Exact alternative diagnostic sets observed from the named toolchain. Each alternative remains fail-closed: every listed message must occur and every source error must match the selected set. Supplied Swift 6.4.1 markers remain canonical and preserved in compiler-corpus-map.json.",
+  "toolchains": [
+    {
+      "version_contains": "Apple Swift version 6.3.3",
+      "diagnostic_sets": {
+        "modeling:equality_cannot_be_forged": [
+          [
+            "static property 'reflexive' requires the types 'String' and 'Bool' be equivalent"
+          ]
+        ],
+        "modeling:associated_family_wrong_mapping": [
+          [
+            "type 'BadSort' does not conform to protocol 'ExpressionSort'",
+            "'ExpressionSort' requires the types 'BadSort.Value' (aka 'Int') and 'String' be equivalent"
+          ]
+        ],
+        "modeling:pack_wrong_arity": [
+          [
+            "missing argument for parameter #1 in call",
+            "could not infer pack element #0 from context",
+            "could not infer pack element #1 from context"
+          ]
+        ],
+        "frontier:integer_arithmetic_default": [
+          [
+            "expected type",
+            "cannot pass type '()' as a value for generic value 'N'"
+          ]
+        ],
+        "frontier:integer_generic_arithmetic": [
+          [
+            "expected ',' separator",
+            "expected type"
+          ]
+        ],
+        "frontier:integer_inequality_constraint": [
+          [
+            "expected ':' or '==' to indicate a conformance or same-type requirement",
+            "consecutive statements on a line must be separated by ';'",
+            "unary operator cannot be separated from its operand",
+            "top-level statement cannot begin with a closure expression",
+            "'>' is not a prefix unary operator",
+            "closure expression is unused [#no-usage]",
+            "expected '{' in body of function declaration"
+          ]
+        ],
+        "frontier:custom_lifetime_default": [
+          [
+            "a function cannot return a ~Escapable result",
+            "'@_lifetime' attribute is only valid when experimental feature Lifetimes is enabled"
+          ]
+        ],
+        "frontier:literal_expression_experimental": [
+          [
+            "expected type",
+            "cannot pass type '()' as a value for generic value 'N'"
+          ]
+        ],
+        "frontier:generic_arithmetic_experimental": [
+          [
+            "expected ',' separator",
+            "expected type"
+          ]
+        ],
+        "frontier:noncopyable_tuple": [
+          [
+            "tuple with noncopyable element type 'N' is not supported",
+            "type '(N, N)' containing noncopyable element is not supported"
+          ]
+        ],
+        "frontier:nonescapable_custom_struct": [
+          [
+            "the 'get' accessor cannot return a ~Escapable result",
+            "an implicit initializer cannot return a ~Escapable result"
+          ]
+        ],
+        "frontier:pack_noncopyable": [
+          [
+            "cannot suppress '~Copyable' on type 'each T'",
+            "'each T' required to be 'Copyable' but is marked with '~Copyable'"
+          ]
+        ]
+      }
+    },
+    {
+      "version_contains": "Apple Swift version 6.4 (swiftlang-6.4.0.34.1",
+      "diagnostic_sets": {
+        "modeling:equality_cannot_be_forged": [
+          [
+            "member chain produces result of type 'TypeEquality<String, String>' but contextual base was inferred as 'TypeEquality<String, Bool>'",
+            "static property 'reflexive' requires the types 'String' and 'Bool' be equivalent"
+          ]
+        ],
+        "modeling:associated_family_wrong_mapping": [
+          [
+            "type 'BadSort' does not conform to protocol 'ExpressionSort'",
+            "'ExpressionSort' requires the types 'BadSort.Value' (aka 'Int') and 'String' be equivalent"
+          ]
+        ],
+        "modeling:pack_wrong_arity": [
+          [
+            "missing argument for parameter #1 in call",
+            "could not infer pack element #0 from context",
+            "could not infer pack element #1 from context"
+          ]
+        ],
+        "frontier:integer_arithmetic_default": [
+          [
+            "expected type",
+            "cannot pass type '()' as a value for generic value 'N'"
+          ]
+        ],
+        "frontier:integer_generic_arithmetic": [
+          [
+            "expected ',' separator",
+            "expected type"
+          ]
+        ],
+        "frontier:integer_inequality_constraint": [
+          [
+            "expected ':' or '==' to indicate a conformance or same-type requirement",
+            "consecutive statements on a line must be separated by ';'",
+            "unary operator cannot be separated from its operand",
+            "top-level statement cannot begin with a closure expression",
+            "'>' is not a prefix unary operator",
+            "closure expression is unused [#NoUsage]",
+            "expected '{' in body of function declaration"
+          ]
+        ],
+        "frontier:custom_lifetime_default": [
+          [
+            "a function cannot return a ~Escapable result",
+            "'@_lifetime' attribute is only valid when experimental feature Lifetimes is enabled"
+          ]
+        ],
+        "frontier:literal_expression_experimental": [
+          [
+            "unsupported operator in a literal expression",
+            "generic value must be an integer literal expression"
+          ]
+        ],
+        "frontier:generic_arithmetic_experimental": [
+          [
+            "global function 'append' has self-referential generic requirements",
+            "cannot convert value of type '(N).Type' to expected argument type 'Int'",
+            "generic value must be an integer literal expression"
+          ]
+        ],
+        "frontier:noncopyable_tuple": [
+          [
+            "tuple with noncopyable element type 'N' is not supported",
+            "type '(N, N)' containing noncopyable element is not supported"
+          ]
+        ],
+        "frontier:nonescapable_custom_struct": [
+          [
+            "the 'get' accessor cannot return a ~Escapable result",
+            "an implicit initializer cannot return a ~Escapable result"
+          ]
+        ],
+        "frontier:pack_noncopyable": [
+          [
+            "cannot suppress '~Copyable' on type 'each T'",
+            "'each T' required to be 'Copyable' but is marked with '~Copyable'"
+          ]
+        ],
+        "frontier:span_single_value": [
+          [
+            "incorrect argument label in call (have 'borrowing:', expected 'viewing:')",
+            "cannot convert value of type 'Int' to expected argument type 'RawSpan'"
+          ]
+        ]
+      },
+      "reviewed_counterexamples": {
+        "modeling:equality_cannot_be_forged": "Both diagnostics reject reflexive equality between String and Bool; the valid equality control compiles.",
+        "modeling:associated_family_wrong_mapping": "The conformance error and same-type mismatch both reject mapping Int to TextSyntax.Value String.",
+        "modeling:pack_wrong_arity": "Missing-argument and pack-inference diagnostics arise at the same wrong-arity apply call.",
+        "frontier:integer_arithmetic_default": "The parser rejects an arithmetic expression as a generic integer argument; the secondary tuple-type diagnostic follows that parse failure.",
+        "frontier:integer_generic_arithmetic": "The parser rejects N + 1 as a generic integer argument under the default lane.",
+        "frontier:integer_inequality_constraint": "All parser and operator diagnostics arise from unsupported N > 0 generic constraint syntax in the one-line declaration.",
+        "frontier:custom_lifetime_default": "The nonescapable result and lifetime-attribute diagnostics reject the declaration without its experimental feature flag.",
+        "frontier:literal_expression_experimental": "The literal-expression feature accepts literal syntax but rejects the arithmetic operator in this expression.",
+        "frontier:generic_arithmetic_experimental": "The generic arithmetic expression has self-referential requirements and is not an integer literal expression; all errors concern N + 1.",
+        "frontier:noncopyable_tuple": "Both diagnostics reject noncopyable elements in the returned tuple.",
+        "frontier:nonescapable_custom_struct": "The synthesized getter and initializer cannot return the nonescapable result in this default-lane declaration.",
+        "frontier:pack_noncopyable": "Both diagnostics reject suppressing Copyable on each pack element.",
+        "frontier:span_single_value": "The same unsupported Span(borrowing: Int) construction emits a label mismatch and an Int-to-RawSpan mismatch for the available initializer."
+      }
+    }
+  ]
+}

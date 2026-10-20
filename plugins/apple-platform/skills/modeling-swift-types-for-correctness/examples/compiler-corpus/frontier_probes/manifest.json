@@ -1,0 +1,528 @@
+{
+  "schema_version": 1,
+  "purpose": "Compiler acceptance and rejection probes for Swift 6.4 type-system boundaries.",
+  "language_mode": "6",
+  "phase": "emit-sil",
+  "interpretation": "expected_success means expected compiler acceptance, not correctness, runtime safety, or recommended use. Expected rejections require the stated diagnostic substring. All sources are compiled independently.",
+  "probes": [
+    {
+      "name": "integer_shape_valid",
+      "expected_success": true,
+      "expected_diagnostic_contains": null,
+      "experimental_flags": [],
+      "note": "Corrected shape-compatible composition and same-value extension. Replaces the initial redundant-equivalence trial.",
+      "source_sha256": "2a78472646dd19e70fd8ed30d828d08fc665929802d8a3e9e59f1611d38ebf6d",
+      "source": "\nstruct Matrix<let Rows: Int, let Columns: Int> {}\nfunc product<let R: Int, let K: Int, let C: Int>(\n    _ lhs: Matrix<R, K>, _ rhs: Matrix<K, C>\n) -> Matrix<R, C> { Matrix<R, C>() }\nfunc validShape(_ a: Matrix<2, 3>, _ b: Matrix<3, 4>) {\n    let _: Matrix<2, 4> = product(a, b)\n}\nfunc diagonal<let N: Int>(_ m: Matrix<N, N>) {}\nextension Matrix where Rows == Columns { func squareOnly() {} }\n"
+    },
+    {
+      "name": "integer_shape_invalid",
+      "expected_success": false,
+      "expected_diagnostic_contains": "cannot convert value of type 'Matrix<4, 5>' to expected argument type 'Matrix<3, 5>'",
+      "experimental_flags": [],
+      "note": "",
+      "source_sha256": "2e9c9672f31e86b818ef357b76271a8bb6e8bb50e89f8bee2f58d718ff6e391e",
+      "source": "\nstruct Matrix<let Rows: Int, let Columns: Int> {}\nfunc product<let R: Int, let K: Int, let C: Int>(\n    _ lhs: Matrix<R, K>, _ rhs: Matrix<K, C>\n) -> Matrix<R, C> { Matrix<R, C>() }\nfunc invalidShape(_ a: Matrix<2, 3>, _ b: Matrix<4, 5>) {\n    _ = product(a, b)\n}\n"
+    },
+    {
+      "name": "inline_array_valid",
+      "expected_success": true,
+      "expected_diagnostic_contains": null,
+      "experimental_flags": [],
+      "note": "",
+      "source_sha256": "b142350f1cda5392ae063fbbadb5d94848853bbcaa40540808eb2a25ad36b735",
+      "source": "\nfunc fourBytes(_ bytes: InlineArray<4, UInt8>) -> UInt8 { bytes[0] }\nfunc validInlineArray() -> UInt8 {\n    let bytes: [4 of UInt8] = [1, 2, 3, 4]\n    return fourBytes(bytes)\n}\n"
+    },
+    {
+      "name": "integer_arithmetic_default",
+      "expected_success": false,
+      "expected_diagnostic_contains": "expected type",
+      "experimental_flags": [],
+      "note": "",
+      "source_sha256": "710ec27424514310d9fb7f22822bf24c91e40ab199c70678ba3d5a8a18f82ea8",
+      "source": "\nstruct Sized<let N: Int> {}\nfunc expression() { let _: Sized<(2 + 3)> = .init() }\n"
+    },
+    {
+      "name": "integer_constant_default",
+      "expected_success": false,
+      "expected_diagnostic_contains": "cannot find type 'count' in scope",
+      "experimental_flags": [],
+      "note": "",
+      "source_sha256": "1270a953dd9f04f3d84c65b1cd8c25be12811764c8f5a25ec2b478197cbf9eb8",
+      "source": "\nstruct Sized<let N: Int> {}\nfunc expression() { let count = 5; let _: Sized<count> = .init() }\n"
+    },
+    {
+      "name": "integer_generic_arithmetic",
+      "expected_success": false,
+      "expected_diagnostic_contains": "expected type",
+      "experimental_flags": [],
+      "note": "",
+      "source_sha256": "66dde274a5f7645d2a41c838ff6e7cdb665b191a65b00df4aea1119ab40c754a",
+      "source": "\nstruct Sized<let N: Int> {}\nfunc append<let N: Int>(_ x: Sized<N>) -> Sized<(N + 1)> { .init() }\n"
+    },
+    {
+      "name": "integer_inequality_constraint",
+      "expected_success": false,
+      "expected_diagnostic_contains": "expected ':' or '==' to indicate a conformance or same-type requirement",
+      "experimental_flags": [],
+      "note": "",
+      "source_sha256": "b6d7ea6d34eaa16cb9202fcdd9ddff7fae8f17cf8cb18e3582c65584f39c9316",
+      "source": "\nstruct Sized<let N: Int> {}\nfunc positive<let N: Int>(_ x: Sized<N>) where N > 0 {}\n"
+    },
+    {
+      "name": "ownership_valid",
+      "expected_success": true,
+      "expected_diagnostic_contains": null,
+      "experimental_flags": [],
+      "note": "",
+      "source_sha256": "e5a6a1a44f85e567cc533d01318c5ad64953acb2ca1bf34292080a68ea982bae",
+      "source": "\nstruct Permit: ~Copyable { let id: Int; consuming func finish() -> Int { id } }\nfunc inspect(_ p: borrowing Permit) -> Int { p.id }\nfunc borrowThenConsume(_ p: consuming Permit) -> Int {\n    _ = inspect(p)\n    return p.finish()\n}\nstruct Pair: ~Copyable { var left: Permit; var right: Permit }\nfunc partial(_ p: consuming Pair) -> Pair {\n    let l = consume p.left\n    let r = consume p.right\n    return Pair(left: l, right: r)\n}\n"
+    },
+    {
+      "name": "ownership_double_consume_invalid",
+      "expected_success": false,
+      "expected_diagnostic_contains": "'p' consumed more than once",
+      "experimental_flags": [],
+      "note": "",
+      "source_sha256": "ad1c5b6f9748a6d06718a1f5755969d2560e445e80a2d239ea6be335c58d48d4",
+      "source": "\nstruct Permit: ~Copyable { consuming func finish() {} }\nfunc repeated(_ p: consuming Permit) { p.finish(); p.finish() }\n"
+    },
+    {
+      "name": "span_iterable_valid",
+      "expected_success": true,
+      "expected_diagnostic_contains": null,
+      "experimental_flags": [],
+      "note": "",
+      "source_sha256": "bb7cb14e5891fdbdcd8124de1f19e84763fde8d1ccb4530e77c93e5f3c300c2d",
+      "source": "\nfunc sum(_ bytes: Span<UInt8>) -> Int {\n    var total = 0\n    for byte in bytes { total += Int(byte) }\n    return total\n}\nfunc sumArray(_ bytes: [UInt8]) -> Int { sum(bytes.span) }\n"
+    },
+    {
+      "name": "span_escaping_local_invalid",
+      "expected_success": false,
+      "expected_diagnostic_contains": "a function cannot return a ~Escapable result",
+      "experimental_flags": [],
+      "note": "Default-mode rejection is a feature gate, not independently a lifetime-escape diagnostic.",
+      "source_sha256": "aeb1cf15ce90a44bd8fff1c8b396fe8330664da475ba306fea073ef198d2f54c",
+      "source": "\nfunc escaped() -> Span<UInt8> {\n    let bytes: [UInt8] = [1, 2, 3]\n    return bytes.span\n}\n"
+    },
+    {
+      "name": "span_alias_mutation_invalid",
+      "expected_success": false,
+      "expected_diagnostic_contains": "overlapping accesses to 'bytes', but modification requires exclusive access; consider copying to a local variable [#ExclusivityViolation]",
+      "experimental_flags": [],
+      "note": "",
+      "source_sha256": "ec7b0a140e0bd1df04167411477c386faa3ac348374f2125c0e7c509577ef168",
+      "source": "\nfunc conflicting(_ bytes: inout [Int]) -> Int {\n    let view = bytes.span\n    bytes.append(3)\n    return view[0]\n}\n"
+    },
+    {
+      "name": "ref_valid",
+      "expected_success": true,
+      "expected_diagnostic_contains": null,
+      "experimental_flags": [],
+      "note": "",
+      "source_sha256": "991382611dfe9aedd1e20e5cce19377c9f77865bf30ab372282a3a490095d258",
+      "source": "\nfunc read(_ value: Int) -> Int { let ref = Ref(value); return ref.value }\nfunc update(_ value: inout Int) {\n    var ref = MutableRef(&value)\n    ref.value += 1\n}\n"
+    },
+    {
+      "name": "borrow_accessors_valid",
+      "expected_success": true,
+      "expected_diagnostic_contains": null,
+      "experimental_flags": [],
+      "note": "",
+      "source_sha256": "48b563e0c655ed72ea2cbac8d2f57e246b2d4a934314e110f943178bb16fb2e3",
+      "source": "\nstruct Holder<T: ~Copyable>: ~Copyable {\n    var storage: T\n    var value: T {\n        borrow { return storage }\n        mutate { return &storage }\n    }\n}\n"
+    },
+    {
+      "name": "borrow_temporary_invalid",
+      "expected_success": false,
+      "expected_diagnostic_contains": "invalid return value from a borrow accessor",
+      "experimental_flags": [],
+      "note": "",
+      "source_sha256": "e1bc83f5c471dae680f725454ebd80d6eb9e2a6ef0fdf80b034e7c0622d0afe4",
+      "source": "\nstruct Holder {\n    var value: [Int] { borrow { return [1, 2, 3] } }\n}\n"
+    },
+    {
+      "name": "optional_ref",
+      "expected_success": false,
+      "expected_diagnostic_contains": "value of type 'N?' has no member 'ref'",
+      "experimental_flags": [],
+      "note": "",
+      "source_sha256": "ead8f6e5d29ba6cfda37ec55f10155a68e5b5411fae853136035a65df4a2f1de",
+      "source": "\nstruct N: ~Copyable { var value: Int }\nfunc inspect(_ optional: borrowing N?) -> Int {\n    if let ref = optional.ref { return ref.value.value }\n    return 0\n}\n"
+    },
+    {
+      "name": "optional_mutableref",
+      "expected_success": false,
+      "expected_diagnostic_contains": "value of type 'N?' has no member 'mutableRef'",
+      "experimental_flags": [],
+      "note": "",
+      "source_sha256": "cbb0bd0025c6167dabe208f125043b1533d8cd93a99a1f9bc118e96ccccad2ac",
+      "source": "\nstruct N: ~Copyable { var value: Int }\nfunc update(_ optional: inout N?) {\n    if var ref = optional.mutableRef { ref.value.value += 1 }\n}\n"
+    },
+    {
+      "name": "optional_put",
+      "expected_success": false,
+      "expected_diagnostic_contains": "value of type 'N?' has no member 'put'",
+      "experimental_flags": [],
+      "note": "",
+      "source_sha256": "fe7f89fbf0a4ac030fb076683b7649a5156a00aae7a3285b0abef8cdb1c202b5",
+      "source": "\nstruct N: ~Copyable { var value: Int }\nfunc update(_ optional: inout N?) {\n    var ref = optional.put(N(value: 1))\n    ref.value.value += 1\n}\n"
+    },
+    {
+      "name": "optional_map_noncopyable",
+      "expected_success": false,
+      "expected_diagnostic_contains": "referencing instance method 'map' on 'Optional' requires that 'N' conform to 'Copyable'",
+      "experimental_flags": [],
+      "note": "",
+      "source_sha256": "8f845e8d14e7f12971494a4ca394512e13bdc97c69b0dcbf1f14445ae77b1e1a",
+      "source": "\nstruct N: ~Copyable { var value: Int }\nfunc mapped(_ optional: consuming N?) -> Int? { optional.map { $0.value } }\n"
+    },
+    {
+      "name": "optional_borrow_switch_valid",
+      "expected_success": true,
+      "expected_diagnostic_contains": null,
+      "experimental_flags": [],
+      "note": "",
+      "source_sha256": "5468c4319926436a3a1c387b11db9a2c1ce26f006baf83226c44827d9d3a805b",
+      "source": "\nstruct N: ~Copyable { var value: Int }\nfunc inspect(_ optional: borrowing N?) -> Int {\n    switch optional {\n    case .some(let n): return n.value\n    case .none: return 0\n    }\n}\n"
+    },
+    {
+      "name": "unique_containers",
+      "expected_success": true,
+      "expected_diagnostic_contains": null,
+      "experimental_flags": [],
+      "note": "",
+      "source_sha256": "cb3cf9a0514c6af7c82979bf93e66c0a00efa3c691fdaaf352e9529f70ccef38",
+      "source": "\nstruct N: ~Copyable { var value: Int }\nfunc containers() -> Int {\n    var box = UniqueBox(N(value: 1))\n    box.value.value += 1\n    var values = UniqueArray<N>()\n    values.append(N(value: 3))\n    return box.value.value + values[0].value\n}\n"
+    },
+    {
+      "name": "rigid_array",
+      "expected_success": false,
+      "expected_diagnostic_contains": "cannot find 'RigidArray' in scope",
+      "experimental_flags": [],
+      "note": "",
+      "source_sha256": "ba8ef9c33d0eb327f2a03d290762294e803300253e098150a15ab4cbfe257cf5",
+      "source": "\nfunc rigid() { _ = RigidArray<Int>(capacity: 4) }\n"
+    },
+    {
+      "name": "iterable_typed_failure",
+      "expected_success": true,
+      "expected_diagnostic_contains": null,
+      "experimental_flags": [],
+      "note": "",
+      "source_sha256": "7f08429f798b99002969de3e8f1a5316c41cdfc0351bc4633649c58dfa45aead",
+      "source": "\nfunc count<I: Iterable>(_ input: borrowing I) throws(I.Failure) -> Int\nwhere I: ~Copyable & ~Escapable, I.Element: ~Copyable {\n    var result = 0\n    for try _ in input { result += 1 }\n    return result\n}\n"
+    },
+    {
+      "name": "noncopyable_hashable",
+      "expected_success": true,
+      "expected_diagnostic_contains": null,
+      "experimental_flags": [],
+      "note": "",
+      "source_sha256": "e46b0fc82f43482b10372f0d0567925c8a2d5898a8a5567e6874ea9a374504f5",
+      "source": "\nstruct Token: ~Copyable, Hashable {\n    let id: Int\n    static func == (lhs: borrowing Token, rhs: borrowing Token) -> Bool { lhs.id == rhs.id }\n    func hash(into hasher: inout Hasher) { hasher.combine(id) }\n}\n"
+    },
+    {
+      "name": "associatedtype_suppression_valid",
+      "expected_success": true,
+      "expected_diagnostic_contains": null,
+      "experimental_flags": [],
+      "note": "",
+      "source_sha256": "542ea3a694fbd0c9393e19a573fb840a1b58362f2f2843969f9c55c4a49d1207",
+      "source": "\nstruct N: ~Copyable {}\nprotocol Source<Element> { associatedtype Element: ~Copyable; mutating func take() -> Element? }\nstruct NCSource: Source { typealias Element = N; mutating func take() -> N? { nil } }\nfunc generalized<S: Source>(_ source: inout S) where S.Element: ~Copyable { _ = source.take() }\nfunc useGeneralized() { var source = NCSource(); generalized(&source) }\n"
+    },
+    {
+      "name": "associatedtype_defaults_invalid",
+      "expected_success": false,
+      "expected_diagnostic_contains": "global function 'defaults' requires that 'NCSource.Element' (aka 'N') conform to 'Copyable'",
+      "experimental_flags": [],
+      "note": "",
+      "source_sha256": "b4031a3eb7d9f397288f6df44d7d5b28bc0b8f53bd56fa0309843d582873e082",
+      "source": "\nstruct N: ~Copyable {}\nprotocol Source<Element> { associatedtype Element: ~Copyable; mutating func take() -> Element? }\nstruct NCSource: Source { typealias Element = N; mutating func take() -> N? { nil } }\nfunc defaults<S: Source>(_ source: inout S) {}\nfunc useDefault() { var source = NCSource(); defaults(&source) }\n"
+    },
+    {
+      "name": "pack_valid",
+      "expected_success": true,
+      "expected_diagnostic_contains": null,
+      "experimental_flags": [],
+      "note": "",
+      "source_sha256": "84f8057147624048c544d7c4a84d23715ca695fe927d8edbc6b6b29a792242c3",
+      "source": "\nstruct Row<each Field> { var fields: (repeat each Field) }\nfunc equalFields<each T: Equatable>(_ a: (repeat each T), _ b: (repeat each T)) -> Bool {\n    for (x, y) in repeat (each a, each b) {\n        if x != y { return false }\n    }\n    return true\n}\n"
+    },
+    {
+      "name": "tuple_hashable",
+      "expected_success": false,
+      "expected_diagnostic_contains": "type '(Int, Int)' cannot conform to 'Hashable' [#ProtocolTypeNonConformance]",
+      "experimental_flags": [],
+      "note": "",
+      "source_sha256": "272fb580cdadd661ffa4cb7886ae1c7810b4c41a19b626b1f1004635f00c4a57",
+      "source": "\nfunc requiresHash<T: Hashable>(_ value: T) {}\nfunc tuple() { requiresHash((1, 2)) }\n"
+    },
+    {
+      "name": "inline_array_hashable",
+      "expected_success": false,
+      "expected_diagnostic_contains": "global function 'requiresHash' requires that '[3 of Int]' conform to 'Hashable'",
+      "experimental_flags": [],
+      "note": "",
+      "source_sha256": "0d90db99e87f1bfc4c21404ce6cc1bc821315390a32f7fc6ed829d8ab1929579",
+      "source": "\nfunc requiresHash<T: Hashable>(_ value: T) {}\nfunc tuple() { let a: [3 of Int] = [1, 2, 3]; requiresHash(a) }\n"
+    },
+    {
+      "name": "custom_lifetime_default",
+      "expected_success": false,
+      "expected_diagnostic_contains": "a function cannot return a ~Escapable result",
+      "experimental_flags": [],
+      "note": "",
+      "source_sha256": "217f6a268e37f5270f1fde78223509bebc0b4634b76b1730df1466c71ced550a",
+      "source": "\n@_lifetime(borrow values)\nfunc dependent(_ values: borrowing [Int]) -> Span<Int> { values.span }\n"
+    },
+    {
+      "name": "yielding_accessors",
+      "expected_success": false,
+      "expected_diagnostic_contains": "'yielding borrow' accessor is only valid when experimental feature coroutine accessors is enabled",
+      "experimental_flags": [],
+      "note": "",
+      "source_sha256": "e22eeafe47d245da69dc6a1e00bb65215f541acee0aadf92a19b397a0a2d5215",
+      "source": "\nstruct Holder { var storage: Int; var value: Int { yielding borrow { yield storage } } }\n"
+    },
+    {
+      "name": "safe_raw_bytes",
+      "expected_success": true,
+      "expected_diagnostic_contains": null,
+      "experimental_flags": [],
+      "note": "",
+      "source_sha256": "47997be9306a411207d2f38eadb346170ab75f77b85fe05336ee913914e67c3f",
+      "source": "\nfunc read(_ bytes: RawSpan) -> UInt32 { bytes.load(fromByteOffset: 0, as: UInt32.self) }\n"
+    },
+    {
+      "name": "span_single_value",
+      "expected_success": false,
+      "expected_diagnostic_contains": "incorrect argument label in call (have 'borrowing:', expected 'viewing:')",
+      "experimental_flags": [],
+      "note": "",
+      "source_sha256": "546dfd9d7adcfd628bb008e99c554887859d9f9ec1a219005a0119f0a7383009",
+      "source": "\nfunc single(_ value: borrowing Int) { let span = Span(borrowing: value); _ = span.count }\n"
+    },
+    {
+      "name": "inline_array_wrong_arity",
+      "expected_success": false,
+      "expected_diagnostic_contains": "expected '3' elements in inline array literal, but got '2'",
+      "experimental_flags": [],
+      "note": "",
+      "source_sha256": "8e097e6a999a53c6793639c4496c3abf5ea536509f91fefd35d4bd59093191d0",
+      "source": "func example() { let _: [3 of Int] = [1, 2] }"
+    },
+    {
+      "name": "inline_array_unchecked_index",
+      "expected_success": true,
+      "expected_diagnostic_contains": null,
+      "experimental_flags": [],
+      "note": "Acceptance means no static index-range proof. This subscript retains a runtime check; it was not executed.",
+      "source_sha256": "237714708d24b50680cd9550586a78df04c264985990f55d39b8a15c92951427",
+      "source": "func example(_ values: [3 of Int]) -> Int { values[100] }"
+    },
+    {
+      "name": "inline_array_negative_size",
+      "expected_success": true,
+      "expected_diagnostic_contains": null,
+      "experimental_flags": [],
+      "note": "Acceptance is at SIL emission only; it does not assert valid layout or runtime construction for negative size.",
+      "source_sha256": "6989317911d7d91752a2fdbcacc50abc9f7a9ba09e161177b185c2b19700768a",
+      "source": "func example(_ values: [-1 of Int]) {}"
+    },
+    {
+      "name": "span_getter_valid",
+      "expected_success": false,
+      "expected_diagnostic_contains": "a method cannot return a ~Escapable result",
+      "experimental_flags": [],
+      "note": "The forwarding getter is semantically plausible but rejected in default mode because custom nonescapable returns require Lifetimes.",
+      "source_sha256": "4810b25836c01362210b77cbd5a51203e4f4dc0db2ed5f38b2e230dfc5d5d066",
+      "source": "\nstruct Bytes { var storage: [UInt8]; var span: Span<UInt8> { storage.span } }\n"
+    },
+    {
+      "name": "span_getter_escape_invalid",
+      "expected_success": false,
+      "expected_diagnostic_contains": "a method cannot return a ~Escapable result",
+      "experimental_flags": [],
+      "note": "Default-mode rejection is a feature gate. Use span_local_escape_explicit_lifetime to verify the actual escape rule.",
+      "source_sha256": "a0f0646e05f7d7cc5ac46d05a45a8ea84e8a0b9c71d38f9e1004693da81c7395",
+      "source": "\nstruct Bytes { var span: Span<UInt8> { let local: [UInt8] = [1, 2]; return local.span } }\n"
+    },
+    {
+      "name": "custom_lifetime_experimental",
+      "expected_success": true,
+      "expected_diagnostic_contains": null,
+      "experimental_flags": [
+        "-enable-experimental-feature",
+        "Lifetimes"
+      ],
+      "note": "",
+      "source_sha256": "217f6a268e37f5270f1fde78223509bebc0b4634b76b1730df1466c71ced550a",
+      "source": "\n@_lifetime(borrow values)\nfunc dependent(_ values: borrowing [Int]) -> Span<Int> { values.span }\n"
+    },
+    {
+      "name": "inferred_lifetime_experimental",
+      "expected_success": true,
+      "expected_diagnostic_contains": null,
+      "experimental_flags": [
+        "-enable-experimental-feature",
+        "Lifetimes"
+      ],
+      "note": "",
+      "source_sha256": "3f370ade7ef8f6c4eb645258e0561e00c37bd6e3eadad22a40aed36b982e7e63",
+      "source": "\nfunc dependent(_ values: borrowing [Int]) -> Span<Int> { values.span }\n"
+    },
+    {
+      "name": "yielding_accessor_experimental",
+      "expected_success": true,
+      "expected_diagnostic_contains": null,
+      "experimental_flags": [
+        "-enable-experimental-feature",
+        "CoroutineAccessors"
+      ],
+      "note": "",
+      "source_sha256": "e22eeafe47d245da69dc6a1e00bb65215f541acee0aadf92a19b397a0a2d5215",
+      "source": "\nstruct Holder { var storage: Int; var value: Int { yielding borrow { yield storage } } }\n"
+    },
+    {
+      "name": "literal_expression_experimental",
+      "expected_success": false,
+      "expected_diagnostic_contains": "unsupported operator in a literal expression",
+      "experimental_flags": [
+        "-enable-experimental-feature",
+        "LiteralExpressions"
+      ],
+      "note": "Uses the exact parenthesized SE-0531 syntax, not the unsupported unparenthesized spelling.",
+      "source_sha256": "710ec27424514310d9fb7f22822bf24c91e40ab199c70678ba3d5a8a18f82ea8",
+      "source": "\nstruct Sized<let N: Int> {}\nfunc expression() { let _: Sized<(2 + 3)> = .init() }\n"
+    },
+    {
+      "name": "generic_arithmetic_experimental",
+      "expected_success": false,
+      "expected_diagnostic_contains": "self-referential generic requirements",
+      "experimental_flags": [
+        "-enable-experimental-feature",
+        "LiteralExpressions"
+      ],
+      "note": "",
+      "source_sha256": "66dde274a5f7645d2a41c838ff6e7cdb665b191a65b00df4aea1119ab40c754a",
+      "source": "\nstruct Sized<let N: Int> {}\nfunc append<let N: Int>(_ x: Sized<N>) -> Sized<(N + 1)> { .init() }\n"
+    },
+    {
+      "name": "borrowing_copyable_result_implicit",
+      "expected_success": false,
+      "expected_diagnostic_contains": "'values' is borrowed and cannot be consumed",
+      "experimental_flags": [],
+      "note": "",
+      "source_sha256": "72d3bc4065ae706117f9d46cee06a63214634863295b2990e7f4776ee1567f3f",
+      "source": "\nfunc duplicate(_ values: borrowing [Int]) -> [Int] { values }\n"
+    },
+    {
+      "name": "borrowing_copyable_result_explicit",
+      "expected_success": true,
+      "expected_diagnostic_contains": null,
+      "experimental_flags": [],
+      "note": "",
+      "source_sha256": "78765309404bb71feac969199d61c882eb0a01ff33dc2a5785f98d15cb52263f",
+      "source": "\nfunc duplicate(_ values: borrowing [Int]) -> [Int] { copy values }\n"
+    },
+    {
+      "name": "noncopyable_tuple",
+      "expected_success": false,
+      "expected_diagnostic_contains": "tuple with noncopyable element type 'N' is not supported",
+      "experimental_flags": [],
+      "note": "",
+      "source_sha256": "ca5b11e1815f559e2996f9694aab30eea68a3367d03c32e7442863d42af8424c",
+      "source": "\nstruct N: ~Copyable {}\nfunc combine(_ a: consuming N, _ b: consuming N) -> (N, N) { (a, b) }\n"
+    },
+    {
+      "name": "noncopyable_existential",
+      "expected_success": true,
+      "expected_diagnostic_contains": null,
+      "experimental_flags": [],
+      "note": "",
+      "source_sha256": "f5733e8616fa584e8098426c9f80154db9a46c0d2fb0f18ebd27da0aab05df60",
+      "source": "\nprotocol Resource: ~Copyable { func use() }\nstruct N: Resource, ~Copyable { func use() {} }\nfunc erase(_ value: consuming N) -> any Resource & ~Copyable { value }\n"
+    },
+    {
+      "name": "nonescapable_custom_struct",
+      "expected_success": false,
+      "expected_diagnostic_contains": "the 'get' accessor cannot return a ~Escapable result",
+      "experimental_flags": [],
+      "note": "",
+      "source_sha256": "3a452b95c9da7816c7108a6fcb0cac229c1d3f0dd9c0cd321fdabd2d4d944a18",
+      "source": "struct View: ~Escapable { let contents: Span<Int> }"
+    },
+    {
+      "name": "nonescapable_generic",
+      "expected_success": true,
+      "expected_diagnostic_contains": null,
+      "experimental_flags": [],
+      "note": "",
+      "source_sha256": "1c308dd25265fef0faee1d29a82b469fa4a22cfb7312368543dc9798e884b22a",
+      "source": "func inspect<T: ~Escapable>(_ value: borrowing T) {}"
+    },
+    {
+      "name": "pack_noncopyable",
+      "expected_success": false,
+      "expected_diagnostic_contains": "cannot suppress '~Copyable' on type 'each T'",
+      "experimental_flags": [],
+      "note": "",
+      "source_sha256": "b90703336f93fd796a442cb7c6402a65c85d6bad2680c86bb9e59bf7fb757fba",
+      "source": "struct Row<each T: ~Copyable> { var values: (repeat each T) }"
+    },
+    {
+      "name": "negative_inline_array_init",
+      "expected_success": true,
+      "expected_diagnostic_contains": null,
+      "experimental_flags": [],
+      "note": "Acceptance is at SIL emission only; this program was not linked or executed.",
+      "source_sha256": "ae0d360e2e4f5f431c097340a8e3bae3321de4e178be3314259cf80510d332fd",
+      "source": "func make() -> [-1 of Int] { .init(repeating: 0) }"
+    },
+    {
+      "name": "deinit_mutation",
+      "expected_success": false,
+      "expected_diagnostic_contains": "left side of mutating operator isn't mutable: 'self' is immutable",
+      "experimental_flags": [],
+      "note": "",
+      "source_sha256": "dca3e76ae9d420b65047cc60eee0a98423b983bf643e17f507db6f2359c38674",
+      "source": "struct Resource: ~Copyable { var value: Int; deinit { value += 1 } }"
+    },
+    {
+      "name": "span_getter_lifetimes",
+      "expected_success": true,
+      "expected_diagnostic_contains": null,
+      "experimental_flags": [
+        "-enable-experimental-feature",
+        "Lifetimes"
+      ],
+      "note": "",
+      "source_sha256": "19a62efd5eb49d60a37028f04a7f5c8e02b9cd67b1b6224644ce53bdbf108e5a",
+      "source": "struct Bytes { var storage: [Int]; var span: Span<Int> { storage.span } }"
+    },
+    {
+      "name": "span_getter_escape_lifetimes",
+      "expected_success": false,
+      "expected_diagnostic_contains": "cannot infer lifetime dependence on a method because 'self' is BitwiseCopyable, specify '@_lifetime(borrow self)'",
+      "experimental_flags": [
+        "-enable-experimental-feature",
+        "Lifetimes"
+      ],
+      "note": "Checks refusal to infer a borrow from BitwiseCopyable self; the explicit-owner escape test checks actual lifetime violation.",
+      "source_sha256": "8854d4e3d950f7d779fa751a18025f13f32457e1733136d33717ccfaca247832",
+      "source": "struct Bytes { var span: Span<Int> { let local = [1,2,3]; return local.span } }"
+    },
+    {
+      "name": "span_local_escape_explicit_lifetime",
+      "expected_success": false,
+      "expected_diagnostic_contains": "lifetime-dependent value escapes its scope",
+      "experimental_flags": [
+        "-enable-experimental-feature",
+        "Lifetimes"
+      ],
+      "note": "With Lifetimes enabled and an explicit owner dependency, a span of unrelated local storage must still be rejected.",
+      "source_sha256": "f48d010b69a193c2c17f84da880f92d252c6796ce776813084e1e16530f54a21",
+      "source": "@_lifetime(borrow owner)\nfunc escaped(_ owner: borrowing [Int]) -> Span<Int> {\n    let local = [1, 2, 3]\n    return local.span\n}\n"
+    }
+  ]
+}

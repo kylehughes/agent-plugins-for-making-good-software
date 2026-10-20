@@ -1,0 +1,424 @@
+{
+  "schema_version": 1,
+  "reviewer": {
+    "kind": "model",
+    "name": "gpt-6.1-sol"
+  },
+  "source_batch": "/tmp/swift-type-integration-goal2/native-corrected-03",
+  "status": "cumulative_two_reference_delta_verified",
+  "planned_correction_scope": {
+    "files": [
+      {
+        "path": "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/domain-modeling-recipes.md",
+        "before_sha256": "4c0c29080a30691faa1c02179570b7ae7eea5ff031006c322e457721e46a7bf1"
+      },
+      {
+        "path": "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/ownership-effect-recipes.md",
+        "before_sha256": "dd8824701a891e9198d932c62a90ee16e0dfd2ae39b576ccea20f034d327e040"
+      }
+    ],
+    "topics": [
+      "Abandonment and eventual completion in consuming transitions.",
+      "Generation guards cannot protect use of extracted raw pointers.",
+      "Borrowing a reference does not imply exclusive value access or reject callback reentry.",
+      "Carry the closed cancellation wrapper from the dependency mapping boundary through the outer async adapter."
+    ],
+    "assumptions": [
+      "Only the two listed reference bodies change.",
+      "Catalog descriptions, SKILL.md bodies, frozen prompts, case configuration and rubrics remain unchanged."
+    ]
+  },
+  "method": "Inspected successful completed command executions and matched Claude tool-call/results across all 24 complete transcripts. Counted actual Read/cat/sed content loads, separately recording the one headings-only Grep. Did not treat reference links in loaded bodies as reference activation. Verified transcript digests against each evidence receipt.",
+  "summary": {
+    "complete_runs": 24,
+    "affected_reruns": 6,
+    "unaffected_carry_forward_candidates": 18
+  },
+  "records": [
+    {
+      "runtime": "claude",
+      "case_id": "swift-type-decoding-apple-variant",
+      "evidence_path": "/tmp/swift-type-integration-goal2/native-corrected-03/claude/swift-type-decoding-apple-variant/evidence.json",
+      "evidence_sha256": "0be392cca58f8bbdc70279f9d95dcc8763a4c6b6ecbb7f2c0b524b88092dd807",
+      "transcript_path": "/tmp/swift-type-integration-goal2/native-corrected-03/claude/swift-type-decoding-apple-variant/claude.stdout",
+      "transcript_sha256": "01abe2789fc08c0a4b40ba36343e091ebe906ebdc90d4ccad7b19a8635e0ddab",
+      "actual_successful_loads": [],
+      "recommendation": "carry_forward_candidate",
+      "reason": "No successful content load of either correction-target reference appears in the complete trace. Links in loaded skill bodies do not count."
+    },
+    {
+      "runtime": "claude",
+      "case_id": "swift-type-decoding-combined-variant",
+      "evidence_path": "/tmp/swift-type-integration-goal2/native-corrected-03/claude/swift-type-decoding-combined-variant/evidence.json",
+      "evidence_sha256": "df754d0a26bcf0978dcb14fc309e407779abb322715f74d97edc50de5c4dc057",
+      "transcript_path": "/tmp/swift-type-integration-goal2/native-corrected-03/claude/swift-type-decoding-combined-variant/claude.stdout",
+      "transcript_sha256": "d07b1e8381f1f2d73360602143ef53122b7b39e805dd18b8089bf8a3266cc2da",
+      "actual_successful_loads": [],
+      "recommendation": "carry_forward_candidate",
+      "reason": "No successful content load of either correction-target reference appears in the complete trace. Links in loaded skill bodies do not count."
+    },
+    {
+      "runtime": "claude",
+      "case_id": "swift-type-decoding-main-combined",
+      "evidence_path": "/tmp/swift-type-integration-goal2/native-corrected-03/claude/swift-type-decoding-main-combined/evidence.json",
+      "evidence_sha256": "74259da2c3a614f37ae3f4d13ef81dfa10f56ddecf4eb5306dd8df058ac05fa7",
+      "transcript_path": "/tmp/swift-type-integration-goal2/native-corrected-03/claude/swift-type-decoding-main-combined/claude.stdout",
+      "transcript_sha256": "e066c20469d947949e01039a1516e210f28bcf51fb5308704d9d0be43486a767",
+      "actual_successful_loads": [],
+      "recommendation": "carry_forward_candidate",
+      "reason": "No successful content load of either correction-target reference appears in the complete trace. Links in loaded skill bodies do not count."
+    },
+    {
+      "runtime": "claude",
+      "case_id": "swift-type-generic-correlation-combined",
+      "evidence_path": "/tmp/swift-type-integration-goal2/native-corrected-03/claude/swift-type-generic-correlation-combined/evidence.json",
+      "evidence_sha256": "9c92d0421a149d538b68ddb566e4ee891eb7d5b8fb2223908aaa303d335054da",
+      "transcript_path": "/tmp/swift-type-integration-goal2/native-corrected-03/claude/swift-type-generic-correlation-combined/claude.stdout",
+      "transcript_sha256": "445b0607b8cc5cd4587113730e0c64cecd3c8686c1c5160bf52310d8c2566ccf",
+      "actual_successful_loads": [],
+      "recommendation": "carry_forward_candidate",
+      "reason": "No successful content load of either correction-target reference appears in the complete trace. Links in loaded skill bodies do not count."
+    },
+    {
+      "runtime": "claude",
+      "case_id": "swift-type-near-miss-api-naming-combined",
+      "evidence_path": "/tmp/swift-type-integration-goal2/native-corrected-03/claude/swift-type-near-miss-api-naming-combined/evidence.json",
+      "evidence_sha256": "39f83b5bcd0ebd67180d4c62d302bbd3fa2479cde0f4bf3ab013c67016dec1fe",
+      "transcript_path": "/tmp/swift-type-integration-goal2/native-corrected-03/claude/swift-type-near-miss-api-naming-combined/claude.stdout",
+      "transcript_sha256": "d8c92c09974edf1ebed3ee34d3a5af6f6fa77772dcb4ee7b7898d233c44fe15d",
+      "actual_successful_loads": [],
+      "recommendation": "carry_forward_candidate",
+      "reason": "No successful content load of either correction-target reference appears in the complete trace. Links in loaded skill bodies do not count."
+    },
+    {
+      "runtime": "claude",
+      "case_id": "swift-type-near-miss-defect-review-combined",
+      "evidence_path": "/tmp/swift-type-integration-goal2/native-corrected-03/claude/swift-type-near-miss-defect-review-combined/evidence.json",
+      "evidence_sha256": "78041e9cd0c187ad5407ef793f5c29e264126829e267c91971c7453d74dbda06",
+      "transcript_path": "/tmp/swift-type-integration-goal2/native-corrected-03/claude/swift-type-near-miss-defect-review-combined/claude.stdout",
+      "transcript_sha256": "00c35f3a112eeaa6df45971000f783662b82d799e40a94bd7b26608b3595d073",
+      "actual_successful_loads": [],
+      "recommendation": "carry_forward_candidate",
+      "reason": "No successful content load of either correction-target reference appears in the complete trace. Links in loaded skill bodies do not count."
+    },
+    {
+      "runtime": "claude",
+      "case_id": "swift-type-near-miss-output-tests-combined",
+      "evidence_path": "/tmp/swift-type-integration-goal2/native-corrected-03/claude/swift-type-near-miss-output-tests-combined/evidence.json",
+      "evidence_sha256": "1e8d2a66aa51581981046427f52a326542fd9df8eb090547a86f1059a9f66749",
+      "transcript_path": "/tmp/swift-type-integration-goal2/native-corrected-03/claude/swift-type-near-miss-output-tests-combined/claude.stdout",
+      "transcript_sha256": "2643966c7d303a28830454fbc4bae32f607d9b209784d8a8d475570b7d1c5c35",
+      "actual_successful_loads": [],
+      "recommendation": "carry_forward_candidate",
+      "reason": "No successful content load of either correction-target reference appears in the complete trace. Links in loaded skill bodies do not count."
+    },
+    {
+      "runtime": "claude",
+      "case_id": "swift-type-near-miss-prose-editing-combined",
+      "evidence_path": "/tmp/swift-type-integration-goal2/native-corrected-03/claude/swift-type-near-miss-prose-editing-combined/evidence.json",
+      "evidence_sha256": "6b7a696901814b7f74e87b5f0e36066a2b4cd80c5c70edba864b65c30ce2b172",
+      "transcript_path": "/tmp/swift-type-integration-goal2/native-corrected-03/claude/swift-type-near-miss-prose-editing-combined/claude.stdout",
+      "transcript_sha256": "2b844bf333e3c206c77bd1b1203a9496ff0a8d9eaa01a3630513f4253fcbebca",
+      "actual_successful_loads": [],
+      "recommendation": "carry_forward_candidate",
+      "reason": "No successful content load of either correction-target reference appears in the complete trace. Links in loaded skill bodies do not count."
+    },
+    {
+      "runtime": "claude",
+      "case_id": "swift-type-ownership-lifetime-combined",
+      "evidence_path": "/tmp/swift-type-integration-goal2/native-corrected-03/claude/swift-type-ownership-lifetime-combined/evidence.json",
+      "evidence_sha256": "843e020c791be6b7cb0a41c77761f923dddcc485f2a681e9e4d91847f2d59f0b",
+      "transcript_path": "/tmp/swift-type-integration-goal2/native-corrected-03/claude/swift-type-ownership-lifetime-combined/claude.stdout",
+      "transcript_sha256": "0cdd9413a503e89d128d17deb71c94a1d9da9e4479f97587f09f1b626402fec7",
+      "actual_successful_loads": [
+        {
+          "file": "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/ownership-effect-recipes.md",
+          "call_anchor": "claude.stdout events 32/33, toolu_01AG4mF2fMT3v4LefvGwH3SL",
+          "tool": "Read",
+          "input": {
+            "file_path": "/private/var/folders/5f/brg0gp5d1bbbrq122wfpvs340000gn/T/invariant-behavior-runtime-fjljiql8/marketplace-snapshot/plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/ownership-effect-recipes.md"
+          },
+          "result": "successful tool result with nonempty output",
+          "output_sha256": "53767e8f05b8bddaebb27a3cf7f5e0e4ce287144574b9770867abf08ce43cfbb",
+          "content_read": true
+        }
+      ],
+      "recommendation": "rerun",
+      "reason": "Successfully read at least one reference targeted by the correction."
+    },
+    {
+      "runtime": "claude",
+      "case_id": "swift-type-static-dimensions-combined",
+      "evidence_path": "/tmp/swift-type-integration-goal2/native-corrected-03/claude/swift-type-static-dimensions-combined/evidence.json",
+      "evidence_sha256": "6c648bdec53dd49717d5a71b1d2805d7144ffc4630ed7e8a015885c7b7c6ebff",
+      "transcript_path": "/tmp/swift-type-integration-goal2/native-corrected-03/claude/swift-type-static-dimensions-combined/claude.stdout",
+      "transcript_sha256": "cb0981ee405421503d194cb16aeb426930826a6664eef23301602866dd9b119d",
+      "actual_successful_loads": [],
+      "recommendation": "carry_forward_candidate",
+      "reason": "No successful content load of either correction-target reference appears in the complete trace. Links in loaded skill bodies do not count."
+    },
+    {
+      "runtime": "claude",
+      "case_id": "swift-type-typed-errors-concurrency-combined",
+      "evidence_path": "/tmp/swift-type-integration-goal2/native-corrected-03/claude/swift-type-typed-errors-concurrency-combined/evidence.json",
+      "evidence_sha256": "a521ca837f9449c70deda7645d0040d405f88db1b30e2998229e80f9785cc017",
+      "transcript_path": "/tmp/swift-type-integration-goal2/native-corrected-03/claude/swift-type-typed-errors-concurrency-combined/claude.stdout",
+      "transcript_sha256": "f7253f02a51460316476fa7559bf798472c273ae6708d8a14afaf521a3f9c302",
+      "actual_successful_loads": [
+        {
+          "file": "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/ownership-effect-recipes.md",
+          "call_anchor": "claude.stdout events 18/19, toolu_015bUCzPkL2ZcBZHTyD8d6Zt",
+          "tool": "Read",
+          "input": {
+            "file_path": "/private/var/folders/5f/brg0gp5d1bbbrq122wfpvs340000gn/T/invariant-behavior-runtime-f__gz_ai/marketplace-snapshot/plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/ownership-effect-recipes.md"
+          },
+          "result": "successful tool result with nonempty output",
+          "output_sha256": "53767e8f05b8bddaebb27a3cf7f5e0e4ce287144574b9770867abf08ce43cfbb",
+          "content_read": true
+        }
+      ],
+      "recommendation": "rerun",
+      "reason": "Successfully read at least one reference targeted by the correction."
+    },
+    {
+      "runtime": "claude",
+      "case_id": "swift-type-workflow-recovery-combined",
+      "evidence_path": "/tmp/swift-type-integration-goal2/native-corrected-03/claude/swift-type-workflow-recovery-combined/evidence.json",
+      "evidence_sha256": "d3d8fb7963336b32f7124e50c6308db0e762d68b4e069abbd0712a459453d2d9",
+      "transcript_path": "/tmp/swift-type-integration-goal2/native-corrected-03/claude/swift-type-workflow-recovery-combined/claude.stdout",
+      "transcript_sha256": "23801146420d9c3f3c8fdc8345b49a885ed6342d430f407e435f797523f5f18a",
+      "actual_successful_loads": [
+        {
+          "file": "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/domain-modeling-recipes.md",
+          "call_anchor": "claude.stdout events 18/19, toolu_01LykdNVLfZFxX58oUXai4Ei",
+          "tool": "Grep",
+          "input": {
+            "pattern": "^#+ ",
+            "path": "/var/folders/5f/brg0gp5d1bbbrq122wfpvs340000gn/T/invariant-behavior-runtime-9uzu4nsf/marketplace-snapshot/plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/domain-modeling-recipes.md",
+            "output_mode": "content"
+          },
+          "result": "successful tool result with nonempty output",
+          "output_sha256": "312e1e61719efae5396e692042add7716bd4fc858ca3ba6799499c2052145f9c",
+          "content_read": false
+        },
+        {
+          "file": "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/domain-modeling-recipes.md",
+          "call_anchor": "claude.stdout events 20/21, toolu_014doothpKmEdJppw7hHJhAR",
+          "tool": "Read",
+          "input": {
+            "file_path": "/var/folders/5f/brg0gp5d1bbbrq122wfpvs340000gn/T/invariant-behavior-runtime-9uzu4nsf/marketplace-snapshot/plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/domain-modeling-recipes.md",
+            "offset": 165,
+            "limit": 58
+          },
+          "result": "successful tool result with nonempty output",
+          "output_sha256": "c26e5cb8fbf610fae9cb2ea675421703cac79f5091122156bfad84835c5afdfc",
+          "content_read": true
+        }
+      ],
+      "recommendation": "rerun",
+      "reason": "Successfully read at least one reference targeted by the correction."
+    },
+    {
+      "runtime": "codex",
+      "case_id": "swift-type-decoding-apple-variant",
+      "evidence_path": "/tmp/swift-type-integration-goal2/native-corrected-03/codex/swift-type-decoding-apple-variant/evidence.json",
+      "evidence_sha256": "f8dd2bf98cd3b55b4e6754bbdc003f7d34964935dba4134eebb8e2500f64c976",
+      "transcript_path": "/tmp/swift-type-integration-goal2/native-corrected-03/codex/swift-type-decoding-apple-variant/codex.stdout",
+      "transcript_sha256": "87bc1dfb07f667bef687ff281f0151634497694c8ad2664c43f1d9c267d0c372",
+      "actual_successful_loads": [],
+      "recommendation": "carry_forward_candidate",
+      "reason": "No successful content load of either correction-target reference appears in the complete trace. Links in loaded skill bodies do not count."
+    },
+    {
+      "runtime": "codex",
+      "case_id": "swift-type-decoding-combined-variant",
+      "evidence_path": "/tmp/swift-type-integration-goal2/native-corrected-03/codex/swift-type-decoding-combined-variant/evidence.json",
+      "evidence_sha256": "cbaf0f38dd51c23a5982bd32ba90afe5db94349e5af7e9daa2d688d8b7aff6e9",
+      "transcript_path": "/tmp/swift-type-integration-goal2/native-corrected-03/codex/swift-type-decoding-combined-variant/codex.stdout",
+      "transcript_sha256": "59a353cb3cd1b222156fb00017385bad4aa41a5b2815735406b53e29209bc510",
+      "actual_successful_loads": [],
+      "recommendation": "carry_forward_candidate",
+      "reason": "No successful content load of either correction-target reference appears in the complete trace. Links in loaded skill bodies do not count."
+    },
+    {
+      "runtime": "codex",
+      "case_id": "swift-type-decoding-main-combined",
+      "evidence_path": "/tmp/swift-type-integration-goal2/native-corrected-03/codex/swift-type-decoding-main-combined/evidence.json",
+      "evidence_sha256": "1f3440d6f7020d238064c7eb17943cba80f95c863a915c1c47c665ef545bf595",
+      "transcript_path": "/tmp/swift-type-integration-goal2/native-corrected-03/codex/swift-type-decoding-main-combined/codex.stdout",
+      "transcript_sha256": "9e277dcdd05e6e2bea74339ad0b827cc1594c196aa87ca48547445f59dd4c220",
+      "actual_successful_loads": [],
+      "recommendation": "carry_forward_candidate",
+      "reason": "No successful content load of either correction-target reference appears in the complete trace. Links in loaded skill bodies do not count."
+    },
+    {
+      "runtime": "codex",
+      "case_id": "swift-type-generic-correlation-combined",
+      "evidence_path": "/tmp/swift-type-integration-goal2/native-corrected-03/codex/swift-type-generic-correlation-combined/evidence.json",
+      "evidence_sha256": "47d02074c3c1512ad67459ac80e64730d0c118260001470e7ecdecf41d390f28",
+      "transcript_path": "/tmp/swift-type-integration-goal2/native-corrected-03/codex/swift-type-generic-correlation-combined/codex.stdout",
+      "transcript_sha256": "2d04a3b1d0b1a0d11fb46b013564a869218e53ded9a6d33ecac6ec5912e41c8b",
+      "actual_successful_loads": [],
+      "recommendation": "carry_forward_candidate",
+      "reason": "No successful content load of either correction-target reference appears in the complete trace. Links in loaded skill bodies do not count."
+    },
+    {
+      "runtime": "codex",
+      "case_id": "swift-type-near-miss-api-naming-combined",
+      "evidence_path": "/tmp/swift-type-integration-goal2/native-corrected-03/codex/swift-type-near-miss-api-naming-combined/evidence.json",
+      "evidence_sha256": "81507df4d281ce631a353cff59fb92c81533cb286c6c364805daecfe98905e54",
+      "transcript_path": "/tmp/swift-type-integration-goal2/native-corrected-03/codex/swift-type-near-miss-api-naming-combined/codex.stdout",
+      "transcript_sha256": "039feb68964fb88413a68836cb54fddacb6670efa1e228bf1b569f1da8ca5748",
+      "actual_successful_loads": [],
+      "recommendation": "carry_forward_candidate",
+      "reason": "No successful content load of either correction-target reference appears in the complete trace. Links in loaded skill bodies do not count."
+    },
+    {
+      "runtime": "codex",
+      "case_id": "swift-type-near-miss-defect-review-combined",
+      "evidence_path": "/tmp/swift-type-integration-goal2/native-corrected-03/codex/swift-type-near-miss-defect-review-combined/evidence.json",
+      "evidence_sha256": "bb6078257473457974041892cce9bd02ec2d9215845f68f3cf41b4af566271e3",
+      "transcript_path": "/tmp/swift-type-integration-goal2/native-corrected-03/codex/swift-type-near-miss-defect-review-combined/codex.stdout",
+      "transcript_sha256": "6598ecb03820ecc657367ee3e44ee6e40343c6c569f059a7019525a5819a58e0",
+      "actual_successful_loads": [],
+      "recommendation": "carry_forward_candidate",
+      "reason": "No successful content load of either correction-target reference appears in the complete trace. Links in loaded skill bodies do not count."
+    },
+    {
+      "runtime": "codex",
+      "case_id": "swift-type-near-miss-output-tests-combined",
+      "evidence_path": "/tmp/swift-type-integration-goal2/native-corrected-03/codex/swift-type-near-miss-output-tests-combined/evidence.json",
+      "evidence_sha256": "a9222d290aebf272ede7163b5d8e195f29cc6be67e02154f80a9f735ac377605",
+      "transcript_path": "/tmp/swift-type-integration-goal2/native-corrected-03/codex/swift-type-near-miss-output-tests-combined/codex.stdout",
+      "transcript_sha256": "038806ced17a779af392e16b4c668d0c910dd6b786e5ac2bedb5da2b2ee40959",
+      "actual_successful_loads": [],
+      "recommendation": "carry_forward_candidate",
+      "reason": "No successful content load of either correction-target reference appears in the complete trace. Links in loaded skill bodies do not count."
+    },
+    {
+      "runtime": "codex",
+      "case_id": "swift-type-near-miss-prose-editing-combined",
+      "evidence_path": "/tmp/swift-type-integration-goal2/native-corrected-03/codex/swift-type-near-miss-prose-editing-combined/evidence.json",
+      "evidence_sha256": "0b3459f2068d55a5297c546862303308a72dbb6a8c5df5e521ee99bf76409874",
+      "transcript_path": "/tmp/swift-type-integration-goal2/native-corrected-03/codex/swift-type-near-miss-prose-editing-combined/codex.stdout",
+      "transcript_sha256": "763af81244fc8e0cfa3d6a15e3341edb45bb00e1381599a951d6b91d5350a85d",
+      "actual_successful_loads": [],
+      "recommendation": "carry_forward_candidate",
+      "reason": "No successful content load of either correction-target reference appears in the complete trace. Links in loaded skill bodies do not count."
+    },
+    {
+      "runtime": "codex",
+      "case_id": "swift-type-ownership-lifetime-combined",
+      "evidence_path": "/tmp/swift-type-integration-goal2/native-corrected-03/codex/swift-type-ownership-lifetime-combined/evidence.json",
+      "evidence_sha256": "84767e15be54ddab737ac817787e752f9438dcba07ec060f033e1f8f109e6308",
+      "transcript_path": "/tmp/swift-type-integration-goal2/native-corrected-03/codex/swift-type-ownership-lifetime-combined/codex.stdout",
+      "transcript_sha256": "fe0fb8f753474c354472f72c0bbd2f1b5d4334362bd10658030740dc406878ed",
+      "actual_successful_loads": [
+        {
+          "file": "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/ownership-effect-recipes.md",
+          "call_anchor": "codex.stdout event 20, item_9",
+          "tool": "command_execution",
+          "command": "/bin/zsh -lc 'cat /private/var/folders/5f/brg0gp5d1bbbrq122wfpvs340000gn/T/invariant-behavior-runtime-97hbcbat/codex-home/plugins/cache/making-good-software/apple-platform/1.6.1/skills/modeling-swift-types-for-correctness/references/ownership-effect-recipes.md'",
+          "result": "exit_code=0 with nonempty output",
+          "output_sha256": "dd8824701a891e9198d932c62a90ee16e0dfd2ae39b576ccea20f034d327e040"
+        }
+      ],
+      "recommendation": "rerun",
+      "reason": "Successfully read at least one reference targeted by the correction."
+    },
+    {
+      "runtime": "codex",
+      "case_id": "swift-type-static-dimensions-combined",
+      "evidence_path": "/tmp/swift-type-integration-goal2/native-corrected-03/codex/swift-type-static-dimensions-combined/evidence.json",
+      "evidence_sha256": "215dc95845c92d89b44f54ee9fb3f5df9705b94d920de808fc06f04318038759",
+      "transcript_path": "/tmp/swift-type-integration-goal2/native-corrected-03/codex/swift-type-static-dimensions-combined/codex.stdout",
+      "transcript_sha256": "85a12702133c880f9f45d1f14f36ddd9411d14b54c6a34e130eb0c997c39cb90",
+      "actual_successful_loads": [],
+      "recommendation": "carry_forward_candidate",
+      "reason": "No successful content load of either correction-target reference appears in the complete trace. Links in loaded skill bodies do not count."
+    },
+    {
+      "runtime": "codex",
+      "case_id": "swift-type-typed-errors-concurrency-combined",
+      "evidence_path": "/tmp/swift-type-integration-goal2/native-corrected-03/codex/swift-type-typed-errors-concurrency-combined/evidence.json",
+      "evidence_sha256": "5d4ce44094b9ae344be8355005936e30e4ca5b2005f8fc1383279ac4b8dee4de",
+      "transcript_path": "/tmp/swift-type-integration-goal2/native-corrected-03/codex/swift-type-typed-errors-concurrency-combined/codex.stdout",
+      "transcript_sha256": "bf80a643043599027f1fa8615baf1a30a72a02d7aac1aea9b6d4cddee7f44ccd",
+      "actual_successful_loads": [
+        {
+          "file": "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/ownership-effect-recipes.md",
+          "call_anchor": "codex.stdout event 18, item_8",
+          "tool": "command_execution",
+          "command": "/bin/zsh -lc 'cat /private/var/folders/5f/brg0gp5d1bbbrq122wfpvs340000gn/T/invariant-behavior-runtime-6j7yrc88/codex-home/plugins/cache/making-good-software/apple-platform/1.6.1/skills/modeling-swift-types-for-correctness/references/ownership-effect-recipes.md'",
+          "result": "exit_code=0 with nonempty output",
+          "output_sha256": "dd8824701a891e9198d932c62a90ee16e0dfd2ae39b576ccea20f034d327e040"
+        },
+        {
+          "file": "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/ownership-effect-recipes.md",
+          "call_anchor": "codex.stdout event 25, item_11",
+          "tool": "command_execution",
+          "command": "/bin/zsh -lc \"sed -n '168,270p' /private/var/folders/5f/brg0gp5d1bbbrq122wfpvs340000gn/T/invariant-behavior-runtime-6j7yrc88/codex-home/plugins/cache/making-good-software/apple-platform/1.6.1/skills/modeling-swift-types-for-correctness/references/ownership-effect-recipes.md; cat /private/var/folders/5f/brg0gp5d1bbbrq122wfpvs340000gn/T/invariant-behavior-runtime-6j7yrc88/codex-home/plugins/cache/making-good-software/universal/1.7.1/skills/verifying-invariants/SKILL.md\"",
+          "result": "exit_code=0 with nonempty output",
+          "output_sha256": "f43f3ecd024da233b90c563f978457e42941daedf680785c44bf1adb287817dc"
+        }
+      ],
+      "recommendation": "rerun",
+      "reason": "Successfully read at least one reference targeted by the correction."
+    },
+    {
+      "runtime": "codex",
+      "case_id": "swift-type-workflow-recovery-combined",
+      "evidence_path": "/tmp/swift-type-integration-goal2/native-corrected-03/codex/swift-type-workflow-recovery-combined/evidence.json",
+      "evidence_sha256": "446305ab880f91f79db7b6c51dbf7b36037f5861bd72e8450d31932efc311619",
+      "transcript_path": "/tmp/swift-type-integration-goal2/native-corrected-03/codex/swift-type-workflow-recovery-combined/codex.stdout",
+      "transcript_sha256": "55f81df43d84a0685e315afe7f35af32054ef92654c27b15b27827f6fa876fb9",
+      "actual_successful_loads": [
+        {
+          "file": "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/ownership-effect-recipes.md",
+          "call_anchor": "codex.stdout event 12, item_4",
+          "tool": "command_execution",
+          "command": "/bin/zsh -lc \"cat '/private/var/folders/5f/brg0gp5d1bbbrq122wfpvs340000gn/T/invariant-behavior-runtime-9j1w4smz/codex-home/plugins/cache/making-good-software/apple-platform/1.6.1/skills/modeling-swift-types-for-correctness/references/ownership-effect-recipes.md'\"",
+          "result": "exit_code=0 with nonempty output",
+          "output_sha256": "dd8824701a891e9198d932c62a90ee16e0dfd2ae39b576ccea20f034d327e040"
+        },
+        {
+          "file": "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/domain-modeling-recipes.md",
+          "call_anchor": "codex.stdout event 15, item_6",
+          "tool": "command_execution",
+          "command": "/bin/zsh -lc \"cat '/private/var/folders/5f/brg0gp5d1bbbrq122wfpvs340000gn/T/invariant-behavior-runtime-9j1w4smz/codex-home/plugins/cache/making-good-software/apple-platform/1.6.1/skills/modeling-swift-types-for-correctness/references/domain-modeling-recipes.md'\"",
+          "result": "exit_code=0 with nonempty output",
+          "output_sha256": "4c0c29080a30691faa1c02179570b7ae7eea5ff031006c322e457721e46a7bf1"
+        },
+        {
+          "file": "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/domain-modeling-recipes.md",
+          "call_anchor": "codex.stdout event 22, item_10",
+          "tool": "command_execution",
+          "command": "/bin/zsh -lc \"sed -n '/<a id=\\\"flow\\\"/,/<a id=/p' '/private/var/folders/5f/brg0gp5d1bbbrq122wfpvs340000gn/T/invariant-behavior-runtime-9j1w4smz/codex-home/plugins/cache/making-good-software/apple-platform/1.6.1/skills/modeling-swift-types-for-correctness/references/domain-modeling-recipes.md'\"",
+          "result": "exit_code=0 with nonempty output",
+          "output_sha256": "ae1b02dfef0d9709f4d9dc9ad4d5ba17d68eb6ebbfa7a9473aa06508895e2d99"
+        }
+      ],
+      "recommendation": "rerun",
+      "reason": "Successfully read at least one reference targeted by the correction."
+    }
+  ],
+  "limits": [
+    "This is an impact audit, not semantic acceptance or evidence finalization. Parent retains validation and finalization ownership.",
+    "Carryforward is conditional on existing acceptance and on confirming that the actual correction is limited to the declared reference bodies. No receipt is relabeled as having run against a different snapshot.",
+    "Even currently passing cases that loaded a changed reference are included in reruns; failing cases remain failed historical evidence."
+  ],
+  "after_snapshot_sha256": "61a23b09fd78a4d9960785861b1cfa51421c5a1ab13a449d8f2808f76a2c6e85",
+  "actual_changed_files": [
+    {
+      "path": "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/domain-modeling-recipes.md",
+      "before": "file:4c0c29080a30691faa1c02179570b7ae7eea5ff031006c322e457721e46a7bf1",
+      "after": "file:8bc1524c2c717abd77d6ea969c219648ab71782b334e830187fbd457144f3446"
+    },
+    {
+      "path": "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/ownership-effect-recipes.md",
+      "before": "file:dd8824701a891e9198d932c62a90ee16e0dfd2ae39b576ccea20f034d327e040",
+      "after": "file:815fe391ddeff6ba4679d78e70523e52ecb14601aaf92bd5cb7e161c40565352"
+    }
+  ],
+  "followup_scope": "Adds complete terminal workflow outcome guidance and a compiler-checked explicit typed-do Task example; cumulative delta from carried batch03 remains exactly the same two reference bodies."
+}

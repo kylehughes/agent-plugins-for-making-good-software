@@ -1,0 +1,93 @@
+{
+  "commands": [
+    {
+      "argv": [
+        "sw_vers"
+      ],
+      "exit_code": 0,
+      "stdout": "ProductName:\t\tmacOS\nProductVersion:\t\t26.6.2\nBuildVersion:\t\t25G83\n",
+      "stderr": "",
+      "log": "/tmp/swift-type-integration-goal2/environment/00.log",
+      "sha256": "cd5d6399b3785b04ceaae75045a9ca9f80f0bbc3526eff9d0c36b170ed1ec348"
+    },
+    {
+      "argv": [
+        "uname",
+        "-a"
+      ],
+      "exit_code": 0,
+      "stdout": "Darwin kyle-laptop.local 25.6.0 Darwin Kernel Version 25.6.0: Fri Jul 31 19:18:49 PDT 2026; root:xnu-12377.161.14~5/RELEASE_ARM64_T6000 arm64\n",
+      "stderr": "",
+      "log": "/tmp/swift-type-integration-goal2/environment/01.log",
+      "sha256": "b7524368b38e220b4b9bbc6f66c847639285e150f24bfc6a6d4ab47cbee9a69d"
+    },
+    {
+      "argv": [
+        "xcode-select",
+        "-p"
+      ],
+      "exit_code": 0,
+      "stdout": "/Applications/Xcode-26.6.0.app/Contents/Developer\n",
+      "stderr": "",
+      "log": "/tmp/swift-type-integration-goal2/environment/02.log",
+      "sha256": "f41a728d7d3da801f19d0c7574bdba7859d1b996cb6e4a3effc27810c99f972f"
+    },
+    {
+      "argv": [
+        "xcrun",
+        "--show-sdk-path"
+      ],
+      "exit_code": 0,
+      "stdout": "/Applications/Xcode-26.6.0.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk\n",
+      "stderr": "",
+      "log": "/tmp/swift-type-integration-goal2/environment/03.log",
+      "sha256": "034efd2877a2a40c91d49d44ebf8bfda3ec2fc94ed50f3865da9ed0f4ad5d16a"
+    },
+    {
+      "argv": [
+        "xcrun",
+        "swiftc",
+        "--version"
+      ],
+      "exit_code": 0,
+      "stdout": "Apple Swift version 6.3.3 (swiftlang-6.3.3.1.3 clang-2100.1.1.101)\nTarget: arm64-apple-macosx26.0\n",
+      "stderr": "swift-driver version: 1.148.6 ",
+      "log": "/tmp/swift-type-integration-goal2/environment/04.log",
+      "sha256": "00aa49fe91b635b848be0c6e380090c1ca9ba8eba40af687930dcdaaf86bcdc7"
+    },
+    {
+      "argv": [
+        "swiftc",
+        "--version"
+      ],
+      "exit_code": 0,
+      "stdout": "Apple Swift version 6.3.3 (swiftlang-6.3.3.1.3 clang-2100.1.1.101)\nTarget: arm64-apple-macosx26.0\n",
+      "stderr": "swift-driver version: 1.148.6 ",
+      "log": "/tmp/swift-type-integration-goal2/environment/05.log",
+      "sha256": "00aa49fe91b635b848be0c6e380090c1ca9ba8eba40af687930dcdaaf86bcdc7"
+    },
+    {
+      "argv": [
+        "codex",
+        "--version"
+      ],
+      "exit_code": 0,
+      "stdout": "codex-cli 0.160.0\n",
+      "stderr": "",
+      "log": "/tmp/swift-type-integration-goal2/environment/06.log",
+      "sha256": "f6464b8cc67af75deb2589fe1dbcde152fc15ffb76a91de1cf0686b4623afb1e"
+    },
+    {
+      "argv": [
+        "claude",
+        "--version"
+      ],
+      "exit_code": 0,
+      "stdout": "2.1.282 (Claude Code)\n",
+      "stderr": "",
+      "log": "/tmp/swift-type-integration-goal2/environment/07.log",
+      "sha256": "9458351951be32adb29b43b05d81a6c8bafb0bcd27fd14e4befe554e44659c40"
+    }
+  ],
+  "archive_sha256": "4454c583ec5a9cc4dd80487ff19a9a2dc9925e5249588db8e4a06482bf35eb13"
+}

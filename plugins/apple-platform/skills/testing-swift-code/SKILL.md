@@ -1,6 +1,6 @@
 ---
 name: testing-swift-code
-description: "Write Swift unit tests, including small inline suites and regression tests, using Swift Testing. Use for assertions, test cases, @Test, @Suite, traits, and migration; async timing has its own skill, and UI tests remain XCTest."
+description: "Plan or write Swift unit tests using Swift Testing, including inline suites and regression coverage. Required for test plans, assertions, @Test, @Suite, traits, and migration; async timing has its own skill, and UI tests remain XCTest."
 ---
 
 # Testing Swift Code
@@ -8,6 +8,8 @@ description: "Write Swift unit tests, including small inline suites and regressi
 Write tests using the Swift `Testing` framework (Swift 6 / Xcode 16+). This framework replaces XCTest with macro-based annotations and expression-level assertions.
 
 Ordinary function-output regression tests stay here. Positive, negative, empty, or boundary inputs do not by themselves call for type modeling or invariant verification; those skills address representations and enforcement boundaries.
+
+For a test plan, give each test a clear behavior-based name and concrete input/expected-output assertions. A parameterized table can share one named test; identify that test as well as what its rows cover. Mark planned checks as unrun.
 
 ## Quick Start
 

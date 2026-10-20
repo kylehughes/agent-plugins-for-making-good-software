@@ -1,0 +1,236 @@
+{
+  "schema_version": 1,
+  "commands": [
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "scripts",
+        "-p",
+        "test_*.py"
+      ],
+      "cwd": "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins",
+      "exit_code": 0,
+      "log": "/tmp/swift-type-integration-goal2/checks-final-guidance/01-unittest-escalated.log",
+      "log_sha256": "283d4fd2f0592b77b948de7b9a20528be7c2d995bce97ac0dc787c909916351a",
+      "unit_tests": 135
+    },
+    {
+      "argv": [
+        "python3",
+        "scripts/validate.py"
+      ],
+      "cwd": "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins",
+      "exit_code": 0,
+      "log": "/tmp/swift-type-integration-goal2/checks-final-guidance/02-validate.log",
+      "log_sha256": "a47ae0142c84327ad2e8853eb11dfe746f92579467ea419fbdc6688cce873029"
+    },
+    {
+      "argv": [
+        "python3",
+        "scripts/skill_catalog.py",
+        "--base",
+        "HEAD"
+      ],
+      "cwd": "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins",
+      "exit_code": 0,
+      "log": "/tmp/swift-type-integration-goal2/checks-final-guidance/03-skill-catalog.log",
+      "log_sha256": "2bc9fdbde823d2fd4acc93dfee223e37f8c9609e9ca70b8670d2efbee223bc41"
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "json.tool",
+        ".claude-plugin/marketplace.json"
+      ],
+      "cwd": "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins",
+      "exit_code": 0,
+      "log": "/tmp/swift-type-integration-goal2/checks-final-guidance/04-json-claude-marketplace.log",
+      "log_sha256": "010e0500efc0f6a4cff2da186781effd3f5c3e20ca4076bf1cd55029c8fd089c"
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "json.tool",
+        ".agents/plugins/marketplace.json"
+      ],
+      "cwd": "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins",
+      "exit_code": 0,
+      "log": "/tmp/swift-type-integration-goal2/checks-final-guidance/05-json-codex-marketplace.log",
+      "log_sha256": "819c55e73b5b4d268f6e7ac155d99eb66f78c4075575d9adca064620a051c670"
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "json.tool",
+        "plugins/apple-platform/.claude-plugin/plugin.json"
+      ],
+      "cwd": "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins",
+      "exit_code": 0,
+      "log": "/tmp/swift-type-integration-goal2/checks-final-guidance/06-json-apple-claude.log",
+      "log_sha256": "dead587cc8dfaee1dc42ad11b89f25bd406eeb41cdc67af4f9c8f0430e12b261"
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "json.tool",
+        "plugins/apple-platform/.codex-plugin/plugin.json"
+      ],
+      "cwd": "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins",
+      "exit_code": 0,
+      "log": "/tmp/swift-type-integration-goal2/checks-final-guidance/07-json-apple-codex.log",
+      "log_sha256": "dead587cc8dfaee1dc42ad11b89f25bd406eeb41cdc67af4f9c8f0430e12b261"
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "json.tool",
+        "plugins/universal/.claude-plugin/plugin.json"
+      ],
+      "cwd": "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins",
+      "exit_code": 0,
+      "log": "/tmp/swift-type-integration-goal2/checks-final-guidance/08-json-universal-claude.log",
+      "log_sha256": "6262d4180c82ba37d6a111ad38d9635d43838ae2e19300f78799404f26fa5ee5"
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "json.tool",
+        "plugins/universal/.codex-plugin/plugin.json"
+      ],
+      "cwd": "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins",
+      "exit_code": 0,
+      "log": "/tmp/swift-type-integration-goal2/checks-final-guidance/09-json-universal-codex.log",
+      "log_sha256": "76c88b0efec50ebbacb5bd8d26c98ce95de7f6ad3b533986fbd0112c53f9e572"
+    },
+    {
+      "argv": [
+        "claude",
+        "plugin",
+        "validate",
+        "plugins/apple-platform"
+      ],
+      "cwd": "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins",
+      "exit_code": 0,
+      "log": "/tmp/swift-type-integration-goal2/checks-final-guidance/10-claude-validate-apple.log",
+      "log_sha256": "3aca0df42cd554039c9e721c7b4f140f00530ded719edf0d9eb24ca8e10deea2"
+    },
+    {
+      "argv": [
+        "claude",
+        "plugin",
+        "validate",
+        "plugins/universal"
+      ],
+      "cwd": "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins",
+      "exit_code": 0,
+      "log": "/tmp/swift-type-integration-goal2/checks-final-guidance/11-claude-validate-universal.log",
+      "log_sha256": "c886d07703c3039d28be2b9e3da2f4864c4567dbd2a6a0599909eceb8d97d44b"
+    },
+    {
+      "argv": [
+        "python3",
+        "plugins/apple-platform/skills/modeling-swift-types-for-correctness/scripts/validate_skill.py"
+      ],
+      "cwd": "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins",
+      "exit_code": 0,
+      "log": "/tmp/swift-type-integration-goal2/checks-final-guidance/12-validate-affected-skill-escalated.log",
+      "log_sha256": "76df5d6458b74ae35a611ba629c099501584fb670839d35350f596f9eb2ac6f7"
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "core.fsmonitor=false",
+        "diff",
+        "--check"
+      ],
+      "cwd": "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins",
+      "exit_code": 0,
+      "log": "/tmp/swift-type-integration-goal2/checks-final-guidance/13-git-diff-check.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "failed_sandbox_attempts": [
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "scripts",
+        "-p",
+        "test_*.py"
+      ],
+      "cwd": "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins",
+      "exit_code": 1,
+      "log": "/tmp/swift-type-integration-goal2/checks-final-guidance/01-unittest.log",
+      "log_sha256": "cea8b470a17c58c4e53662180d9be4ea384213f4ecb6d8ac348f975c4d07c00f"
+    },
+    {
+      "argv": [
+        "python3",
+        "plugins/apple-platform/skills/modeling-swift-types-for-correctness/scripts/validate_skill.py"
+      ],
+      "cwd": "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins",
+      "exit_code": 1,
+      "log": "/tmp/swift-type-integration-goal2/checks-final-guidance/12-validate-affected-skill.log",
+      "log_sha256": "3ca8fa66464b8b46f2569867ecfe255f5d4691d222e06ed438dbbec47cbd0d1e"
+    }
+  ],
+  "reused_unchanged_source_and_corpus_checks": [
+    {
+      "argv": [
+        "python3",
+        "/tmp/swift-type-integration-goal2/count_corpus.py"
+      ],
+      "cwd": "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins",
+      "exit_code": 0,
+      "duration_seconds": 0.045,
+      "log": "/tmp/swift-type-integration-goal2/checks-xcode27.1-unrestricted/04.log",
+      "log_sha256": "ed56841f3f720446680efa54f6d4529356f1b8affbdc4fe27ab143cef140de1c"
+    },
+    {
+      "argv": [
+        "python3",
+        "scripts/check_swift_type_system_integration.py",
+        "--source-root",
+        "/tmp/swift-type-system-integration-source/Swift_Type_System_Companion"
+      ],
+      "cwd": "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins",
+      "exit_code": 0,
+      "duration_seconds": 0.275,
+      "log": "/tmp/swift-type-integration-goal2/checks-xcode27.1-unrestricted/05.log",
+      "log_sha256": "0c2e4908dd500039ff56150cd2060ec9eccc17b7458e9242bfea22e0b555df62"
+    }
+  ],
+  "reused_codex_metadata_check": [
+    {
+      "argv": [
+        "python3",
+        "/tmp/swift-type-integration-goal2/codex_metadata_smoke.py"
+      ],
+      "cwd": "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins",
+      "exit_code": 0,
+      "duration_seconds": 0.169,
+      "log": "/tmp/swift-type-integration-goal2/checks-01/14.log",
+      "log_sha256": "9f2a064369bcf1e2e7fe5015c631d9a4507b96e0bc7bd1b730f3e7b2a00b25ee"
+    }
+  ],
+  "limits": [
+    "Two sandboxed checks failed because the default Swift compiler cache was not writable; both passed unchanged with normal cache access.",
+    "Corpus fixture bytes and compiler harness are unchanged from the retained 89-case and two-runtime passing report.",
+    "Native corrected-snapshot matrix is pending explicit API-payload authorization.",
+    "Full skill validation used built-in validation because skills-ref is not installed."
+  ]
+}

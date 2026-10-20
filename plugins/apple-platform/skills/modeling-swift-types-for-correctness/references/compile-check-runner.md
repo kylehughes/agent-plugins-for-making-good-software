@@ -104,3 +104,38 @@ The JSON report contains these fields; the human report summarizes the same tool
 A pass means the recorded compiler accepted each positive control, rejected each negative fixture for only its declared error markers, and completed any runtime checks using fresh copies of the recorded bytes. The runner also fails on compiler crashes, timeouts, source mutation or removal during compilation, unexpected acceptance, missing markers, unrelated or unparsed error diagnostics, and broken controls. Non-UTF-8 compiler output is retained with Unicode replacement characters instead of causing a traceback.
 
 The report is evidence for the recorded source bytes, compiler, arguments, linkage, and misuse. Prebuilt modules, SDK contents, compiler plugins, response files, and other dependencies named through compiler arguments remain external inputs; the report records their arguments but does not hash their bytes. It does not establish that every production target uses those settings or sources. It does not prove runtime validation, serialization, availability, synchronization, interop, security, ABI stability, or the absence of unchecked construction paths. Keep those claims tied to their own build, test, inspection, or operational evidence.
+
+## Imported companion corpus
+
+The separate `examples/compiler-corpus-map.json` maps the supplied companion's
+89 indexed compiler cases and two runtime examples. Include it through the existing
+entry point, or request a separate report, from the skill directory:
+
+```sh
+REQUIRE_SWIFTC=1 CHECK_SWIFT_COMPILER_CORPUS=1 scripts/check_examples.sh
+python3 scripts/swift_compiler_corpus.py --report /tmp/swift-corpus-report.json
+```
+
+Use `--swiftc /path/to/swift-frontend` to select a compiler explicitly. Compilation
+probes use SIL emission so ownership-flow diagnostics are checked. Runtime builds
+use the colocated `swiftc` driver. The report separates default and experimental
+cases and records effective arguments, input digests, diagnostics, exit codes, and
+differences from the supplied results. It reuses the baseline runner's strict
+diagnostic evaluator; an unrelated error, crash, or timeout cannot establish the
+intended rejection.
+
+When SDK declarations require a newer deployment target than the host default,
+pass it explicitly for compile-only evidence, for example
+`--compile-target arm64-apple-macosx27.0`. The runner applies that target identically
+to positive controls and their paired negative cases and records it in
+`shared_arguments`. Runtime builds omit the compile target, record their separate
+arguments, and keep the compiler's host-compatible default because the resulting
+binaries execute on the current host.
+
+The supplied comparison report was produced with Swift 6.4.1 on Linux. A local
+compiler must independently satisfy the declared cases and their controls; the
+supplied report is not a substitute for that run. Read the current report before
+claiming compatibility with another compiler or SDK. Accepted unsafe, effects,
+and frontier probes are compilation-only. Only the two named runtime examples
+are executed. Performance experiments are unsupported illustrations and are not
+part of these acceptance counts.

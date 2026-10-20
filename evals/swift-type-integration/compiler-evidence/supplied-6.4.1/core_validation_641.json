@@ -1,0 +1,100 @@
+[
+  {
+    "case": "wrong_identity",
+    "expected_compiles": false,
+    "compiles": false,
+    "expectation_met": true,
+    "diagnostic": "/workspace/scratch/182ca10a4383/core_probes/wrong_identity.swift:231:35: error: cannot convert value of type 'ID<OrderEntity>' to expected argument type 'UserID' (aka 'ID<UserEntity>')\n  2 | \n  3 | // A. Distinct domain identities. Identity tags do not prove server existence.\n  4 | struct ID<Entity>: Hashable, Sendable {\n    |           `- note: arguments to generic parameter 'Entity' ('OrderEntity' and 'UserEntity') are expected to be equal\n  5 |     let rawValue: UUID\n  6 |     init(_ rawValue: UUID) { self.rawValue = rawValue }\n    :\n229 | }\n230 | \n231 | func badIdentity() { _ = loadUser(OrderID(UUID())) }\n    |                                   `- error: cannot convert value of type 'ID<OrderEntity>' to expected argument type 'UserID' (aka 'ID<UserEntity>')\n232 |"
+  },
+  {
+    "case": "bypass_validation",
+    "expected_compiles": false,
+    "compiles": false,
+    "expectation_met": true,
+    "diagnostic": "/workspace/scratch/182ca10a4383/core_probes/bypass_validation.swift:231:38: error: extraneous argument label 'value:' in call\n229 | }\n230 | \n231 | func badPercentage() { _ = Percentage(value: 255) }\n    |                                      `- error: extraneous argument label 'value:' in call\n232 |"
+  },
+  {
+    "case": "invalidate_scalar",
+    "expected_compiles": false,
+    "compiles": false,
+    "expectation_met": true,
+    "diagnostic": "/workspace/scratch/182ca10a4383/core_probes/invalidate_scalar.swift:231:48: error: cannot assign to property: 'value' is a 'let' constant\n 15 | // B. A validated scalar, including the decoding entry point.\n 16 | struct Percentage: Hashable, Sendable, Codable {\n 17 |     let value: UInt8\n    |     `- note: change 'let' to 'var' to make it mutable\n 18 | \n 19 |     init?(_ value: Int) {\n    :\n229 | }\n230 | \n231 | func badMutation() { var p = Percentage(5)!; p.value = 255 }\n    |                                                `- error: cannot assign to property: 'value' is a 'let' constant\n232 |"
+  },
+  {
+    "case": "empty_nonempty",
+    "expected_compiles": false,
+    "compiles": false,
+    "expectation_met": true,
+    "diagnostic": "/workspace/scratch/182ca10a4383/core_probes/empty_nonempty.swift:231:40: error: missing argument for parameter #1 in call\n 44 |     let tail: [Element]\n 45 | \n 46 |     init(_ head: Element, tail: [Element] = []) {\n    |     `- note: 'init(_:tail:)' declared here\n 47 |         self.head = head\n 48 |         self.tail = tail\n    :\n229 | }\n230 | \n231 | func badNonempty() { _ = NonEmpty<Int>() }\n    |                                        `- error: missing argument for parameter #1 in call\n232 |"
+  },
+  {
+    "case": "incompatible_stage",
+    "expected_compiles": false,
+    "compiles": false,
+    "expectation_met": true,
+    "diagnostic": "/workspace/scratch/182ca10a4383/core_probes/incompatible_stage.swift:231:23: error: generic struct 'Then' requires the types 'Int' and '[UInt8]' be equivalent\n 80 | }\n 81 | \n 82 | struct Then<First: Stage, Second: Stage>: Stage\n    |        `- note: where 'First.Output' = 'Int', 'Second.Input' = '[UInt8]'\n 83 | where First.Output == Second.Input {\n 84 |     let first: First\n    :\n229 | }\n230 | \n231 | func badStage() { _ = Then(first: ByteCount(), second: ByteCount()) }\n    |                       `- error: generic struct 'Then' requires the types 'Int' and '[UInt8]' be equivalent\n232 | \n\n/workspace/scratch/182ca10a4383/core_probes/incompatible_stage.swift:231:23: error: generic struct 'Then' requires the types 'Int' and '[UInt8]' be equivalent\n 80 | }\n 81 | \n 82 | struct Then<First: Stage, Second: Stage>: Stage\n    |        `- note: where 'First.Output' = 'Int', 'Second.Input' = '[UInt8]'\n 83 | where First.Output == Second.Input {\n 84 |     let first: First\n    :\n229 | }\n230 | \n231 | func badStage() { _ = Then(first: ByteCount(), second: ByteCount()) }\n    |                       `- error: generic struct 'Then' requires the types 'Int' and '[UInt8]' be equivalent\n232 |"
+  },
+  {
+    "case": "finish_draft",
+    "expected_compiles": false,
+    "compiles": false,
+    "expectation_met": true,
+    "diagnostic": "/workspace/scratch/182ca10a4383/core_probes/finish_draft.swift:231:57: error: referencing instance method 'finish()' on 'Submission' requires the types 'Draft' and 'Ready' be equivalent\n117 | }\n118 | \n119 | extension Submission where State == Ready {\n    | `- note: where 'State' = 'Draft'\n120 |     consuming func finish() -> Submission<Complete> {\n121 |         // A real effectful submission belongs in the audited implementation.\n    :\n229 | }\n230 | \n231 | func badDraft(_ d: consuming Submission<Draft>) { _ = d.finish() }\n    |                                                         `- error: referencing instance method 'finish()' on 'Submission' requires the types 'Draft' and 'Ready' be equivalent\n232 |"
+  },
+  {
+    "case": "forge_ready",
+    "expected_compiles": false,
+    "compiles": false,
+    "expectation_met": true,
+    "diagnostic": "/workspace/scratch/182ca10a4383/core_probes/forge_ready.swift:231:23: error: 'Submission<State>' initializer is inaccessible due to 'private' protection level\n105 |     private let body: String\n106 | \n107 |     private init(body: String) { self.body = body }\n    |             `- note: 'init(body:)' declared here\n108 | }\n109 | \n    :\n229 | }\n230 | \n231 | func badReady() { _ = Submission<Ready>(body: \"\") }\n    |                       `- error: 'Submission<State>' initializer is inaccessible due to 'private' protection level\n232 |"
+  },
+  {
+    "case": "reuse_consumed",
+    "expected_compiles": false,
+    "compiles": false,
+    "expectation_met": true,
+    "diagnostic": "/workspace/scratch/182ca10a4383/core_probes/reuse_consumed.swift:231:17: error: 'r' consumed more than once\n229 | }\n230 | \n231 | func badReuse(_ r: consuming Submission<Ready>) { _ = r.finish(); _ = r.finish() }\n    |                 |                                     |               `- note: consumed again here\n    |                 |                                     `- note: consumed here\n    |                 `- error: 'r' consumed more than once\n232 |"
+  },
+  {
+    "case": "incompatible_shapes",
+    "expected_compiles": false,
+    "compiles": false,
+    "expectation_met": true,
+    "diagnostic": "/workspace/scratch/182ca10a4383/core_probes/incompatible_shapes.swift:231:62: error: cannot convert value of type 'Matrix<4, 5>' to expected argument type 'Matrix<3, 5>'\n143 | \n144 | // H. Shape equality in the type. Index arithmetic remains runtime arithmetic.\n145 | struct Matrix<let rows: Int, let columns: Int> {\n    |                   `- note: arguments to generic parameter 'rows' ('4' and '3') are expected to be equal\n146 |     var storage: InlineArray<rows, InlineArray<columns, Double>>\n147 | \n    :\n229 | }\n230 | \n231 | func badShape() { _ = multiplied(Matrix<2, 3>(repeating: 0), Matrix<4, 5>(repeating: 0)) }\n    |                                                              `- error: cannot convert value of type 'Matrix<4, 5>' to expected argument type 'Matrix<3, 5>'\n232 |"
+  },
+  {
+    "case": "wrong_index_bound",
+    "expected_compiles": false,
+    "compiles": false,
+    "expectation_met": true,
+    "diagnostic": "/workspace/scratch/182ca10a4383/core_probes/wrong_index_bound.swift:231:98: error: cannot convert value of type 'BoundedIndex<4>' to expected argument type 'BoundedIndex<3>'\n166 | \n167 | // I. A dynamic bounds proof is minted once and then carried by a type.\n168 | struct BoundedIndex<let size: Int> {\n    |                         `- note: arguments to generic parameter 'size' ('4' and '3') are expected to be equal\n169 |     let value: Int\n170 | \n    :\n229 | }\n230 | \n231 | func badBound(_ i: BoundedIndex<4>) { let v: InlineArray<3, Int> = [1, 2, 3]; _ = element(v, at: i) }\n    |                                                                                                  `- error: cannot convert value of type 'BoundedIndex<4>' to expected argument type 'BoundedIndex<3>'\n232 |"
+  },
+  {
+    "case": "wrong_coordinate_space",
+    "expected_compiles": false,
+    "compiles": false,
+    "expectation_met": true,
+    "diagnostic": "/workspace/scratch/182ca10a4383/core_probes/wrong_coordinate_space.swift:231:114: error: cannot convert value of type 'Transform<A, C>' to expected argument type 'Transform<B, C>'\n184 | // J. Coordinate spaces and directed transformation composition.\n185 | struct Point<Space> { let x: Double; let y: Double }\n186 | struct Transform<From, To> {\n    |                  `- note: arguments to generic parameter 'From' ('A' and 'B') are expected to be equal\n187 |     let apply: (Point<From>) -> Point<To>\n188 | }\n    :\n229 | }\n230 | \n231 | enum A {}; enum B {}; enum C {}; func badTransform(_ a: Transform<A, B>, _ b: Transform<A, C>) { _ = followed(a, b) }\n    |                                                                                                                  `- error: cannot convert value of type 'Transform<A, C>' to expected argument type 'Transform<B, C>'\n232 |"
+  },
+  {
+    "case": "missing_map_case",
+    "expected_compiles": false,
+    "compiles": false,
+    "expectation_met": true,
+    "diagnostic": "/workspace/scratch/182ca10a4383/core_probes/missing_map_case.swift:231:54: error: missing argument for parameter 'green' in call\n196 | // K. A finite map can require a value for every case structurally.\n197 | enum TrafficLight { case red, yellow, green }\n198 | struct TrafficLightMap<Value> {\n    |        `- note: 'init(red:yellow:green:)' declared here\n199 |     let red: Value\n200 |     let yellow: Value\n    :\n229 | }\n230 | \n231 | func badMap() { _ = TrafficLightMap(red: 1, yellow: 2) }\n    |                                                      `- error: missing argument for parameter 'green' in call\n232 |"
+  },
+  {
+    "case": "drop_without_finishing",
+    "expected_compiles": true,
+    "compiles": true,
+    "expectation_met": true,
+    "diagnostic": ""
+  },
+  {
+    "case": "runtime_bounds_still_compile",
+    "expected_compiles": true,
+    "compiles": true,
+    "expectation_met": true,
+    "diagnostic": ""
+  }
+]

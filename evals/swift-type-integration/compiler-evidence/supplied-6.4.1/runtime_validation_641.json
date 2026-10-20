@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "compiler_path": "/tmp/swift641-toolchain/swift-6.4.1-RELEASE-ubuntu24.04/usr/bin/swift-frontend",
+  "compiler_version": "Swift version 6.4.1 (swift-6.4.1-RELEASE)\nTarget: x86_64-unknown-linux-gnu\n",
+  "recorded_utc": "2026-10-18T09:40:54.854607+00:00",
+  "language_mode": "6",
+  "phase": "interpret",
+  "total": 2,
+  "all_expectations_met": true,
+  "results": [
+    {
+      "source_file": "core_examples_runtime.swift",
+      "command": [
+        "/tmp/swift641-toolchain/swift-6.4.1-RELEASE-ubuntu24.04/usr/bin/swift-frontend",
+        "-interpret",
+        "-swift-version",
+        "6",
+        "-module-cache-path",
+        "/tmp/swift641-companion-verification/runtime/module-cache",
+        "/workspace/scratch/182ca10a4383/Swift_Type_System_Companion/core_examples_runtime.swift"
+      ],
+      "expected_stdout": "Core construction, decoding, and shape examples ran successfully.",
+      "exit_code": 0,
+      "stdout": "Core construction, decoding, and shape examples ran successfully.\n",
+      "stderr": "",
+      "runtime_executed": true,
+      "expectation_met": true
+    },
+    {
+      "source_file": "modeling_examples.swift",
+      "command": [
+        "/tmp/swift641-toolchain/swift-6.4.1-RELEASE-ubuntu24.04/usr/bin/swift-frontend",
+        "-interpret",
+        "-swift-version",
+        "6",
+        "-module-cache-path",
+        "/tmp/swift641-companion-verification/runtime/module-cache",
+        "/workspace/scratch/182ca10a4383/Swift_Type_System_Companion/modeling_examples.swift"
+      ],
+      "expected_stdout": "All modeling examples ran successfully.",
+      "exit_code": 0,
+      "stdout": "All modeling examples ran successfully.\n",
+      "stderr": "",
+      "runtime_executed": true,
+      "expectation_met": true
+    }
+  ]
+}

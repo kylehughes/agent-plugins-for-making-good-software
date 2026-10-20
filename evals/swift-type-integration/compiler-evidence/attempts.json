@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "attempts": [
+    {
+      "path": "/tmp/swift-corpus-6.3.3.json",
+      "sha256": "1b2a460d0468929d178150b13b6dd7900419b9d8371e7f0c84c1cda8f1665f68",
+      "status": "fail",
+      "counts": {
+        "declared_compiler_cases": 89,
+        "declared_runtime_checks": 2,
+        "failed_compiler_cases": 31,
+        "observed_compiler_cases": 89,
+        "observed_runtime_checks": 0,
+        "passed_compiler_cases": 58
+      },
+      "historical": true
+    },
+    {
+      "path": "/tmp/swift-corpus-6.3.3-v2.json",
+      "sha256": "dd4c56e372dc328372da7fd0be96037f8fa8b74c9957abe4d2d1c89a8d382294",
+      "status": "fail",
+      "counts": {
+        "declared_compiler_cases": 89,
+        "declared_runtime_checks": 2,
+        "failed_compiler_cases": 38,
+        "observed_compiler_cases": 89,
+        "observed_runtime_checks": 2,
+        "passed_compiler_cases": 51
+      },
+      "historical": true
+    },
+    {
+      "path": "/tmp/swift-corpus-6.3.3-authoritative.json",
+      "sha256": "8b10123f94930cda95bc2fa84f33250002483f67c428c966a2308e1d4b26402f",
+      "status": "fail",
+      "counts": {
+        "blocked_compiler_cases": 13,
+        "declared_compiler_cases": 89,
+        "declared_runtime_checks": 2,
+        "executed_runtime_checks": 2,
+        "failed_compiler_cases": 26,
+        "invoked_compiler_cases": 76,
+        "passed_compiler_cases": 63,
+        "recorded_compiler_cases": 89
+      },
+      "historical": true
+    },
+    {
+      "path": "/tmp/swift-corpus-unavailable.json",
+      "sha256": "043a11b4cd8bc6dbc28f6699111f2ece8bcc0f6b6cddf89b6f57317ef5bf4514",
+      "status": "unavailable",
+      "counts": {
+        "declared_compiler_cases": 89,
+        "declared_runtime_checks": 2
+      },
+      "historical": true
+    },
+    {
+      "path": "/tmp/swift-corpus-6.4-xcode27.1-attempt-01.json",
+      "retained_copy": "evals/swift-type-integration/compiler-evidence/observed-6.4-macos-attempt-01.json",
+      "sha256": "9d22f7b363c27ddc3cfc84055f9b7f82a4e766fdfafdfb200342a9c9c93adb4b",
+      "status": "fail",
+      "counts": {
+        "blocked_compiler_cases": 10,
+        "declared_compiler_cases": 89,
+        "declared_runtime_checks": 2,
+        "executed_runtime_checks": 2,
+        "failed_compiler_cases": 28,
+        "invoked_compiler_cases": 79,
+        "passed_compiler_cases": 61,
+        "recorded_compiler_cases": 89
+      },
+      "historical": true,
+      "argv": [
+        "python3",
+        "plugins/apple-platform/skills/modeling-swift-types-for-correctness/scripts/swift_compiler_corpus.py",
+        "--swiftc",
+        "/Applications/Xcode-27.1.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swift-frontend",
+        "--report",
+        "/tmp/swift-corpus-6.4-xcode27.1-attempt-01.json"
+      ],
+      "exit_code": 1,
+      "limit": "Initial Swift6.4 run inherits macOS26 deployment and predates reviewed exact-build diagnostic alternatives; six positive cases fail macOS27 availability checks."
+    },
+    {
+      "path": "/tmp/swift-corpus-6.4-xcode27.1-attempt-02.json",
+      "retained_copy": "evals/swift-type-integration/compiler-evidence/observed-6.4-macos-attempt-02.json",
+      "sha256": "8ac2316e3b3aba5f431f6627f73f7a98697c852f130fb9c790ce8914ef8fed45",
+      "status": "fail",
+      "counts": {
+        "blocked_compiler_cases": 0,
+        "declared_compiler_cases": 89,
+        "declared_runtime_checks": 2,
+        "executed_runtime_checks": 2,
+        "failed_compiler_cases": 1,
+        "invoked_compiler_cases": 89,
+        "passed_compiler_cases": 88,
+        "recorded_compiler_cases": 89
+      },
+      "historical": true,
+      "exit_code": 1,
+      "limit": "All cases invoked with macOS27 compile target. One extra same-counterexample Span initializer diagnostic had not yet been recorded; no acceptance/rejection deviations."
+    },
+    {
+      "path": "/tmp/swift-corpus-6.4-xcode27.1-final.json",
+      "retained_copy": "evals/swift-type-integration/compiler-evidence/observed-6.4-macos.json",
+      "sha256": "2f1a796a33ce0f3a359f979b4988dc33165ae1ddddd1140a489decd730478f87",
+      "status": "pass",
+      "counts": {
+        "blocked_compiler_cases": 0,
+        "declared_compiler_cases": 89,
+        "declared_runtime_checks": 2,
+        "executed_runtime_checks": 2,
+        "failed_compiler_cases": 0,
+        "invoked_compiler_cases": 89,
+        "passed_compiler_cases": 89,
+        "recorded_compiler_cases": 89
+      },
+      "historical": false,
+      "argv": [
+        "python3",
+        "plugins/apple-platform/skills/modeling-swift-types-for-correctness/scripts/swift_compiler_corpus.py",
+        "--swiftc",
+        "/Applications/Xcode-27.1.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swift-frontend",
+        "--compile-target",
+        "arm64-apple-macosx27.0",
+        "--report",
+        "/tmp/swift-corpus-6.4-xcode27.1-final.json"
+      ],
+      "exit_code": 0,
+      "limitations": [
+        "Compiler results apply only to the recorded source hashes, toolchain, platform, phase, and arguments.",
+        "Supplied Swift 6.4.1 Linux outcomes are preserved separately; current observations never rewrite them.",
+        "Performance experiments are outside this corpus. Effects and frontier probes are compiled only.",
+        "Compile-only probes target arm64-apple-macosx27.0; runtime builds omit that target and use the compiler's host-compatible default because their binaries execute on this host."
+      ]
+    }
+  ],
+  "limits": [
+    "Early attempts predate meaningful negative pairing, runtime-driver selection, and diagnostic compatibility corrections; they are not acceptance evidence.",
+    "Raw reports are retained at their recorded local paths. Supplied historical reports remain in supplied-6.4.1/."
+  ]
+}

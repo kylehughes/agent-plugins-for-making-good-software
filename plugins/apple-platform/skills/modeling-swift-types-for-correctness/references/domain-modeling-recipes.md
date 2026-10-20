@@ -188,6 +188,18 @@ permits it to be lost. A thrown error is not a general transport for a noncopyab
 recovery handle. Copyable snapshots may retain an earlier stage; choose
 noncopyability only when reuse of that handle would itself violate the contract.
 
+Returning a recovery handle makes retry possible; the caller may still drop it.
+Every consuming-workflow assessment must distinguish local reuse prevention,
+recovery availability, and eventual completion. Noncopyability does not require
+submission, retry, or success. Server deduplication can prevent duplicate effects,
+but it does not establish that any request eventually succeeds.
+
+Show the complete transition result, including its terminal success payload.
+Intermediate verified or ready states are not a substitute for the receipt or
+owned result returned after the effect succeeds. Name what callers receive on
+success, recoverable failure, and any uncertain outcome; do not leave the final
+outcome type undefined while claiming the recovery contract is complete.
+
 A required-field builder is useful for staged discovery, but a normal initializer
 is simpler when the required data is already available. Keep correlated phases
 in a sum with state-specific payloads; independent capability axes are appropriate
@@ -208,6 +220,15 @@ behavior, and cancellation remain runtime obligations. See [resource protocols](
 Erasure should happen after related stages are packaged; otherwise it discards
 the phase evidence. Costs are state proliferation and recovery plumbing; keep a
 plain enum when operations need dynamic switching rather than static exclusion.
+
+Make the evidence plan concrete even when the API is only a sketch. Name a valid
+transition and a misuse the chosen types reject; for a consuming handle, pair
+the accepted transition with reuse of that handle under the same ownership-checking
+phase and flags. Specify a runtime scenario that forces a recoverable failure,
+checks that the returned resource remains usable, then cancels an in-flight
+operation and observes its outcome and retained state. Mark unrun checks pending.
+These checks do not establish remote idempotency or recovery after a process crash;
+those require service and persistence evidence.
 
 <a id="app"></a>
 ## Applied architecture: keep shape and domain evidence separate

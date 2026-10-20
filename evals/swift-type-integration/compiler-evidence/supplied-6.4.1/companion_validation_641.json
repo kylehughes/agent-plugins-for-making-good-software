@@ -1,0 +1,684 @@
+{
+  "schema_version": 1,
+  "compiler_path": "/tmp/swift641-toolchain/swift-6.4.1-RELEASE-ubuntu24.04/usr/bin/swift-frontend",
+  "compiler_version": "Swift version 6.4.1 (swift-6.4.1-RELEASE)\nTarget: x86_64-unknown-linux-gnu\n",
+  "recorded_utc": "2026-10-18T09:40:54.854607+00:00",
+  "language_mode": "6",
+  "phase": "emit-sil",
+  "entry_point": "verify.py",
+  "invocation": [
+    "python",
+    "verify.py",
+    "--swift-frontend",
+    "/tmp/swift641-toolchain/swift-6.4.1-RELEASE-ubuntu24.04/usr/bin/swift-frontend",
+    "--output-dir",
+    "/tmp/swift641-companion-verification",
+    "--run-examples"
+  ],
+  "summary": {
+    "compiler_cases": 89,
+    "accepted": 31,
+    "rejected": 58,
+    "runtime_examples": 2,
+    "all_expectations_met": true
+  },
+  "counting": "87 explicit scenario probes plus independent core/modeling positive compilation = 89 compilation cases. Two runtime examples are additional and are not part of that count.",
+  "suites": {
+    "core": {
+      "total": 15,
+      "accepted": 3,
+      "rejected": 12,
+      "all_expectations_met": true
+    },
+    "modeling": {
+      "total": 10,
+      "accepted": 1,
+      "rejected": 9,
+      "all_expectations_met": true
+    },
+    "effects": {
+      "total": 9,
+      "accepted": 4,
+      "rejected": 5,
+      "all_expectations_met": true
+    },
+    "frontier": {
+      "total": 55,
+      "accepted": 23,
+      "rejected": 32,
+      "all_expectations_met": true
+    }
+  },
+  "case_outcomes": [
+    {
+      "suite": "core",
+      "name": "core_positive",
+      "expected_outcome": "compile_success_without_diagnostics",
+      "accepted": true,
+      "expectation_met": true
+    },
+    {
+      "suite": "core",
+      "name": "wrong_identity",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "core",
+      "name": "bypass_validation",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "core",
+      "name": "invalidate_scalar",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "core",
+      "name": "empty_nonempty",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "core",
+      "name": "incompatible_stage",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "core",
+      "name": "finish_draft",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "core",
+      "name": "forge_ready",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "core",
+      "name": "reuse_consumed",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "core",
+      "name": "incompatible_shapes",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "core",
+      "name": "wrong_index_bound",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "core",
+      "name": "wrong_coordinate_space",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "core",
+      "name": "missing_map_case",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "core",
+      "name": "drop_without_finishing",
+      "expected_outcome": "compile_success",
+      "accepted": true,
+      "expectation_met": true
+    },
+    {
+      "suite": "core",
+      "name": "runtime_bounds_still_compile",
+      "expected_outcome": "compile_success",
+      "accepted": true,
+      "expectation_met": true
+    },
+    {
+      "suite": "modeling",
+      "name": "modeling_positive",
+      "expected_outcome": "compile_success_without_diagnostics",
+      "accepted": true,
+      "expectation_met": true
+    },
+    {
+      "suite": "modeling",
+      "name": "equality_cannot_be_forged",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "modeling",
+      "name": "gadt_wrong_result",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "modeling",
+      "name": "associated_family_wrong_node",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "modeling",
+      "name": "associated_family_wrong_mapping",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "modeling",
+      "name": "pack_wrong_input_types",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "modeling",
+      "name": "pack_wrong_arity",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "modeling",
+      "name": "pack_wrong_output_types",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "modeling",
+      "name": "positional_evidence_wrong_list",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "modeling",
+      "name": "private_equality_constructor",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "effects",
+      "name": "positive_effects",
+      "expected_outcome": "compile_success_without_diagnostics",
+      "accepted": true,
+      "expectation_met": true
+    },
+    {
+      "suite": "effects",
+      "name": "typed_workarounds",
+      "expected_outcome": "compile_success_without_diagnostics",
+      "accepted": true,
+      "expectation_met": true
+    },
+    {
+      "suite": "effects",
+      "name": "typed_task",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "effects",
+      "name": "opaque_throws",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "effects",
+      "name": "async_let_error",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "effects",
+      "name": "catch_cases",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "effects",
+      "name": "double_resume",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "effects",
+      "name": "dropped_continuation",
+      "expected_outcome": "compile_success_without_diagnostics",
+      "accepted": true,
+      "expectation_met": true
+    },
+    {
+      "suite": "effects",
+      "name": "discarded_task",
+      "expected_outcome": "compile_success_with_warning",
+      "accepted": true,
+      "expectation_met": true
+    },
+    {
+      "suite": "frontier",
+      "name": "integer_shape_valid",
+      "expected_outcome": "compile_success",
+      "accepted": true,
+      "expectation_met": true
+    },
+    {
+      "suite": "frontier",
+      "name": "integer_shape_invalid",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "frontier",
+      "name": "inline_array_valid",
+      "expected_outcome": "compile_success",
+      "accepted": true,
+      "expectation_met": true
+    },
+    {
+      "suite": "frontier",
+      "name": "integer_arithmetic_default",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "frontier",
+      "name": "integer_constant_default",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "frontier",
+      "name": "integer_generic_arithmetic",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "frontier",
+      "name": "integer_inequality_constraint",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "frontier",
+      "name": "ownership_valid",
+      "expected_outcome": "compile_success",
+      "accepted": true,
+      "expectation_met": true
+    },
+    {
+      "suite": "frontier",
+      "name": "ownership_double_consume_invalid",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "frontier",
+      "name": "span_iterable_valid",
+      "expected_outcome": "compile_success",
+      "accepted": true,
+      "expectation_met": true
+    },
+    {
+      "suite": "frontier",
+      "name": "span_escaping_local_invalid",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "frontier",
+      "name": "span_alias_mutation_invalid",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "frontier",
+      "name": "ref_valid",
+      "expected_outcome": "compile_success",
+      "accepted": true,
+      "expectation_met": true
+    },
+    {
+      "suite": "frontier",
+      "name": "borrow_accessors_valid",
+      "expected_outcome": "compile_success",
+      "accepted": true,
+      "expectation_met": true
+    },
+    {
+      "suite": "frontier",
+      "name": "borrow_temporary_invalid",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "frontier",
+      "name": "optional_ref",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "frontier",
+      "name": "optional_mutableref",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "frontier",
+      "name": "optional_put",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "frontier",
+      "name": "optional_map_noncopyable",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "frontier",
+      "name": "optional_borrow_switch_valid",
+      "expected_outcome": "compile_success",
+      "accepted": true,
+      "expectation_met": true
+    },
+    {
+      "suite": "frontier",
+      "name": "unique_containers",
+      "expected_outcome": "compile_success",
+      "accepted": true,
+      "expectation_met": true
+    },
+    {
+      "suite": "frontier",
+      "name": "rigid_array",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "frontier",
+      "name": "iterable_typed_failure",
+      "expected_outcome": "compile_success",
+      "accepted": true,
+      "expectation_met": true
+    },
+    {
+      "suite": "frontier",
+      "name": "noncopyable_hashable",
+      "expected_outcome": "compile_success",
+      "accepted": true,
+      "expectation_met": true
+    },
+    {
+      "suite": "frontier",
+      "name": "associatedtype_suppression_valid",
+      "expected_outcome": "compile_success",
+      "accepted": true,
+      "expectation_met": true
+    },
+    {
+      "suite": "frontier",
+      "name": "associatedtype_defaults_invalid",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "frontier",
+      "name": "pack_valid",
+      "expected_outcome": "compile_success",
+      "accepted": true,
+      "expectation_met": true
+    },
+    {
+      "suite": "frontier",
+      "name": "tuple_hashable",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "frontier",
+      "name": "inline_array_hashable",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "frontier",
+      "name": "custom_lifetime_default",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "frontier",
+      "name": "yielding_accessors",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "frontier",
+      "name": "safe_raw_bytes",
+      "expected_outcome": "compile_success",
+      "accepted": true,
+      "expectation_met": true
+    },
+    {
+      "suite": "frontier",
+      "name": "span_single_value",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "frontier",
+      "name": "inline_array_wrong_arity",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "frontier",
+      "name": "inline_array_unchecked_index",
+      "expected_outcome": "compile_success",
+      "accepted": true,
+      "expectation_met": true
+    },
+    {
+      "suite": "frontier",
+      "name": "inline_array_negative_size",
+      "expected_outcome": "compile_success",
+      "accepted": true,
+      "expectation_met": true
+    },
+    {
+      "suite": "frontier",
+      "name": "span_getter_valid",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "frontier",
+      "name": "span_getter_escape_invalid",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "frontier",
+      "name": "custom_lifetime_experimental",
+      "expected_outcome": "compile_success",
+      "accepted": true,
+      "expectation_met": true
+    },
+    {
+      "suite": "frontier",
+      "name": "inferred_lifetime_experimental",
+      "expected_outcome": "compile_success",
+      "accepted": true,
+      "expectation_met": true
+    },
+    {
+      "suite": "frontier",
+      "name": "yielding_accessor_experimental",
+      "expected_outcome": "compile_success",
+      "accepted": true,
+      "expectation_met": true
+    },
+    {
+      "suite": "frontier",
+      "name": "literal_expression_experimental",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "frontier",
+      "name": "generic_arithmetic_experimental",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "frontier",
+      "name": "borrowing_copyable_result_implicit",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "frontier",
+      "name": "borrowing_copyable_result_explicit",
+      "expected_outcome": "compile_success",
+      "accepted": true,
+      "expectation_met": true
+    },
+    {
+      "suite": "frontier",
+      "name": "noncopyable_tuple",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "frontier",
+      "name": "noncopyable_existential",
+      "expected_outcome": "compile_success",
+      "accepted": true,
+      "expectation_met": true
+    },
+    {
+      "suite": "frontier",
+      "name": "nonescapable_custom_struct",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "frontier",
+      "name": "nonescapable_generic",
+      "expected_outcome": "compile_success",
+      "accepted": true,
+      "expectation_met": true
+    },
+    {
+      "suite": "frontier",
+      "name": "pack_noncopyable",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "frontier",
+      "name": "negative_inline_array_init",
+      "expected_outcome": "compile_success",
+      "accepted": true,
+      "expectation_met": true
+    },
+    {
+      "suite": "frontier",
+      "name": "deinit_mutation",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "frontier",
+      "name": "span_getter_lifetimes",
+      "expected_outcome": "compile_success",
+      "accepted": true,
+      "expectation_met": true
+    },
+    {
+      "suite": "frontier",
+      "name": "span_getter_escape_lifetimes",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    },
+    {
+      "suite": "frontier",
+      "name": "span_local_escape_explicit_lifetime",
+      "expected_outcome": "compile_error",
+      "accepted": false,
+      "expectation_met": true
+    }
+  ],
+  "runtime_report": "runtime_validation_641.json",
+  "limitations": [
+    "Compiler acceptance is a property of these precise sources and toolchain, not a general correctness theorem.",
+    "Successful runtime examples test their stated assertions only. No negative, effects-resource, or frontier probe is executed.",
+    "Frontier experimental flags are taken from its manifest. Core, modeling, and effects use no experimental flags.",
+    "Recorded diagnostics and SDK availability can differ with platform and compiler version. Mismatches are reported, not silently accepted."
+  ]
+}

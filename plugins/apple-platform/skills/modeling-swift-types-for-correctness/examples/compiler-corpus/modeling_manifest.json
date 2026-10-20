@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "title": "Nine rejected modeling constructions",
+  "source_base_file": "modeling_examples.swift",
+  "source_base_sha256": "5a812334ca9541835f00075bc958b257207bd2f521ec2da8a735b7a794d7c83e",
+  "language_mode": "6",
+  "phase": "emit-sil",
+  "interpretation": "Each snippet is appended independently to the positive source. A rejection must include the expected diagnostic; successful compilation of the shared positive source is checked separately.",
+  "probes": [
+    {
+      "name": "equality_cannot_be_forged",
+      "snippet": "let impossible: TypeEquality<String, Bool> = .reflexive",
+      "expected_success": false,
+      "expected_diagnostic_contains": "member chain produces result of type 'TypeEquality<String, String>' but contextual base was inferred as 'TypeEquality<String, Bool>'"
+    },
+    {
+      "name": "gadt_wrong_result",
+      "snippet": "let impossible: ProvenExpression<Bool> = .text(\"x\", TypeEquality<Bool, Bool>.reflexive)",
+      "expected_success": false,
+      "expected_diagnostic_contains": "cannot convert value of type 'TypeEquality<Bool, Bool>' to expected argument type 'TypeEquality<String, Bool>'"
+    },
+    {
+      "name": "associated_family_wrong_node",
+      "snippet": "let impossible: TextSyntax = .joined(.literal(\"x\"), FlagSyntax.literal(true))",
+      "expected_success": false,
+      "expected_diagnostic_contains": "cannot convert value of type 'FlagSyntax' to expected argument type 'TextSyntax'"
+    },
+    {
+      "name": "associated_family_wrong_mapping",
+      "snippet": "enum BadSort: ExpressionSort { typealias Value = Int; typealias Syntax = TextSyntax }",
+      "expected_success": false,
+      "expected_diagnostic_contains": "type 'BadSort' does not conform to protocol 'ExpressionSort'"
+    },
+    {
+      "name": "pack_wrong_input_types",
+      "snippet": "let impossible = transformations.apply(\"42\", 5, false)",
+      "expected_success": false,
+      "expected_diagnostic_contains": "cannot convert value of type 'String' to expected argument type 'Int'"
+    },
+    {
+      "name": "pack_wrong_arity",
+      "snippet": "let impossible = transformations.apply(42, \"Swift\")",
+      "expected_success": false,
+      "expected_diagnostic_contains": "missing argument for parameter #1 in call"
+    },
+    {
+      "name": "pack_wrong_output_types",
+      "snippet": "let impossible: HList<Int, Int, Bool> = transformations.apply(42, \"Swift\", false)",
+      "expected_success": false,
+      "expected_diagnostic_contains": "cannot assign value of type 'HList<String, Int, Bool>' to type 'HList<Int, Int, Bool>'"
+    },
+    {
+      "name": "positional_evidence_wrong_list",
+      "snippet": "let impossible = Here<Int, HNil>.get(from: recursive)",
+      "expected_success": false,
+      "expected_diagnostic_contains": "cannot convert value of type 'HCons<Int, HCons<String, HNil>>' to expected argument type 'HCons<Int, HNil>'"
+    },
+    {
+      "name": "private_equality_constructor",
+      "snippet": "let impossible = TypeEquality<String, Bool>(forward: { _ in true }, backward: { _ in \"x\" })",
+      "expected_success": false,
+      "expected_diagnostic_contains": "'TypeEquality<A, B>' initializer is inaccessible due to 'private' protection level"
+    }
+  ]
+}

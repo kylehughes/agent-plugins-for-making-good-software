@@ -15,7 +15,7 @@ Use this skill to produce Swift concurrency code that is correct under strict co
 - Prefer portable Swift and Apple-platform APIs that are available on iOS 16+. If using a newer API such as Observation, Synchronization.Mutex, typed notifications, or beta frameworks, call out the availability implication.
 - Do not preserve Swift 5-era workarounds unless they still improve code under the selected compiler.
 
-For a claim about ownership, representable state, typed failure, or mandatory completion, route through [type modeling](../modeling-swift-types-for-correctness/SKILL.md). This skill retains scheduling, isolation repair, and task-lifecycle guidance; load the modeling recipe only for the enforcement claim.
+For a claim about ownership, representable state, typed failure, or mandatory completion, first load the [type-modeling skill body](../modeling-swift-types-for-correctness/SKILL.md) and follow its composition and focused-reference requirements. Reading one of its recipes alone skips that assessment contract. This skill retains scheduling, isolation repair, and task-lifecycle guidance.
 
 ## First pass
 

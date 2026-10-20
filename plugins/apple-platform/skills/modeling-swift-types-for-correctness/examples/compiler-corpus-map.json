@@ -1,0 +1,1814 @@
+{
+  "schema_version": 1,
+  "title": "Swift type-system compiler corpus",
+  "source_archive_sha256": "4454c583ec5a9cc4dd80487ff19a9a2dc9925e5249588db8e4a06482bf35eb13",
+  "language_mode": "6",
+  "phase": "emit-sil",
+  "counting": "89 compiler cases: 87 explicit probes plus core and modeling positive compilation. The two runtime checks are additional.",
+  "cases": [
+    {
+      "suite": "core",
+      "name": "core_positive",
+      "lane": "default",
+      "source": {
+        "kind": "file",
+        "path": "core_examples.swift"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_success_without_diagnostics",
+      "diagnostic_markers": [],
+      "supplied_6_4_1": {
+        "accepted": true,
+        "expectation_met": true
+      },
+      "note": ""
+    },
+    {
+      "suite": "core",
+      "name": "wrong_identity",
+      "lane": "default",
+      "source": {
+        "kind": "append",
+        "path": "core_examples.swift",
+        "snippet": "func badIdentity() { _ = loadUser(OrderID(UUID())) }"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "cannot convert value of type 'ID<OrderEntity>' to expected argument type 'UserID' (aka 'ID<UserEntity>')"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "",
+      "positive_control": "control:default"
+    },
+    {
+      "suite": "core",
+      "name": "bypass_validation",
+      "lane": "default",
+      "source": {
+        "kind": "append",
+        "path": "core_examples.swift",
+        "snippet": "func badPercentage() { _ = Percentage(value: 255) }"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "extraneous argument label 'value:' in call"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "",
+      "positive_control": "control:default"
+    },
+    {
+      "suite": "core",
+      "name": "invalidate_scalar",
+      "lane": "default",
+      "source": {
+        "kind": "append",
+        "path": "core_examples.swift",
+        "snippet": "func badMutation() { var p = Percentage(5)!; p.value = 255 }"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "cannot assign to property: 'value' is a 'let' constant"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "",
+      "positive_control": "control:default"
+    },
+    {
+      "suite": "core",
+      "name": "empty_nonempty",
+      "lane": "default",
+      "source": {
+        "kind": "append",
+        "path": "core_examples.swift",
+        "snippet": "func badNonempty() { _ = NonEmpty<Int>() }"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "missing argument for parameter #1 in call"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "",
+      "positive_control": "control:default"
+    },
+    {
+      "suite": "core",
+      "name": "incompatible_stage",
+      "lane": "default",
+      "source": {
+        "kind": "append",
+        "path": "core_examples.swift",
+        "snippet": "func badStage() { _ = Then(first: ByteCount(), second: ByteCount()) }"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "generic struct 'Then' requires the types 'Int' and '[UInt8]' be equivalent"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "",
+      "positive_control": "control:default"
+    },
+    {
+      "suite": "core",
+      "name": "finish_draft",
+      "lane": "default",
+      "source": {
+        "kind": "append",
+        "path": "core_examples.swift",
+        "snippet": "func badDraft(_ d: consuming Submission<Draft>) { _ = d.finish() }"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "referencing instance method 'finish()' on 'Submission' requires the types 'Draft' and 'Ready' be equivalent"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "",
+      "positive_control": "control:default"
+    },
+    {
+      "suite": "core",
+      "name": "forge_ready",
+      "lane": "default",
+      "source": {
+        "kind": "append",
+        "path": "core_examples.swift",
+        "snippet": "func badReady() { _ = Submission<Ready>(body: \"\") }"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "'Submission<State>' initializer is inaccessible due to 'private' protection level"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "",
+      "positive_control": "control:default"
+    },
+    {
+      "suite": "core",
+      "name": "reuse_consumed",
+      "lane": "default",
+      "source": {
+        "kind": "append",
+        "path": "core_examples.swift",
+        "snippet": "func badReuse(_ r: consuming Submission<Ready>) { _ = r.finish(); _ = r.finish() }"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "'r' consumed more than once"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "",
+      "positive_control": "control:default"
+    },
+    {
+      "suite": "core",
+      "name": "incompatible_shapes",
+      "lane": "default",
+      "source": {
+        "kind": "append",
+        "path": "core_examples.swift",
+        "snippet": "func badShape() { _ = multiplied(Matrix<2, 3>(repeating: 0), Matrix<4, 5>(repeating: 0)) }"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "cannot convert value of type 'Matrix<4, 5>' to expected argument type 'Matrix<3, 5>'"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "",
+      "positive_control": "control:default"
+    },
+    {
+      "suite": "core",
+      "name": "wrong_index_bound",
+      "lane": "default",
+      "source": {
+        "kind": "append",
+        "path": "core_examples.swift",
+        "snippet": "func badBound(_ i: BoundedIndex<4>) { let v: InlineArray<3, Int> = [1, 2, 3]; _ = element(v, at: i) }"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "cannot convert value of type 'BoundedIndex<4>' to expected argument type 'BoundedIndex<3>'"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "",
+      "positive_control": "control:default"
+    },
+    {
+      "suite": "core",
+      "name": "wrong_coordinate_space",
+      "lane": "default",
+      "source": {
+        "kind": "append",
+        "path": "core_examples.swift",
+        "snippet": "enum A {}; enum B {}; enum C {}; func badTransform(_ a: Transform<A, B>, _ b: Transform<A, C>) { _ = followed(a, b) }"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "cannot convert value of type 'Transform<A, C>' to expected argument type 'Transform<B, C>'"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "",
+      "positive_control": "control:default"
+    },
+    {
+      "suite": "core",
+      "name": "missing_map_case",
+      "lane": "default",
+      "source": {
+        "kind": "append",
+        "path": "core_examples.swift",
+        "snippet": "func badMap() { _ = TrafficLightMap(red: 1, yellow: 2) }"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "missing argument for parameter 'green' in call"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "",
+      "positive_control": "control:default"
+    },
+    {
+      "suite": "core",
+      "name": "drop_without_finishing",
+      "lane": "default",
+      "source": {
+        "kind": "append",
+        "path": "core_examples.swift",
+        "snippet": "func canDrop() { let _ = Submission<Draft>.draft(\"unfinished\") }"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_success",
+      "diagnostic_markers": [],
+      "supplied_6_4_1": {
+        "accepted": true,
+        "expectation_met": true
+      },
+      "note": ""
+    },
+    {
+      "suite": "core",
+      "name": "runtime_bounds_still_compile",
+      "lane": "default",
+      "source": {
+        "kind": "append",
+        "path": "core_examples.swift",
+        "snippet": "func uncheckedRuntimeIndex(_ i: Int) -> Int { let v: InlineArray<3, Int> = [1, 2, 3]; return v[i] }"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_success",
+      "diagnostic_markers": [],
+      "supplied_6_4_1": {
+        "accepted": true,
+        "expectation_met": true
+      },
+      "note": ""
+    },
+    {
+      "suite": "modeling",
+      "name": "modeling_positive",
+      "lane": "default",
+      "source": {
+        "kind": "file",
+        "path": "modeling_examples.swift"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_success_without_diagnostics",
+      "diagnostic_markers": [],
+      "supplied_6_4_1": {
+        "accepted": true,
+        "expectation_met": true
+      },
+      "note": ""
+    },
+    {
+      "suite": "modeling",
+      "name": "equality_cannot_be_forged",
+      "lane": "default",
+      "source": {
+        "kind": "append",
+        "path": "modeling_examples.swift",
+        "snippet": "let impossible: TypeEquality<String, Bool> = .reflexive"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "member chain produces result of type 'TypeEquality<String, String>' but contextual base was inferred as 'TypeEquality<String, Bool>'"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "",
+      "positive_control": "control:default"
+    },
+    {
+      "suite": "modeling",
+      "name": "gadt_wrong_result",
+      "lane": "default",
+      "source": {
+        "kind": "append",
+        "path": "modeling_examples.swift",
+        "snippet": "let impossible: ProvenExpression<Bool> = .text(\"x\", TypeEquality<Bool, Bool>.reflexive)"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "cannot convert value of type 'TypeEquality<Bool, Bool>' to expected argument type 'TypeEquality<String, Bool>'"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "",
+      "positive_control": "control:default"
+    },
+    {
+      "suite": "modeling",
+      "name": "associated_family_wrong_node",
+      "lane": "default",
+      "source": {
+        "kind": "append",
+        "path": "modeling_examples.swift",
+        "snippet": "let impossible: TextSyntax = .joined(.literal(\"x\"), FlagSyntax.literal(true))"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "cannot convert value of type 'FlagSyntax' to expected argument type 'TextSyntax'"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "",
+      "positive_control": "control:default"
+    },
+    {
+      "suite": "modeling",
+      "name": "associated_family_wrong_mapping",
+      "lane": "default",
+      "source": {
+        "kind": "append",
+        "path": "modeling_examples.swift",
+        "snippet": "enum BadSort: ExpressionSort { typealias Value = Int; typealias Syntax = TextSyntax }"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "type 'BadSort' does not conform to protocol 'ExpressionSort'"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "",
+      "positive_control": "control:default"
+    },
+    {
+      "suite": "modeling",
+      "name": "pack_wrong_input_types",
+      "lane": "default",
+      "source": {
+        "kind": "append",
+        "path": "modeling_examples.swift",
+        "snippet": "let impossible = transformations.apply(\"42\", 5, false)"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "cannot convert value of type 'String' to expected argument type 'Int'"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "",
+      "positive_control": "control:default"
+    },
+    {
+      "suite": "modeling",
+      "name": "pack_wrong_arity",
+      "lane": "default",
+      "source": {
+        "kind": "append",
+        "path": "modeling_examples.swift",
+        "snippet": "let impossible = transformations.apply(42, \"Swift\")"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "missing argument for parameter #1 in call"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "",
+      "positive_control": "control:default"
+    },
+    {
+      "suite": "modeling",
+      "name": "pack_wrong_output_types",
+      "lane": "default",
+      "source": {
+        "kind": "append",
+        "path": "modeling_examples.swift",
+        "snippet": "let impossible: HList<Int, Int, Bool> = transformations.apply(42, \"Swift\", false)"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "cannot assign value of type 'HList<String, Int, Bool>' to type 'HList<Int, Int, Bool>'"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "",
+      "positive_control": "control:default"
+    },
+    {
+      "suite": "modeling",
+      "name": "positional_evidence_wrong_list",
+      "lane": "default",
+      "source": {
+        "kind": "append",
+        "path": "modeling_examples.swift",
+        "snippet": "let impossible = Here<Int, HNil>.get(from: recursive)"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "cannot convert value of type 'HCons<Int, HCons<String, HNil>>' to expected argument type 'HCons<Int, HNil>'"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "",
+      "positive_control": "control:default"
+    },
+    {
+      "suite": "modeling",
+      "name": "private_equality_constructor",
+      "lane": "default",
+      "source": {
+        "kind": "append",
+        "path": "modeling_examples.swift",
+        "snippet": "let impossible = TypeEquality<String, Bool>(forward: { _ in true }, backward: { _ in \"x\" })"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "'TypeEquality<A, B>' initializer is inaccessible due to 'private' protection level"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "",
+      "positive_control": "control:default"
+    },
+    {
+      "suite": "effects",
+      "name": "positive_effects",
+      "lane": "default",
+      "source": {
+        "kind": "file",
+        "path": "probe_effects_positive.swift"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_success_without_diagnostics",
+      "diagnostic_markers": [],
+      "supplied_6_4_1": {
+        "accepted": true,
+        "expectation_met": true
+      },
+      "note": ""
+    },
+    {
+      "suite": "effects",
+      "name": "typed_workarounds",
+      "lane": "default",
+      "source": {
+        "kind": "file",
+        "path": "probe_effects_typed_workarounds.swift"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_success_without_diagnostics",
+      "diagnostic_markers": [],
+      "supplied_6_4_1": {
+        "accepted": true,
+        "expectation_met": true
+      },
+      "note": ""
+    },
+    {
+      "suite": "effects",
+      "name": "typed_task",
+      "lane": "default",
+      "source": {
+        "kind": "file",
+        "path": "probe_effects_typed_task.swift"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "requires the types 'ProbeFailure' and 'any Error' be equivalent"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "",
+      "positive_control": "control:default"
+    },
+    {
+      "suite": "effects",
+      "name": "opaque_throws",
+      "lane": "default",
+      "source": {
+        "kind": "file",
+        "path": "probe_effects_opaque_throws.swift"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "'some' types are only permitted"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "",
+      "positive_control": "control:default"
+    },
+    {
+      "suite": "effects",
+      "name": "async_let_error",
+      "lane": "default",
+      "source": {
+        "kind": "file",
+        "path": "probe_effects_async_let_error.swift"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "thrown expression type 'any Error' cannot be converted to error type 'ProbeFailure'"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "",
+      "positive_control": "control:default"
+    },
+    {
+      "suite": "effects",
+      "name": "catch_cases",
+      "lane": "default",
+      "source": {
+        "kind": "file",
+        "path": "probe_effects_catch_cases.swift"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "the enclosing catch is not exhaustive"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "",
+      "positive_control": "control:default"
+    },
+    {
+      "suite": "effects",
+      "name": "double_resume",
+      "lane": "default",
+      "source": {
+        "kind": "file",
+        "path": "probe_effects_double_resume.swift"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "consumed more than once"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "",
+      "positive_control": "control:default"
+    },
+    {
+      "suite": "effects",
+      "name": "dropped_continuation",
+      "lane": "default",
+      "source": {
+        "kind": "file",
+        "path": "probe_effects_dropped.swift"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_success_without_diagnostics",
+      "diagnostic_markers": [],
+      "supplied_6_4_1": {
+        "accepted": true,
+        "expectation_met": true
+      },
+      "note": ""
+    },
+    {
+      "suite": "effects",
+      "name": "discarded_task",
+      "lane": "default",
+      "source": {
+        "kind": "file",
+        "path": "probe_effects_discarded_task.swift"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_success_with_warning",
+      "diagnostic_markers": [
+        "unstructured throwing task created by",
+        "is not used"
+      ],
+      "supplied_6_4_1": {
+        "accepted": true,
+        "expectation_met": true
+      },
+      "note": ""
+    },
+    {
+      "suite": "frontier",
+      "name": "integer_shape_valid",
+      "lane": "default",
+      "source": {
+        "kind": "frontier",
+        "probe": "integer_shape_valid",
+        "source_sha256": "2a78472646dd19e70fd8ed30d828d08fc665929802d8a3e9e59f1611d38ebf6d"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_success",
+      "diagnostic_markers": [],
+      "supplied_6_4_1": {
+        "accepted": true,
+        "expectation_met": true
+      },
+      "note": "Corrected shape-compatible composition and same-value extension. Replaces the initial redundant-equivalence trial."
+    },
+    {
+      "suite": "frontier",
+      "name": "integer_shape_invalid",
+      "lane": "default",
+      "source": {
+        "kind": "frontier",
+        "probe": "integer_shape_invalid",
+        "source_sha256": "2e9c9672f31e86b818ef357b76271a8bb6e8bb50e89f8bee2f58d718ff6e391e"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "cannot convert value of type 'Matrix<4, 5>' to expected argument type 'Matrix<3, 5>'"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "",
+      "positive_control": "control:default"
+    },
+    {
+      "suite": "frontier",
+      "name": "inline_array_valid",
+      "lane": "default",
+      "source": {
+        "kind": "frontier",
+        "probe": "inline_array_valid",
+        "source_sha256": "b142350f1cda5392ae063fbbadb5d94848853bbcaa40540808eb2a25ad36b735"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_success",
+      "diagnostic_markers": [],
+      "supplied_6_4_1": {
+        "accepted": true,
+        "expectation_met": true
+      },
+      "note": ""
+    },
+    {
+      "suite": "frontier",
+      "name": "integer_arithmetic_default",
+      "lane": "default",
+      "source": {
+        "kind": "frontier",
+        "probe": "integer_arithmetic_default",
+        "source_sha256": "710ec27424514310d9fb7f22822bf24c91e40ab199c70678ba3d5a8a18f82ea8"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "expected type"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "",
+      "positive_control": "control:default"
+    },
+    {
+      "suite": "frontier",
+      "name": "integer_constant_default",
+      "lane": "default",
+      "source": {
+        "kind": "frontier",
+        "probe": "integer_constant_default",
+        "source_sha256": "1270a953dd9f04f3d84c65b1cd8c25be12811764c8f5a25ec2b478197cbf9eb8"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "cannot find type 'count' in scope"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "",
+      "positive_control": "control:default"
+    },
+    {
+      "suite": "frontier",
+      "name": "integer_generic_arithmetic",
+      "lane": "default",
+      "source": {
+        "kind": "frontier",
+        "probe": "integer_generic_arithmetic",
+        "source_sha256": "66dde274a5f7645d2a41c838ff6e7cdb665b191a65b00df4aea1119ab40c754a"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "expected type"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "",
+      "positive_control": "control:default"
+    },
+    {
+      "suite": "frontier",
+      "name": "integer_inequality_constraint",
+      "lane": "default",
+      "source": {
+        "kind": "frontier",
+        "probe": "integer_inequality_constraint",
+        "source_sha256": "b6d7ea6d34eaa16cb9202fcdd9ddff7fae8f17cf8cb18e3582c65584f39c9316"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "expected ':' or '==' to indicate a conformance or same-type requirement"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "",
+      "positive_control": "control:default"
+    },
+    {
+      "suite": "frontier",
+      "name": "ownership_valid",
+      "lane": "default",
+      "source": {
+        "kind": "frontier",
+        "probe": "ownership_valid",
+        "source_sha256": "e5a6a1a44f85e567cc533d01318c5ad64953acb2ca1bf34292080a68ea982bae"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_success",
+      "diagnostic_markers": [],
+      "supplied_6_4_1": {
+        "accepted": true,
+        "expectation_met": true
+      },
+      "note": ""
+    },
+    {
+      "suite": "frontier",
+      "name": "ownership_double_consume_invalid",
+      "lane": "default",
+      "source": {
+        "kind": "frontier",
+        "probe": "ownership_double_consume_invalid",
+        "source_sha256": "ad1c5b6f9748a6d06718a1f5755969d2560e445e80a2d239ea6be335c58d48d4"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "'p' consumed more than once"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "",
+      "positive_control": "control:default"
+    },
+    {
+      "suite": "frontier",
+      "name": "span_iterable_valid",
+      "lane": "default",
+      "source": {
+        "kind": "frontier",
+        "probe": "span_iterable_valid",
+        "source_sha256": "bb7cb14e5891fdbdcd8124de1f19e84763fde8d1ccb4530e77c93e5f3c300c2d"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_success",
+      "diagnostic_markers": [],
+      "supplied_6_4_1": {
+        "accepted": true,
+        "expectation_met": true
+      },
+      "note": ""
+    },
+    {
+      "suite": "frontier",
+      "name": "span_escaping_local_invalid",
+      "lane": "default",
+      "source": {
+        "kind": "frontier",
+        "probe": "span_escaping_local_invalid",
+        "source_sha256": "aeb1cf15ce90a44bd8fff1c8b396fe8330664da475ba306fea073ef198d2f54c"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "a function cannot return a ~Escapable result"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "Default-mode rejection is a feature gate, not independently a lifetime-escape diagnostic.",
+      "positive_control": "control:default"
+    },
+    {
+      "suite": "frontier",
+      "name": "span_alias_mutation_invalid",
+      "lane": "default",
+      "source": {
+        "kind": "frontier",
+        "probe": "span_alias_mutation_invalid",
+        "source_sha256": "ec7b0a140e0bd1df04167411477c386faa3ac348374f2125c0e7c509577ef168"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "overlapping accesses to 'bytes', but modification requires exclusive access; consider copying to a local variable [#ExclusivityViolation]"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "",
+      "positive_control": "control:default"
+    },
+    {
+      "suite": "frontier",
+      "name": "ref_valid",
+      "lane": "default",
+      "source": {
+        "kind": "frontier",
+        "probe": "ref_valid",
+        "source_sha256": "991382611dfe9aedd1e20e5cce19377c9f77865bf30ab372282a3a490095d258"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_success",
+      "diagnostic_markers": [],
+      "supplied_6_4_1": {
+        "accepted": true,
+        "expectation_met": true
+      },
+      "note": ""
+    },
+    {
+      "suite": "frontier",
+      "name": "borrow_accessors_valid",
+      "lane": "default",
+      "source": {
+        "kind": "frontier",
+        "probe": "borrow_accessors_valid",
+        "source_sha256": "48b563e0c655ed72ea2cbac8d2f57e246b2d4a934314e110f943178bb16fb2e3"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_success",
+      "diagnostic_markers": [],
+      "supplied_6_4_1": {
+        "accepted": true,
+        "expectation_met": true
+      },
+      "note": ""
+    },
+    {
+      "suite": "frontier",
+      "name": "borrow_temporary_invalid",
+      "lane": "default",
+      "source": {
+        "kind": "frontier",
+        "probe": "borrow_temporary_invalid",
+        "source_sha256": "e1bc83f5c471dae680f725454ebd80d6eb9e2a6ef0fdf80b034e7c0622d0afe4"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "invalid return value from a borrow accessor"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "",
+      "positive_control": "control:default"
+    },
+    {
+      "suite": "frontier",
+      "name": "optional_ref",
+      "lane": "default",
+      "source": {
+        "kind": "frontier",
+        "probe": "optional_ref",
+        "source_sha256": "ead8f6e5d29ba6cfda37ec55f10155a68e5b5411fae853136035a65df4a2f1de"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "value of type 'N?' has no member 'ref'"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "",
+      "positive_control": "control:default"
+    },
+    {
+      "suite": "frontier",
+      "name": "optional_mutableref",
+      "lane": "default",
+      "source": {
+        "kind": "frontier",
+        "probe": "optional_mutableref",
+        "source_sha256": "cbb0bd0025c6167dabe208f125043b1533d8cd93a99a1f9bc118e96ccccad2ac"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "value of type 'N?' has no member 'mutableRef'"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "",
+      "positive_control": "control:default"
+    },
+    {
+      "suite": "frontier",
+      "name": "optional_put",
+      "lane": "default",
+      "source": {
+        "kind": "frontier",
+        "probe": "optional_put",
+        "source_sha256": "fe7f89fbf0a4ac030fb076683b7649a5156a00aae7a3285b0abef8cdb1c202b5"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "value of type 'N?' has no member 'put'"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "",
+      "positive_control": "control:default"
+    },
+    {
+      "suite": "frontier",
+      "name": "optional_map_noncopyable",
+      "lane": "default",
+      "source": {
+        "kind": "frontier",
+        "probe": "optional_map_noncopyable",
+        "source_sha256": "8f845e8d14e7f12971494a4ca394512e13bdc97c69b0dcbf1f14445ae77b1e1a"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "referencing instance method 'map' on 'Optional' requires that 'N' conform to 'Copyable'"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "",
+      "positive_control": "control:default"
+    },
+    {
+      "suite": "frontier",
+      "name": "optional_borrow_switch_valid",
+      "lane": "default",
+      "source": {
+        "kind": "frontier",
+        "probe": "optional_borrow_switch_valid",
+        "source_sha256": "5468c4319926436a3a1c387b11db9a2c1ce26f006baf83226c44827d9d3a805b"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_success",
+      "diagnostic_markers": [],
+      "supplied_6_4_1": {
+        "accepted": true,
+        "expectation_met": true
+      },
+      "note": ""
+    },
+    {
+      "suite": "frontier",
+      "name": "unique_containers",
+      "lane": "default",
+      "source": {
+        "kind": "frontier",
+        "probe": "unique_containers",
+        "source_sha256": "cb3cf9a0514c6af7c82979bf93e66c0a00efa3c691fdaaf352e9529f70ccef38"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_success",
+      "diagnostic_markers": [],
+      "supplied_6_4_1": {
+        "accepted": true,
+        "expectation_met": true
+      },
+      "note": ""
+    },
+    {
+      "suite": "frontier",
+      "name": "rigid_array",
+      "lane": "default",
+      "source": {
+        "kind": "frontier",
+        "probe": "rigid_array",
+        "source_sha256": "ba8ef9c33d0eb327f2a03d290762294e803300253e098150a15ab4cbfe257cf5"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "cannot find 'RigidArray' in scope"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "",
+      "positive_control": "control:default"
+    },
+    {
+      "suite": "frontier",
+      "name": "iterable_typed_failure",
+      "lane": "default",
+      "source": {
+        "kind": "frontier",
+        "probe": "iterable_typed_failure",
+        "source_sha256": "7f08429f798b99002969de3e8f1a5316c41cdfc0351bc4633649c58dfa45aead"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_success",
+      "diagnostic_markers": [],
+      "supplied_6_4_1": {
+        "accepted": true,
+        "expectation_met": true
+      },
+      "note": ""
+    },
+    {
+      "suite": "frontier",
+      "name": "noncopyable_hashable",
+      "lane": "default",
+      "source": {
+        "kind": "frontier",
+        "probe": "noncopyable_hashable",
+        "source_sha256": "e46b0fc82f43482b10372f0d0567925c8a2d5898a8a5567e6874ea9a374504f5"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_success",
+      "diagnostic_markers": [],
+      "supplied_6_4_1": {
+        "accepted": true,
+        "expectation_met": true
+      },
+      "note": ""
+    },
+    {
+      "suite": "frontier",
+      "name": "associatedtype_suppression_valid",
+      "lane": "default",
+      "source": {
+        "kind": "frontier",
+        "probe": "associatedtype_suppression_valid",
+        "source_sha256": "542ea3a694fbd0c9393e19a573fb840a1b58362f2f2843969f9c55c4a49d1207"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_success",
+      "diagnostic_markers": [],
+      "supplied_6_4_1": {
+        "accepted": true,
+        "expectation_met": true
+      },
+      "note": ""
+    },
+    {
+      "suite": "frontier",
+      "name": "associatedtype_defaults_invalid",
+      "lane": "default",
+      "source": {
+        "kind": "frontier",
+        "probe": "associatedtype_defaults_invalid",
+        "source_sha256": "b4031a3eb7d9f397288f6df44d7d5b28bc0b8f53bd56fa0309843d582873e082"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "global function 'defaults' requires that 'NCSource.Element' (aka 'N') conform to 'Copyable'"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "",
+      "positive_control": "control:default"
+    },
+    {
+      "suite": "frontier",
+      "name": "pack_valid",
+      "lane": "default",
+      "source": {
+        "kind": "frontier",
+        "probe": "pack_valid",
+        "source_sha256": "84f8057147624048c544d7c4a84d23715ca695fe927d8edbc6b6b29a792242c3"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_success",
+      "diagnostic_markers": [],
+      "supplied_6_4_1": {
+        "accepted": true,
+        "expectation_met": true
+      },
+      "note": ""
+    },
+    {
+      "suite": "frontier",
+      "name": "tuple_hashable",
+      "lane": "default",
+      "source": {
+        "kind": "frontier",
+        "probe": "tuple_hashable",
+        "source_sha256": "272fb580cdadd661ffa4cb7886ae1c7810b4c41a19b626b1f1004635f00c4a57"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "type '(Int, Int)' cannot conform to 'Hashable' [#ProtocolTypeNonConformance]"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "",
+      "positive_control": "control:default"
+    },
+    {
+      "suite": "frontier",
+      "name": "inline_array_hashable",
+      "lane": "default",
+      "source": {
+        "kind": "frontier",
+        "probe": "inline_array_hashable",
+        "source_sha256": "0d90db99e87f1bfc4c21404ce6cc1bc821315390a32f7fc6ed829d8ab1929579"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "global function 'requiresHash' requires that '[3 of Int]' conform to 'Hashable'"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "",
+      "positive_control": "control:default"
+    },
+    {
+      "suite": "frontier",
+      "name": "custom_lifetime_default",
+      "lane": "default",
+      "source": {
+        "kind": "frontier",
+        "probe": "custom_lifetime_default",
+        "source_sha256": "217f6a268e37f5270f1fde78223509bebc0b4634b76b1730df1466c71ced550a"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "a function cannot return a ~Escapable result"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "",
+      "positive_control": "control:default"
+    },
+    {
+      "suite": "frontier",
+      "name": "yielding_accessors",
+      "lane": "default",
+      "source": {
+        "kind": "frontier",
+        "probe": "yielding_accessors",
+        "source_sha256": "e22eeafe47d245da69dc6a1e00bb65215f541acee0aadf92a19b397a0a2d5215"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "'yielding borrow' accessor is only valid when experimental feature coroutine accessors is enabled"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "",
+      "positive_control": "control:default"
+    },
+    {
+      "suite": "frontier",
+      "name": "safe_raw_bytes",
+      "lane": "default",
+      "source": {
+        "kind": "frontier",
+        "probe": "safe_raw_bytes",
+        "source_sha256": "47997be9306a411207d2f38eadb346170ab75f77b85fe05336ee913914e67c3f"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_success",
+      "diagnostic_markers": [],
+      "supplied_6_4_1": {
+        "accepted": true,
+        "expectation_met": true
+      },
+      "note": ""
+    },
+    {
+      "suite": "frontier",
+      "name": "span_single_value",
+      "lane": "default",
+      "source": {
+        "kind": "frontier",
+        "probe": "span_single_value",
+        "source_sha256": "546dfd9d7adcfd628bb008e99c554887859d9f9ec1a219005a0119f0a7383009"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "incorrect argument label in call (have 'borrowing:', expected 'viewing:')"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "",
+      "positive_control": "control:default"
+    },
+    {
+      "suite": "frontier",
+      "name": "inline_array_wrong_arity",
+      "lane": "default",
+      "source": {
+        "kind": "frontier",
+        "probe": "inline_array_wrong_arity",
+        "source_sha256": "8e097e6a999a53c6793639c4496c3abf5ea536509f91fefd35d4bd59093191d0"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "expected '3' elements in inline array literal, but got '2'"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "",
+      "positive_control": "control:default"
+    },
+    {
+      "suite": "frontier",
+      "name": "inline_array_unchecked_index",
+      "lane": "default",
+      "source": {
+        "kind": "frontier",
+        "probe": "inline_array_unchecked_index",
+        "source_sha256": "237714708d24b50680cd9550586a78df04c264985990f55d39b8a15c92951427"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_success",
+      "diagnostic_markers": [],
+      "supplied_6_4_1": {
+        "accepted": true,
+        "expectation_met": true
+      },
+      "note": "Acceptance means no static index-range proof. This subscript retains a runtime check; it was not executed."
+    },
+    {
+      "suite": "frontier",
+      "name": "inline_array_negative_size",
+      "lane": "default",
+      "source": {
+        "kind": "frontier",
+        "probe": "inline_array_negative_size",
+        "source_sha256": "6989317911d7d91752a2fdbcacc50abc9f7a9ba09e161177b185c2b19700768a"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_success",
+      "diagnostic_markers": [],
+      "supplied_6_4_1": {
+        "accepted": true,
+        "expectation_met": true
+      },
+      "note": "Acceptance is at SIL emission only; it does not assert valid layout or runtime construction for negative size."
+    },
+    {
+      "suite": "frontier",
+      "name": "span_getter_valid",
+      "lane": "default",
+      "source": {
+        "kind": "frontier",
+        "probe": "span_getter_valid",
+        "source_sha256": "4810b25836c01362210b77cbd5a51203e4f4dc0db2ed5f38b2e230dfc5d5d066"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "a method cannot return a ~Escapable result"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "The forwarding getter is semantically plausible but rejected in default mode because custom nonescapable returns require Lifetimes.",
+      "positive_control": "control:default"
+    },
+    {
+      "suite": "frontier",
+      "name": "span_getter_escape_invalid",
+      "lane": "default",
+      "source": {
+        "kind": "frontier",
+        "probe": "span_getter_escape_invalid",
+        "source_sha256": "a0f0646e05f7d7cc5ac46d05a45a8ea84e8a0b9c71d38f9e1004693da81c7395"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "a method cannot return a ~Escapable result"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "Default-mode rejection is a feature gate. Use span_local_escape_explicit_lifetime to verify the actual escape rule.",
+      "positive_control": "control:default"
+    },
+    {
+      "suite": "frontier",
+      "name": "custom_lifetime_experimental",
+      "lane": "experimental",
+      "source": {
+        "kind": "frontier",
+        "probe": "custom_lifetime_experimental",
+        "source_sha256": "217f6a268e37f5270f1fde78223509bebc0b4634b76b1730df1466c71ced550a"
+      },
+      "compiler_arguments": [
+        "-enable-experimental-feature",
+        "Lifetimes"
+      ],
+      "expected_outcome": "compile_success",
+      "diagnostic_markers": [],
+      "supplied_6_4_1": {
+        "accepted": true,
+        "expectation_met": true
+      },
+      "note": ""
+    },
+    {
+      "suite": "frontier",
+      "name": "inferred_lifetime_experimental",
+      "lane": "experimental",
+      "source": {
+        "kind": "frontier",
+        "probe": "inferred_lifetime_experimental",
+        "source_sha256": "3f370ade7ef8f6c4eb645258e0561e00c37bd6e3eadad22a40aed36b982e7e63"
+      },
+      "compiler_arguments": [
+        "-enable-experimental-feature",
+        "Lifetimes"
+      ],
+      "expected_outcome": "compile_success",
+      "diagnostic_markers": [],
+      "supplied_6_4_1": {
+        "accepted": true,
+        "expectation_met": true
+      },
+      "note": ""
+    },
+    {
+      "suite": "frontier",
+      "name": "yielding_accessor_experimental",
+      "lane": "experimental",
+      "source": {
+        "kind": "frontier",
+        "probe": "yielding_accessor_experimental",
+        "source_sha256": "e22eeafe47d245da69dc6a1e00bb65215f541acee0aadf92a19b397a0a2d5215"
+      },
+      "compiler_arguments": [
+        "-enable-experimental-feature",
+        "CoroutineAccessors"
+      ],
+      "expected_outcome": "compile_success",
+      "diagnostic_markers": [],
+      "supplied_6_4_1": {
+        "accepted": true,
+        "expectation_met": true
+      },
+      "note": ""
+    },
+    {
+      "suite": "frontier",
+      "name": "literal_expression_experimental",
+      "lane": "experimental",
+      "source": {
+        "kind": "frontier",
+        "probe": "literal_expression_experimental",
+        "source_sha256": "710ec27424514310d9fb7f22822bf24c91e40ab199c70678ba3d5a8a18f82ea8"
+      },
+      "compiler_arguments": [
+        "-enable-experimental-feature",
+        "LiteralExpressions"
+      ],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "unsupported operator in a literal expression"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "Uses the exact parenthesized SE-0531 syntax, not the unsupported unparenthesized spelling.",
+      "positive_control": "control:-enable-experimental-feature,LiteralExpressions"
+    },
+    {
+      "suite": "frontier",
+      "name": "generic_arithmetic_experimental",
+      "lane": "experimental",
+      "source": {
+        "kind": "frontier",
+        "probe": "generic_arithmetic_experimental",
+        "source_sha256": "66dde274a5f7645d2a41c838ff6e7cdb665b191a65b00df4aea1119ab40c754a"
+      },
+      "compiler_arguments": [
+        "-enable-experimental-feature",
+        "LiteralExpressions"
+      ],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "self-referential generic requirements"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "",
+      "positive_control": "control:-enable-experimental-feature,LiteralExpressions"
+    },
+    {
+      "suite": "frontier",
+      "name": "borrowing_copyable_result_implicit",
+      "lane": "default",
+      "source": {
+        "kind": "frontier",
+        "probe": "borrowing_copyable_result_implicit",
+        "source_sha256": "72d3bc4065ae706117f9d46cee06a63214634863295b2990e7f4776ee1567f3f"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "'values' is borrowed and cannot be consumed"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "",
+      "positive_control": "control:default"
+    },
+    {
+      "suite": "frontier",
+      "name": "borrowing_copyable_result_explicit",
+      "lane": "default",
+      "source": {
+        "kind": "frontier",
+        "probe": "borrowing_copyable_result_explicit",
+        "source_sha256": "78765309404bb71feac969199d61c882eb0a01ff33dc2a5785f98d15cb52263f"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_success",
+      "diagnostic_markers": [],
+      "supplied_6_4_1": {
+        "accepted": true,
+        "expectation_met": true
+      },
+      "note": ""
+    },
+    {
+      "suite": "frontier",
+      "name": "noncopyable_tuple",
+      "lane": "default",
+      "source": {
+        "kind": "frontier",
+        "probe": "noncopyable_tuple",
+        "source_sha256": "ca5b11e1815f559e2996f9694aab30eea68a3367d03c32e7442863d42af8424c"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "tuple with noncopyable element type 'N' is not supported"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "",
+      "positive_control": "control:default"
+    },
+    {
+      "suite": "frontier",
+      "name": "noncopyable_existential",
+      "lane": "default",
+      "source": {
+        "kind": "frontier",
+        "probe": "noncopyable_existential",
+        "source_sha256": "f5733e8616fa584e8098426c9f80154db9a46c0d2fb0f18ebd27da0aab05df60"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_success",
+      "diagnostic_markers": [],
+      "supplied_6_4_1": {
+        "accepted": true,
+        "expectation_met": true
+      },
+      "note": ""
+    },
+    {
+      "suite": "frontier",
+      "name": "nonescapable_custom_struct",
+      "lane": "default",
+      "source": {
+        "kind": "frontier",
+        "probe": "nonescapable_custom_struct",
+        "source_sha256": "3a452b95c9da7816c7108a6fcb0cac229c1d3f0dd9c0cd321fdabd2d4d944a18"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "the 'get' accessor cannot return a ~Escapable result"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "",
+      "positive_control": "control:default"
+    },
+    {
+      "suite": "frontier",
+      "name": "nonescapable_generic",
+      "lane": "default",
+      "source": {
+        "kind": "frontier",
+        "probe": "nonescapable_generic",
+        "source_sha256": "1c308dd25265fef0faee1d29a82b469fa4a22cfb7312368543dc9798e884b22a"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_success",
+      "diagnostic_markers": [],
+      "supplied_6_4_1": {
+        "accepted": true,
+        "expectation_met": true
+      },
+      "note": ""
+    },
+    {
+      "suite": "frontier",
+      "name": "pack_noncopyable",
+      "lane": "default",
+      "source": {
+        "kind": "frontier",
+        "probe": "pack_noncopyable",
+        "source_sha256": "b90703336f93fd796a442cb7c6402a65c85d6bad2680c86bb9e59bf7fb757fba"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "cannot suppress '~Copyable' on type 'each T'"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "",
+      "positive_control": "control:default"
+    },
+    {
+      "suite": "frontier",
+      "name": "negative_inline_array_init",
+      "lane": "default",
+      "source": {
+        "kind": "frontier",
+        "probe": "negative_inline_array_init",
+        "source_sha256": "ae0d360e2e4f5f431c097340a8e3bae3321de4e178be3314259cf80510d332fd"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_success",
+      "diagnostic_markers": [],
+      "supplied_6_4_1": {
+        "accepted": true,
+        "expectation_met": true
+      },
+      "note": "Acceptance is at SIL emission only; this program was not linked or executed."
+    },
+    {
+      "suite": "frontier",
+      "name": "deinit_mutation",
+      "lane": "default",
+      "source": {
+        "kind": "frontier",
+        "probe": "deinit_mutation",
+        "source_sha256": "dca3e76ae9d420b65047cc60eee0a98423b983bf643e17f507db6f2359c38674"
+      },
+      "compiler_arguments": [],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "left side of mutating operator isn't mutable: 'self' is immutable"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "",
+      "positive_control": "control:default"
+    },
+    {
+      "suite": "frontier",
+      "name": "span_getter_lifetimes",
+      "lane": "experimental",
+      "source": {
+        "kind": "frontier",
+        "probe": "span_getter_lifetimes",
+        "source_sha256": "19a62efd5eb49d60a37028f04a7f5c8e02b9cd67b1b6224644ce53bdbf108e5a"
+      },
+      "compiler_arguments": [
+        "-enable-experimental-feature",
+        "Lifetimes"
+      ],
+      "expected_outcome": "compile_success",
+      "diagnostic_markers": [],
+      "supplied_6_4_1": {
+        "accepted": true,
+        "expectation_met": true
+      },
+      "note": ""
+    },
+    {
+      "suite": "frontier",
+      "name": "span_getter_escape_lifetimes",
+      "lane": "experimental",
+      "source": {
+        "kind": "frontier",
+        "probe": "span_getter_escape_lifetimes",
+        "source_sha256": "8854d4e3d950f7d779fa751a18025f13f32457e1733136d33717ccfaca247832"
+      },
+      "compiler_arguments": [
+        "-enable-experimental-feature",
+        "Lifetimes"
+      ],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "cannot infer lifetime dependence on a method because 'self' is BitwiseCopyable, specify '@_lifetime(borrow self)'"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "Checks refusal to infer a borrow from BitwiseCopyable self; the explicit-owner escape test checks actual lifetime violation.",
+      "positive_control": "control:-enable-experimental-feature,Lifetimes"
+    },
+    {
+      "suite": "frontier",
+      "name": "span_local_escape_explicit_lifetime",
+      "lane": "experimental",
+      "source": {
+        "kind": "frontier",
+        "probe": "span_local_escape_explicit_lifetime",
+        "source_sha256": "f48d010b69a193c2c17f84da880f92d252c6796ce776813084e1e16530f54a21"
+      },
+      "compiler_arguments": [
+        "-enable-experimental-feature",
+        "Lifetimes"
+      ],
+      "expected_outcome": "compile_error",
+      "diagnostic_markers": [
+        "lifetime-dependent value escapes its scope"
+      ],
+      "supplied_6_4_1": {
+        "accepted": false,
+        "expectation_met": true
+      },
+      "note": "With Lifetimes enabled and an explicit owner dependency, a span of unrelated local storage must still be rejected.",
+      "positive_control": "control:-enable-experimental-feature,Lifetimes"
+    }
+  ],
+  "runtime_checks": [
+    {
+      "name": "core_runtime",
+      "source": "core_examples_runtime.swift",
+      "expected_stdout": "Core construction, decoding, and shape examples ran successfully."
+    },
+    {
+      "name": "modeling_runtime",
+      "source": "modeling_examples.swift",
+      "expected_stdout": "All modeling examples ran successfully."
+    }
+  ]
+}

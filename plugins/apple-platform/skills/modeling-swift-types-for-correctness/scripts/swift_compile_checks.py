@@ -338,7 +338,7 @@ def evaluate_negative(item: dict[str, Any], process: dict[str, Any]) -> dict[str
     errors: list[str] = []
     unparsed_errors: list[str] = []
     for line in output.splitlines():
-        if "`- error:" in line:
+        if "`- error:" in line or "|- error:" in line:
             continue
         match = DIAGNOSTIC_PATTERN.fullmatch(line)
         if match is not None:

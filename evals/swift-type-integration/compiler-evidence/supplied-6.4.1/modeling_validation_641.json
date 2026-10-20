@@ -1,0 +1,264 @@
+{
+  "schema_version": 1,
+  "compiler_path": "/tmp/swift641-toolchain/swift-6.4.1-RELEASE-ubuntu24.04/usr/bin/swift-frontend",
+  "compiler_version": "Swift version 6.4.1 (swift-6.4.1-RELEASE)\nTarget: x86_64-unknown-linux-gnu\n",
+  "recorded_utc": "2026-10-18T09:40:54.854607+00:00",
+  "language_mode": "6",
+  "phase": "emit-sil",
+  "source_manifest": "modeling_manifest.json",
+  "total": 10,
+  "accepted": 1,
+  "rejected": 9,
+  "all_expectations_met": true,
+  "results": [
+    {
+      "name": "modeling_positive",
+      "source_file": "/workspace/scratch/182ca10a4383/Swift_Type_System_Companion/modeling_examples.swift",
+      "source_sha256": "5a812334ca9541835f00075bc958b257207bd2f521ec2da8a735b7a794d7c83e",
+      "expected_outcome": "compile_success_without_diagnostics",
+      "expected_diagnostic_substrings": [],
+      "accepted": true,
+      "exit_code": 0,
+      "expectation_met": true,
+      "diagnostics": "",
+      "command": [
+        "/tmp/swift641-toolchain/swift-6.4.1-RELEASE-ubuntu24.04/usr/bin/swift-frontend",
+        "-emit-sil",
+        "-swift-version",
+        "6",
+        "-module-cache-path",
+        "/tmp/swift641-companion-verification/modeling/module-cache",
+        "-warnings-as-errors",
+        "/workspace/scratch/182ca10a4383/Swift_Type_System_Companion/modeling_examples.swift",
+        "-o",
+        "/tmp/swift641-companion-verification/modeling/modeling_positive.sil"
+      ],
+      "runtime_executed": false
+    },
+    {
+      "name": "equality_cannot_be_forged",
+      "source_file": "/tmp/swift641-companion-verification/modeling/equality_cannot_be_forged.swift",
+      "source_sha256": "c0d49e5c1baceeebc4291edbb2de4c0b683159e034cd76341d05facd66c79e8c",
+      "expected_outcome": "compile_error",
+      "expected_diagnostic_substrings": [
+        "member chain produces result of type 'TypeEquality<String, String>' but contextual base was inferred as 'TypeEquality<String, Bool>'"
+      ],
+      "accepted": false,
+      "exit_code": 1,
+      "expectation_met": true,
+      "diagnostics": "/tmp/swift641-companion-verification/modeling/equality_cannot_be_forged.swift:239:47: error: static property 'reflexive' requires the types 'String' and 'Bool' be equivalent\n 28 | }\n 29 | \n 30 | extension TypeEquality where A == B {\n    | `- note: where 'A' = 'String', 'B' = 'Bool'\n 31 |     static var reflexive: Self {\n 32 |         Self(forward: { $0 }, backward: { $0 })\n    :\n237 | print(\"All modeling examples ran successfully.\")\n238 | \n239 | let impossible: TypeEquality<String, Bool> = .reflexive\n    |                                               `- error: static property 'reflexive' requires the types 'String' and 'Bool' be equivalent\n240 | \n\n/tmp/swift641-companion-verification/modeling/equality_cannot_be_forged.swift:239:47: error: member chain produces result of type 'TypeEquality<String, String>' but contextual base was inferred as 'TypeEquality<String, Bool>'\n  5 | // MARK: - Equality evidence without unsafe casts\n  6 | \n  7 | struct TypeEquality<A, B> {\n    |                        `- note: arguments to generic parameter 'B' ('String' and 'Bool') are expected to be equal\n  8 |     private let forward: (A) -> B\n  9 |     private let backward: (B) -> A\n    :\n237 | print(\"All modeling examples ran successfully.\")\n238 | \n239 | let impossible: TypeEquality<String, Bool> = .reflexive\n    |                                               `- error: member chain produces result of type 'TypeEquality<String, String>' but contextual base was inferred as 'TypeEquality<String, Bool>'\n240 | \n",
+      "command": [
+        "/tmp/swift641-toolchain/swift-6.4.1-RELEASE-ubuntu24.04/usr/bin/swift-frontend",
+        "-emit-sil",
+        "-swift-version",
+        "6",
+        "-module-cache-path",
+        "/tmp/swift641-companion-verification/modeling/module-cache",
+        "/tmp/swift641-companion-verification/modeling/equality_cannot_be_forged.swift",
+        "-o",
+        "/tmp/swift641-companion-verification/modeling/equality_cannot_be_forged.sil"
+      ],
+      "runtime_executed": false
+    },
+    {
+      "name": "gadt_wrong_result",
+      "source_file": "/tmp/swift641-companion-verification/modeling/gadt_wrong_result.swift",
+      "source_sha256": "09f3f488d998849496f4f0c1c16758549e25d8fc93d2af39b42c6e95da278aab",
+      "expected_outcome": "compile_error",
+      "expected_diagnostic_substrings": [
+        "cannot convert value of type 'TypeEquality<Bool, Bool>' to expected argument type 'TypeEquality<String, Bool>'"
+      ],
+      "accepted": false,
+      "exit_code": 1,
+      "expectation_met": true,
+      "diagnostics": "/tmp/swift641-companion-verification/modeling/gadt_wrong_result.swift:239:78: error: cannot convert value of type 'TypeEquality<Bool, Bool>' to expected argument type 'TypeEquality<String, Bool>'\n  5 | // MARK: - Equality evidence without unsafe casts\n  6 | \n  7 | struct TypeEquality<A, B> {\n    |                     `- note: arguments to generic parameter 'A' ('Bool' and 'String') are expected to be equal\n  8 |     private let forward: (A) -> B\n  9 |     private let backward: (B) -> A\n    :\n237 | print(\"All modeling examples ran successfully.\")\n238 | \n239 | let impossible: ProvenExpression<Bool> = .text(\"x\", TypeEquality<Bool, Bool>.reflexive)\n    |                                                                              `- error: cannot convert value of type 'TypeEquality<Bool, Bool>' to expected argument type 'TypeEquality<String, Bool>'\n240 | \n",
+      "command": [
+        "/tmp/swift641-toolchain/swift-6.4.1-RELEASE-ubuntu24.04/usr/bin/swift-frontend",
+        "-emit-sil",
+        "-swift-version",
+        "6",
+        "-module-cache-path",
+        "/tmp/swift641-companion-verification/modeling/module-cache",
+        "/tmp/swift641-companion-verification/modeling/gadt_wrong_result.swift",
+        "-o",
+        "/tmp/swift641-companion-verification/modeling/gadt_wrong_result.sil"
+      ],
+      "runtime_executed": false
+    },
+    {
+      "name": "associated_family_wrong_node",
+      "source_file": "/tmp/swift641-companion-verification/modeling/associated_family_wrong_node.swift",
+      "source_sha256": "c22cf9f33b66198a610590af8a5d9e1719a52510fd44c2b07de34c2edca1815d",
+      "expected_outcome": "compile_error",
+      "expected_diagnostic_substrings": [
+        "cannot convert value of type 'FlagSyntax' to expected argument type 'TextSyntax'"
+      ],
+      "accepted": false,
+      "exit_code": 1,
+      "expectation_met": true,
+      "diagnostics": "/tmp/swift641-companion-verification/modeling/associated_family_wrong_node.swift:239:64: error: cannot convert value of type 'FlagSyntax' to expected argument type 'TextSyntax'\n237 | print(\"All modeling examples ran successfully.\")\n238 | \n239 | let impossible: TextSyntax = .joined(.literal(\"x\"), FlagSyntax.literal(true))\n    |                                                                `- error: cannot convert value of type 'FlagSyntax' to expected argument type 'TextSyntax'\n240 | \n",
+      "command": [
+        "/tmp/swift641-toolchain/swift-6.4.1-RELEASE-ubuntu24.04/usr/bin/swift-frontend",
+        "-emit-sil",
+        "-swift-version",
+        "6",
+        "-module-cache-path",
+        "/tmp/swift641-companion-verification/modeling/module-cache",
+        "/tmp/swift641-companion-verification/modeling/associated_family_wrong_node.swift",
+        "-o",
+        "/tmp/swift641-companion-verification/modeling/associated_family_wrong_node.sil"
+      ],
+      "runtime_executed": false
+    },
+    {
+      "name": "associated_family_wrong_mapping",
+      "source_file": "/tmp/swift641-companion-verification/modeling/associated_family_wrong_mapping.swift",
+      "source_sha256": "3a37c2cd60ab5a1a7fb030f2e34ec75dc570d89511964bba713f42fe89c3fcd6",
+      "expected_outcome": "compile_error",
+      "expected_diagnostic_substrings": [
+        "type 'BadSort' does not conform to protocol 'ExpressionSort'"
+      ],
+      "accepted": false,
+      "exit_code": 1,
+      "expectation_met": true,
+      "diagnostics": "/tmp/swift641-companion-verification/modeling/associated_family_wrong_mapping.swift:239:6: error: type 'BadSort' does not conform to protocol 'ExpressionSort'\n237 | print(\"All modeling examples ran successfully.\")\n238 | \n239 | enum BadSort: ExpressionSort { typealias Value = Int; typealias Syntax = TextSyntax }\n    |      `- error: type 'BadSort' does not conform to protocol 'ExpressionSort'\n240 | \n\n/tmp/swift641-companion-verification/modeling/associated_family_wrong_mapping.swift:239:6: error: 'ExpressionSort' requires the types 'BadSort.Value' (aka 'Int') and 'String' be equivalent\n237 | print(\"All modeling examples ran successfully.\")\n238 | \n239 | enum BadSort: ExpressionSort { typealias Value = Int; typealias Syntax = TextSyntax }\n    |      |- error: 'ExpressionSort' requires the types 'BadSort.Value' (aka 'Int') and 'String' be equivalent\n    |      `- note: requirement specified as 'Self.Value' == 'Self.Syntax.Value' [with Self = BadSort]\n240 | \n",
+      "command": [
+        "/tmp/swift641-toolchain/swift-6.4.1-RELEASE-ubuntu24.04/usr/bin/swift-frontend",
+        "-emit-sil",
+        "-swift-version",
+        "6",
+        "-module-cache-path",
+        "/tmp/swift641-companion-verification/modeling/module-cache",
+        "/tmp/swift641-companion-verification/modeling/associated_family_wrong_mapping.swift",
+        "-o",
+        "/tmp/swift641-companion-verification/modeling/associated_family_wrong_mapping.sil"
+      ],
+      "runtime_executed": false
+    },
+    {
+      "name": "pack_wrong_input_types",
+      "source_file": "/tmp/swift641-companion-verification/modeling/pack_wrong_input_types.swift",
+      "source_sha256": "6b16ad7a726920c5dc05e5a02ff7ba1abf5d8e60b23d152b0b6e763af3f9fa9a",
+      "expected_outcome": "compile_error",
+      "expected_diagnostic_substrings": [
+        "cannot convert value of type 'String' to expected argument type 'Int'"
+      ],
+      "accepted": false,
+      "exit_code": 1,
+      "expectation_met": true,
+      "diagnostics": "/tmp/swift641-companion-verification/modeling/pack_wrong_input_types.swift:239:40: error: cannot convert value of type 'String' to expected argument type 'Int'\n237 | print(\"All modeling examples ran successfully.\")\n238 | \n239 | let impossible = transformations.apply(\"42\", 5, false)\n    |                                        `- error: cannot convert value of type 'String' to expected argument type 'Int'\n240 | \n",
+      "command": [
+        "/tmp/swift641-toolchain/swift-6.4.1-RELEASE-ubuntu24.04/usr/bin/swift-frontend",
+        "-emit-sil",
+        "-swift-version",
+        "6",
+        "-module-cache-path",
+        "/tmp/swift641-companion-verification/modeling/module-cache",
+        "/tmp/swift641-companion-verification/modeling/pack_wrong_input_types.swift",
+        "-o",
+        "/tmp/swift641-companion-verification/modeling/pack_wrong_input_types.sil"
+      ],
+      "runtime_executed": false
+    },
+    {
+      "name": "pack_wrong_arity",
+      "source_file": "/tmp/swift641-companion-verification/modeling/pack_wrong_arity.swift",
+      "source_sha256": "16635375ecbcfed3f544337a410fb3c2670e90e4265888ebe0f833fcd3dddda3",
+      "expected_outcome": "compile_error",
+      "expected_diagnostic_substrings": [
+        "missing argument for parameter #1 in call"
+      ],
+      "accepted": false,
+      "exit_code": 1,
+      "expectation_met": true,
+      "diagnostics": "/tmp/swift641-companion-verification/modeling/pack_wrong_arity.swift:239:40: error: missing argument for parameter #1 in call\n159 |     }\n160 | \n161 |     func apply(_ inputs: repeat (each T).Input) -> HList<repeat (each T).Output> {\n    |          `- note: 'apply' declared here\n162 |         HList(repeat (each operations).apply(each inputs))\n163 |     }\n    :\n237 | print(\"All modeling examples ran successfully.\")\n238 | \n239 | let impossible = transformations.apply(42, \"Swift\")\n    |                                        `- error: missing argument for parameter #1 in call\n240 | \n\n/tmp/swift641-companion-verification/modeling/pack_wrong_arity.swift:239:40: error: could not infer pack element #0 from context\n159 |     }\n160 | \n161 |     func apply(_ inputs: repeat (each T).Input) -> HList<repeat (each T).Output> {\n    |                  `- note: in inferring pack element #0 of 'inputs'\n162 |         HList(repeat (each operations).apply(each inputs))\n163 |     }\n    :\n237 | print(\"All modeling examples ran successfully.\")\n238 | \n239 | let impossible = transformations.apply(42, \"Swift\")\n    |                                        `- error: could not infer pack element #0 from context\n240 | \n\n/tmp/swift641-companion-verification/modeling/pack_wrong_arity.swift:239:44: error: could not infer pack element #1 from context\n159 |     }\n160 | \n161 |     func apply(_ inputs: repeat (each T).Input) -> HList<repeat (each T).Output> {\n    |                  `- note: in inferring pack element #1 of 'inputs'\n162 |         HList(repeat (each operations).apply(each inputs))\n163 |     }\n    :\n237 | print(\"All modeling examples ran successfully.\")\n238 | \n239 | let impossible = transformations.apply(42, \"Swift\")\n    |                                            `- error: could not infer pack element #1 from context\n240 | \n",
+      "command": [
+        "/tmp/swift641-toolchain/swift-6.4.1-RELEASE-ubuntu24.04/usr/bin/swift-frontend",
+        "-emit-sil",
+        "-swift-version",
+        "6",
+        "-module-cache-path",
+        "/tmp/swift641-companion-verification/modeling/module-cache",
+        "/tmp/swift641-companion-verification/modeling/pack_wrong_arity.swift",
+        "-o",
+        "/tmp/swift641-companion-verification/modeling/pack_wrong_arity.sil"
+      ],
+      "runtime_executed": false
+    },
+    {
+      "name": "pack_wrong_output_types",
+      "source_file": "/tmp/swift641-companion-verification/modeling/pack_wrong_output_types.swift",
+      "source_sha256": "eafd4125420555b5df9bc17de44d713383e9da6cf3c9c5dc99fbe79b9cb89b4d",
+      "expected_outcome": "compile_error",
+      "expected_diagnostic_substrings": [
+        "cannot assign value of type 'HList<String, Int, Bool>' to type 'HList<Int, Int, Bool>'"
+      ],
+      "accepted": false,
+      "exit_code": 1,
+      "expectation_met": true,
+      "diagnostics": "/tmp/swift641-companion-verification/modeling/pack_wrong_output_types.swift:239:57: error: cannot assign value of type 'HList<String, Int, Bool>' to type 'HList<Int, Int, Bool>'\n138 | // MARK: - Variadic heterogeneous products and correlated transformations\n139 | \n140 | struct HList<each Element> {\n    |                   `- note: arguments to generic parameter 'Element' ('String, Int, Bool' and 'Int, Int, Bool') are expected to be equal\n141 |     let values: (repeat each Element)\n142 | \n    :\n237 | print(\"All modeling examples ran successfully.\")\n238 | \n239 | let impossible: HList<Int, Int, Bool> = transformations.apply(42, \"Swift\", false)\n    |                                                         `- error: cannot assign value of type 'HList<String, Int, Bool>' to type 'HList<Int, Int, Bool>'\n240 | \n",
+      "command": [
+        "/tmp/swift641-toolchain/swift-6.4.1-RELEASE-ubuntu24.04/usr/bin/swift-frontend",
+        "-emit-sil",
+        "-swift-version",
+        "6",
+        "-module-cache-path",
+        "/tmp/swift641-companion-verification/modeling/module-cache",
+        "/tmp/swift641-companion-verification/modeling/pack_wrong_output_types.swift",
+        "-o",
+        "/tmp/swift641-companion-verification/modeling/pack_wrong_output_types.sil"
+      ],
+      "runtime_executed": false
+    },
+    {
+      "name": "positional_evidence_wrong_list",
+      "source_file": "/tmp/swift641-companion-verification/modeling/positional_evidence_wrong_list.swift",
+      "source_sha256": "a7f71ccf999d1d7c54b6bb43010e843db522b640f62dfd14ea24352391c8f7ff",
+      "expected_outcome": "compile_error",
+      "expected_diagnostic_substrings": [
+        "cannot convert value of type 'HCons<Int, HCons<String, HNil>>' to expected argument type 'HCons<Int, HNil>'"
+      ],
+      "accepted": false,
+      "exit_code": 1,
+      "expectation_met": true,
+      "diagnostics": "/tmp/swift641-companion-verification/modeling/positional_evidence_wrong_list.swift:239:44: error: cannot convert value of type 'HCons<Int, HCons<String, HNil>>' to expected argument type 'HCons<Int, HNil>'\n189 | \n190 | struct HNil {}\n191 | struct HCons<Head, Tail> {\n    |                    `- note: arguments to generic parameter 'Tail' ('HCons<String, HNil>' and 'HNil') are expected to be equal\n192 |     let head: Head\n193 |     let tail: Tail\n    :\n237 | print(\"All modeling examples ran successfully.\")\n238 | \n239 | let impossible = Here<Int, HNil>.get(from: recursive)\n    |                                            `- error: cannot convert value of type 'HCons<Int, HCons<String, HNil>>' to expected argument type 'HCons<Int, HNil>'\n240 | \n",
+      "command": [
+        "/tmp/swift641-toolchain/swift-6.4.1-RELEASE-ubuntu24.04/usr/bin/swift-frontend",
+        "-emit-sil",
+        "-swift-version",
+        "6",
+        "-module-cache-path",
+        "/tmp/swift641-companion-verification/modeling/module-cache",
+        "/tmp/swift641-companion-verification/modeling/positional_evidence_wrong_list.swift",
+        "-o",
+        "/tmp/swift641-companion-verification/modeling/positional_evidence_wrong_list.sil"
+      ],
+      "runtime_executed": false
+    },
+    {
+      "name": "private_equality_constructor",
+      "source_file": "/tmp/swift641-companion-verification/modeling/private_equality_constructor.swift",
+      "source_sha256": "cfaaa4ede51403e4a8a6d9541f132de165f1c7df45d70f823e3a1c46588951c5",
+      "expected_outcome": "compile_error",
+      "expected_diagnostic_substrings": [
+        "'TypeEquality<A, B>' initializer is inaccessible due to 'private' protection level"
+      ],
+      "accepted": false,
+      "exit_code": 1,
+      "expectation_met": true,
+      "diagnostics": "/tmp/swift641-companion-verification/modeling/private_equality_constructor.swift:239:18: error: 'TypeEquality<A, B>' initializer is inaccessible due to 'private' protection level\n  9 |     private let backward: (B) -> A\n 10 | \n 11 |     private init(forward: @escaping (A) -> B, backward: @escaping (B) -> A) {\n    |             `- note: 'init(forward:backward:)' declared here\n 12 |         self.forward = forward\n 13 |         self.backward = backward\n    :\n237 | print(\"All modeling examples ran successfully.\")\n238 | \n239 | let impossible = TypeEquality<String, Bool>(forward: { _ in true }, backward: { _ in \"x\" })\n    |                  `- error: 'TypeEquality<A, B>' initializer is inaccessible due to 'private' protection level\n240 | \n",
+      "command": [
+        "/tmp/swift641-toolchain/swift-6.4.1-RELEASE-ubuntu24.04/usr/bin/swift-frontend",
+        "-emit-sil",
+        "-swift-version",
+        "6",
+        "-module-cache-path",
+        "/tmp/swift641-companion-verification/modeling/module-cache",
+        "/tmp/swift641-companion-verification/modeling/private_equality_constructor.swift",
+        "-o",
+        "/tmp/swift641-companion-verification/modeling/private_equality_constructor.sil"
+      ],
+      "runtime_executed": false
+    }
+  ]
+}

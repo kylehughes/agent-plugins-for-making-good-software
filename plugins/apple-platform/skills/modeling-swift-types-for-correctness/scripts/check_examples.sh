@@ -9,3 +9,14 @@ if [[ "${REQUIRE_SWIFTC:-0}" != "1" ]]; then
 fi
 
 python3 "${arguments[@]}"
+
+if [[ "${CHECK_SWIFT_COMPILER_CORPUS:-0}" == "1" ]]; then
+  corpus_arguments=(
+    "$ROOT/scripts/swift_compiler_corpus.py"
+    "$ROOT/examples/compiler-corpus-map.json"
+  )
+  if [[ -n "${SWIFT_FRONTEND:-}" ]]; then
+    corpus_arguments+=(--swiftc "$SWIFT_FRONTEND")
+  fi
+  python3 "${corpus_arguments[@]}"
+fi
