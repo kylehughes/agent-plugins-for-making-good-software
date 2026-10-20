@@ -5,6 +5,8 @@ runs on the retained plugin snapshot. Its deterministic assessments passed
 17 of 18; successful compilation does not establish workflow adherence.
 Use [RUNNING.md](RUNNING.md) for the current procedure. The frozen
 [README](README.md) preserves the initial protocol.
+A later [Opus comparison](#opus-model-comparison) accepted 3 of 6 hardening runs;
+it does not replace the full-batch gate.
 
 | Full batch | Protocol | Accepted | Deterministic pass |
 | --- | --- | --- | --- |
@@ -40,6 +42,46 @@ The instructions prescribe these behaviors; the observations do not establish
 reliable adherence. Any further evaluation must declare its inputs and denominator
 before running and retain these failures. This record does not authorize release.
 
+## Opus model comparison
+
+After commit `b32092b`, a separately declared [six-run comparison](opus-comparison-plan.json)
+used Claude `claude-opus-5-5` at medium effort on the same plugin bytes, runner,
+prompts, fixtures, and rubrics as the refined batch. Each case ran three times
+with a 900-second timeout. Runs were sequential to avoid concurrent temporary-file
+interference; the historical refined batch used concurrency four.
+
+| Case | Refined Sonnet 5.5 | Opus 5.5 comparison |
+| --- | --- | --- |
+| Substantive hardening | 0/3 accepted | 3/3 accepted |
+| Cosmetic hardening | 0/3 accepted | 0/3 accepted |
+
+All six Opus runs completed and passed deterministic checks. Independent reviews
+accepted three: behavior, scope, and composition each passed 3/6; evidence honesty
+passed 6/6. All six finalized records passed fresh evidence verification without
+repairs. The [comparison results](native-results-opus-comparison.json) retain the
+verdicts, trace anchors, source identity, and artifact hashes. All 84 attempts
+across the full batches and diagnostics remain recorded separately.
+
+The substantive runs completed the full-draft and maintained-claim reviews that
+Sonnet missed in the historical sample. All three cosmetic runs still diagnosed
+an unchanged decoding defect and carried repair advice into the handoff. The
+third elevated it to a before-merge decision. They preserved implementation and
+tests, skipped compilation and test execution, and did not activate the invariant
+or Swift-modeling skills.
+
+Both caller and delegated reviewers used Opus; historical callers and reviewers
+used Sonnet. This measures the whole workflow configuration. Historical timing,
+sequential scheduling, and fallible semantic review prevent an isolated causal
+claim about model capability. No cross-run temporary-artifact reuse was observed.
+
+The cosmetic delegation explicitly forbade the expansion. Generic “Deferral
+Candidates” and “Not Carried Forward” sections may encourage agents to retain
+excluded observations; that is a design hypothesis, not an established cause.
+The next focused investigation is the cosmetic review and reporting path.
+Changing models alone did not resolve the failures. This comparison changed no
+plugin guidance, covered no Apple simplification case, and leaves the original
+18-run release gate closed.
+
 ## Handoff-artifact diagnostic
 
 A separately declared [six-run diagnostic](artifact-diagnostic-plan.json) tested
@@ -55,7 +97,7 @@ Those local acceptances cannot establish independent experiment success.
 Both experimental instruction changes were discarded. The final plugin bytes
 match the refined full-batch snapshot; the six diagnostic attempts and their
 experimental snapshot remain preserved, bringing the retained attempt count
-to 78. They do not replace any full-batch failure or satisfy the release gate.
+at that stage to 78. They do not replace any full-batch failure or satisfy the release gate.
 
 ## Setup and evidence corrections
 
