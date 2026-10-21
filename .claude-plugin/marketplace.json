@@ -36,7 +36,7 @@
       "source": "./plugins/universal",
       "displayName": "Universal",
       "description": "Platform-agnostic tools for making good software, including evidence-based code review.",
-      "version": "1.8.2",
+      "version": "1.9.7",
       "author": {
         "name": "Kyle Hughes",
         "email": "kyle@kylehugh.es"

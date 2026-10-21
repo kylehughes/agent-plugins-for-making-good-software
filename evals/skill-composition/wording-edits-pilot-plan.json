@@ -1,0 +1,661 @@
+{
+  "schema_version": 1,
+  "recorded_utc": "2026-10-21T00:00:42.025594+00:00",
+  "state": "declared-before-native-runs",
+  "baseline_commit": "cb08f25d3f7086ff265656fad51ad081153a1938",
+  "baseline_receipt": {
+    "argv": [
+      "git",
+      "rev-parse",
+      "HEAD"
+    ],
+    "started_utc": "2026-10-21T00:00:41.976946+00:00",
+    "exit_code": 0,
+    "status": "completed",
+    "duration_seconds": 0.016,
+    "stdout": "/tmp/skill-composition-wording-edits-final-pilot/preflight/baseline-head.stdout",
+    "stderr": "/tmp/skill-composition-wording-edits-final-pilot/preflight/baseline-head.stderr"
+  },
+  "criteria_sha256": "fe2c8a1bbce9d8cb57871db374c32e3b692ce2e001611afd743b5fa146e77038",
+  "frozen_files_sha256": {
+    "README.md": "79904088653b7ef2b9faa5efb6082e13eb73b2954e6294a1ae4042aaac25eedb",
+    "apple-simplification/acceptance/Assertions.swift": "48492317c2f1f57de96861113a23220ff993eeaad892fedc5d6f0f28018c6680",
+    "apple-simplification/prompt.md": "c40d2aba2befd7b2eaa6590146c1c2e63d752b9c90b37dd1571317863bd50a04",
+    "apple-simplification/rubric.md": "ec3dcb0dda5337d919a9c6b537dd0e7f0dc209c4c1b42ff4ad96f9546117af55",
+    "apple-simplification/workspace/AGENTS.md": "a24088501d1fa7549db655071c00e3f65a2c325d7ba2320ce6d9adb91e7046ec",
+    "apple-simplification/workspace/Sources/Quantity.swift": "00de05da139b4d703af1c03c2a9ad7f618028656bf8bddb9962c5b6c48c8a987",
+    "apple-simplification/workspace/Tests/main.swift": "c62a3b2f1c1d879693732d2582702546ea0ad67860a68b03b689dd85720b5c76",
+    "apple-simplification/workspace/Tools/compile.sh": "fd2ca256b7f7fa076a0d62e18140a00c8bc0710a66a74a47e548c4b767e5e244",
+    "apple-simplification/workspace/Tools/project-proof.sh": "a1e54ae3a1bcd91a5eaeeb680d7ad1e2a72369f8e885461bb56fca480a00af7e",
+    "apple-simplification/workspace/bootstrap.py": "a4982961bf7e21cff233b1dc064619dc0ad71892da2c716b53295cd8c4167675",
+    "cases.json": "679a4ce6f87ece1591e2c524c6f29fb3719618b0c1136e1bf4253e7cefa49e73",
+    "hardening-cosmetic/prompt.md": "7ad5ba04a83af25e532cc7e5b62c5ede4598aa522fbeaf1a115af9f7db5d5915",
+    "hardening-cosmetic/rubric.md": "4db9f43319f93ddd3bc55216e259acd36f902d0e2cb2e9635238d7317a9545a6",
+    "hardening-cosmetic/workspace/AGENTS.md": "917ece905e0a3283858fd0da4554412815f4a9cd82efa0c28c87b2133d48383b",
+    "hardening-cosmetic/workspace/Sources/Quantity.swift": "88e77598f22e170f6d7085b12bcf35995ce1892db09b3eb3b79057afc92b236c",
+    "hardening-cosmetic/workspace/Tests/main.swift": "22f5092a12b230520e29963242dd71068ba0b267f95d624384abd7b9ca2a6d1c",
+    "hardening-cosmetic/workspace/Tools/compile.sh": "fd2ca256b7f7fa076a0d62e18140a00c8bc0710a66a74a47e548c4b767e5e244",
+    "hardening-cosmetic/workspace/Tools/project-proof.sh": "a1e54ae3a1bcd91a5eaeeb680d7ad1e2a72369f8e885461bb56fca480a00af7e",
+    "hardening-cosmetic/workspace/bootstrap.py": "94fd08fe254c2d098adf8f73fa3549fddb737e539e200edab1c432a93000b916",
+    "hardening-invariant/acceptance/Assertions.swift": "a939e45f724a78479a27b1c43941795f6aeffb7341d77c1c9dac5cf804c6b328",
+    "hardening-invariant/prompt.md": "7bd950d5398c431f401e99a903f52028cfd023446414495626e823c7e212532e",
+    "hardening-invariant/rubric.md": "c86d9b255ad0aa6341fb27d65c5715e78a2dea3d7665df3b9160765a18ca38ba",
+    "hardening-invariant/workspace/AGENTS.md": "917ece905e0a3283858fd0da4554412815f4a9cd82efa0c28c87b2133d48383b",
+    "hardening-invariant/workspace/Sources/Quantity.swift": "7dcc92214643995ec006cb7d16ef19542e26079b75add9699119a6b6d9ad8f1a",
+    "hardening-invariant/workspace/Tests/main.swift": "3f78c923f1bcc443b5ffa76bcf2f10729262ff483e88ca2a42821325903f9d5b",
+    "hardening-invariant/workspace/Tools/compile.sh": "fd2ca256b7f7fa076a0d62e18140a00c8bc0710a66a74a47e548c4b767e5e244",
+    "hardening-invariant/workspace/Tools/project-proof.sh": "a1e54ae3a1bcd91a5eaeeb680d7ad1e2a72369f8e885461bb56fca480a00af7e",
+    "hardening-invariant/workspace/bootstrap.py": "e980b95b9f9bd3f8e3d6cecaad1e1357ca656b9c9acfb695c8e2c97a249ad88e"
+  },
+  "source_snapshot": {
+    "sha256": "7f6167c9488f33ee7731122c420930d077baebf30d689254a04fc42f4e6b0ebe",
+    "files": {
+      "plugins/apple-platform/.claude-plugin/plugin.json": "file:62e38295dc35a3a19d75da71f72b6bc1ad69d5bbe759c2308f1dd02a11fd5f22",
+      "plugins/apple-platform/.codex-plugin/plugin.json": "file:dc3f2b4d777b84421d2ea0933c563f00dd911288339ad7368c7d2360d4a4eea2",
+      "plugins/apple-platform/agents/async-testing-auditor.md": "file:5b04389dc8e5d8fcfcfe15f720dada270ea8b37eb4db023b132b170655c846b5",
+      "plugins/apple-platform/agents/code-standards-auditor.md": "file:7de086f0e6ce70f366ec7ea19fc819c7dbb14ce3d895cce71b604eb58c52886b",
+      "plugins/apple-platform/agents/information-entropy-reducer.md": "file:6ce4d2ac620eef061bb32c5ce9958e0c60979be0950e9a5767f1ff440f43416f",
+      "plugins/apple-platform/agents/type-driven-design-auditor.md": "file:909ac79f764a570caf6f5a2e7ec84fbd91a41300fd87502adcf86cd91ae19027",
+      "plugins/apple-platform/skills/analyzing-app-store-business-data/SKILL.md": "file:4fc69685294a17b4eb4b7aa24347e3805c34599133ea3f354455eebc84fd3173",
+      "plugins/apple-platform/skills/analyzing-app-store-business-data/agents/openai.yaml": "file:721a6a2afc58b0c43f921e54b40eddf28c03a70b86d62d565ffadca4940c4f3d",
+      "plugins/apple-platform/skills/analyzing-app-store-business-data/references/aso-methodology.md": "file:2129fc2a5620efd8960d30ce84f53f2278f2a36eee722557daa54cbc8391738b",
+      "plugins/apple-platform/skills/analyzing-app-store-business-data/references/data-sources.md": "file:58cebf191858305e08966f82d83794d9c281b902aa603114ad970338b679bc8e",
+      "plugins/apple-platform/skills/analyzing-app-store-business-data/references/growth-playbook.md": "file:36bd1bcfc0a09cfb832f404c6dfa0e9b4e77fdac17a1b95fbc4246d3bb03171b",
+      "plugins/apple-platform/skills/analyzing-app-store-business-data/references/metrics-playbook.md": "file:af12efdc9dd1dd5e0a56afd22096e0a6d0a818ba2b3854940bdc8b770b57c49b",
+      "plugins/apple-platform/skills/analyzing-app-store-business-data/scripts/backfill-sales.sh": "file:3448a239450bf7849f4772c44318a391f23dcb176e9c5d59a863576c0070cebc",
+      "plugins/apple-platform/skills/auditing-ios-release-size/SKILL.md": "file:3be1ca2fd8463774c4efcaedba43df12a5410814164c15ae46d4fe44f52ce86e",
+      "plugins/apple-platform/skills/auditing-ios-release-size/agents/openai.yaml": "file:64373e5e24c1732aa000aefcc8a7fe6403a173e4ea644a4cde85c73f89e54217",
+      "plugins/apple-platform/skills/configuring-ios-content/ATTRIBUTION.md": "file:e814cf290f552389a0c07cb10de6cd66331396e7ed25b6e422727e6ce8c01478",
+      "plugins/apple-platform/skills/configuring-ios-content/REFERENCE.md": "file:20e220e88a22263ca0cefafecc8fdadef49d00d62cf1d18e9af5d92895be8881",
+      "plugins/apple-platform/skills/configuring-ios-content/SKILL.md": "file:4d912840e08c627dd6a36eea384627a0bbc2a350c05e1223e03442238af13deb",
+      "plugins/apple-platform/skills/configuring-ios-content/agents/openai.yaml": "file:232350027b2bf8e49b472ae22a32e17f46bcd582cc2aba04d01df0eff18ff8fa",
+      "plugins/apple-platform/skills/designing-swift-apis/ATTRIBUTION.md": "file:fc47581590652f713b55dd0dfae8f7ff6be3b29e9839ee491053efd299f74653",
+      "plugins/apple-platform/skills/designing-swift-apis/SKILL.md": "file:b16591462d9f19b1a3accad9dbc278e7ce7902953da9195c5ac3cc717c067168",
+      "plugins/apple-platform/skills/designing-swift-apis/agents/openai.yaml": "file:4c2c997552143260bada5f238b06f07338e06d25aeea63c50ef370bc3ff7bd98",
+      "plugins/apple-platform/skills/designing-swift-apis/references/examples.md": "file:237769e8b59eb51c920436e8540a5db2b0fbd3df961a254e3013f4911761d99c",
+      "plugins/apple-platform/skills/implementing-app-intents/ATTRIBUTION.md": "file:522a02df9e1a9d622923e15c95d1c71ce29eba0a7c12d7a488f4909fdec041c7",
+      "plugins/apple-platform/skills/implementing-app-intents/SKILL.md": "file:0557abfe5ea4f5d805df7be5451efd566e42f50a98726597ce75a2db10bd7169",
+      "plugins/apple-platform/skills/implementing-app-intents/agents/openai.yaml": "file:d482d88184bf67eed905ae56e621e30c4fc8d350ee068e2a96b7f1e4eeab0b4f",
+      "plugins/apple-platform/skills/implementing-app-intents/references/agent-playbook.md": "file:d9742a04a08417b652365d4a1a2dd4a8948b822e14ae435bab8a52025d5ef4d1",
+      "plugins/apple-platform/skills/implementing-app-intents/references/apple-intelligence-and-siri.md": "file:cc41a8890d5ac3e1fc5bb37d31e32293ebd529d4ac87906f1a9b36b9f76749aa",
+      "plugins/apple-platform/skills/implementing-app-intents/references/architecture-and-model.md": "file:e524ff75c92105c0dd49abd8fe30ce195359c340ff234eaa4f7f62b07034d0d4",
+      "plugins/apple-platform/skills/implementing-app-intents/references/assistant-schema-domains.md": "file:37385e65fce1c8cba536e7e137ccfb42b9838eeb4952dd9461289c3bda6e74f0",
+      "plugins/apple-platform/skills/implementing-app-intents/references/checklists.md": "file:08ca8f38875a04aa56f317cdd84b62e1c2d7aec66768d35d3ae226849902bd99",
+      "plugins/apple-platform/skills/implementing-app-intents/references/entities-queries-and-indexing.md": "file:1efc8b232e4993c1e3f168cd62e93574ca05aacc14e10fc90261fdba456f45bd",
+      "plugins/apple-platform/skills/implementing-app-intents/references/examples.md": "file:ab7dead4e4ea82d2294a45e652c5307b6769387a1e7713642c8b7480638ea29a",
+      "plugins/apple-platform/skills/implementing-app-intents/references/execution-packaging-performance-and-privacy.md": "file:05e2220f33396c646a2a0f3aae840f244aa8c6abf619b02d37f87a26b4d2ebdc",
+      "plugins/apple-platform/skills/implementing-app-intents/references/intents-dialog-snippets-and-confirmation.md": "file:046dfb964ccb83a7bd3fc0af553c5ff521c28851a9619ca5f50fc82fc8860b04",
+      "plugins/apple-platform/skills/implementing-app-intents/references/migration-ios26-to-ios27.md": "file:c45dfdd1082a2f0ece5effd49e9683053860e4e19d20e368f19f6b5699bf15a6",
+      "plugins/apple-platform/skills/implementing-app-intents/references/minimal-skeleton.md": "file:336dc1fbbc0f87a3d084ff91b38ea898e7330076b7d08a86515c1f920d3a8c3e",
+      "plugins/apple-platform/skills/implementing-app-intents/references/onscreen-awareness-and-content-transfer.md": "file:c7c86045d463bca08a40ae0572149193523678bcb2122f3133da16e7cb1ead45",
+      "plugins/apple-platform/skills/implementing-app-intents/references/reference.md": "file:42f5c6c929b058761c5b8f64d30dadff5cf843ae15c504f8ffb9dcfb0893f7dc",
+      "plugins/apple-platform/skills/implementing-app-intents/references/sdk-availability-and-verification.md": "file:390b8856172ffc16707c0d6ff9872665068026f76b9efa1ea84aeb567d386800",
+      "plugins/apple-platform/skills/implementing-app-intents/references/shortcuts-spotlight-widgets-and-controls.md": "file:f8858a4f6e35baf76a6a78cf9c41a98ccbdf9e41fbe054a50a3500e81c702b77",
+      "plugins/apple-platform/skills/implementing-app-intents/references/testing-and-debugging.md": "file:de7dd8bc4eda7744dcb1038bc0456c1613a6811401db36796e9a66199f82c2f1",
+      "plugins/apple-platform/skills/implementing-app-intents/references/ui-framework-crosswalk.md": "file:f5bfc4e81cd2d83a71d5ec4eb4320926c6d59f6dde7fd180e0570a86d14944a2",
+      "plugins/apple-platform/skills/implementing-app-intents/references/uikit-examples.md": "file:638b4e9b267c770bb9979ed76e0e17c3ed60989e703201c730f88fdb7839f75d",
+      "plugins/apple-platform/skills/implementing-app-intents/references/uikit-integration.md": "file:ce04d51bb0d55c96d8930f01b5fe2f48035d1dfeb74c6b0ee4c7123551083a05",
+      "plugins/apple-platform/skills/implementing-app-intents/references/value-representation-and-structured-transfer.md": "file:675d0b8f4b27d05033103f85611f09070d95a0942b0d415bbdd237fcef65800b",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/SKILL.md": "file:0060a39f19fb4f8f288296858746775c5f81f8d21d115e8fc8bb001daea2eff9",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/agents/openai.yaml": "file:5bb2bbe3a66775f68b2e27c752804b13bd2071180d402c62ec72fb65c9c0c7da",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/assets/AccessibilityPackage/Package.swift": "file:a2eb9c8e6e9ccf1b64c10f4646d63fbf573e29e2e0262b7e5e5666f48fd489ef",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/assets/AccessibilityPackage/Sources/AccessibilityUI/AccessibilityIdentifier.swift": "file:9cff57dbf42dd26e464b7f57c80fb022fe7e5a24ede8878bb2a7644135052086",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/assets/AccessibilityPackage/Sources/AccessibilityUI/AccessibilityIdentifierComponent.swift": "file:f3ad7c991cffe1305aeae60f62216f9626cb8111f90ffe030f987ab6e13c58d0",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/assets/AccessibilityPackage/Sources/AccessibilityUI/AccessibilityIdentifierScope.swift": "file:b4d0660a82b6e3fe64a1ef6cf3ce1deddde3fa69b3ff041aac5af6f56499a525",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/assets/AccessibilityPackage/Sources/AccessibilityUI/AccessibilityInstrumented.swift": "file:6df866a04d50f44c5db5de20667cd269986d27e0384e711418c017402a9a3a91",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/assets/AccessibilityPackage/Sources/AccessibilityUI/SwiftUI+AccessibilityIdentifier.swift": "file:418a1495d2d2c921ae58ac489befc1917ce4f1cb455039e77c9c28b975b70c75",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/assets/AccessibilityPackage/Sources/AccessibilityUI/UIKit+AccessibilityIdentifier.swift": "file:aa3cada5ed4eac3cffa8a0abeb0d5347ad28dd0ebcada8da5b770127026afbc7",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/assets/AccessibilityPackage/Sources/AccessibilityUIForTest/XCUIElementQuery+AccessibilityIdentifier.swift": "file:cb039f2e2682e1424975204369a197af059a752899dcd8b81365b1cadbab2bd5",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/assets/AccessibilityPackage/Tests/AccessibilityUITests/AccessibilityIdentifierTests.swift": "file:3eb2136dde2bb9130e6313439cc66f0e16aae5804dd0d94d8f6e3a1575338cbe",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/references/architecture.md": "file:8d886771d8f63b3d831c3f33246197d06488cb94e0f12da6f2a6865cb76a7a9f",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/references/migration.md": "file:a2d76c12279f03629e8aba0b71748062227f27f2a47f941070348b2a74158ee6",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/references/review-checklist.md": "file:ab1cedbc4ace3e83a00b90754c8c396ce30a567e3aa845b9e097a468a9ae7c33",
+      "plugins/apple-platform/skills/instrumenting-accessibility-identifiers/scripts/audit_accessibility_identifiers.py": "file:92d678d6003375aee6fde976d23c207d87dc9e4a7e967eed980bcaf2746ad189",
+      "plugins/apple-platform/skills/localizing-strings/SKILL.md": "file:63f815c39586d1f731e26ad02f3997e574f248a43e8f99f2af549ca0054eaf19",
+      "plugins/apple-platform/skills/localizing-strings/agents/openai.yaml": "file:32b882272236cce09c8b7365dd03d23dddd9e6dcebfbfff1126b717be54fc5aa",
+      "plugins/apple-platform/skills/localizing-strings/references/implementation-examples.md": "file:1fad1ba048b166c018d63cd36aa28969f6b15d61ff87e48eb0111119ecebd747",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/ATTRIBUTION.md": "file:58028e6653680d1a2f8caca4703e80095cd434a3fc3c7176c77144e74b849a56",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/SKILL.md": "file:9442faf6a7c1694e0428edb9ee516710331c18f76095a5d52f777f7884448fb5",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/agents/openai.yaml": "file:e9ee04cd4fd77076465d089f281a47b4bb0042d7333ea9cfdf9662ab2b263223",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/CompileFailBypassValidation.swift": "file:cdb777d1c1c58df4bb1d5366ffdbc22e7133feb2608755e37ee93c4a0d1d5987",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/CompileFailUseAfterConsume.swift": "file:2810d91a2b91f9fff9d005d3c6b27e6f34ffb6c3687916b829ad4f27e2ecaa12",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/CompileFailWrongID.swift": "file:56c59b80c608172326b5acebe5e82531094c395dd9b0fbc8442343875eee0233",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/CompileFailWrongTrustState.swift": "file:a73c46d63a94d63c9168c41749fdca2ae654909d3330da6e7755ab041fe27e2b",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/CompileFailWrongTypestate.swift": "file:91a2f834e4874ec2eab4d07b094b203a3f1bb2f7169fde4057d7a3bf90060988",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/CompilePassCorrectID.swift": "file:de57cf0debd1074da885f5491f89de3108072fc789b478e9972159976ac4d7f3",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/CompilePassCorrectTrustState.swift": "file:ee8e7cedaee25635a7d08d9cdddf5c4f3ddb89f16a801560cfa45459d7f83547",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/CompilePassSingleConsumption.swift": "file:4b79eab499d956da4b8c8b7d9abb807dac8eee7b208b2aa06cb254eed3304635",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/CompilePassValidTypestate.swift": "file:e8417bb461c485625efbf78ea83bb26f92301e216a22e89ec1422e1144342b83",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/CompilePassValidatedConstruction.swift": "file:6c09782686e42212a80b5be0e1533a57dc829144cf0187b5e8eb5cc645a2a3a2",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/CorePatterns.swift": "file:424ad2e03cf16aed62d535d20afd2a90b5c2de02fbc110f8ffb459895e011049",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/CorePatternsRuntimeChecks.swift": "file:c4b72f8f93be002f8544cc120ca3710191a372ade880a72b3ebb9678bfbc51a4",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/CurrentSwiftPatterns.swift": "file:fb8a535bdb6e5b6cb923160660bb45ec1427918052554e70cdcb0afbacb3a7ec",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/TrustStatePatterns.swift": "file:dc2f8ec63f6d5c574c38b63ad0ad8e0f03045dd5c9ae69ac4a5972f8c2d7966a",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compile-checks.json": "file:931c59d9c43454d64040833027629174f2091d7b093d8a7748135e8540c8eaeb",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus/core_examples.swift": "file:6c4350e3b4c493181b3c9be50677d75f144b18f6ec05e6f3f5f9efb4ac8a8cfa",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus/core_examples_runtime.swift": "file:3f2fe1bfcaf8abfc1bc835ad4875969a286064107d9e9679e80ef50187b0c001",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus/frontier_probes/manifest.json": "file:b8a3c38f88a863ce8565059b3d6c9e5f7ce97b678ad7544d23eca0c1127bfe17",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus/modeling_examples.swift": "file:5a812334ca9541835f00075bc958b257207bd2f521ec2da8a735b7a794d7c83e",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus/modeling_manifest.json": "file:4d75db092e49b5273aabfedc6ebf27e6cf4be0d8e3b605b4ed50a0cda058ac99",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus/probe_effects_async_let_error.swift": "file:cf0e87d7fc7c306f9f3222a0c23589e116c25191f34ac3d92913ab71f542fc14",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus/probe_effects_catch_cases.swift": "file:97a795694b4596fb84238ead2290e2c48525cdfdb17c1cbc30a74d1bdc760816",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus/probe_effects_discarded_task.swift": "file:d643a126c72fe9a06b5828c46404b811d17884bd7fcdb2a24a3a4ecc89a7c7d9",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus/probe_effects_double_resume.swift": "file:f9270046df120812f588b4604c563eb47d846488d0854bc644375e0f350b3991",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus/probe_effects_dropped.swift": "file:18710d319dd3f73927baec4f6caac0aac5b9f451ee1892f57fc99c0cd94461d3",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus/probe_effects_opaque_throws.swift": "file:0378a08794964bc1520bf6d108c85d56bde52f82dd6c0dfb736b0c198d4dec73",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus/probe_effects_positive.swift": "file:7091cbe56b60eb1b203f6505f89606fd9e1e3508a0fd4f51f7bb693ca3a31d73",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus/probe_effects_typed_task.swift": "file:211221290ff9b2919717ebca4246a92daca3f7e6d244f9b5c00eb97e990abba2",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus/probe_effects_typed_workarounds.swift": "file:81f0e5e72de75cf9369781e37e4bbe89c964593bfbb44377f5b78be3687b52fa",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus-controls.json": "file:de4b52387fbc4621db6db186d2f856a488abe80686c2f15cbd741212dfef0a31",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus-diagnostic-compatibility.json": "file:c04f9d7e126a144bb5d68bc540704c965ad258af06757e2103dbc9bb0b72c330",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/examples/compiler-corpus-map.json": "file:893ecbdc3cddf0c45e29bb387662b98a15b159af753c1977314fd808ef2dde42",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/advanced-generics-and-protocols.md": "file:9fff09c063704fe8139ad3ebe43e3fd8258a6a16182f863ece41982aea40dc9c",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/algebraic-and-refined-values.md": "file:325e58ccebbb7fe9889969d3c4e4eb3d20f861c1c3e29fa508c7c5bf54206d5c",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/boundaries-and-interop.md": "file:473f794ed96c7a64f45496bb87a14916e0feaef3a671c1143d14daae75174616",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/compile-check-runner.md": "file:3b2acd0005ecde2d8c56057c24b8543c249cfa3676b1cdf7e9bd9f33d607a09b",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/decision-guide.md": "file:e92b2dc5d9c6d29784754acb3fee726476a25d89aaab62d403ff5ef884e11f99",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/domain-modeling-recipes.md": "file:f92a3e88ac9a473a9f209d0e6ac0af38f050ad715194fcef3e92c4eb9899387d",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/generic-proof-recipes.md": "file:a8c2b2b1fc790ab8acb6025d0ea4e81642f6082f6ad9a8cd398fad6357a796c2",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/identity-typestate-capabilities.md": "file:038a4260958143658d82f82e8e0f95247f6d57a80bbfcc8625a19a770590035d",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/ios-versioning.md": "file:e1b674cf590923cecf1d381f9998e5545a108f2814d9fb95baa9be10ceaa95c4",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/ownership-concurrency-errors.md": "file:703e25c7de6934528c22ebc2e381e55a84a2e265c6075715f9c871509068ea20",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/ownership-effect-recipes.md": "file:d8a5d80ed9bfc259dbf95128a98c70093534b7d31aaec23137d9af011b3fcb80",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/security-and-resource-modeling.md": "file:ecff22e7ba225b1c62d52238d5608e1f0fc7af62c94068b17c7383f0b997e427",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/sources.md": "file:9ab470c3850019f45e50d6f9da65501942f3c873f99e8a3666c96462b0f2bcfd",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/swift-feature-status.md": "file:fa9a9bdb8c0d4d5755e49c7781a34892060849b558e5f1cfa3335d8a8084c000",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/testing-migration-and-review.md": "file:f14aa038bc24ebaac5d0e16bb0f1b29e838a1a467f5ae07e7ae358b029c5c838",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/ui-state-navigation-and-effects.md": "file:4500023ad55c068a806f8e62ec6158aca4bc4849e0877802e308bbf389b366d7",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/scripts/audit_project.py": "file:deff185e61ce47044a00b87d3eca0ee84c711f0bf1b8e0f7ea15e092a8fb5d65",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/scripts/check_examples.sh": "file:ab8d649883d587dbbb170ec75ca9bfda0b2ca8a68920d4d6f058c72725df7806",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/scripts/swift_compile_checks.py": "file:059382917ab454930ff912d2c719cfe6eb848d64da2b9ac7b7604093927f2cec",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/scripts/swift_compiler_corpus.py": "file:a537c386efad384eee2dec7ce19f436150719d2d546728bc78bd5f1bf5658c21",
+      "plugins/apple-platform/skills/modeling-swift-types-for-correctness/scripts/validate_skill.py": "file:2f6f56adaa5c2cb2d6048358a55f939c5e2097f7a38a54e26ad3ca4b3fbb74ce",
+      "plugins/apple-platform/skills/ordering-symbols/SKILL.md": "file:66cd16dc555d05a4da70216fee83a814885e68aaec59de20b5d98d566a86d860",
+      "plugins/apple-platform/skills/ordering-symbols/agents/openai.yaml": "file:fe36579be882efd8e8466cd20d9eee11a0b3b6560980072fcb87e043352a6c91",
+      "plugins/apple-platform/skills/ordering-symbols/references/complete-type-example.md": "file:b398ce4e001a60824160337903a49a74d33338da4d8d2c444bd583557889b67c",
+      "plugins/apple-platform/skills/ordering-symbols/references/formatting-and-comments.md": "file:aa44ab1d46318761565022c22b3d9924702ebe555bd47885962eecc6a6c5598f",
+      "plugins/apple-platform/skills/ordering-symbols/references/parameters-and-body-ordering.md": "file:73594c3fb75304908c70ee1dd0800379324dd25160eb2930cdd2f964bd66ccf1",
+      "plugins/apple-platform/skills/ordering-symbols/references/protocols-extensions-and-availability.md": "file:01051a270c2ccee46316905d76c79befbf4f814592d0dc4f6a2bfe6ee52fc2fe",
+      "plugins/apple-platform/skills/ordering-symbols/references/type-declaration-order.md": "file:bce138ec4d269964c7e1e391ac2450aac149c56ff5a64d14f0e352efba1cd689",
+      "plugins/apple-platform/skills/organizing-swift-types/SKILL.md": "file:ff2f8827a02e63b61c186a664d38daf32f6ba88aa535449b1ac07c9923bc1788",
+      "plugins/apple-platform/skills/organizing-swift-types/agents/openai.yaml": "file:29410734a21feb155069f405b9a2877bb3e89501e24a9690591a599e309b6713",
+      "plugins/apple-platform/skills/organizing-swift-types/references/access-control-and-modifiers.md": "file:b30f6a148984b12bec34b2541332481a03c629652168438205bb79e40f422b6c",
+      "plugins/apple-platform/skills/organizing-swift-types/references/availability-and-version-spanning.md": "file:cd95e38dd65c8bfb30b26ff24619e02d422375533e3c23af8cd91493e8eb7f4f",
+      "plugins/apple-platform/skills/organizing-swift-types/references/complete-shape-example.md": "file:880cc244b77e51018b072cae51478591a0baf4febcb7434d19963c009e5d23f6",
+      "plugins/apple-platform/skills/organizing-swift-types/references/constants-file-structure-and-previews.md": "file:9a266ac4c65a6564635ba9861e2e915e5974bf73f20c3a76dd6e0292296fe453",
+      "plugins/apple-platform/skills/organizing-swift-types/references/extensions-and-nested-types.md": "file:b991ef5ac2fb2547d43b4b4f451f57360f618d93d136af8950dbf53fc489159c",
+      "plugins/apple-platform/skills/organizing-swift-types/references/primary-declaration-and-conformances.md": "file:c2b754fcc1e15814413c0cdc0982bb05b2e103b80d4cd6997ade04d6f9a7f218",
+      "plugins/apple-platform/skills/organizing-swift-types/references/prohibited-patterns.md": "file:c1dbac817222bbede34f46f109911d8f87abb97e90a45afb12f78dbc72997012",
+      "plugins/apple-platform/skills/presenting-ios-modals/SKILL.md": "file:687833270c3d281500bcfcdbfb2aa331e62cd51f7ca46cb0a72106e950801ab6",
+      "plugins/apple-platform/skills/presenting-ios-modals/agents/openai.yaml": "file:7cd61d8f4071b354a5d4021a311d5449fd21f6f9e7a09c7c8ecb59d4711f5312",
+      "plugins/apple-platform/skills/recording-ios-simulator-videos/SKILL.md": "file:89e8c273cb3e1a17b2df8dbf92160ba40704fcea2062a7f97877a7694d324057",
+      "plugins/apple-platform/skills/recording-ios-simulator-videos/agents/openai.yaml": "file:b08ddb4f6163105fdbb87a09c93ee22ac9ee4f761ceb62f08f1bc176112b2066",
+      "plugins/apple-platform/skills/recording-ios-simulator-videos/scripts/record-ui-automation-video.sh": "file:256ff0f9d0d6218edda0dccc7bbcadb341d5825f54fc01b361b222c320698b5e",
+      "plugins/apple-platform/skills/recording-ios-simulator-videos/scripts/record-xcuitest-video.sh": "file:2361d81f77d7825e8b16a2b9fdc2e9a22c83c64509986cece28ae719b5e344cf",
+      "plugins/apple-platform/skills/simplifying-apple-platform-code/SKILL.md": "file:ce714d09cbacc5545885dfe6ddfdc8a173f58bf1551a03eac4a0c87eb289cbf4",
+      "plugins/apple-platform/skills/simplifying-apple-platform-code/agents/openai.yaml": "file:e6a4133e78e87142a86b3e8251a0026a4cb802fcf6a5bcc0ec92c77e0ba4288c",
+      "plugins/apple-platform/skills/simplifying-apple-platform-code/references/foundation-frameworks-and-capabilities.md": "file:b196f4846002fbf7f45d5c8c5e633e707b4755a624c799f97b57e5457b550638",
+      "plugins/apple-platform/skills/simplifying-apple-platform-code/references/swift-and-concurrency.md": "file:a1a7ddaa65fac4c612072c9a211a66a7699e4b9586c4e37df08b88f8f82301fc",
+      "plugins/apple-platform/skills/simplifying-apple-platform-code/references/toolchain-and-availability.md": "file:cc5ff431de62aad0b8b31e6469f1c5b42744850c11798f43796c5b31442d9aee",
+      "plugins/apple-platform/skills/simplifying-apple-platform-code/references/ui-frameworks.md": "file:9221e72f334f799a9806317dae30dc7fc42b0dc1db12dee58b2c989ad3aaad67",
+      "plugins/apple-platform/skills/simplifying-apple-platform-code/references/verification-and-checklist.md": "file:2fe38a19d4a5619b516f77bb8c0fa5645b2196686bb6d04090bae9b02504f906",
+      "plugins/apple-platform/skills/structuring-swift-packages/SKILL.md": "file:3bcf8303648ce8b37bd5ebda505a7ac9e9c2933f7e05ceb03a243cf25ed31c73",
+      "plugins/apple-platform/skills/structuring-swift-packages/agents/openai.yaml": "file:27e7e69c7d8ff9a3c622ea24eac77593e91a9df9f4fa268261a66138219d0c10",
+      "plugins/apple-platform/skills/structuring-swift-packages/references/recipes-and-verification.md": "file:1390a49ce81c8368cbb2ffe8db13a48972d6e68e914bc9bafe0c620eb3e5c619",
+      "plugins/apple-platform/skills/testing-async-swift-code/SKILL.md": "file:0aedd88c7c40b5e04108c441873cdbf8a270f8b6ccde7f720bb2f38ee77422a2",
+      "plugins/apple-platform/skills/testing-async-swift-code/agents/openai.yaml": "file:4f47331d3918ed7b32d2977ade26b8d7138565cf77152be432da890a30c252af",
+      "plugins/apple-platform/skills/testing-async-swift-code/references/idioms.md": "file:aa8e03d0f4ed69b63d472093a621e26347989d23470f6b2209a961851af722d3",
+      "plugins/apple-platform/skills/testing-async-swift-code/references/primitive-contracts.md": "file:c24872fceaa33307f1857a4c970f207db82e99426a0c368238cbefd24a696ed2",
+      "plugins/apple-platform/skills/testing-swift-code/ATTRIBUTION.md": "file:47a8d0d24cca72b2ce8cb05e95770b1a0abbdead35277f06adafb25b0062a327",
+      "plugins/apple-platform/skills/testing-swift-code/REFERENCE.md": "file:2c929883e523ec7f08cbb55fe54084de7843b26933e4d6771d8d6e79669e7f38",
+      "plugins/apple-platform/skills/testing-swift-code/SKILL.md": "file:bf21540a6b91cbc949d3e8aad62af58304d2e300de1f039b49c266ae0d403d44",
+      "plugins/apple-platform/skills/testing-swift-code/agents/openai.yaml": "file:661239976bb5147b9a40ca492cbc2fb5f5e4baf0b8765cf5f28d0e1483831f8e",
+      "plugins/apple-platform/skills/using-swift-concurrency/SKILL.md": "file:ed159402828920f0d2aa32d7367089d1c5691a5eb080b5654701ce840bc43b2c",
+      "plugins/apple-platform/skills/using-swift-concurrency/agents/openai.yaml": "file:6bd6f5bb911a33148fa941a1666123bc938d09a17ba4a64bafc174852a0cb6a8",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/actor-decisions.md": "file:1d07e42a76e30086a06f1a602bad45a24751276dacf25306649a2f72a1407552",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/async-sequences-observation-and-notifications.md": "file:510a7accce18a3b0d14080f61cd25479a5280487cefa2d7fe361b92b067551fa",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/async-testing.md": "file:2a4186b394a47ee6c47de7d4641e3228eacd85999f08c50ee06db0234e84da7b",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/concurrency-model.md": "file:9edbdeba7b1c42ef6ae02ad0236c2c5a2c352635e7badf9853b4647679549cdf",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/continuations-and-bridging.md": "file:c39457f9384028872a641aa3efd1c68cc13913b289d7991ed1b10ccd7675afa5",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/isolation-and-protocol-conformances.md": "file:7ec54a614c8b582b4fd0b31dd88e93ec61ecda8e247e108be459296eb17406de",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/logical-races-and-reentrancy.md": "file:c251205c5272ba84bb02a1580d8f2ee6f748b82e67036fef3454822456db8276",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/platform-and-build-baseline.md": "file:b59fb59907739d987b37432f0839884fefec026368034805ee29dea581147229",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/problematic-patterns.md": "file:65e74e3a5d69a9e42781f04659600c3edb5e7768c74b7e8e475233f7ca7ff86d",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/protocol-design.md": "file:89b07b05fdff14586edfb1706efa610f4ad69aa7bf8e04fa34dffa8437b0a2d0",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/review-playbooks.md": "file:373ae44ee9bfd88836c04436fa2e8f5c2bc5387bfe65295b59b17b7993fc6fcf",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/sendable-and-transfer.md": "file:4e40ba22cf20abf04418705efd963e373f161e7a11fbe5d91297074f4a84b31f",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/sources.md": "file:eaf17b3feab5d824aa89e700eb28ed272c227caecf7ccacb75bf1e530a5bc5d7",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/task-lifecycle-and-cancellation.md": "file:0a853cb0fbcaaf75c4d76cbc63374b62d163e91ff22ff89d53821bddd293d686",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/terminology.md": "file:032df0de006db7f4275abd5ab442d3905807ead80efe46f92f3a17de0ec57f31",
+      "plugins/apple-platform/skills/using-swift-concurrency/references/ui-and-mainactor.md": "file:98f6a3358962f39c655bbec970ffa7110d6e91f6c41b6afda4a74fd15bf467e4",
+      "plugins/apple-platform/skills/writing-apple-platform-documentation/SKILL.md": "file:f3ab2173ed2838f5c69f16f9272be4c26bb219e69cd575ec857bd42449cccfba",
+      "plugins/apple-platform/skills/writing-apple-platform-documentation/agents/openai.yaml": "file:06ca304086b52e8b6e5e3a94d81d2b3ea0920e3f324a596c98c3c4a3be6002ab",
+      "plugins/apple-platform/skills/writing-apple-platform-documentation/assets/terminology-rules.json": "file:7154eac044f9b0ab18f884adaf319e16d9e0d0c15cf11a3c95cfc4d1833a80e6",
+      "plugins/apple-platform/skills/writing-apple-platform-documentation/references/terminology-checks.md": "file:714daea79a2f8b70f6783bde7e866a9c4f7d07e27c5fe066dad61cd6ed8c4e9d",
+      "plugins/apple-platform/skills/writing-swift/SKILL.md": "file:d923cd3a2bbac5082178ae51ffcfbd0de80ea314c5d91da1a961b25375a77944",
+      "plugins/apple-platform/skills/writing-swift/agents/openai.yaml": "file:af119981981ace79904bef3835edd79eefd139c02efd25c4bc17e85d4bfa3746",
+      "plugins/apple-platform/skills/writing-swift/references/api-design-and-style.md": "file:abf447975c5b579248f1d37e45e70a85da1a48b1b72d7ef392be47ba373d46f2",
+      "plugins/apple-platform/skills/writing-swift/references/concurrency.md": "file:4e11a0464353759d12b201b49c2007d29722a62ed9666558f45447f4b62f81ac",
+      "plugins/apple-platform/skills/writing-swift/references/packages-builds-and-platforms.md": "file:5160b1b877ff9486636afd3da8368f4c043839e78a927d7ee6016b8eb16d6f16",
+      "plugins/apple-platform/skills/writing-swift/references/review-and-debugging.md": "file:106d51e63b06b0431edf9ef2d8ef0eec734cddfd304727bbeeef99afc5457185",
+      "plugins/apple-platform/skills/writing-swift/references/swift-compatibility.md": "file:2539fcae1c188d1d5c4ec3781f3d63d36305d158489565ee521283e897094eb0",
+      "plugins/apple-platform/skills/writing-swift/references/testing.md": "file:b915f250593e14963472c637b87e845ec91f032cccd6e3d66a38f6bca8c2020e",
+      "plugins/apple-platform/skills/writing-swift/scripts/lint-changed-swift.sh": "file:38f50c44bc773d400f0bda1a3be6cfe774c5c84d0a96842818570a5cba665b87",
+      "plugins/apple-platform/skills/writing-swift/scripts/swift-project-context.sh": "file:c7902c18fa2f5a0c452bfb4595434ce1e40164294c6695ee9881ea428832af36",
+      "plugins/apple-platform/skills/writing-swift/scripts/swiftpm-check.sh": "file:d1f651b1375137d70e599fcf37c7452d1ff472869579742275263f1492d3d82c",
+      "plugins/universal/.claude-plugin/plugin.json": "file:a39bf611ab5fd5a46939e9532684710e3bf5976d3779b0bfcfc13bf2fe40934d",
+      "plugins/universal/.codex-plugin/plugin.json": "file:92f902f7fec2164adc96443281a9b0b9a9d8d1b5b7220d5ae2331dd12bc8aceb",
+      "plugins/universal/agents/code-reviewer.md": "file:410fd806bc4824790f4d4cb787ea8190fedc6f68a46ab6604c6518609de0b4f2",
+      "plugins/universal/agents/code-simplifier.md": "file:60c679620bc8a5a3c7829232144ac54996a3c380a21a7bc054098c0d7299402c",
+      "plugins/universal/agents/correctness-reviewer.md": "file:cf5aa1c5af0b88c43b543ce1b24954956022817307008b94c36c3263962e7dbd",
+      "plugins/universal/agents/technical-writing-auditor.md": "file:0f940666f3cec9a7e8b0b418c511fdb596afe461780dd84c9cb971dc223e3176",
+      "plugins/universal/skills/brainstorming-design-specs/SKILL.md": "file:43d633dde756a4235c5c756f32ea2296ecaf8afdf6ab9e07f7eebd3b992b9266",
+      "plugins/universal/skills/brainstorming-design-specs/agents/openai.yaml": "file:7a52c30cd047f8e86d17c48ca691f831ccca0f11debd6477b6ecd0a543f82e47",
+      "plugins/universal/skills/compiling-agent-goals/SKILL.md": "file:ea47548982a4465ab9ae1ca715b4504a10442461920b7888179e80d06b5249b5",
+      "plugins/universal/skills/compiling-agent-goals/agents/openai.yaml": "file:426e5a20ba16c42ee2e0d8ec8b2037133616cde1eacdaa10bc6bf9e43ef5e41d",
+      "plugins/universal/skills/compiling-agent-goals/assets/goal-pack-template.md": "file:759a4736d9c4845a2a2bedaf4e8bb10209a958e6a0fd8ed6ed74043d89eeeca4",
+      "plugins/universal/skills/compiling-agent-goals/assets/goal-template.md": "file:f60c5137baaa81b674010310bba162e615214bd6146c96825d24d409d3d52b78",
+      "plugins/universal/skills/compiling-agent-goals/references/goal-contract.md": "file:4b02a8f85affe7f062f05d6272058e467cdce604fca96c650efb292f2a561605",
+      "plugins/universal/skills/compiling-agent-goals/references/platform-notes.md": "file:3f364cb15461dc0ac0b34c002b16996f025d450dd0945d6e9d25aab6e6df0844",
+      "plugins/universal/skills/compiling-agent-goals/scripts/lint_goal.py": "file:18af5edbf24f1a8ccaa533786633088d9f8632dddda07681b7654b68b8b4527a",
+      "plugins/universal/skills/hardening-changes/SKILL.md": "file:03c1933fad659a099502ce8792d63d2b028c389c9c8a0411ace7807dd206935c",
+      "plugins/universal/skills/hardening-changes/agents/openai.yaml": "file:1c0d66a0533d84f80ccf4b3f8a11288e784980f79aec22b85b37f5d74d4c0e2c",
+      "plugins/universal/skills/hardening-changes/references/manager-handoff.md": "file:af77cfe9a7fa09e16f3eb592aea708748f08bed65b6b4d8439f6f6166806887b",
+      "plugins/universal/skills/hardening-changes/references/substantive-workflow.md": "file:41e31e6a7f715579125d1e873df9268f52b818762d9734c1187373e4efcb1a78",
+      "plugins/universal/skills/reviewing-code/SKILL.md": "file:926537e876d0f2679e0a9c69124c437b59f27c32f57108ed303b33a8e0db0d5e",
+      "plugins/universal/skills/reviewing-code/agents/openai.yaml": "file:77610d4aafc430f2c84ba2be5ed15d4b5c1093b0a4b619b4b3862ef91dedc728",
+      "plugins/universal/skills/reviewing-code/references/change-playbooks.md": "file:7774d49f0f6b9efa9165d987c13430c5bddca96afe6a04412ef5deaa4de3fdb8",
+      "plugins/universal/skills/reviewing-code/references/finding-quality.md": "file:41a0ccd1be96a402f3f880f7ddaf812d519c6606f7a8626b76fd75a30c2591d6",
+      "plugins/universal/skills/reviewing-code/references/review-lenses.md": "file:1ddb67d1de478db37ef2713cf5a908126958d4c635dad5728267ab501b0fc788",
+      "plugins/universal/skills/simplifying-code/SKILL.md": "file:e9bad9600f04d2bf188298f8286be5ec4b77cfb957c38dd9d04936ec0c86624f",
+      "plugins/universal/skills/simplifying-code/agents/openai.yaml": "file:cd8ed4dd1e1c479e8f5a4f61cf41b2f39c9d6b7b30843d7598a6f879ed54c552",
+      "plugins/universal/skills/simplifying-code/references/adaptation-and-anti-simplification.md": "file:dc5fa6a98648c8894033e8023f53a7967df650477b5a9601402e6ac709124aae",
+      "plugins/universal/skills/simplifying-code/references/compact-checklist.md": "file:c903142d1ea4b20aa4be65b81f08a82b56fc741d5b029f254b52f17053942420",
+      "plugins/universal/skills/simplifying-code/references/review-passes.md": "file:f6313a5e449e52a1abe50c93052a4c7e1282d638ba257305dabe24250fd35820",
+      "plugins/universal/skills/verifying-invariants/SKILL.md": "file:f0d17e3b482bee0d4805963ff1bd477352e25027f50a63e857f90efc31c3204f",
+      "plugins/universal/skills/verifying-invariants/agents/openai.yaml": "file:9c5ac56b8d163315b77da8e6a9107e1bfa1a6683efbf7615ebece2849501ebf3",
+      "plugins/universal/skills/verifying-invariants/assets/invariants.template.json": "file:5b71272df455c39b8555b7ab913771b16d09c684e6f2a20fc09d119dda7b9dc2",
+      "plugins/universal/skills/verifying-invariants/references/construction-boundaries.md": "file:122dc2e78cd74d892b34b2270a61d1fbe245ce8ceb3fcd809e92a7bf06e5217b",
+      "plugins/universal/skills/verifying-invariants/references/evidence-and-reporting.md": "file:1b739692e5d944310486846ce8a73306d827b00b094c7734ff43d4fbc61b8442",
+      "plugins/universal/skills/verifying-invariants/references/manifest-format.md": "file:366c008beb86284d4e3aad2e611d6afe0a512ed852d3d708623713bcc6a846fa",
+      "plugins/universal/skills/verifying-invariants/references/targeted-mutations.md": "file:2de48c20a0c6447fe307e2361a0058261118cf1b9a8e85223b692cbe46242b52",
+      "plugins/universal/skills/verifying-invariants/references/transition-exploration.md": "file:db240ab5d5c0a8251b96f1c96e94e23f8924d60775fa89bc4bd531f893477dd2",
+      "plugins/universal/skills/verifying-invariants/scripts/validate_invariants.py": "file:16effae7ce960f68d42277d856aec2b7e62ec3a585706d0617c89b2ba54dcad1",
+      "plugins/universal/skills/writing-escalation-briefs/SKILL.md": "file:61629b5bb00a8e942653e0a68654542812115034b3477d1959df891116b75fdd",
+      "plugins/universal/skills/writing-escalation-briefs/agents/openai.yaml": "file:b720c94ab9c25964199bc67182393c93185bf939a330caad8dd73184f64f6617",
+      "plugins/universal/skills/writing-escalation-briefs/references/brief-template.md": "file:9fb22f2748bab9004aabcff8dc02dadf0bd51177cae2419a1f3f7e3c5f2c7640",
+      "plugins/universal/skills/writing-technical-prose/SKILL.md": "file:983585cb5e3eca111e5a658e8c2ed460438472e3140bb663c8d5facb2bf867e4",
+      "plugins/universal/skills/writing-technical-prose/agents/openai.yaml": "file:e5b43e4359a1b5ced68c2d05adb521e4cac160b992e4783bb00745ceffda1396",
+      "plugins/universal/skills/writing-technical-prose/references/document-patterns.md": "file:06413cf04efd12c114758dc2a5e2ff6ae91ccf06fe487b8d7d70616a3b58d603",
+      "plugins/universal/skills/writing-technical-prose/references/linter-usage.md": "file:bc72ae7119528839a3292e9cb1baec69bba41b5ba324ce62411e7ab2aeec920c",
+      "plugins/universal/skills/writing-technical-prose/references/review-checklist.md": "file:73df51762dd56cfdcc46d3253813a93809b03d82b538c4ce2a4f548902b81f3a",
+      "plugins/universal/skills/writing-technical-prose/references/style-examples.md": "file:7b52249ded096ebf5d0a214ba01712ff0dbec9ddd181e9221bfa5f2bcf8a26f9",
+      "plugins/universal/skills/writing-technical-prose/scripts/lint_technical_writing.py": "file:b06effe2e1e5164a54815bc5c93f452494ca4be2dd1a2db4c954601ded097587"
+    }
+  },
+  "runner_sha256": "ebbef34bb3eb91e736614320b2a146b8743b9b69675fc58cc60326ab53ced4f6",
+  "helper_sha256": "4c295481b92ac7a2cd7987322243163e2a8e7df1fb5f9ceb9ec8ef8bf32d5778",
+  "launcher_sha256": "660c694195f7cdfe5493cb8963a1154480d9f8c066955336492a755f2451ff2b",
+  "collector_sha256": "a1c713fe1f254d55364c8c56903fc150bbab3b974f92c02668d0e1a1ec77d54d",
+  "cli_preflight": {
+    "claude": {
+      "argv": [
+        "claude",
+        "--version"
+      ],
+      "started_utc": "2026-10-21T00:00:41.953301+00:00",
+      "exit_code": 0,
+      "status": "completed",
+      "duration_seconds": 0.012,
+      "stdout": "/tmp/skill-composition-wording-edits-final-pilot/preflight/claude.stdout",
+      "stderr": "/tmp/skill-composition-wording-edits-final-pilot/preflight/claude.stderr"
+    },
+    "codex": {
+      "argv": [
+        "codex",
+        "--version"
+      ],
+      "started_utc": "2026-10-21T00:00:41.965062+00:00",
+      "exit_code": 0,
+      "status": "completed",
+      "duration_seconds": 0.012,
+      "stdout": "/tmp/skill-composition-wording-edits-final-pilot/preflight/codex.stdout",
+      "stderr": "/tmp/skill-composition-wording-edits-final-pilot/preflight/codex.stderr"
+    }
+  },
+  "cli_versions": {
+    "claude": "2.1.304 (Claude Code)",
+    "codex": "codex-cli 0.163.0"
+  },
+  "settings": {
+    "runtime": "claude",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "timeout_seconds": 900,
+    "sequential": true,
+    "concurrency": 1,
+    "fixture_bootstrap": true,
+    "runner_argv_template": [
+      "/opt/homebrew/opt/python@3.15/bin/python3.15",
+      "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins/scripts/run_invariant_behavior.py",
+      "--fixture-bootstrap",
+      "--config",
+      "/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins/evals/skill-composition/cases.json",
+      "--case",
+      "<case>",
+      "--runtime",
+      "claude",
+      "--model",
+      "claude-sonnet-5-5",
+      "--effort",
+      "medium",
+      "--timeout",
+      "900",
+      "--output-dir",
+      "<new-output-directory>"
+    ],
+    "native_argv_template": [
+      "claude",
+      "-p",
+      "--model",
+      "claude-sonnet-5-5",
+      "--effort",
+      "medium",
+      "--setting-sources",
+      "",
+      "--strict-mcp-config",
+      "--restricted",
+      "--add-dir",
+      "<isolated-snapshot>",
+      "--tools",
+      "Read,Glob,Grep,Skill,Edit,Write,Bash,Agent",
+      "--allowed-tools",
+      "Read,Glob,Grep,Skill,Edit,Write,Bash,Agent",
+      "--no-session-persistence",
+      "--output-format",
+      "stream-json",
+      "--verbose",
+      "--debug-file",
+      "<isolated-debug-log>",
+      "--plugin-dir",
+      "<isolated-snapshot>/plugins/.DS_Store",
+      "--plugin-dir",
+      "<isolated-snapshot>/plugins/apple-platform",
+      "--plugin-dir",
+      "<isolated-snapshot>/plugins/universal"
+    ],
+    "metadata_environment": {
+      "SLASH_COMMAND_TOOL_CHAR_BUDGET": "24000"
+    },
+    "sandbox_and_approval": "Unmodified existing runner restrictions, tools, allowed tools, strict MCP and empty setting sources; no override.",
+    "bootstrap": "Frozen original bootstrap runs only in the runner-created disposable project; launcher never executes Git in fixtures."
+  },
+  "runs": [
+    {
+      "id": "hardening-cosmetic-claude-1-wording-edits-pilot",
+      "case": "hardening-cosmetic",
+      "repeat": 1,
+      "runtime": "claude",
+      "model": "claude-sonnet-5-5",
+      "effort": "medium",
+      "timeout_seconds": 900,
+      "state": "declared-not-launched",
+      "missing_outcome_policy": "failure; retain streams; no retry or replacement"
+    },
+    {
+      "id": "hardening-cosmetic-claude-2-wording-edits-pilot",
+      "case": "hardening-cosmetic",
+      "repeat": 2,
+      "runtime": "claude",
+      "model": "claude-sonnet-5-5",
+      "effort": "medium",
+      "timeout_seconds": 900,
+      "state": "declared-not-launched",
+      "missing_outcome_policy": "failure; retain streams; no retry or replacement"
+    },
+    {
+      "id": "hardening-cosmetic-claude-3-wording-edits-pilot",
+      "case": "hardening-cosmetic",
+      "repeat": 3,
+      "runtime": "claude",
+      "model": "claude-sonnet-5-5",
+      "effort": "medium",
+      "timeout_seconds": 900,
+      "state": "declared-not-launched",
+      "missing_outcome_policy": "failure; retain streams; no retry or replacement"
+    },
+    {
+      "id": "hardening-invariant-claude-1-wording-edits-pilot",
+      "case": "hardening-invariant",
+      "repeat": 1,
+      "runtime": "claude",
+      "model": "claude-sonnet-5-5",
+      "effort": "medium",
+      "timeout_seconds": 900,
+      "state": "declared-not-launched",
+      "missing_outcome_policy": "failure; retain streams; no retry or replacement"
+    },
+    {
+      "id": "hardening-invariant-claude-2-wording-edits-pilot",
+      "case": "hardening-invariant",
+      "repeat": 2,
+      "runtime": "claude",
+      "model": "claude-sonnet-5-5",
+      "effort": "medium",
+      "timeout_seconds": 900,
+      "state": "declared-not-launched",
+      "missing_outcome_policy": "failure; retain streams; no retry or replacement"
+    },
+    {
+      "id": "hardening-invariant-claude-3-wording-edits-pilot",
+      "case": "hardening-invariant",
+      "repeat": 3,
+      "runtime": "claude",
+      "model": "claude-sonnet-5-5",
+      "effort": "medium",
+      "timeout_seconds": 900,
+      "state": "declared-not-launched",
+      "missing_outcome_policy": "failure; retain streams; no retry or replacement"
+    }
+  ],
+  "preceding_batch_accounting": {
+    "earlier_native_starts": 139,
+    "earlier_declared_slots": 156,
+    "preceding_context_confirmed_native_starts": 6,
+    "bindings": [
+      {
+        "path": "/private/tmp/skill-composition-context-final-pilot/launch-plan.json",
+        "sha256": "e2f19057fcb6ef958bd17778c31ab51ec9d9e78f7c825fa3b19ee2ea58c39382"
+      },
+      {
+        "path": "/private/tmp/skill-composition-context-final-pilot/batch-completion.json",
+        "sha256": "d370126cd16bb016a315c4fae4db429be35fd0b114cab0b493877a63515ca812"
+      },
+      {
+        "path": "/private/tmp/skill-composition-context-final-pilot/native/hardening-cosmetic-claude-1-context-pilot/raw-outcome.json",
+        "sha256": "2878f5e84d198baf54e7ba6af0c6e9dacbbd4f124aa375363851e288476ff7b3"
+      },
+      {
+        "path": "/private/tmp/skill-composition-context-final-pilot/native/hardening-cosmetic-claude-2-context-pilot/raw-outcome.json",
+        "sha256": "b2b5fd91afd01cd7ae0878aec1bdff6364302ef4e7378e6bd52be679ae8cec76"
+      },
+      {
+        "path": "/private/tmp/skill-composition-context-final-pilot/native/hardening-cosmetic-claude-3-context-pilot/raw-outcome.json",
+        "sha256": "34d0b24fa2d839e00d7cbe2bc4c26816a44f2a5087028c8470c9d29421298cb7"
+      },
+      {
+        "path": "/private/tmp/skill-composition-context-final-pilot/native/hardening-invariant-claude-1-context-pilot/raw-outcome.json",
+        "sha256": "f4f206eadc4a640f5041b2996a4b4d4163c7e3392f94fd99e795fba2355e33d4"
+      },
+      {
+        "path": "/private/tmp/skill-composition-context-final-pilot/native/hardening-invariant-claude-2-context-pilot/raw-outcome.json",
+        "sha256": "f1b97c19c6a322474db16dea05eb433e14bcf055964d9e92b3344005c1d175b2"
+      },
+      {
+        "path": "/private/tmp/skill-composition-context-final-pilot/native/hardening-invariant-claude-3-context-pilot/raw-outcome.json",
+        "sha256": "25caec7e01b8a9ad8e4249c474b639e25427d5739520d9066d1787e40049110a"
+      }
+    ]
+  },
+  "static_validation_bindings": [
+    {
+      "path": "/private/tmp/skill-composition-wording-edits-final-pilot/static-validation.json",
+      "sha256": "e7f65cf7502e874c28e7e894ddae37071f42f7a12885f4413a1efaf053ec365d"
+    },
+    {
+      "path": "/private/tmp/skill-composition-wording-edits-final-pilot/static/unit-tests.stdout",
+      "sha256": "9714734a22c4f65d8e7eea81ba202010543025016835b8c952899366a4e5bdc1"
+    },
+    {
+      "path": "/private/tmp/skill-composition-wording-edits-final-pilot/static/unit-tests.stderr",
+      "sha256": "052683a6e51dca1aa6d0f771040a6660297d32da72cd59f7c4922734cf32a9f7"
+    },
+    {
+      "path": "/private/tmp/skill-composition-wording-edits-final-pilot/static/repository-validator.stdout",
+      "sha256": "a47ae0142c84327ad2e8853eb11dfe746f92579467ea419fbdc6688cce873029"
+    },
+    {
+      "path": "/private/tmp/skill-composition-wording-edits-final-pilot/static/repository-validator.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/private/tmp/skill-composition-wording-edits-final-pilot/static/catalog-head.stdout",
+      "sha256": "fce0983f970d283c8f446c605d64840d4e3deeaad880469fc8fbe5eafc9c6475"
+    },
+    {
+      "path": "/private/tmp/skill-composition-wording-edits-final-pilot/static/catalog-head.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/private/tmp/skill-composition-wording-edits-final-pilot/static/catalog-origin-main.stdout",
+      "sha256": "b005b31c601dd059d61c50d5fb142a79a1a5c84b13ac0dc9ff8a6f33d42a1195"
+    },
+    {
+      "path": "/private/tmp/skill-composition-wording-edits-final-pilot/static/catalog-origin-main.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/private/tmp/skill-composition-wording-edits-final-pilot/static/claude-apple-platform.stdout",
+      "sha256": "3aca0df42cd554039c9e721c7b4f140f00530ded719edf0d9eb24ca8e10deea2"
+    },
+    {
+      "path": "/private/tmp/skill-composition-wording-edits-final-pilot/static/claude-apple-platform.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/private/tmp/skill-composition-wording-edits-final-pilot/static/claude-universal.stdout",
+      "sha256": "c886d07703c3039d28be2b9e3da2f4864c4567dbd2a6a0599909eceb8d97d44b"
+    },
+    {
+      "path": "/private/tmp/skill-composition-wording-edits-final-pilot/static/claude-universal.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/private/tmp/skill-composition-wording-edits-final-pilot/static/source-coverage.stdout",
+      "sha256": "0c2e4908dd500039ff56150cd2060ec9eccc17b7458e9242bfea22e0b555df62"
+    },
+    {
+      "path": "/private/tmp/skill-composition-wording-edits-final-pilot/static/source-coverage.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/private/tmp/skill-composition-wording-edits-final-pilot/static/swift-modeling-skill.stdout",
+      "sha256": "76df5d6458b74ae35a611ba629c099501584fb670839d35350f596f9eb2ac6f7"
+    },
+    {
+      "path": "/private/tmp/skill-composition-wording-edits-final-pilot/static/swift-modeling-skill.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/private/tmp/skill-composition-wording-edits-final-pilot/static/quick-hardening.stdout",
+      "sha256": "db349825903d66adffea3ecf1bd8e1803043e8a71cf1a051235dabc5371f5bb0"
+    },
+    {
+      "path": "/private/tmp/skill-composition-wording-edits-final-pilot/static/quick-hardening.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/private/tmp/skill-composition-wording-edits-final-pilot/static/quick-invariants.stdout",
+      "sha256": "db349825903d66adffea3ecf1bd8e1803043e8a71cf1a051235dabc5371f5bb0"
+    },
+    {
+      "path": "/private/tmp/skill-composition-wording-edits-final-pilot/static/quick-invariants.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/private/tmp/skill-composition-wording-edits-final-pilot/static/diff-check.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/private/tmp/skill-composition-wording-edits-final-pilot/static/diff-check.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/private/tmp/skill-composition-wording-edits-final-pilot/static/codex-local-metadata.stdout",
+      "sha256": "9f2a064369bcf1e2e7fe5015c631d9a4507b96e0bc7bd1b730f3e7b2a00b25ee"
+    },
+    {
+      "path": "/private/tmp/skill-composition-wording-edits-final-pilot/static/codex-local-metadata.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/private/tmp/skill-composition-wording-edits-final-pilot/static/manifest-1.stdout",
+      "sha256": "14c3a6cf77884fbe395df81e6a016fb1eb25227c16836e7515d21b7eb1bf0690"
+    },
+    {
+      "path": "/private/tmp/skill-composition-wording-edits-final-pilot/static/manifest-1.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/private/tmp/skill-composition-wording-edits-final-pilot/static/manifest-2.stdout",
+      "sha256": "819c55e73b5b4d268f6e7ac155d99eb66f78c4075575d9adca064620a051c670"
+    },
+    {
+      "path": "/private/tmp/skill-composition-wording-edits-final-pilot/static/manifest-2.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/private/tmp/skill-composition-wording-edits-final-pilot/static/manifest-3.stdout",
+      "sha256": "dc3f2b4d777b84421d2ea0933c563f00dd911288339ad7368c7d2360d4a4eea2"
+    },
+    {
+      "path": "/private/tmp/skill-composition-wording-edits-final-pilot/static/manifest-3.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/private/tmp/skill-composition-wording-edits-final-pilot/static/manifest-4.stdout",
+      "sha256": "dc3f2b4d777b84421d2ea0933c563f00dd911288339ad7368c7d2360d4a4eea2"
+    },
+    {
+      "path": "/private/tmp/skill-composition-wording-edits-final-pilot/static/manifest-4.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/private/tmp/skill-composition-wording-edits-final-pilot/static/manifest-5.stdout",
+      "sha256": "050548eb918060fb0f4de144de790e20269daee89be8b9fc727945883a059c42"
+    },
+    {
+      "path": "/private/tmp/skill-composition-wording-edits-final-pilot/static/manifest-5.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/private/tmp/skill-composition-wording-edits-final-pilot/static/manifest-6.stdout",
+      "sha256": "1f9822947799d4c0c5af0b6c24bbc4eaae96599421ec773094a1a29291537cf6"
+    },
+    {
+      "path": "/private/tmp/skill-composition-wording-edits-final-pilot/static/manifest-6.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "accounting": {
+    "earlier_native_starts": 139,
+    "earlier_declared_slots": 156,
+    "new_declared_slots": 6,
+    "maximum_new_native_attempts": 6,
+    "retries": 0,
+    "substitutions": 0,
+    "diagnostic_replays_and_expert_consultations": "excluded from native matrix counts"
+  },
+  "acceptance": "All six slots require independent trace/response/artifact review and acceptance (6/6) before the original 18/18 gate may be attempted. Automated evidence alone does not accept a run. Missing outcome/evidence and startup failures fail; no pooling, substitution, retries or new models.",
+  "failure_policy": "Preflight failure blocks all six declared slots. Runner startup failure or missing outcome/evidence is retained in its slot; continue sequentially without replacement. Source, criteria or runner drift blocks remaining slots. No unrelated process is killed. A failed pilot keeps the original 18-run gate blocked and triggers diagnosis, then a separately declared fresh batch under the persistence contract; it does not end the overall task."
+}

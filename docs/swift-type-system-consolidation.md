@@ -35,9 +35,10 @@ Apple Platform installation alone.
 
 The former `swift-6.3.2.md` and `swift-6.3-concurrency-model.md` references are now
 `swift-compatibility.md` and `concurrency-model.md`. Maintained inbound routes were
-updated. Skill and agent invocation names are unchanged. Under this repository's
-rename policy, both platform manifests and the Claude marketplace entry prepare
-Apple Platform 2.0.0; this document does not record a publication.
+updated. Skill and agent invocation names are unchanged. At that historical consolidation snapshot, this repository's rename policy
+required both platform manifests and the Claude marketplace entry to prepare
+Apple Platform 2.0.0. Later candidate versions supersede that number; this
+document does not record a publication.
 
 ## Preserved research and evidence
 

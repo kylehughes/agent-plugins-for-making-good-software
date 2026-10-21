@@ -24,172 +24,50 @@ Also freeze the auditor set to the surface's content. A diff with no code gives 
 
 ## Choose the Path
 
-Compare old and new meaning before choosing reviewers or reading implementation details.
+Route from the request and the changed hunks before choosing reviewers or reading implementation details. Determine whether the user wants to preserve meaning or change an asserted fact or contract.
 
-- **Wording-only:** All changes are prose or comments with equivalent meaning, and the request contains no factual or invariant assessment. Follow the wording-only path and finish there.
-- **Substantive:** Code, configuration, contracts, or behavioral claims change, or the user explicitly requests a truth audit or invariant assessment. Follow the substantive path. A new or strengthened prose claim needs a scoped truth check; an explicitly requested whole-document truth audit includes existing claims in that document and takes precedence over wording-only routing.
+- **Wording-only:** Every changed hunk is prose or comments, and the request is for wording, clarity, or cleanup. Preserve the old meaning while improving its expression. An accidental new or stronger claim is a prose defect to correct, not authority to investigate or change implementation. Follow the wording-only path and finish there.
+- **Substantive:** Code, configuration, or an intended contract changes; the request says the prose records a factual or behavioral change; or the user requests a truth audit or invariant assessment. Check the scoped claims against authoritative requirements and implementation evidence. An explicitly requested whole-document truth audit includes existing claims in that document and takes precedence over wording-only routing.
 
-If the distinction is uncertain, identify the exact old/new claim and resolve that uncertainty before proceeding. Surrounding unchanged claims do not become owned work.
+If a mixed request includes a stated factual or contract change in any hunk, take the substantive path. If the request gives no editing intent, use the changed meaning to select the path. A reviewer's interpretation of wording alone does not change a selected meaning-preservation task into a truth audit. The surrounding unchanged model does not activate a broader audit; claims behaviorally affected by substantive changes remain within the owned thread.
+
+Use only these `Status` values: **Hardening complete** means this scoped stage converged and required reviews finished; **Needs decision** names an unresolved disposition; **Blocked** names an obstacle preventing completion. Pending project checks belong in `Next`.
 
 ## Wording-only Path
 
-1. Give the technical-writing reviewer the old and new text, locations, and only the prose context needed to assess the change. Request read-only findings about that wording; do not send an implementation-audit bundle or launch code/type reviewers.
-2. Obtain the completed review. Preserve the cleanup or apply a justified small prose correction. If the reviewer identifies a concrete changed behavioral claim, switch to the substantive path with that claim and the original frozen surface. An unrelated implementation observation does not justify switching; reject it internally.
-3. Run `git diff --check HEAD --find-renames=20%` and any project-required document/configuration validation. Inspect untracked text when present. A comment edit remains wording-only regardless of its file extension: skip compilation and project execution.
-4. Finish with `Status`, `Next`, `Changed`, and `Proof`, followed by the scoped prose-review result and any small correction. State that compilation was unnecessary and name any ordinary project gate still pending. This completes hardening of the wording; it makes no runtime or invariant assurance. Stop here. The substantive loop, finding ledger, deferral sections, and invariant handoff below do not apply.
+1. Identify the requested editing improvement, then fill and send the reviewer request below to the technical-writing reviewer. Copy its contract rather than summarizing it; supply old and new text, locations, and only necessary prose context. The caller owns delivering the improvement; the reviewer assesses meaning preservation. Do not read implementation or launch code/type reviewers for this path.
+2. Obtain the completed review and apply justified edits to the **new** text, changing only the words responsible for each material difference. Retain other improvements even within the same phrase. If a replacement removes wording its rationale does not address, ask the same reviewer once to localize the correction. A whole-text row is valid when it corrects one inseparable meaning difference. Resolve editorial judgment within the task; reject unrelated implementation observations and follow-ups internally.
+3. Check delivery separately from resolving findings: does the corrected text still achieve the requested improvement? A result identical to the old text has delivered no cleanup. If the corrected text no longer achieves the editing intent and the original still admits a useful meaning-preserving improvement, draft one fresh formulation from the old meaning that achieves the editing goal and avoids the reviewer's stated difference. Send it to the same reviewer under the same contract, including the prior finding as prose context, then apply justified corrections. Allow one fresh-formulation review, not repeated attempts. If no accepted improvement remains, retain the meaning-preserving text and report the undelivered cleanup; do not invent a change merely to leave a diff. A one-word factual label, for example, may appropriately return to its original form.
+4. Run `git diff --check HEAD --find-renames=20%` and any project-required document/configuration validation. Inspect untracked text when present. A comment edit remains wording-only regardless of its file extension: skip compilation and project execution.
+5. Finish with `Status`, `Next`, `Changed`, and `Proof`, followed by one sentence on the scoped prose-review result. Explain corrections and any fresh formulation in `Changed`. If the bounded attempt leaves the requested improvement undelivered, use **Needs decision** and name the editing objective and reviewer's stated difference in `Next`. Report observed results; include setup details only when they affect the next action. State that compilation was unnecessary and name any ordinary project gate still pending. Do not describe or speculate about code outside the changed text. Stop here. Do not load the substantive workflow or manager handoff; their loop, ledger, deferral sections, and invariant handoff do not apply.
+
+### Reviewer request
+
+```text
+Perform a read-only meaning-preservation review. The new text is the editing base; the old text constrains meaning. Judge the claim as a reasonable reader would understand it in context. A merely possible implication is not a stronger guarantee, and preference for the old style is not a finding. Accept ordinary paraphrases.
+
+Return Accepted with a brief rationale, or a list of minimal edits with these fields:
+Location | Current words in the new text | Replacement words | Material difference corrected
+
+For each edit, identify the shortest span responsible for the difference and change only those words. Preserve independent improvements, including other changed words in the same phrase. Do not return an unlocalized whole-passage rewrite or replace unaffected wording with the old style. A row may cover the entire supplied text when it is one atomic meaning difference and no independent improvement survives. If every change must be undone, account for each independently in the edit list.
+
+Keep untouched text unchanged. Do not assess whether either version is true, inspect implementation, add severity labels, or propose implementation follow-ups. Return only the acceptance or edit list with its rationale.
+
+Location and necessary prose context: [fill]
+Requested editing improvement: [fill]
+Old text: [fill]
+New text: [fill]
+```
 
 ## Substantive Path
 
-Run the five phases below: audit, decide, fix, compile checkpoint, and re-audit. Obtain completed findings before fixing.
-
-For a changed construction boundary, invariant claim, enforcement gap, legal transition, or explicit proof request, load [verifying-invariants](../verifying-invariants/SKILL.md) and the installed language/type-correctness companion before boundary judgments or edits. Reuse active guidance within this workflow.
-
-Surfaces the branch does not implicate stay untouched. Defer owned work that requires app-wide rearchitecture or a product decision only the user can make.
-
-**This path runs one compile checkpoint, not a verification pass.** The project's full build, test, and release checks remain its later ship gate.
-
-## Dispositions
-
-Every finding gets one. Do not dismiss a finding because it seems low priority, and do not treat every finding as permission to rewrite the branch.
-
-| Disposition | Meaning | Action |
-|---|---|---|
-| Mechanical fix | A codified rule determines exactly one correct outcome. | Fix automatically. |
-| Judgment fix | The branch owns the thread and project evidence supports a best answer among several valid ones. | Resolve from evidence, fix, record in the decision ledger. |
-| Defer | Completing the thread would tear up floorboards across the whole app, or needs a product decision only the user can make. | Record with full context for the handoff. |
-| Drop | Vague, speculative, or grooming of code the branch does not own. | Record the exclusion and rationale in the internal ledger. |
-| Blocker | Cannot be safely prepared without resolving a correctness, build, or architecture issue that exceeds this loop. | Attended: stop and ask. Unattended: report in the handoff. |
-
-Mechanical fixes are never optional. Judgment fixes are not put to the user mid-loop — pick the strongest-evidence option, apply it, and report the call in the handoff where it can be audited. Effort is not a defer criterion: large but branch-owned work is still fix-now work.
-
-## Finding Classification
-
-Walk this in order:
-
-1. **Ledger check.** Does the decision ledger already hold this file path and underlying concern? On a match the finding is settled: keep the prior disposition. Override only on concrete new evidence — a build failure, a demonstrated defect in an applied fix — never on an alternative preference.
-2. **Ownership test.** Does the branch own the thread? It does when its changes introduce, extend, or destabilize the state the finding names. Pre-existing drift in untouched code is not owned: **Drop**.
-3. **Concreteness test.** Can the finding name a concrete problem, affected code, and next action? If not: **Drop**.
-4. **Floorboards test.** Would completing it rearchitect a pattern across many unrelated features or packages, or require a product decision? PR safe to merge without it: **Defer**. PR unsafe or misleading without it: **Blocker**.
-5. **Fix now.** Exactly one codified outcome: **Mechanical fix**. Multiple valid outcomes: **Judgment fix**.
-
-When in doubt between mechanical and judgment, choose judgment. When in doubt between fix-now and defer, fix now.
-
-Mechanical fixes include symbol and import ordering, formatting, documentation voice, naming-pattern and localization-pattern fixes codified by the project, access control corrections, and file structure ordering.
-
-Deferrals need the handoff fields recorded while context is fresh: **Title** (3-8 words), **Why** (the concrete risk), **Scope** (why it exceeds this PR), **Work** (first step and affected modules), **Effort** (`S` <1h, `M` half day, `L` 1-2 days, `XL` larger), **Evidence** (auditor plus file, symbol, or rule).
-
-## Run Modes
-
-Resolve everything resolvable from project evidence before stopping. An attended run interacts at exactly two points: a blocker, and the exit offer to file deferred work in the project's issue tracker, when one is configured. An unattended run makes neither stop — it reports blockers in the handoff with `Status: Blocked` and records deferred work without offering to file it.
-
-Translate the workflow onto the current runtime rather than treating tool names literally. The finding ledger lives in orchestrator state. Auditors return findings as text in their final report — subagents receive a reduced tool set and cannot be relied on to create tasks or invoke skills by name, so the orchestrator collects and records. Use the runtime's native subagent mechanism for auditors; if it does not expose the named agents, pass the matching agent definition as prompt context.
-
-Where the runtime provides cheaper delegated workers, bounded mechanical slices can go to them once the orchestrator fixes file scope and acceptance criteria. Workers do not build or run the project; every worker prompt names its working directory explicitly and quotes space-containing paths.
-
-## Workflow
-
-### Phase 1: Audit
-
-Use the mode and frozen surface from the initial inspection. Display the surface, including file lists for untracked directories, so auditors can inspect new files.
-
-Launch the implicated auditors in parallel against the surface. The roster is a set of concerns, not a fixed list of names. This plugin supplies four:
-
-| Agent | Question |
-|---|---|
-| `code-reviewer` | Does this fit the architecture? |
-| `code-simplifier` | Could this reuse what exists, and does it waste work? |
-| `correctness-reviewer` | Does this behave correctly on real paths? |
-| `technical-writing-auditor` | Does this match the human voice? |
-
-Platform plugins and projects commonly add reviewers for concerns such as codified standards compliance, type-system enforcement, complexity and cognitive load, and async-test determinism. Launch every installed reviewer agent whose concern the surface implicates; record the concerns you had no reviewer for.
-
-Apply the opening scope and activation rules to the auditor contracts. Investigate domain values and legal transitions introduced, altered, or newly exposed by substantive changes. Consider a stronger representation when it prevents concrete misuse at a justified complexity cost. This adds no reviewer or verification loop: the compile checkpoint stays in Phase 4 and project proof follows hardening.
-
-Pass this contract to every auditor:
-
-```text
-Audit the changed meaning within the chosen surface. Check a new or strengthened behavioral claim against relevant implementation evidence; a wording-only edit does not authorize tracing the surrounding model for pre-existing defects. Report only issues introduced, extended, or destabilized by the owned change. In branch mode, use the base-branch diff plus any uncommitted working-tree edits. In working-tree mode, use git status --short, git diff HEAD --find-renames=20%, and direct reads of untracked files. If this launch names an explicit scoped file list, audit only those files.
-
-Remain read-only. Do not modify files and do not build, test, or run the project. Recommend the narrowest relevant verification command to the orchestrator instead.
-
-For each finding, include: file:line, concern, proposed fix, expected disposition, patch boundary, and the skill, project rule, or architectural pattern that supports it.
-
-Return scoped findings in one list. Each finding must identify the owned change that gives rise to it. You may suggest a disposition; the orchestrator owns final classification.
-```
-
-Auditors do not propose Drop — an auditor that believes a finding is not worth reporting omits it. All launched auditors must complete; re-launch any that fails rather than proceeding with missing results.
-
-Collect the scoped findings into the ledger. If a reviewer submits an excluded observation, record its rejection internally without investigating a repair. Deduplicate by underlying failure, including findings across files or concern labels: an invariant bypass and a type-based way to prevent it share one finding and disposition. Correctness owns the failure evidence and impact; the type specialist supplies representation choices and tradeoffs; the orchestrator decides the fix. Preserve distinct failures as distinct findings. Close completed auditor sessions if the runtime keeps them active.
-
-### Phase 2: Decide
-
-Classify each finding through the procedure above. Record ledger entries for deferrals, drops, and blockers, and mark them resolved so they do not count as open work. For each judgment fix, write a ledger entry naming the choice, the strongest alternative, and the rationale — this anchors the decision so re-audits do not flip between valid designs.
-
-Print a short summary of the fix-now work. This is informational, not a checkpoint.
-
-### Phase 3: Fix
-
-Fix every mechanical and judgment finding, grouped by file, each patch inside its stated boundary. Low-ambiguity slices can go to delegated workers once files and acceptance criteria are fixed. Mark each finding complete as it lands, and confirm zero open actionable findings before continuing.
-
-### Phase 4: Compile Checkpoint
-
-Run this **once**, after the first substantive fix batch, and only if the fixes touched source code, package manifests, or project files. Hardening can introduce failures that static analysis cannot see — public API changes, access control, concurrency isolation, package boundaries — and this is where they surface.
-
-Use the narrowest command that compiles the full dependent graph of the touched modules — a whole-app or whole-workspace build, or the unit-test build when test targets changed. **Not an incremental, changed-module-only build**: it does not compile the changed module's dependents, which is precisely where the failures this checkpoint exists to catch appear. The incremental build is the iteration loop; the checkpoint needs the graph.
-
-Purely mechanical iterations — formatting, ordering, whitespace — skip this phase. Once the checkpoint passes, later audit fixes do not start another compile/test gate; carry any new verification obligations to the project ship gate. Only the compiler-caused repair exception below permits a retry.
-
-On failure:
-
-- **Clearly caused by a just-applied fix**: make the smallest repair inside the accepted patch boundary, re-run that command once, and give the repair a **scoped re-audit** through the owning auditor. A compiler-driven repair is still a change; it does not bypass audit.
-- **Ambiguous, unrelated, or in a package the branch did not touch**: stop and report it as a blocker. Do not start editing packages the branch does not own to make a build pass.
-
-Also run the cheap deterministic checks the surface requires:
-
-- Always: `git diff --check HEAD --find-renames=20%`.
-- Agent configuration changed (skills, agents, runtime settings) → run the project's validation script for that configuration, when it ships one.
-- Scripts or tooling changed → run the project's tooling tests, when it has them; nothing else runs them, so a tooling-only branch is otherwise unverified.
-- Working-tree mode → scan untracked text files for trailing whitespace and missing final newlines:
-
-```bash
-git ls-files --others --exclude-standard -z | xargs -0 grep -nIE '[ \t]+$' -- || true
-git ls-files --others --exclude-standard | while IFS= read -r f; do
-  [ -s "$f" ] && [ -n "$(tail -c 1 "$f")" ] && echo "$f: missing final newline"
-done
-```
-
-If the diff fires a maintenance trigger the repository declares for an architecture or design document, confirm that document updated on this branch; a missing update is a fix-now judgment finding, not a defer.
-
-### Phase 5: Re-Audit
-
-When invariant verification applies, read [Manager handoff](references/manager-handoff.md) and prepare the complete intended response before launching the final scoped correctness re-audit. Supply the stable artifacts and checkpoint evidence with that draft so one completed review covers both the changes and the handoff claims.
-
-Return to Phase 1, scoped by what changed:
-
-- Surface materially unchanged since the last completed audit → reuse that result rather than rerunning auditors.
-- Fixes introduced new abstractions, touched package boundaries, or spanned multiple concern areas → full pass.
-- Otherwise → only the files changed since the last audit, through only the owning auditors.
-- Exclusively trivial mechanical fixes → exit without re-auditing.
-- An auditor returning no findings is a valid result. Do not invent work to justify the audit.
-
-## Termination
-
-**Convergence is the exit condition.** The loop ends when the most recent audit returns zero actionable findings after classification. Iteration count is not an exit condition: if actionable findings persist after several passes, present the disposition table for all findings across all iterations and **stop without declaring completion** — attended, the user decides whether to continue, broaden scope, or accept; unattended, render the table with `Status: Needs decision`.
-
-### Final Manager Handoff
-
-Complete [Manager handoff](references/manager-handoff.md) at convergence. When invariant verification applies, resolve the records from the completed correctness review and emit its reviewed response under the invariant skill's correction rules. Otherwise prepare the scoped handoff directly.
-
-## Decision Ledger
-
-A running record in conversational state, not a file. Three entry types — **Deferred** (surface, concern, rationale, handoff fields), **Dropped** (surface, concern, one-line rationale), and **Judgment call** (surface, choice, strongest alternative, rationale).
-
-The ledger accumulates across iterations and settles decisions: a re-audit finding that matches an entry keeps its prior disposition, so the loop neither re-litigates a deferral nor flips an applied judgment call between valid designs. The only escape is concrete new evidence. Mechanical findings never enter the ledger; codified rules cannot be deferred or dropped.
+Read [Substantive workflow](references/substantive-workflow.md) and [Manager handoff](references/manager-handoff.md) after selecting this path. Continue with the frozen surface and auditor set through audit, decide, fix, compile checkpoint, and re-audit, then complete the handoff.
 
 ## Reference Map
 
-Read the reference at the phase that needs it:
+Read the two references only for the substantive path:
 
-- [Manager handoff](references/manager-handoff.md): substantive-path final status, pending project proof, conditional claim review, and completion checklist.
+- [Substantive workflow](references/substantive-workflow.md): load after code, configuration, contracts, changed behavioral claims, or an explicit truth/invariant assessment selects the substantive path. Contains dispositions, auditor contracts, phases, ledger, and termination.
+- [Manager handoff](references/manager-handoff.md): load with the substantive workflow so its evidence requirements are available before editing and its complete draft is available for final claim review. The wording-only path does not load it.
 
-Before finishing the substantive path, apply its completion checklist to the handoff and retained evidence.
+Before finishing the wording-only path, check its five steps above. Before finishing the substantive path, apply the [Manager handoff completion checklist](references/manager-handoff.md#completion-checklist).

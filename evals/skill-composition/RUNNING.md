@@ -4,19 +4,35 @@ Use this guide for new batches. [README.md](README.md) preserves the historical
 initial protocol; its frozen criteria, scenarios, prompts, and rubrics remain
 unchanged. [Results](results.md) records earlier batches and their failures.
 
-## Test a structural repair before the full gate
+## Recorded release result and future batches
 
-The [structural pilot](structural-pilot-plan.json) declares six sequential Sonnet
-runs: three cosmetic and three substantive hardening cases. It uses the existing
-frozen inputs, medium effort, and 900-second timeout. Its source snapshot stays
-fixed through independent review.
+The [final release-candidate matrix](native-results-release-candidate.json)
+accepted 18/18 on source
+`4394ce3b257bc2edc397b24e4a171e7d188d9b95d6e47d3900824cf5893de492`
+(Universal 1.9.7 and Apple Platform 2.1.0), following a fresh 6/6 inline pilot and
+18 passing static commands. All four dimensions passed. The evaluation gate is
+satisfied. Check [GitHub releases](https://github.com/kylehughes/agent-plugins-for-making-good-software/releases)
+and [CI runs](https://github.com/kylehughes/agent-plugins-for-making-good-software/actions)
+for publication status.
+[Results](results.md) retains all earlier failures, the narrow simplification
+scope adjudication, and evidence limits.
 
-All six must be accepted before attempting the full matrix below on the same
-plugin bytes. A failed or missing pilot outcome ends this repair attempt; retain
-it and report the remaining mechanism. Do not substitute a retry, switch models,
-or launch another tuning batch without a new explicit decision. The pilot does
-not satisfy or reduce the 18-run gate. This attempt permits at most six pilot
-runs and, conditionally, one full matrix.
+For a materially repaired version, first declare six sequential Sonnet
+`claude-sonnet-5-5` runs: three cosmetic and three substantive hardening cases,
+medium effort, with a 900-second timeout. Freeze the source through independent
+review. Keep original criteria, scenarios, prompts, fixtures, and rubrics unchanged.
+
+All six must be accepted before attempting one full 18-run matrix below on the
+same plugin bytes. A failed or missing outcome ends that batch. Retain every
+attempt; diagnose the failure, make a material repair, and declare a new version
+and batch before running again. Do not repeat identical full batches until one
+passes or treat a later pass as a waiver of an earlier failure. Any waiver needs
+an explicit user decision. The pilot does not satisfy or reduce the 18-run gate.
+
+The completed accounting is **181 confirmed native starts across 198 declared
+slots**, including 17 historically unlaunched slots. Consultations and
+reviewer-only diagnostics remain separate. Use the procedure below for a future
+batch; it does not authorize repeating the completed matrix until another pass.
 
 ## Declare the batch
 

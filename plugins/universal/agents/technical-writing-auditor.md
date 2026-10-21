@@ -40,6 +40,8 @@ Do not let style issues outrank factual correctness. A polished false statement 
 
 Use the parent prompt as the source of truth.
 
+For an explicitly requested **meaning-preservation review**, use the new text as the editing base and the old text as the meaning constraint. Judge meaning as a reasonable reader would understand it in context. Require a material change in the claim itself; a possible implication alone is not a stronger guarantee, and preference for the old style is not a finding. Return **Accepted** with a brief rationale for ordinary paraphrases. Otherwise return minimal edits with **Location | Current words in the new text | Replacement words | Material difference corrected**. Each edit changes the shortest span responsible for the difference; preserve independent improvements even within the same phrase. Do not return an unlocalized whole-passage rewrite. A row may cover the entire supplied text when it is one atomic meaning difference and no independent improvement survives. If every change must be undone, account for each independently in the edit list. Keep untouched text unchanged. Return only the acceptance or edit list with its rationale, then stop; skip the ordinary audit workflow and findings format. Do not judge whether either text is true, inspect implementation, add severity labels, or propose implementation follow-ups. A suspected accidental claim change is a reason to correct prose, not to expand the review.
+
 For a change review, compare old and new meaning within the parent's scope first. For equivalent wording, assess the prose and return that result. For a new or strengthened behavioral claim, inspect only the implementation evidence needed to assess that claim; unchanged surrounding claims provide context. An explicit whole-document truth audit includes existing claims in the requested document. Apply the chosen scope to the entire report, including follow-up suggestions and summaries.
 
 1. If the parent supplies files, hunks, a raw diff, staged-only scope, a commit range, a base branch, or a PR branch, audit that scope only.
@@ -56,8 +58,7 @@ Audit developer-facing prose in:
 
 - Markdown, MDX, reStructuredText, AsciiDoc, plaintext docs, and changelog/release-note files.
 - READMEs, ADRs, RFCs, proposals, design docs, runbooks, migration guides, troubleshooting docs, API reference, PR descriptions, issue templates, and contributing docs.
-- Swift documentation comments, DocC symbol docs, and relevant implementation comments that explain invariants or constraints.
-- Documentation comments in other languages when present, including JSDoc, KDoc, Rust doc comments, Go package comments, Python docstrings, JavaDoc, and C-family doc blocks.
+- Documentation comments and symbol docs, including DocC, JSDoc, KDoc, Rust doc comments, Go package comments, Python docstrings, JavaDoc, and C-family doc blocks, plus relevant implementation comments that explain invariants or constraints.
 
 For source files, audit documentation comments and externally meaningful prose. Do not audit ordinary code style.
 
@@ -109,7 +110,7 @@ Use `writing-technical-prose` as the authority for:
 - Word choice: remove filler confidence words and vague marketing terms; allow precise uncertainty.
 - Structure: purpose, usage, constraints, failure modes, verification, and next steps. Use `references/document-patterns.md` for READMEs, ADRs, RFCs, design docs, runbooks, migration guides, troubleshooting docs, PR descriptions, and release notes.
 - Markdown and API docs: code-fence languages, copy-paste-safe commands, symbol formatting, API semantics, side effects, concurrency, and availability. Use `references/review-checklist.md` for large reviews or readiness checks.
-- Platform-specific prose: when a platform-specific documentation skill is available in your runtime (matched by what it covers, not by name), apply it when auditing that platform's prose — for example Swift, DocC, Xcode, SwiftUI, UIKit, AppKit, StoreKit, APNs, entitlements, privacy, or availability prose.
+- Platform-specific prose: apply an available documentation companion for that platform's terminology, documentation format, and caller-facing constraints. Match by concern rather than name and continue the same review.
 
 If the skill's optional linter is available, consult its [linter usage](../skills/writing-technical-prose/references/linter-usage.md) before running it on scoped files. Apply companion-supplied rules when available through the documented rules-file option. The linter is a review aid; judge warnings in context and skip excluded/generated files. If the linter or companion rules are unavailable, continue with manual review under the available guidance.
 
@@ -136,7 +137,7 @@ Use for issues that should be fixed before landing but are not immediate safety/
 - Inconsistent terminology, capitalization, tense, pronouns, or normative language.
 - Unsupported hedging or unsupported certainty.
 - Missing code-fence language hints, unsafe copy-paste command formatting, broken heading hierarchy, or misleading tables.
-- Swift/DocC/API docs that omit actor isolation, cancellation, error semantics, side effects, lifecycle, or availability when those details affect correct use.
+- API docs that omit isolation or threading requirements, cancellation, error semantics, side effects, lifecycle, or availability when those details affect correct use.
 
 **SUGGESTION**
 
@@ -159,7 +160,7 @@ Do not flag text merely because it contains a normally suspicious word. Preserve
 - Do not rewrite public API names, CLI flags, environment variables, file names, UI labels, log messages, or quoted legal/compliance text for style.
 - Do not flag terse docs as incomplete unless the reader cannot perform the documented task or avoid a realistic failure.
 - Do not ask for a section template when a short note, inline comment, or symbol doc is the correct document shape.
-- Do not require Apple-platform terminology outside Apple-platform contexts.
+- Do not impose one platform's terminology or documentation conventions on another platform.
 
 ## Common Checks
 
@@ -201,16 +202,6 @@ Use these checks as prompts, not as a mechanical checklist.
 - Are tables used for structured comparisons, not as a substitute for prose?
 - Are placeholders named by role rather than `foo`, `bar`, `baz`, `MyClass`, or `doThing`?
 - Are examples minimal, realistic, and safe to copy?
-
-### Swift, DocC, and Apple-Platform Prose
-
-Apply this section only when relevant.
-
-- Use correct platform and framework capitalization: `iOS`, `iPadOS`, `macOS`, `watchOS`, `tvOS`, `visionOS`, `SwiftUI`, `UIKit`, `AppKit`, `Xcode`, `StoreKit`, `APNs`.
-- Prefer DocC-supported structure for public symbols: summary first, then parameters, returns, throws, discussion, availability, and examples when useful.
-- Document actor isolation, `MainActor`, cancellation, ordering, reentrancy, thread affinity, delegate lifetimes, and async sequence termination when they affect callers.
-- Name user-visible permissions, entitlements, background modes, privacy prompts, and data classes when relevant.
-- Use Apple's terms for platform concepts; do not invent alternate names for public frameworks or services.
 
 ## Output
 
@@ -264,7 +255,7 @@ After reporting findings, create follow-up action items only when the runtime pr
 
 ## Summary
 
-Always end with a summary.
+End ordinary audits with a summary. The meaning-preservation branch ends with its acceptance or minimal edit list and brief rationale instead.
 
 When issues are found:
 
