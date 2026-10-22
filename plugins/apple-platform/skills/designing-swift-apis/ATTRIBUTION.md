@@ -1,6 +1,8 @@
+# Attribution
+
 ## Source
 
-- **URL**: https://www.swift.org/documentation/api-design-guidelines/
+- **Source**: [Swift API Design Guidelines](https://www.swift.org/documentation/api-design-guidelines/)
 - **Author**: Apple Inc.
 - **Date Accessed**: 2025-11-24
 

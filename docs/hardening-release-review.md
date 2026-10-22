@@ -1,13 +1,19 @@
 # Hardening release review
 
-Review date: 2026-10-20. The evaluation release gate is satisfied: the final
-matrix accepted 18/18 on frozen Universal 1.9.7 and Apple Platform 2.1.0 after
-its fresh 6/6 pilot and 18 passing static commands. This report records local
-and native evidence. Publication status is recorded in
+Review date: 2026-10-20. The evaluation release gate was satisfied for the recorded
+candidate: the final matrix accepted 18/18 on frozen Universal 1.9.7 and Apple
+Platform 2.1.0 after its fresh 6/6 pilot and 18 passing static commands. This
+report records local and native evidence. Publication status is recorded in
 [GitHub releases](https://github.com/kylehughes/agent-plugins-for-making-good-software/releases)
 and [CI runs](https://github.com/kylehughes/agent-plugins-for-making-good-software/actions).
 All earlier failures and consultations below are historical records of their
 own source versions.
+
+Repository links below lead to summaries and receipts. Paths beginning
+with `/tmp/` identify local-only artifacts from the original review; they are
+not public downloads and are not included in this repository. Their recorded
+digests preserve identity, but do not make the underlying files available for
+independent review. Later releases require their own validation.
 
 ## Final release result and adjudication
 
@@ -22,8 +28,8 @@ replaced or pooled with this matrix.
 
 Simplification Claude run 1 initially received a provisional scope failure for
 repeating the same successful focused check. Its provisional review and archive,
-the actual [Fable adjudication](/tmp/simplification-fable-rubric-adjudication/fable-response.md),
-and [parent decision](/tmp/simplification-fable-rubric-adjudication/parent-decision.json)
+the actual Fable adjudication (local-only artifact `/tmp/simplification-fable-rubric-adjudication/fable-response.md`),
+and parent decision (local-only artifact `/tmp/simplification-fable-rubric-adjudication/parent-decision.json`)
 are retained and bound in the final aggregate. The parent adopted the original
 check-selection reading: no simplification invocation count is stated, and
 repeating the same adequate check is not a new workflow or gate. The rerun is a
@@ -50,7 +56,7 @@ A bounded cross-model consultation used Opus 5.5, requested at medium effort,
 without tools. The native initialization and every assistant message identify
 `claude-opus-5-5`; the process completed successfully. Medium is verified as the
 requested launch setting, not as an independently observable internal state.
-The [expert response](/tmp/hardening-release-consultation/opus-response.md)
+The expert response (local-only artifact `/tmp/hardening-release-consultation/opus-response.md`)
 separates observed interface gaps from causal hypotheses.
 
 The consultation identified missing reviewer context, an incomplete draft
@@ -78,7 +84,7 @@ rubrics are retained; the consultation found no contradiction requiring a waiver
 
 ## Reviewer-only diagnostics
 
-The [first replay assessment](/tmp/hardening-review-replay/diagnostic-review.json)
+The first replay assessment (local-only artifact `/tmp/hardening-review-replay/diagnostic-review.json`)
 records partial compliance from Sonnet `claude-sonnet-5-5`, requested at medium
 effort, with no tools. Explicit context repaired stage semantics and dirty-baseline
 reasoning and separated source-oriented records from draft records. It still
@@ -88,7 +94,7 @@ authority. This supports missing context as a contributor, without isolating it
 from prompt, artifact, and flat-context changes. The short-draft replay did not
 exercise caller transfer or native end-to-end behavior.
 
-The [second replay assessment](/tmp/hardening-review-replay-quoted/diagnostic-review.json)
+The second replay assessment (local-only artifact `/tmp/hardening-review-replay-quoted/diagnostic-review.json`)
 records a completed, predeclared Sonnet 5.5 medium diagnostic with no tools. It
 used the original full narrative, with only the status line adapted. It derived
 the exact source positivity comment and diagnostic, separated their authority,
@@ -112,7 +118,7 @@ launching its conditional full matrix. The [static receipt](../evals/skill-compo
 records 18 passing commands, including 163 tooling tests, for the tested bytes;
 it does not cover the later intent repair.
 
-A second bounded [consultation](/tmp/hardening-fable-consultation/fable-response.md)
+A second bounded consultation (local-only artifact `/tmp/hardening-fable-consultation/fable-response.md`)
 used Fable 5.1, requested at medium effort, without tools. Initialization and all
 assistant messages identify `claude-fable-5-1`; its process completed successfully.
 Fable diagnosed the reviewer-triggered path switch as allowing a prose
@@ -145,7 +151,7 @@ and the functional decoder repair do not override the native workflow failures.
 
 ## Static review, held-out checks, and preservation repair
 
-The [Fable final static review](/tmp/hardening-fable-final-review/fable-response.md)
+The Fable final static review (local-only artifact `/tmp/hardening-fable-final-review/fable-response.md`)
 of the 1.9.1 interfaces reported no blocking findings. Native initialization and
 all assistant messages identify `claude-fable-5-1`; medium effort was requested,
 no tools were exposed, and the process completed successfully. It read supplied
@@ -154,7 +160,7 @@ native outcomes. It retained risks around post-review checks, claim-only templat
 wording, compatibility-baseline phrasing, and assessment-only activation. Its
 verdict is static evidence, not a reliability or release claim.
 
-The [two held-out routing diagnostics](/tmp/hardening-intent-diagnostic/diagnostic-review.json)
+The two held-out routing diagnostics (local-only artifact `/tmp/hardening-intent-diagnostic/diagnostic-review.json`)
 completed once per intent on Sonnet `claude-sonnet-5-5`, requested medium effort,
 with no tools. Cleanup selected meaning preservation; a factual-update request
 for the same comment diff selected scoped truth review. The prompts differed
@@ -189,7 +195,7 @@ conditional full matrix was not launched.
 
 ## Preservation static blocker
 
-The [Fable 1.9.2 review](/tmp/hardening-fable-preservation-review/fable-response.md)
+The Fable 1.9.2 review (local-only artifact `/tmp/hardening-fable-preservation-review/fable-response.md`)
 found one blocking static defect: ordinary Phase 1 and Phase 5 auditor contracts
 lacked an explicit compatibility-artifact input, even though the preamble
 required capture. A re-audit could therefore compare the repaired tree only to
@@ -223,11 +229,11 @@ selection and activation before boundary judgments or edits. Duplicated
 platform-specific prose rules were removed from Universal; their canonical
 Apple owners remain in Apple Platform.
 
-The [Fable context review](/tmp/hardening-fable-context-review/fable-response.md)
+The Fable context review (local-only artifact `/tmp/hardening-fable-context-review/fable-response.md`)
 reported no blockers on the pre-clarification 1.9.3 text. Initialization and all
 assistant identities are `claude-fable-5-1`, medium effort was requested, no tools
 were exposed, and the process completed. Its exact reviewed file digests are in
-[source bindings](/tmp/hardening-fable-context-review/source-bindings.json).
+source bindings (local-only artifact `/tmp/hardening-fable-context-review/source-bindings.json`).
 All five reviewed file bindings match the pre-clarification snapshot
 `d37ca284e3707f84ca2277c24a9b3454c6e97822aa6665f820bdeb4ab3967169`
 in its retained local static receipt. This does not mean Fable reviewed every
@@ -276,7 +282,7 @@ current-source validation. The [fresh static receipt](../evals/skill-composition
 binds 18 passing commands and 163 tooling tests to clarified candidate source
 `7f6167c9488f33ee7731122c420930d077baebf30d689254a04fc42f4e6b0ebe`.
 Its then-current files and retained command/metadata artifacts matched their bindings.
-The [targeted Fable review](/tmp/hardening-fable-wording-edits-review/fable-response.md)
+The targeted Fable review (local-only artifact `/tmp/hardening-fable-wording-edits-review/fable-response.md`)
 found no blocking contradictions in the two supplied files. Their recorded
 bindings match the final candidate above. Initialization and all assistant
 identities are `claude-fable-5-1`, medium effort was requested, no tools were
@@ -332,7 +338,7 @@ in this run. The batch did not unlock its full matrix.
 
 ## Completion consultation and frozen candidate
 
-The [Fable completion consultation](/tmp/hardening-fable-completion-review/fable-response.md)
+The Fable completion consultation (local-only artifact `/tmp/hardening-fable-completion-review/fable-response.md`)
 recommends checking delivery after applying edits. If no requested improvement
 survives, the caller would make at most one fresh formulation from the old
 meaning and submit it to the same reviewer, unless no useful meaning-preserving
@@ -372,7 +378,7 @@ declared pilot and the unchanged full gate.
 
 ## Completion static review boundary
 
-The [Fable completion static review](/tmp/hardening-fable-completion-static/fable-response.md)
+The Fable completion static review (local-only artifact `/tmp/hardening-fable-completion-static/fable-response.md`)
 found no blocking contradictions in five supplied interfaces. Initialization and
 all assistant identities are `claude-fable-5-1`, medium effort was requested,
 no tools were exposed or called, and the process completed. All five recorded
@@ -403,7 +409,7 @@ separate instruction problem below.
 
 ## Separate instruction hold and inline candidate
 
-The [invariant summary](/tmp/skill-composition-completion-pilot/invariant-review-summary.json)
+The invariant summary (local-only artifact `/tmp/skill-composition-completion-pilot/invariant-review-summary.json`)
 binds a separate loaded-instruction failure in completion run 1. Trace lines
 98–99 show Read denied access to the scratch draft under `--restricted`; line
 103 explicitly proposes Bash, and lines 104–106 perform the same-file Bash read.
@@ -431,7 +437,7 @@ instruction failure by itself.
 
 ## Inline transport static review
 
-The [narrow Fable review](/tmp/hardening-fable-inline-static/fable-response.md)
+The narrow Fable review (local-only artifact `/tmp/hardening-fable-inline-static/fable-response.md`)
 found no blockers in the two transport references. Both recorded source hashes
 match the prompt's embedded file bodies and the frozen 1.9.7 files. Initialization
 and every assistant message identify `claude-fable-5-1`, medium effort was
@@ -454,7 +460,7 @@ accepted all six runs on unchanged 1.9.7 source, with all recorded dimensions
 and deterministic checks passing. Fresh evidence verification passed. The denied
 scratch read and alternate-tool retry did not recur in any substantive run.
 
-The [bound invariant summary](/tmp/skill-composition-inline-pilot/invariant-review-summary.json)
+The bound invariant summary (local-only artifact `/tmp/skill-composition-inline-pilot/invariant-review-summary.json`)
 retains bookkeeping and reasoning limitations. Runs 1 and 3 reviewed complete
 inline drafts and truthful prior behavior but omitted a stable draft file and
 exact initial-source transport. Run 2 began fixing before the last type auditor
@@ -547,7 +553,7 @@ Replay 1's original assessment hashes the extracted response text before writing
 as `d9994f4e42d87aa774a1095ff5ce0b17288dc8cacd490d67a5bce94b91a4b378`.
 The written `response.md` adds one final LF and hashes to
 `2f7d0ed39c9771ff39068a8b9e0ab72b7a38c514f2942f4e8dc868d2f25ec89b`.
-The retained [binding erratum](/tmp/hardening-review-replay/binding-erratum.json)
+The retained binding erratum (local-only artifact `/tmp/hardening-review-replay/binding-erratum.json`)
 explains both bindings without changing the original assessment. Removing
 exactly the final LF reproduces the original digest; this is an extraction
 formatting difference, not evidence of changed response content.

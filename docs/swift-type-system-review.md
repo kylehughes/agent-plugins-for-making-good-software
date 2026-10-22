@@ -1,5 +1,12 @@
 # Swift type-system integration rubric review
 
+This historical review covers the original source-integration snapshot and its
+follow-up corrections, recorded in the [integration validation](swift-type-system-validation.md).
+Its findings and routes describe that snapshot; the later
+[consolidation record](swift-type-system-consolidation.md) explains ownership changes.
+The supplied source archive at the local `/tmp/` path below is not included in
+this repository, so that portion of the review cannot be repeated from a checkout alone.
+
 ## Findings
 
 No actionable findings.

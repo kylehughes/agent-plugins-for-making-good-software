@@ -3,7 +3,7 @@ name: modeling-swift-types-for-correctness
 description: "Assess Swift invariants, validated decoding, legal transitions, borrowed-view lifetimes, ownership, typed failures, and generic relationships. Required before judging or changing these enforcement boundaries, including small fixes; excludes ordinary output tests and naming."
 ---
 
-# Model Swift Types for Correctness
+# Modeling Swift Types for Correctness
 
 Use Swift’s type system to remove invalid operations and state combinations from ordinary code paths. Prefer the lightest representation that produces a useful diagnostic at the misuse site.
 

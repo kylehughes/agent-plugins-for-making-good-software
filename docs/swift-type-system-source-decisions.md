@@ -4,6 +4,9 @@ This maintainer record preserves archive-forensic decisions from the original so
 
 Archive: `Swift_Type_System_Companion/`, dated 2026-10-18; supplied ZIP SHA-256 `4454c583ec5a9cc4dd80487ff19a9a2dc9925e5249588db8e4a06482bf35eb13`.
 
+The archive is not included in this repository. The ledger preserves its identity
+and citations; source-backed reproduction requires a separate copy matching that digest.
+
 The decisions below were recorded during the 2026-10-19 source review. “Fresh” in this historical table means that review's primary-source inspection; “supplied” means archived reports. Neither label claims a new compiler run during the 2026-10-20 documentation consolidation.
 
 ## Conflict decisions and evidence limits

@@ -58,13 +58,15 @@ Use progressive disclosure—layer your understanding before judging.
 **Layer 3: Analysis** (focused)
 7. Read the change with the matching command for the scope: parent-provided diff, `git diff <base>...HEAD -- path`, `git diff --cached -- path`, `git diff -- path`, or the full file for untracked files.
 8. Classify each change: fits design, extends design, or changes design
-9. Flag design changes that lack explicit acknowledgment
+9. Report design changes only when they cause a concrete, material maintenance, correctness, compatibility, ownership, or operational consequence. Missing acknowledgment alone is not a finding.
 10. Defer implementation checks to specialist reviewers, labeled by concern (see Scope)
 11. Report findings and record action items for issues
 
 ## Review Categories
 
 ### Design Issues (highest priority)
+
+Treat these as candidates, not automatic findings. Apply the preloaded review skill's evidence bar and name the concrete consequence; novelty or missing acknowledgment alone is insufficient.
 
 - Change alters design without acknowledgment
 - Inconsistency with surrounding code's assumptions

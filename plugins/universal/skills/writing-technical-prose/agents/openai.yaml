@@ -1,4 +1,4 @@
 interface:
-  display_name: "Technical Writing"
+  display_name: "Writing Technical Prose"
   short_description: "Draft and edit developer-facing docs"
   default_prompt: "Use $writing-technical-prose to draft, edit, or review developer-facing technical documentation with a pragmatic, accurate voice."

@@ -6,7 +6,7 @@ This file is canonical. `CLAUDE.md` is a symlink to it, so Claude Code and Codex
 
 ## Repository Shape
 
-This repository is a plugin marketplace that is first-class on both Claude Code and Codex. The skill and agent content is shared; only the manifests differ per platform.
+This repository is a plugin marketplace for Claude Code and Codex. Skill and reviewer instructions are shared; manifests and runtime integration differ between hosts.
 
 - The marketplace ships two plugins under `plugins/`:
   - `apple-platform` — skills and agents tailored to Apple-platform development.
@@ -20,7 +20,7 @@ This repository is a plugin marketplace that is first-class on both Claude Code 
   - `.claude-plugin/marketplace.json` for Claude Code.
   - `.agents/plugins/marketplace.json` for Codex.
 
-Keep a skill and the agents that preload it in the same plugin so agent `skills:` references resolve without a cross-plugin dependency. Both runtimes auto-discover `skills/` and `agents/` inside each plugin, so neither manifest needs to enumerate them. Claude Code ignores unknown files (such as `skills/<name>/agents/openai.yaml`) and unknown frontmatter keys, so Codex-only metadata coexists in the shared files without breaking Claude.
+Keep a skill and the agents that preload it in the same plugin so agent `skills:` references resolve without a cross-plugin dependency. Claude Code discovers the conventional `skills/` and `agents/` directories. Codex loads bundled skills; native registration of Markdown reviewer definitions depends on the host. When a named role is unavailable, pass its instructions to an available native agent or use the workflow's direct-review fallback. Do not treat skill registration as proof that reviewer roles registered. Codex UI metadata lives in `skills/<name>/agents/openai.yaml` alongside the shared skill body; Claude Code does not use that metadata. See [agent model selection](docs/agent-model-selection.md) for runtime-specific controls.
 
 There are no MCP servers or hooks in this repository right now.
 
@@ -65,7 +65,7 @@ Skills and agents are stored once and serve both platforms. Do not fork content 
 - Keep conditional reference maps narrow: do not load a companion and a same-topic fallback by default when one guide answers the concern.
 - Agents are Markdown files with frontmatter under `plugins/<plugin>/agents/`.
 - Frontmatter is a superset: `name`, `description`, plus Claude Code fields (`tools`, `skills`, `model`, `effort`, `color`). Codex ignores the fields it does not use.
-- Frontmatter field order is `name, description, tools, skills, model, effort, color`; omit `model` and `effort` by default so the caller or runtime can choose. Any explicit override, including `model: inherit`, requires a non-empty `## Model Selection` section documenting evidence, effort compatibility, runtime behavior, user-override impact, and a revisit condition. Reviewer agents use the read-only tool set `Bash, Glob, Grep, Read, TaskCreate, TaskList`. See [docs/agent-model-selection.md](docs/agent-model-selection.md).
+- Frontmatter field order is `name, description, tools, skills, model, effort, color`; omit `model` and `effort` by default so the caller or runtime can choose. Any explicit override, including `model: inherit`, requires a non-empty `## Model Selection` section documenting evidence, effort compatibility, runtime behavior, user-override impact, and a revisit condition. Reviewer agents declare `Bash, Glob, Grep, Read, TaskCreate, TaskList`; their instructions require read-only review. The declaration is not a filesystem sandbox: `Bash` can mutate files, and some runtime contexts omit task tools. Follow the reporting fallback when those tools are unavailable. See [docs/agent-model-selection.md](docs/agent-model-selection.md).
 - Description formula: what it checks + "Use PROACTIVELY after/when …" + what it does not cover, with the scope boundary in the first sentence so overlapping agents don't both auto-spawn.
 - Bodies are runtime-neutral, use Markdown `##` headers only (no XML section tags), and follow standard sections: Scope with a concern-defer table, Constraints, Process with the layered scope-resolution steps, Classifications or Severity, Output Format, Reporting, Final Report. Reporting instructions prefer task tools (`TaskCreate`/`TaskList`) when the runtime exposes them and fall back to a prioritized follow-up list otherwise.
 - Each reviewer agent owns exactly one concern. Current concern map: structure (`code-reviewer`), correctness (`correctness-reviewer`), codified rules (`code-standards-auditor`), types (`type-driven-design-auditor`), simplification (`code-simplifier` universally, `information-entropy-reducer` for Swift judgment), async-test determinism (`async-testing-auditor`), prose (`technical-writing-auditor`). A new agent claims an empty concern or explicitly splits one.
@@ -115,7 +115,7 @@ When agents are spawned, use the narrowest useful set, wait for their results be
 - Run `python3 -m unittest discover -s scripts -p 'test_*.py'` before the validator, then inspect context costs with `python3 scripts/skill_catalog.py --base HEAD` (add `--json` for tooling). See [docs/skill-context.md](docs/skill-context.md) for the discovery/activation model and evaluation procedure.
 - Validate JSON manifests with `python3 -m json.tool`: `.claude-plugin/marketplace.json`, `.agents/plugins/marketplace.json`, `plugins/apple-platform/.claude-plugin/plugin.json`, `plugins/apple-platform/.codex-plugin/plugin.json`, `plugins/universal/.claude-plugin/plugin.json`, and `plugins/universal/.codex-plugin/plugin.json`.
 - Run `claude plugin validate plugins/apple-platform` and `claude plugin validate plugins/universal` for the Claude manifests; local-only, since the `claude` CLI is not guaranteed on CI runners.
-- Load the marketplace in Codex against the local path to confirm the agents and skills register.
+- Load the marketplace in Codex against the local path to confirm plugin and skill registration. Check reviewer-role availability separately; record when the workflow must use supplied agent instructions or direct review instead.
 - Do not commit generated state such as `.claude/` worktrees, `.DS_Store`, or local logs.
 
 ### Versioning

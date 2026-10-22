@@ -1,6 +1,6 @@
 # Platform notes
 
-Checked against official documentation on 2026-08-10. Goal and skill behavior is evolving; re-check the linked pages when platform versions change.
+Checked against official documentation on 2026-10-22. Goal and skill behavior is evolving; re-check the linked pages when platform versions change.
 
 ## Cross-harness rules
 
@@ -24,18 +24,22 @@ Current documented behavior:
 - Requires Claude Code 2.1.139 or newer.
 - One goal can be active per session; setting a new one replaces the old one.
 - Setting a goal immediately starts a turn with the condition as the directive.
-- A separate small, fast model evaluates the condition after each turn.
+- A separate small, fast model evaluates the condition after eligible turns; running background work defers evaluation.
 - The evaluator receives the condition and conversation. It does not run commands or read files independently.
 - Effective conditions have one measurable end state, a stated check, and constraints that must hold.
 - The condition limit is 4,000 characters.
 - Anthropic explicitly recommends a turn or time clause to bound the run.
 - A goal does not change tool permissions; unattended work may also require auto mode.
 - An active goal is restored when its session is resumed, but the turn, time, and token counters reset.
+- The goal clears when the evaluator finds the condition met or impossible, or a turn fails with an error the user must fix. Other errors may retry or pause the run.
 - A Stop hook is preferable when completion must be decided by deterministic custom logic rather than a model reading the transcript.
 
-Practical implication: make the worker print the exact test/build/inspection evidence in its final turn. “The file now contains X” is weaker than a surfaced command or bounded inspection result. Claude Code records a condition as achieved when its evaluator answers yes; it does not document a separate blocked state, so a terminal BLOCKED branch must be labeled in the transcript.
+Practical implication: make the worker print the exact test/build/inspection evidence in its final turn. “The file now contains X” is weaker than a surfaced command or bounded inspection result. Label the contract's terminal `BLOCKED` outcome in the transcript, including incomplete criteria; the native evaluator's achieved or impossible verdict does not replace that report.
 
-Official source: <https://code.claude.com/docs/en/goal>
+Official sources:
+
+- <https://code.claude.com/docs/en/goal>
+- [Claude Code 2.1.139 release notes](https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md#21139)
 
 ## Codex `/goal`
 
@@ -49,13 +53,15 @@ Current documented behavior:
 - A good goal defines what to achieve, what not to change, how to validate progress, and when to stop.
 - OpenAI recommends one objective and one stopping condition, initial source files or plans, proof commands or artifacts, checkpoints, and a short progress log.
 - Loose lists of unrelated work are poor goal candidates.
+- Native goal state includes lifecycle and budget accounting. Reaching a budget limit is distinct from completing the objective.
 
-Practical implication: a `PLAN.md` or spec can guide implementation, but the goal should freeze the subset of outcomes that closes this particular run. For a large plan, create sequential goal contracts rather than one “implement the plan completely” loop.
+Practical implication: a `PLAN.md` or spec can guide implementation, but the goal should freeze the subset of outcomes that closes this particular run. For a large plan, create sequential goal contracts rather than one “implement the plan completely” loop. The contract's `SUCCESS` and `BLOCKED` labels describe report outcomes. Use native status tools only under their runtime-specific authority and timing rules; an incomplete objective must not be marked complete merely to stop continuation.
 
 Official sources:
 
 - <https://learn.chatgpt.com/use-cases/follow-goals>
 - <https://learn.chatgpt.com/docs/developer-commands?surface=cli>
+- <https://developers.openai.com/cookbook/examples/codex/using_goals_in_codex>
 
 ## Agent Skill packaging
 
@@ -70,9 +76,9 @@ compiling-agent-goals/
 └── scripts/
 ```
 
-SKILL.md stays under the recommended 500-line/5,000-token ceiling, while detailed material is loaded progressively from one-level-deep references.
+`SKILL.md` stays below the recommended 500-line and 5,000-token budgets, while detailed material is loaded progressively from references.
 
-This copy ships inside the `universal` plugin of the `making-good-software` marketplace, so installing the plugin is the only install step. Claude Code invokes it as `/universal:compiling-agent-goals` and Codex as `$universal:compiling-agent-goals`; both may also select it implicitly from its description. A standalone copy dropped into `~/.claude/skills/`, `.claude/skills/`, `~/.agents/skills/`, or `.agents/skills/` works the same way, minus the plugin prefix.
+This copy ships inside the `universal` plugin of the `making-good-software` marketplace. Once the marketplace is registered and the plugin installed and enabled, no separate skill installation is needed. Claude Code invokes it as `/universal:compiling-agent-goals` and Codex as `$compiling-agent-goals`; both may also select it implicitly from its description. For a standalone installation, place the complete skill directory in `~/.claude/skills/` or `.claude/skills/` for Claude Code, or `~/.agents/skills/` or `.agents/skills/` for Codex. Invoke the standalone skill as `/compiling-agent-goals` or `$compiling-agent-goals`, respectively.
 
 Official sources:
 

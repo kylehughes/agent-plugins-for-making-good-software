@@ -10,6 +10,6 @@ python3 /path/to/writing-technical-prose/scripts/lint_technical_writing.py \
 
 Add `--fail-on-warnings` when warnings should return status `1`. By default, completed checks return `0` even when warnings are found. An unreadable or invalid rules file returns `2`.
 
-The Apple rules flag `APNS`, `IOS`, `MacOS`, `OSX`, `xcode`, and `swiftui` in prose. In Markdown, it skips backtick-fenced code and lines starting with `|`. In Swift files, it checks documentation-comment lines. It removes single-backtick code spans in both formats. They do not verify availability, API contracts, concurrency behavior, or privacy claims. Review each finding in context before changing it.
+The Apple rules flag `APNS`, `IOS`, `MacOS`, `OSX`, `xcode`, and `swiftui` in prose. In Markdown, the linter skips backtick-fenced code and lines starting with `|`. In Swift files, it checks documentation-comment lines. It removes single-backtick code spans in both formats. These checks do not verify availability, API contracts, concurrency behavior, or privacy claims. Review each finding in context before changing it.
 
 Without the Universal skill, use this skill's terminology list and correction table for manual review. No script is required: compare named products with their documented capitalization, then verify caller constraints and compatibility claims against the implementation and deployment settings.

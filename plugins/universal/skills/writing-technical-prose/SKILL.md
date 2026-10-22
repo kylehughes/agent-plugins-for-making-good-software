@@ -51,7 +51,7 @@ Use severity, not taste, to prioritize feedback:
 3. Structure that prevents the reader from completing the job.
 4. Voice, consistency, grammar, and concision.
 
-For deeper reviews, read `references/review-checklist.md`. For optional automated hints or additional terminology rules, read [Linter usage](references/linter-usage.md).
+For deeper reviews, read the [review checklist](references/review-checklist.md). For optional automated hints or additional terminology rules, read [Linter usage](references/linter-usage.md).
 
 ## Voice
 

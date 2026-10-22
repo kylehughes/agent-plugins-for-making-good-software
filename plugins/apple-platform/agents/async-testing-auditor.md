@@ -48,26 +48,27 @@ Use progressive disclosure — layer your understanding before judging.
 **Layer 1: Scope** (minimal tokens)
 
 1. Determine the review scope from the parent prompt first. If the parent supplied a file list, raw diff, base branch, commit range, staged-only scope, or PR branch, treat that as authoritative.
-2. Otherwise run `git status --short` and `git diff --name-only` against the base branch to find changed Swift test files.
-3. Filter to async tests: files whose changed regions involve `async` test functions, tasks, clocks, streams, observers, or continuations. No changed async tests → report the all-clear and stop.
+2. If the scope is a branch or PR, run `git diff --name-only <base>...HEAD` unless the parent supplied a different range.
+3. If the scope is local work, inspect the union of `git diff --name-only`, `git diff --cached --name-only`, and `git ls-files --others --exclude-standard` so staged and untracked files are included.
+4. Filter to async tests: files whose changed regions involve `async` test functions, tasks, clocks, streams, observers, or continuations. No changed async tests → report the all-clear and stop.
 
 **Layer 2: Context** (just-in-time)
 
-4. Grep the changed tests for smell markers — `Task.sleep`, yield loops, `ContinuousClock` deadlines, inline collector classes, `AsyncStream` wrappers around synchronous callbacks, non-default timeouts — as prompts for where to look, not as findings in themselves.
-5. Read each changed async test in full. Do not rely on the grep alone.
-6. Identify the project's primitives (test clock, event recorder, serial-executor helper, polling helpers) so fixes reference what actually exists.
-7. If isolation or cancellation semantics are unclear, conditionally load [using-swift-concurrency](../skills/using-swift-concurrency/SKILL.md). If assertion or confirmation behavior is unclear, conditionally load [testing-swift-code](../skills/testing-swift-code/SKILL.md). Do not load either guide for unrelated concerns.
+5. Grep the changed tests for smell markers — `Task.sleep`, yield loops, `ContinuousClock` deadlines, inline collector classes, `AsyncStream` wrappers around synchronous callbacks, non-default timeouts — as prompts for where to look, not as findings in themselves.
+6. Read each changed async test in full. Do not rely on the grep alone.
+7. Identify the project's primitives (test clock, event recorder, serial-executor helper, polling helpers) so fixes reference what actually exists.
+8. If isolation or cancellation semantics are unclear, conditionally load [using-swift-concurrency](../skills/using-swift-concurrency/SKILL.md). If assertion or confirmation behavior is unclear, conditionally load [testing-swift-code](../skills/testing-swift-code/SKILL.md). Do not load either guide for unrelated concerns.
 
 **Layer 3: Analysis** (focused)
 
-8. For each changed async test, reconstruct the determinism contract:
+9. For each changed async test, reconstruct the determinism contract:
    - What proves the observer/listener/task is attached before the trigger?
    - What proves the expected behavior completed?
    - What cleanup barrier runs if an assertion throws?
    - Does the test use shared or process-global state that requires `.serialized` or unique IDs?
    - Is any non-default timeout justified by real work or CI evidence?
-9. Prioritize these risks: triggering before attachment is proven; polling state after a trigger when an event stream could attach first; sleeps or yield loops to let work "settle"; clock advances without a post-advance event wait; transcript reads before an awaited detach where a final snapshot is required; serial-executor suites that are not `.serialized`; gated or blocked tasks whose release/stop/detach cleanup is not guaranteed on failure; non-default timeouts without a local reason; custom collectors or inline `AsyncStream` wrappers where a direct-recording seam would remove a scheduler hop.
-10. Report only findings where the code lacks a proven edge, cleanup barrier, or isolation story.
+10. Prioritize these risks: triggering before attachment is proven; polling state after a trigger when an event stream could attach first; sleeps or yield loops to let work "settle"; clock advances without a post-advance event wait; transcript reads before an awaited detach where a final snapshot is required; serial-executor suites that are not `.serialized`; gated or blocked tasks whose release/stop/detach cleanup is not guaranteed on failure; non-default timeouts without a local reason; custom collectors or inline `AsyncStream` wrappers where a direct-recording seam would remove a scheduler hop.
+11. Report only findings where the code lacks a proven edge, cleanup barrier, or isolation story.
 
 ## Severity
 

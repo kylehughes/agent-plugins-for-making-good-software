@@ -29,29 +29,29 @@ If the clock's `advance` is synchronous, it only schedules resumed continuations
 
 Owns: "record every emission from an `AsyncSequence`, in order, with a real-time-bounded wait API."
 
-The load-bearing property is the **detach barrier**: `detach()` cancels the collection task *and awaits its termination*, so no element can land in the transcript after it returns. That is what makes non-occurrence tests sound: detach, snapshot the baseline count, provoke the potentially-racy event, then assert the count stayed stable over a bounded window. A recorder without the awaited barrier is a race with extra steps.
+The **detach barrier** cancels the collection task *and awaits its termination*, so that task cannot append later. This proves recorder detachment and makes its final collected transcript stable. It does not prove the production source stopped emitting: a detached collector cannot see later source events. For a source-stop assertion, keep independent live observation or await producer-owned completion evidence. Direct `record(_:)` callbacks need their own stop barrier.
 
 Two more properties worth having: transcript **baselines** (`waitFor(_:since:)` — wait for a match after index N without a bespoke loop) and a `recording()` factory for callback-shaped APIs whose callback can `await record(_:)` directly. Do not wrap synchronous `@MainActor` callbacks in `AsyncStream` plus a recorder; that adds a collector-task hop the test did not need.
 
-### 3. Serial main executor — deterministic Swift task scheduling
+### 3. Serial main executor — controlled Swift task scheduling
 
-Owns: "make Swift Concurrency scheduling deterministic for the duration of a test."
+Owns: "make Swift task scheduling more predictable within a guarded test scope."
 
-Point-Free's [swift-concurrency-extras](https://github.com/pointfreeco/swift-concurrency-extras) provides `withMainSerialExecutor`: with the hook installed, `await Task.yield()` hands control to the next scheduled task on `MainActor`'s queue in FIFO order, making ordering-dependent tests deterministic for the portions of the system Swift Concurrency controls.
+Point-Free's [swift-concurrency-extras](https://github.com/pointfreeco/swift-concurrency-extras) provides `withMainSerialExecutor`, which redirects global task jobs to the main serial executor to make tests more predictable. Its runtime hook has no scoping guarantee if another caller changes the global state. [`Task.yield()`](https://developer.apple.com/documentation/swift/task/yield()) permits other work to run but does not itself guarantee that a particular task runs next.
 
-Use a single yield only to hand off one known Swift-task hop whose suspension is under test control and has no stronger observable barrier. This does not prove readiness inside an opaque framework API, including `NotificationCenter` async-sequence observer registration. Use its readiness seam or the bounded observation idiom instead; awaiting a listener after one possibly missed post can hang before cleanup runs.
+Use a single yield only for a test-controlled handoff whose ordering is established by the harness and has no stronger observable barrier. This does not prove readiness inside an opaque framework API, including `NotificationCenter` async-sequence observer registration. Use its readiness seam or the bounded observation idiom instead; awaiting a listener after one possibly missed post can hang before cleanup runs.
 
-The hook is **process-global**, and Swift Testing can run unrelated suites concurrently. Guard the scope — wrap it in a serializing helper or apply a suite trait rather than calling the raw hook from parallel suites — and keep it short. Use it only for tests whose assertions depend on Swift task ordering.
+The hook is **process-global**, and Swift Testing can run unrelated suites concurrently. Guard all hook users with a shared serializing helper or trait and keep the scope short. A suite's `.serialized` trait alone does not exclude unrelated suites. Use it only for tests whose assertions depend on Swift task ordering.
 
-The hook captures only Swift Concurrency task scheduling. `DispatchQueue` work (cache-observer callbacks, Combine `schedule(after:)`, `URLSession` completions) is unaffected — those races need the recorder's awaited detach barrier — and it doesn't fully constrain AsyncAlgorithms operators' internal `TaskGroup` hops.
+The hook captures only Swift Concurrency task scheduling. `DispatchQueue` work (cache-observer callbacks, Combine `schedule(after:)`, `URLSession` completions) is unaffected — those races need observable completion and cleanup barriers — and it doesn't fully constrain AsyncAlgorithms operators' internal `TaskGroup` hops.
 
-### 4. Contention-scaled timeout budgets — the outer failure bound
+### 4. Sliced timeout budgets — the failure policy
 
-Owns: the real-time safety net around every wait.
+Owns: the timeout policy around every wait.
 
-Pay a deadline out in short sleep slices instead of one wall-clock sleep: each slice resumption pays the same per-suspension scheduling debt the awaited emission chain pays, so on a healthy scheduler the budget elapses in roughly the nominal timeout while on a starved CI runner the effective deadline stretches proportionally. A legitimately progressing emission always beats its timeout; a true non-occurrence still fails. A single wall-clock deadline cannot provide this — it races one sleep against a many-hop emission chain, and under CI load the chain loses no matter how large the constant is.
+A shared timeout budget can spend a nominal duration in short sleep slices. Delayed resumptions can make its elapsed wall-clock duration longer, which may reduce failures caused by contention. This is a scheduling heuristic, not a guarantee that progressing work will finish before the timeout. Prove progress with observable synchronization edges; diagnose a timeout from the missing event and the CI evidence.
 
-Timeouts catch bugs; they don't drive progress. If a test only passes because the timeout expired, the test is wrong. Because budgets scale with contention, raising a timeout above the default is rarely justified — reserve longer timeouts for waits that do legitimately long work even on a healthy machine, with a comment explaining why. Never hand-roll a wall-clock deadline (`ContinuousClock().now.advanced(by:)` loops, yield spins bounded by a real clock) in a test or helper.
+Timeouts catch bugs; they don't drive progress. If a test only passes because the timeout expired, the test is wrong. Keep the default budget unless measured work or CI evidence justifies a longer one, and explain the reason locally. Never hand-roll a wall-clock deadline (`ContinuousClock().now.advanced(by:)` loops, yield spins bounded by a real clock) in a test or helper.
 
 ## Preflight for Async Test Changes
 
@@ -75,7 +75,7 @@ Make the answer visible in code structure, a short local comment where needed, o
 | Sequence / event ordering | | ✓ | ✓ | net |
 | State-transition | | ✓ (on published state) | ✓ | net |
 | Synchronous callback effects | | | | |
-| Non-occurrence ("after stop, no more X") | | ✓ (detach + assert count stable) | | net |
+| Non-occurrence ("after stop, no more X") | | ✓ (live observation or producer completion) | | net |
 | Cancellation correctness | | ✓ | ✓ | net |
 | Concurrency correctness (actor races, reentrancy) | | ✓ | ✓ | net |
 
@@ -99,9 +99,9 @@ Apply the category through [the canonical idioms](references/idioms.md) — timi
 | Re-waiting for an inner refresh handle after caller cancellation | Cancelled teardown tasks spin readiness loops or start stale work. | Check cancellation before each wait, after each wake, and before forwarding. |
 | Treating store-change callbacks as proof a refresh completed | Framework callbacks are scheduler-driven; they lag and coalesce under CI load. | Force a read/emission on the observed subscription, then wait on the subscription event. |
 | Posting one `NotificationCenter` notification after `Task.sleep` | The listener may not have attached; the test misses the only post and hangs. | Await a readiness seam, or repeatedly post under a bounded wait until the state transition is observed. |
-| Non-occurrence via "sleep X ms then check empty" | Sleeping and hoping is not proof. | Detach first, then assert no events over a bounded window from a baseline. |
-| Raising a timeout because a test flaked in CI | With contention-scaled budgets, a timeout still expiring means the event is genuinely not arriving; a bigger constant hides the lost signal. | Trace the emission path: stale read, attach-after-emit, dropped one-shot. |
-| Hand-rolled `ContinuousClock` deadlines or yield-spin waits | Re-creates the wall-clock-vs-scheduling-debt race the budget removes; spinning worsens the contention it loses to. | Budgeted waits on the recorder or polling helpers. |
+| Non-occurrence via "sleep X ms then check empty" | Sleeping without proven setup is not proof. | Prove attachment, then observe over a bounded window; use producer completion when available. Detach only after observation. |
+| Raising a timeout because a test flaked in CI | A timeout alone does not distinguish a lost event from slow work or scheduler contention; a bigger constant can hide the cause. | Trace the emission path: stale read, attach-after-emit, dropped one-shot. |
+| Hand-rolled `ContinuousClock` deadlines or yield-spin waits | Duplicates timeout policy; yield spins can worsen contention and neither form proves progress. | Budgeted waits on the recorder or polling helpers. |
 | Production observers spawning one task per change notification, re-reading state in each | Actor reentrancy resumes reads out of order; downstream last-value latching freezes on a stale snapshot. Microseconds locally, seconds on CI. | Coalesce notifications into a pending set drained by one serial loop. |
 | Calling a process-global hook from parallel suites without a scope guard | Concurrent sibling calls clobber each other. | A suite trait or serializing wrapper around the hook. |
 | Reusing entity IDs in tests backed by shared singleton/coordinator state | Prior dirty state leaks across tests; assertions become order-dependent. | Unique IDs per test, or an explicit reset seam. |
@@ -116,9 +116,9 @@ Apply the category through [the canonical idioms](references/idioms.md) — timi
 5. Use a virtual clock for timing; real clocks only for the timeout safety net.
 6. Attach a recorder to whatever `AsyncSequence` the system publishes.
 7. Drive the system, then block on the specific wait that proves the behavior — never a sleep, never a yield budget.
-8. Always `await detach()` before reading a "final" transcript snapshot or asserting non-occurrence.
+8. Keep observation live while checking source non-occurrence, or use producer-owned completion evidence. Await `detach()` before reading a final collected transcript; detachment alone proves only collector termination.
 9. Every wait has a real-time timeout; longer than default only with a justifying comment.
-10. Awaited cleanup goes through a cleanup helper (`defer` cannot `await`), not duplicated success/failure paths.
+10. Centralize awaited cleanup in a cleanup helper rather than duplicating success/failure paths. On compilers supporting [async `defer`](../modeling-swift-types-for-correctness/references/swift-feature-status.md#release-18), it can provide scope-bound cleanup; account for cancellation in either form.
 11. Shared singleton or coordinator state → unique IDs per test or an explicit reset.
 12. CI-only flakes are proven fixed in CI, serially, on the final SHA.
 

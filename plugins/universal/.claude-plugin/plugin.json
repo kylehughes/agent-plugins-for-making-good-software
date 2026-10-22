@@ -2,12 +2,12 @@
   "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "universal",
   "displayName": "Universal",
-  "version": "1.9.8",
-  "description": "Platform-agnostic tools for making good software, including evidence-based code review.",
+  "version": "1.9.9",
+  "description": "Skills and reviewer agents for software design, review, hardening, simplification, invariant verification, and technical writing in any language.",
   "author": {
     "name": "Kyle Hughes",
     "email": "kyle@kylehugh.es",
-    "url": "https://github.com/kylehughes"
+    "url": "https://kylehugh.es"
   },
   "homepage": "https://github.com/kylehughes/agent-plugins-for-making-good-software",
   "repository": "https://github.com/kylehughes/agent-plugins-for-making-good-software",

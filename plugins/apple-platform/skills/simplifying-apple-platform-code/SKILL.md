@@ -3,7 +3,7 @@ name: simplifying-apple-platform-code
 description: "Simplify Swift and Apple-platform code while preserving SDK, lifecycle, concurrency, and deployment contracts. Use for cleanup or hardening with simplifying-code when available."
 ---
 
-# Simplify Apple-Platform Code
+# Simplifying Apple Platform Code
 
 Run this as the Apple-platform companion to the universal `simplifying-code` skill. It adds Swift, Xcode, SDK, availability, concurrency, UI lifecycle, resource, and Apple-framework checks. It does not replace the universal behavior-preservation and reuse/deletion workflow.
 

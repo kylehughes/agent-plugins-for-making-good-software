@@ -10,6 +10,11 @@ Earlier failures, one narrow adjudication, and finite evidence limits are retain
 [RUNNING.md](RUNNING.md) for future batches; the frozen [README](README.md)
 preserves the initial protocol.
 
+Repository links lead to summaries, plans, and receipts. The `/tmp/` paths below
+identify local-only review artifacts that are not included in this repository
+or available as public downloads. Recorded hashes preserve their identity;
+independent inspection and strict reverification require the underlying files.
+
 | Full batch | Protocol | Accepted | Deterministic pass |
 | --- | --- | --- | --- |
 | [Final release candidate](native-results-release-candidate.json) | Frozen 1.9.7 after inline pilot; one retained scope adjudication | 18/18 | 18/18 |
@@ -42,8 +47,8 @@ auxiliary receipt checks passed.
 
 One provisional scope verdict was adjudicated transparently. Simplification
 Claude run 1 repeated the same successful focused check. Its provisional failed
-review, archive, actual [Fable adjudication](/tmp/simplification-fable-rubric-adjudication/fable-response.md),
-and [parent decision](/tmp/simplification-fable-rubric-adjudication/parent-decision.json)
+review, archive, actual Fable adjudication (local-only artifact `/tmp/simplification-fable-rubric-adjudication/fable-response.md`),
+and parent decision (local-only artifact `/tmp/simplification-fable-rubric-adjudication/parent-decision.json`)
 remain bound in the aggregate. The parent adopted the original check-selection
 reading: the simplification rubric states no invocation count, and the same
 adequate check is not a separate workflow or gate. The repeated execution remains
@@ -76,7 +81,7 @@ scope, evidence honesty, composition, and deterministic checks passed all six.
 Fresh standard verification and auxiliary binding checks passed. The denied
 scratch access and alternate-tool retry did not recur in any substantive run.
 
-The [invariant summary](/tmp/skill-composition-inline-pilot/invariant-review-summary.json)
+The invariant summary (local-only artifact `/tmp/skill-composition-inline-pilot/invariant-review-summary.json`)
 retains finite limits. Runs 1 and 3 omitted stable-draft bookkeeping and exact
 initial text transport, but supplied complete drafts and truthful prior behavior
 for completed review. Run 2 began fixing before the last type auditor returned;
@@ -112,7 +117,7 @@ the caller's scratch draft was denied by `--restricted` at trace lines 98–99.
 The reviewer explicitly proposed trying Bash at line 103 and read that same
 file with Bash at lines 104–106. The loaded correctness-reviewer rule forbids
 retrying denied access through another tool. The
-[bound invariant review summary](/tmp/skill-composition-completion-pilot/invariant-review-summary.json)
+bound invariant review summary (local-only artifact `/tmp/skill-composition-completion-pilot/invariant-review-summary.json`)
 records the exact rule and trace separately. This was read-only access to owned
 task evidence, and the frozen rubric has no general access-rule dimension:
 **all six acceptance verdicts remain unchanged**. It is not reclassified as a

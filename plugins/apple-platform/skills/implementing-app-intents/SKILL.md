@@ -79,7 +79,7 @@ For Siri and Apple Intelligence, the best implementation is not a natural-langua
 
 ## UI-framework rule
 
-Entities, queries, schemas, indexing, donations, transfer, and domain services are UI-framework independent. For UIKit, use per-scene coordinators plus `UISceneAppIntent` or `AppIntentSceneDelegate` from the `_AppIntents_UIKit` cross-import overlay; use `NSUserActivity.appEntityIdentifier` for current shipping onscreen context. Do not generate UIKit view/list/canvas annotation APIs unless the selected SDK declares them. Use `SiriTipUIView` and `ShortcutsUIButton` for native UIKit promotion. Snippets, widgets, controls, and Live Activities remain small SwiftUI system surfaces even in a UIKit app. See [ui-framework-crosswalk.md](references/ui-framework-crosswalk.md).
+Entities, queries, schemas, indexing, donations, transfer, and domain services are UI-framework independent. For UIKit, use per-scene coordinators plus `UISceneAppIntent` or `AppIntentSceneDelegate` from the `_AppIntents_UIKit` cross-import overlay; use `NSUserActivity.appEntityIdentifier` for onscreen context in the verified iPhoneOS 26.5 baseline. Do not generate UIKit view/list/canvas annotation APIs unless the selected SDK declares them. Use `SiriTipUIView` and `ShortcutsUIButton` for native UIKit promotion. Snippets, widgets, controls, and Live Activities remain small SwiftUI system surfaces even in a UIKit app. See [ui-framework-crosswalk.md](references/ui-framework-crosswalk.md).
 
 ## Hard rules
 

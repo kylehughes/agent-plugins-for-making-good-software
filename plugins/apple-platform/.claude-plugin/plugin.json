@@ -2,12 +2,12 @@
   "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "apple-platform",
   "displayName": "Apple Platform",
-  "version": "2.1.0",
-  "description": "Swift, UIKit, App Intents, localization, testing, review, and technical-writing tools for Apple platform development.",
+  "version": "2.1.1",
+  "description": "Skills and reviewer agents for Swift and Apple-platform development, covering APIs, UI, concurrency, localization, testing, and documentation.",
   "author": {
     "name": "Kyle Hughes",
     "email": "kyle@kylehugh.es",
-    "url": "https://github.com/kylehughes"
+    "url": "https://kylehugh.es"
   },
   "homepage": "https://github.com/kylehughes/agent-plugins-for-making-good-software",
   "repository": "https://github.com/kylehughes/agent-plugins-for-making-good-software",

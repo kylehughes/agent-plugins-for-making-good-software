@@ -48,8 +48,8 @@ responses under `market/` in the skill cache.
    SERPs indicate real search volume) and competition strength = how many of
    the top 10 carry the term in their *title* (title matches are hard to
    outrank).
-4. Target terms where the app can plausibly reach top 5; a #40 ranking is
-   worth nothing. Verify movement 2–6 weeks after shipping metadata via
+4. Target terms where the app can plausibly reach the top 5; treat a #40
+   ranking as low priority unless observed traffic justifies it. Verify movement 2–6 weeks after shipping metadata via
    search-source impressions in analytics.
 
 ## Competitor Teardown Checklist
@@ -68,7 +68,7 @@ positioning gaps you can claim.
    downloads but weak/absent localization, and large storefronts with zero
    traction.
 2. Localized *keywords* are the cheap win — a translated keyword field can
-   rank where English never will. Repo tooling (e.g. app-localizer) handles
+   reach users who search in that language. Repo tooling (e.g. app-localizer) handles
    translation; ASO review still needs human-plausible search terms per
    locale, not literal translations.
 3. Measure per-locale exactly like the global funnel: search impressions →

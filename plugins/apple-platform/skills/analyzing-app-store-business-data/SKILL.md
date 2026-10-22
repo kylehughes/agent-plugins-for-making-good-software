@@ -68,8 +68,9 @@ Run `asc doctor` first, always. Fix what it reports before analyzing.
   metrics playbook before computing any KPI.
 - Every quoted metric must trace to a cache file or an `asc` output you ran.
   Label the trailing ~2 days of sales data as provisional (Apple restates).
-  When mixing App Analytics with sales data, always state the opt-in
-  calibration caveat (analytics covers only opted-in users).
+  When mixing Analytics with sales data, state report-specific coverage,
+  definitions, date windows, and privacy limits. Usage metrics are opt-in;
+  do not apply that restriction or an opt-in scaling factor to every metric.
 
 ## Procedure A: Business Review
 
@@ -79,9 +80,11 @@ Use when asked "how is the app doing" or as the foundation for any plan.
 2. Snapshot the monetization structure: `asc subscriptions list --app …`,
    `asc pricing` (current price points), intro/promo offers, `asc iap list`.
 3. Pull data (cache-first; skip files already cached):
-   - Monthly SALES, SUBSCRIPTION, SUBSCRIPTION_EVENT for the trailing 13
-     months; daily SALES for the trailing 30 days
-     (`scripts/backfill-sales.sh` loops these).
+   - Monthly SALES for the trailing 13 months; daily SALES for the trailing
+     30 days; daily SUBSCRIPTION and SUBSCRIPTION_EVENT reports for the
+     available history. Use the latest subscription snapshot per period
+     and sum event counts for monthly views; do not sum snapshots across
+     days (`scripts/backfill-sales.sh` loops the requested dates).
    - `asc insights weekly --source sales` and `--source analytics` for
      this-week-vs-last-week movement.
    - Analytics: App Store Discovery & Engagement + Downloads reports, monthly

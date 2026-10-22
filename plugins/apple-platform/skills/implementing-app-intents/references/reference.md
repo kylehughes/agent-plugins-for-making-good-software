@@ -63,7 +63,7 @@ If a newer selected SDK declares any of these, add them behind source isolation 
 
 ## Structured value transfer orientation
 
-For cross-app Siri and Apple Intelligence workflows, treat transfer as a semantic capability separate from entity resolution. Entity queries and indexing let Siri find the object. `NSUserActivity.appEntityIdentifier` lets Siri know which primary object the user means by “this” in current shipping SDKs. `Transferable` tells the system how that object can move to another action.
+For cross-app Siri and Apple Intelligence workflows, treat transfer as a semantic capability separate from entity resolution. Entity queries and indexing let Siri find the object. `NSUserActivity.appEntityIdentifier` lets Siri know which primary object the user means by “this” in the verified iPhoneOS 26.5 SDK. `Transferable` tells the system how that object can move to another action.
 
 Use `DataRepresentation` and `FileRepresentation` for known byte/file formats. `IntentPerson` (AppIntents, iOS 16) and `PlaceDescriptor` (GeoToolbox, iOS 26) are useful structured value types today. Build pure mapping helpers from your entities to those values now. The transfer-representation APIs named `ValueRepresentation` and `IntentValueRepresentation` are absent from iPhoneOS 26.5, so code that references them must live only in targets or branches compiled with an SDK that declares them. See [value-representation-and-structured-transfer.md](value-representation-and-structured-transfer.md).
 
@@ -134,7 +134,7 @@ App Intent / OpenIntent
   → tab/navigation/split/modal route
 ```
 
-Current shipping screen context for iPhoneOS 26.5:
+Screen context verified against iPhoneOS 26.5:
 
 ```text
 Primary screen entity → NSUserActivity.appEntityIdentifier (iOS 18.2+)

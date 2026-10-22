@@ -155,7 +155,7 @@ Incoming image/text/location
 
 ## Onscreen awareness plus structured value mapping
 
-The current shipping chain for “get directions to this landmark” should be designed like this:
+For the verified iPhoneOS 26.5 baseline, design the “get directions to this landmark” chain like this:
 
 ```text
 Visible screen

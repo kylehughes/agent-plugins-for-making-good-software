@@ -1,4 +1,4 @@
 interface:
   display_name: "Testing Async Swift Code"
-  short_description: "Deterministic async Swift tests, no flakes"
-  default_prompt: "Use $testing-async-swift-code to write or fix async Swift tests without sleeps, yield budgets, or CI flakes, using the four synchronization primitives."
+  short_description: "Prove synchronization in async Swift tests"
+  default_prompt: "Use $testing-async-swift-code to write or fix async Swift tests with explicit synchronization, deterministic time control, and reliable cleanup."

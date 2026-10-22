@@ -1,4 +1,4 @@
 interface:
   display_name: "Simplifying Apple-Platform Code"
   short_description: "Apple companion to simplifying-code"
-  default_prompt: "Use $simplifying-apple-platform-code together with $simplifying-code to simplify and harden Swift, SwiftUI, UIKit, and Xcode code while preserving behavior and deployment targets."
+  default_prompt: "Use $simplifying-apple-platform-code to simplify and harden Swift, SwiftUI, UIKit, and Xcode code while preserving behavior and deployment targets; compose with $simplifying-code when available."

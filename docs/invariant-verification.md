@@ -1,5 +1,10 @@
 # Invariant verification
 
+This guide explains invariant-workflow ownership, the repository's evaluation
+tools, and the evidence required to accept a native agent run. Run commands from
+the repository root. Recorded results describe their captured snapshots; they
+do not certify later plugin changes.
+
 Universal's `verifying-invariants` skill owns the procedure for specifying scoped
 invariants, locating their boundaries, selecting evidence, and reporting limits.
 Apple Platform's `modeling-swift-types-for-correctness` owns Swift representations,
@@ -53,8 +58,12 @@ cycle. Assessment tasks remain direct.
 
 ## Tools
 
-The Universal validator uses only Python's standard library. Run it against an
-optional project-maintained manifest:
+The Universal validator uses only Python's standard library. The repository
+tooling requires Python 3.9 or later; Swift fixture checks also require Bash and
+a compatible `swiftc` on `PATH`. Git is needed for catalog comparisons and
+composition fixtures.
+
+Run the Universal validator against an optional project-maintained manifest:
 
 ```sh
 python3 plugins/universal/skills/verifying-invariants/scripts/validate_invariants.py \
@@ -96,6 +105,13 @@ the real fixture/compiler interaction. Neither substitutes for the other.
 
 ## Behavioral acceptance
 
+Native runs require `claude` or `codex` on `PATH`, credentials for that runtime,
+and access to the selected model. They consume model usage. Check the installed
+CLI's help for the flags used by `scripts/run_invariant_behavior.py`, especially
+Claude's restricted mode and Codex's plugin commands. The launcher records CLI
+help and version output; a missing capability is a failed or unavailable run,
+not an accepted case. Swift cases also need the fixture's compatible compiler.
+
 The [case matrix](../evals/invariant-behavior/cases.json) exercises both runtimes
 with the same natural-language prompts. Rubrics and independent assertions stay
 outside the responding agent's workspace and are never included in its prompt.
@@ -110,8 +126,9 @@ outside the responding agent's workspace and are never included in its prompt.
 | Universal alone | Explicit durable contract | Create the requested registry and CI checks; this is the positive control for the ordinary no-registry default. |
 
 Use the [current composition run guide](../evals/skill-composition/RUNNING.md)
-for launch, review, and evidence-retention instructions. The suite's original
-README preserves the historical initial protocol.
+for launch, review, and evidence-retention instructions. The
+[suite's original README](../evals/skill-composition/README.md) preserves the
+historical initial protocol.
 
 The [composition suite](../evals/skill-composition/cases.json) adds hardening with
 an implicit invariant gap, cosmetic-only hardening, and Apple-only simplification
@@ -160,7 +177,12 @@ same [documented environment override](https://code.claude.com/docs/en/env-vars#
 can be set when launching Claude Code. The plugin does not change host settings
 automatically; other installed skills also consume that host budget.
 
-Run one case in a fresh disposable directory:
+Choose a new or empty output directory outside the repository for each case.
+The launcher creates its own disposable runtime directory. These examples use
+model IDs from the recorded acceptance matrix; availability depends on the
+account and runtime. Declare a separate comparison if you change them.
+
+Run one case with either runtime:
 
 ```sh
 python3 scripts/run_invariant_behavior.py \
@@ -172,6 +194,12 @@ python3 scripts/run_invariant_behavior.py \
   --output-dir /tmp/invariant-codex-run --model gpt-6.1-sol \
   --effort high --timeout 900 --codex-auth-source "$HOME/.codex/auth.json"
 ```
+
+For Codex, `--codex-auth-source` links an existing authentication file into the
+isolated home. Point it at your actual file, or omit it when authentication
+comes from the environment. It does not sign in or create credentials. A missing
+file is not linked; confirm successful authentication in the retained setup and
+execution output.
 
 For the composition suite, add `--config evals/skill-composition/cases.json`,
 choose one of its case IDs, and use medium effort. Add `--fixture-bootstrap` to
@@ -242,7 +270,7 @@ outputs from hiding unrelated edits.
 Changes to the selected case configuration or rubric make a prepared run stale;
 retain it as historical evidence and prepare a fresh run for current acceptance.
 
-Each new assessment uses evidence schema 2, retains the evaluator source as
+The current assessor writes evidence schema 2, retains the evaluator source as
 `evaluator-engine.py` beside the captured workspace, and requires its version and
 SHA-256 in the receipt. `verify-evidence` checks that retained binding, so a
 changed or missing evaluator file makes the receipt stale. Legacy schema 1
@@ -260,7 +288,28 @@ answer does not silently satisfy a required composition check.
 A review JSON record identifies its reviewer, case, response hash, transcript
 hash, and captured rubric hash. Its `criteria` array contains those three
 `id`/`status`/`reason`/`evidence` records; `composition` carries its own
-`status`/`reason`/`evidence`. Statuses are `pass` or `fail`. Finish and verify it:
+`status`/`reason`/`evidence`. Statuses are `pass` or `fail`.
+
+Create `semantic-review.json` yourself after reviewing the captured artifacts;
+the launcher does not create that verdict.
+Use these top-level fields (the review schema remains 1 even when evidence uses
+schema 2):
+
+| Field | Required value or source |
+| --- | --- |
+| `schema_version` | `1` |
+| `case_id` | `evidence.json` → `case_id` |
+| `reviewer` | Object with `kind` (`human` or `model`) and non-empty `name` |
+| `response_sha256` | `normalized_outcome_artifacts.response.sha256` |
+| `transcript_sha256` | `normalized_outcome_artifacts.transcript.sha256` |
+| `rubric_sha256` | `semantic_review.rubric.sha256` |
+| `criteria` | One verdict object for each ID in `semantic_review.requirements.criteria` |
+| `composition` | Separate verdict object with `status`, `reason`, and `evidence` |
+
+Each criterion object needs `id`, `status`, a non-empty `reason`, and a non-empty
+`evidence` array of concrete quote or tool anchors. Composition needs the same
+verdict fields except `id`. Use `fail` for an unmet requirement; do not edit the
+captured artifacts to make a review pass. Finish and verify it:
 
 ```sh
 python3 scripts/invariant_behavior.py finalize-review \
@@ -293,6 +342,10 @@ vote alone never substitutes for the full acceptance record.
 
 ## Validation results
 
+These are historical results from the 2026-10-18 report and its declared source
+snapshots, not a rerun of the current tree. Composition evaluations report their
+subsequent outcomes [separately](../evals/skill-composition/results.md).
+
 The [continuation results](../evals/invariant-verification-continuation-results.json)
 record **51 of 51 accepted case-runs**, with no failures, retries, or adjudications
 in the final matrix:
@@ -309,9 +362,9 @@ deterministic artifact checks, behavior, scope preservation, evidence honesty,
 and required skill composition passed in every case. All 51 completed evidence
 records passed strict verification. No earlier pass is pooled into this result.
 
-The Swift companion now ties each persistence claim to its inspected construction
-route and records the phase and shared arguments of compiler controls before
-describing their pairing. The shared procedure separates independently
+The evaluated Swift companion tied each persistence claim to its inspected
+construction route and recorded the phase and shared arguments of compiler
+controls before describing their pairing. The evaluated shared procedure separated independently
 authoritative obligations from newly introduced assertions, so correcting an
 unsupported promise does not itself authorize a production behavior change.
 
@@ -326,8 +379,9 @@ symlinks were removed after completion.
 
 Both full 114-test tooling suites passed after the last executable change, on
 Python 3.9.6 and 3.14.7. Subsequent guidance changes passed repository validation,
-catalog and whitespace checks. The latest Swift skill validation also passed
-its real Swift 6.3.3 compiler and runtime fixtures: five positive controls, five
+catalog and whitespace checks. The Swift skill validation recorded there also
+passed its real Swift 6.3.3 compiler and runtime fixtures: five positive controls,
+five
 intended compiler rejections, and the runtime checks. The evaluator retains
 regressions for stale or poisoned bytecode, replaced assertion sources, and
 missing evaluator provenance. These checks establish the recorded tooling and

@@ -3,7 +3,7 @@ name: simplifying-code
 description: "Simplify existing code while preserving behavior. Use for requested cleanup, deduplication, local refactoring, or a simplification review; ordinary defect review belongs to reviewing-code."
 ---
 
-# Simplify Code
+# Simplifying Code
 
 Run this skill as a disciplined, behavior-preserving cleanup and hardening pass over code that already exists or has just been written. The goal is smaller, clearer, safer, more idiomatic, more reusable, and more maintainable code.
 

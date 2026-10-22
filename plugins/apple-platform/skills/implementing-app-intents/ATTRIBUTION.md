@@ -12,7 +12,7 @@ This skill was rebuilt from the user-provided starter skill, expanded for UIKit 
 - Apple Developer Documentation: `UIScene.activationConditions`, `UISceneActivationConditions`, `canActivateForTargetContentIdentifierPredicate`, and `prefersToActivateForTargetContentIdentifierPredicate`.
 - Apple Developer Documentation / SDK interfaces: `SemanticContentDescriptor` in `VisualIntelligence`; `GeoToolbox` and `PlaceDescriptor`; `_GeoToolbox_AppIntents` overlay.
 - Apple WWDC 2025/2026 App Intents, App Schemas, UIKit modernization, Spotlight/Shortcuts, snippets, Visual Intelligence, and Siri sessions, used as design context but subordinated to the selected SDK’s public interfaces.
-- Matthew Cassinelli, “Teach Siri AI to Share Structured Types Without Known Formats Across Apps with ValueRepresentation,” July 1, 2026, used as design context for the structured-value transfer mental model.
+- Matthew Cassinelli, [Teach Siri AI to Share Structured Types Without Known Formats Across Apps with ValueRepresentation](https://matthewcassinelli.com/valuerepresentation-siri-ai-structured-types-without-known-formats-share-across-apps/), July 1, 2026, used as design context for the structured-value transfer mental model.
 
 ## SDK correction notes
 

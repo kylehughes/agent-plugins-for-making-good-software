@@ -136,7 +136,7 @@ Every goal must say exactly when to stop.
 
 Choose a cap proportional to the milestone: about 10 turns for a localized change, 20 by default, and no more than 30 for one goal. Split the work instead of assigning a larger cap. A blocked report must include completed criteria, remaining criteria, evidence, the blocker, and the smallest external action needed.
 
-Most current harnesses expose only a generic achieved/cleared state, not a native BLOCKED state. Therefore the blocked branch must be part of the terminal contract, and the transcript must label it `BLOCKED` unambiguously so termination is not mistaken for success.
+`SUCCESS` and `BLOCKED` are report outcomes in this contract, not portable native status names. Include the blocked branch in the terminal contract and label it `BLOCKED` in the transcript so termination is not mistaken for success. Follow the runtime's authority and timing rules for native status transitions; a report label does not authorize marking incomplete work complete.
 
 ### 7. Draft the Compact Contract
 

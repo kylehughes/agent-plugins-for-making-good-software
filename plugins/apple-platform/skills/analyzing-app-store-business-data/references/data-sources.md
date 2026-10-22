@@ -29,15 +29,20 @@ Delivered as gzipped TSV (`--decompress` writes plain `.tsv`). Reports cover
 (`vendor-<num>/sales/`), and always filter rows to the app under analysis
 (`Apple Identifier` column = numeric app ID; SKU column also works).
 
-### SALES (subtype SUMMARY, version 1_0 — the latest; the API rejects 1_1)
+### SALES (subtype SUMMARY; verify the supported version)
 
-One row per product/date/country/type combination.
+One row per product/date/country/type combination. The bundled backfill
+script defaults to version `1_0` for SALES; [Apple's current reference
+describes version `1_3`](https://developer.apple.com/help/app-store-connect/reference/reporting/summary-sales-report/).
+Check the installed CLI and API support before selecting a version rather
+than assuming the script default is the latest format.
 
-- **Units / Developer Proceeds**: proceeds are post-Apple-cut, in the
-  `Currency of Proceeds`; `Customer Price` is what the buyer paid.
+- **Units / Developer Proceeds**: `Developer Proceeds` is per unit, net of
+  applicable taxes and Apple's commission, in `Currency of Proceeds`.
+  Multiply by signed `Units` for row totals; `Customer Price` is per unit.
 - **Product Type Identifier** (memorize these):
   `1`/`1F`/`1T` app download (iPhone/universal/iPad), `7`/`7F`/`7T` app
-  update, `3`/`3F` redownload, `IA1` consumable IAP, `IA9` non-consuming IAP,
+  update, `3`/`3F` redownload, `IA1` consumable IAP, `IA9` non-consumable IAP,
   `IAY` auto-renewable subscription, `IAC` free trial/intro.
   "Downloads" for funnel math = types 1/1F/1T only (not updates, not
   redownloads).
@@ -75,13 +80,16 @@ subsequent renew/cancel counts) and note the approximation.
   Sunday-end per `asc`), monthly `YYYY-MM`, yearly `YYYY`.
 - **SUBSCRIPTION and SUBSCRIPTION_EVENT reports are daily-only** (verified
   empirically 2026-07: monthly/weekly requests return "no report available").
-  Build monthly aggregates by summing daily files; event reports exist only
-  on days with at least one event.
+  Sum daily SUBSCRIPTION_EVENT counts for monthly event totals. Use the
+  latest SUBSCRIPTION snapshot in each period for subscriber levels; never
+  sum those snapshots across days. Event reports exist only on days with
+  at least one event.
 - Retention horizons (verified empirically 2026-07): monthly SALES reports
   reach back ~12 months; older dates return "no report available".
   **Backfill immediately and treat the cache as the durable record.**
 - A 404 also means "no data for that period" for small apps (common for
-  DAILY SUBSCRIPTION_EVENT). Zero-sales days simply have no rows/report.
+  DAILY SUBSCRIPTION_EVENT). Do not infer zero from a missing report until
+  date, retention, processing, and report availability have been checked.
 
 ## App Analytics Reports
 
@@ -96,12 +104,13 @@ impressions, product page views, taps, by source type and territory),
 proceeds by content type), `APP_USAGE` (Sessions; Installations and
 Deletions; Crashes), `FRAMEWORK_USAGE`, `PERFORMANCE`.
 
-**The opt-in caveat (mandatory):** App Analytics only counts users who share
-analytics with developers (roughly a quarter to a third of users; varies).
-Sales reports count everyone. Before mixing, compute the calibration ratio:
-`analytics first-time downloads ÷ sales-report downloads` for the same
-window, and state it. Conversion *rates* within analytics (page views →
-downloads) are internally consistent; absolute analytics counts are not.
+**Coverage caveat (mandatory):** [Apple distinguishes usage metrics from
+App Store and download metrics](https://developer.apple.com/app-store-connect/analytics/).
+App usage and App Clip metrics include only users who share diagnostics and
+usage data. Do not treat every Analytics report as an opt-in sample. Check
+each report's definitions, date window, population, and privacy thresholds
+before comparing it with sales data. A difference between download totals
+is not an opt-in rate and must not become a blanket scaling factor.
 
 Source types: `App Store search`, `App Store browse`, `App referrer`,
 `Web referrer`, `Unavailable` — the search share is the ASO signal.

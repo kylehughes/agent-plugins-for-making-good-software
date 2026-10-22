@@ -35,7 +35,7 @@ Intent | Schema | Parameters | Result | Surface | Foreground? | Confirmation | T
 1. Create entities and enums.
 2. Create queries.
 3. Create OpenIntent for each openable entity.
-4. Create create/update/delete/search/control intents.
+4. Implement create/update/delete/search/control intents.
 5. Create AppShortcutsProvider.
 6. Add indexing/donation services.
 7. Add onscreen awareness. For iPhoneOS 26.5-compatible code: primary `NSUserActivity.appEntityIdentifier` only. Add per-view/list/canvas annotations only if the selected SDK declares them.

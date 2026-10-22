@@ -11,11 +11,12 @@ conversion) × ASP × (1 + renewals). Because stages multiply:
 
 - **2×** is usually compounding: four stages improved 20% each ≈ 2.07×.
   Realistic through optimization alone.
-- **10×** is never optimization. It requires a new term in the equation: a
-  new acquisition channel (featuring, virality, a platform moment, paid ads),
-  a new market (locales with real demand), or a new monetization model
-  (different price structure, new audience tier, another app). Say this
-  plainly in 10× plans and structure them as bets, not tweaks.
+- **10×** should be planned as a structural growth bet rather than assumed
+  to follow from routine optimization. Examine a new acquisition channel
+  (featuring, virality, a platform moment, paid ads), a new market (locales
+  with real demand), or a new monetization model (different price structure,
+  new audience tier, another app). Quantify which changes could reach the
+  target and state the uncertainty.
 
 State the current value of every factor before proposing to move it.
 

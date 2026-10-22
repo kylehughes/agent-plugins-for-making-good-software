@@ -20,7 +20,7 @@ Keep examples for absent APIs out of production targets compiled with the 26.5 S
 
 ## Awareness layers
 
-Current shipping layer:
+Layer verified against iPhoneOS 26.5:
 
 1. **Primary screen entity** — use `NSUserActivity.appEntityIdentifier` to associate the screen’s main semantic subject with an `AppEntity` identifier.
 

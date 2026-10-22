@@ -20,8 +20,8 @@ Contract:
 - `recording()` — no collection task; callback-shaped APIs call `await record(_:)` directly, avoiding a scheduler hop.
 - `waitFor(_ predicate:since:timeout:)` — resume when a matching event lands at or after a transcript baseline index; throw on timeout.
 - `waitForEventCount(_:timeout:)` — resume when the transcript reaches a count.
-- `detach()` — cancel the collection task **and await its termination**. Post-condition: no element is appended after `detach()` returns. This is the property everything else leans on.
-- `expectNoEvents(for:since:)` — after detach, assert the transcript did not grow past the baseline over a bounded window.
+- `detach()` — cancel the collection task **and await its termination**. That task cannot append after `detach()` returns. Direct `record(_:)` callbacks require a separate producer stop barrier.
+- `expectNoEvents(for:since:)` — observe the transcript from a baseline over a bounded window. Keep collection active to assess source non-occurrence; after detach, a stable transcript proves only recorder detachment.
 - Every wait spends its deadline through the timeout budget below, not a single wall-clock sleep.
 
 Reference sketch (actor; waits shown for one method, the rest follow the same shape):
@@ -79,11 +79,11 @@ actor EventRecorder<Event: Sendable> {
 }
 ```
 
-A production-grade version replaces the polling loop with registered continuation waiters woken on every `record` (each waiter under a unique token; whoever wakes first — event, timeout, or cancellation — atomically removes the token so the continuation never double-resumes). The polling form above is correct and CI-safe because the slices go through the budget; start there and upgrade if wait latency matters.
+A production-grade version replaces the polling loop with registered continuation waiters woken on every `record` (each waiter under a unique token; whoever wakes first — event, timeout, or cancellation — atomically removes the token so the continuation never double-resumes). The polling sketch illustrates the shared budget; it does not establish scheduler fairness or CI reliability. Check cancellation and upstream-error behavior before adopting it, and use registered waiters when wait latency matters.
 
 ## Timeout Budget
 
-Contract: a deadline paid out in short sleep slices, so each slice resumption pays the same per-suspension scheduling debt as the emission chain it is racing. `isExhausted` after the nominal duration on a healthy scheduler; proportionally later on a starved one.
+Contract: spend a nominal duration in short sleep slices and report exhaustion through `spendSlice()`. Delayed resumptions can extend elapsed wall-clock time. This heuristic does not guarantee fairness or completion before timeout, and it is not a strict wall-clock deadline.
 
 ```swift
 final class TimeoutBudget: @unchecked Sendable {
@@ -107,11 +107,11 @@ final class TimeoutBudget: @unchecked Sendable {
 }
 ```
 
-The point is not the constant; it is that *N* short suspensions experience contention the way the system under test does, where one long suspension does not.
+Choose the slice and budget from project evidence. Multiple suspensions expose the budget to scheduler delays, but they do not establish a fixed relationship to the system under test's scheduling.
 
 ## Awaited Cleanup
 
-Contract: run an operation, then run async cleanup whether the operation returned or threw. Swift `defer` cannot `await`, and duplicating cleanup in `do`/`catch` is easy to get wrong.
+Contract: run an operation, then run async cleanup whether the operation returned or threw. The helper below supports compilers without async `defer` and centralizes cleanup. Compilers with [async `defer` support](../../modeling-swift-types-for-correctness/references/swift-feature-status.md#release-18) can await cleanup at scope exit. Neither form shields cleanup from cancellation automatically.
 
 ```swift
 func withAsyncCleanup<T>(
@@ -133,9 +133,9 @@ Add a `@MainActor` overload if suites are main-actor-isolated. Typical cleanup o
 
 ## Serial Main Executor
 
-Contract: while installed, `MainActor` task scheduling is FIFO, so `await Task.yield()` deterministically hands control to the next scheduled task.
+Contract: redirect global task jobs to the main serial executor while the hook is installed. This improves scheduling predictability; it does not make `Task.yield()` proof that a particular task has run. The runtime hook also has no scoping guarantee if another caller changes it.
 
-Do not write this one — the runtime hook is provided by [swift-concurrency-extras](https://github.com/pointfreeco/swift-concurrency-extras) (`withMainSerialExecutor`). What a project should add around it is a **scope guard**: the hook is process-global and parallel suites clobber each other, so expose it through a serializing wrapper or a Swift Testing trait that leases the hook to one scope at a time, and keep scopes short.
+Do not write this one — the runtime hook is provided by [swift-concurrency-extras](https://github.com/pointfreeco/swift-concurrency-extras) (`withMainSerialExecutor`). What a project should add around it is a **scope guard**: the hook is process-global and parallel suites clobber each other, so expose it through a shared serializing wrapper or trait that leases the hook to one scope at a time, and keep scopes short. Serializing one suite alone does not exclude unrelated suites.
 
 ## Bounded Polling
 

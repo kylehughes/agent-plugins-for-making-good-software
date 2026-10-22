@@ -1,3 +1,5 @@
+# Attribution
+
 ## Source
 
 - Original author: Kyle
@@ -13,6 +15,8 @@ This revision hardens the original manual skill for Swift 6.3-style UIKit code a
 
 - Apple Developer Documentation for UIKit content configurations, content views, configuration states, cell registrations, background configurations, SwiftUI hosting configurations, and content-unavailable configurations.
 - Swift.org Swift 6.3 release notes.
+
+See the [source links in the preserved reference](REFERENCE.md#sources).
 
 ## Pipeline
 

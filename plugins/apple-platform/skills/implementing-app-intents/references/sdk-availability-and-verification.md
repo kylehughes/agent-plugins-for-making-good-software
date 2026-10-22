@@ -106,5 +106,5 @@ Verification caveats:
 
 - Cross-import overlays hold framework-pairing APIs. Check `_AppIntents_UIKit`, `_AppIntents_SwiftUI`, and overlays such as `_GeoToolbox_AppIntents`, not only `AppIntents.framework`.
 - Name collisions exist. `EntityCollection` search hits may refer to RealityKit, not AppIntents.
-- Absence from the current GA SDK does not prove absence from a beta SDK. Audit the SDK actually selected by the Xcode project.
+- Absence from the verified iPhoneOS 26.5 SDK does not prove absence from a newer stable or beta SDK. Audit the SDK actually selected by the Xcode project.
 - Runtime availability and compile-time visibility are different. If a symbol is absent from the selected SDK, `@available` cannot make source code using that symbol compile.

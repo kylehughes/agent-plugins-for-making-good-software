@@ -1,6 +1,6 @@
 # Localization implementation examples
 
-Read the section matching the current task.
+Read the section matching the current task. These Swift examples assume a Swift package target with localized resources and `Bundle.module`; adapt the bundle for app or framework targets as described in [Scope and assumptions](../SKILL.md#scope-and-assumptions).
 
 ## Contents
 
@@ -107,7 +107,7 @@ extension String {
 
 ### Strings with plurality
 
-When dealing with plurality (e.g., "1 person" or "2 people"), **use the singular variant** in the localized string, then automatically configure the plural variations in the string catalog.
+When dealing with plurality (e.g., "1 person" or "2 people"), **use the singular variant** in the localized string, then configure the plural variations in the string catalog.
 
 #### Before
 ```swift
@@ -130,17 +130,19 @@ extension String {
 }
 ```
 
-#### Step 2: Build the package to auto-generate catalog entry
+#### Step 2: Build with string extraction enabled
+Use the repository's documented extraction/build workflow. The following commands are examples for projects that provide these Make targets:
+
 ```bash
 make build/package PACKAGE=<PackageName>
 ```
 
-If the package build doesn't generate the entry, try building the full app:
+If that project's package build does not generate the entry, try its app build:
 ```bash
 make build/app
 ```
 
-This creates the base entry in `Localizable.xcstrings` with the singular variant.
+Verify that extraction created the base entry in `Localizable.xcstrings` with the singular variant. If these Make targets are absent, use the project's Xcode scheme or extraction workflow.
 
 #### Step 3: Add plural variations to Localizable.xcstrings
 

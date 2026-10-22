@@ -3,7 +3,7 @@ name: ordering-symbols
 description: "Order members within Swift types by declaration kind, access level, and name. Use when adding or moving members or reviewing their order; preserve order-dependent behavior."
 ---
 
-# Swift Lexicographic Symbol Ordering
+# Ordering Symbols
 
 ## Objective
 
@@ -50,7 +50,7 @@ Use this access order, from broadest to narrowest:
 
 Rules:
 
-- Omitted access is `internal`, unless inherited from an enclosing `private`, `fileprivate`, `package`, `public`, or `open` declaration/extension.
+- Resolve omitted access using Swift's [access-control rules](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/accesscontrol/). Ordinary members of `internal`, `package`, `public`, and `open` types default to `internal`; `private` and `fileprivate` types narrow member defaults. Explicit extension access, enum cases, and protocol requirements have their own defaults; do not infer member access from the enclosing type modifier alone.
 - Sort a declaration by its getter/access level, not by setter-only access. For example, `public private(set) var title` belongs in the `public` bucket, and `private(set) var count` belongs in the `internal` bucket.
 - Access modifiers on extensions affect unannotated members inside the extension.
 - Access level is primary only where the ordering rules below say it is primary. Do not globally sort every declaration by access before category.

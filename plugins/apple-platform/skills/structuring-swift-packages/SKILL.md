@@ -102,7 +102,7 @@ In order of preference:
 
 1. **Move the code** to the correct export module. Often the code is in the wrong place — a protocol in a Feature module that belongs in Interfaces, a data type in Services that belongs in Models, a presentational view in Feature that belongs in UI.
 2. **Define a protocol** in Interfaces and have the internal module conform. Inject the concrete implementation at the composition root.
-3. **Define a factory** in Interfaces when you need another feature's view or coordinator. The factory returns an opaque type (`AnyView`, `any Coordinating`). Wire at the composition root.
+3. **Define a factory** in Interfaces when you need another feature's view or coordinator. The factory returns a type-erased wrapper (`AnyView`) or protocol existential (`any Coordinating`). Wire at the composition root.
 4. **Define a delegate** when you need navigation to another feature. The presenting feature defines the delegate protocol. A parent coordinator implements it. Cross-feature navigation always uses coordinator delegates — do not introduce a centralized router or routing intents.
 
 ### Rule 3: Exports Must Form a DAG

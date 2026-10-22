@@ -32,7 +32,7 @@ Use this skill for modern cell and content-view configuration in UIKit projects.
 - Never call `setNeedsUpdateConfiguration()` from inside `configurationUpdateHandler`, `updateConfiguration(using:)`, `layoutSubviews`, or an `apply(configuration:)` method.
 - Do not mix legacy `textLabel`, `detailTextLabel`, or `imageView` cell APIs with `contentConfiguration` for the same cell.
 - Use stable model IDs in diffable data sources. Do not use configuration structs as item identifiers.
-- Use `dataSource.reconfigureItems(_:)` for visible content changes that keep identity the same; use snapshot inserts/deletes/moves for identity changes.
+- Use [`snapshot.reconfigureItems(_:)`](https://developer.apple.com/documentation/uikit/nsdiffabledatasourcesnapshot-swift.struct/reconfigureitems(_:)), then apply the snapshot, for content changes that keep item identity the same; use snapshot inserts/deletes/moves for identity changes.
 - Do not capture `indexPath` in action closures. Capture a stable item ID, or query the current index path at action time.
 - Closure properties stored in configurations must capture owners weakly and must not retain cells, view controllers, image loaders, tasks, or data sources strongly.
 - `UIContentConfiguration` does **not** require `Hashable` or `Equatable`. Add equality only when there is a concrete reason.

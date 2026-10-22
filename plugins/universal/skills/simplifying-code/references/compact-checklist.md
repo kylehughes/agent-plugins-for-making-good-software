@@ -1,9 +1,5 @@
 # Compact Checklist
 
-Confirm every item below before finalizing.
-
-## Compact Checklist
-
 Before finalizing, confirm:
 
 - The review surface included staged, unstaged, and relevant untracked files.

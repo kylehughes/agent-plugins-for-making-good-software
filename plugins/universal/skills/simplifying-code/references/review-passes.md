@@ -2,7 +2,7 @@
 
 Run all seven passes in full before classifying findings.
 
-#### Pass A: Behavior, Compatibility, and Correctness
+## Pass A: Behavior, Compatibility, and Correctness
 
 Find changes that simplify incorrectly or silently alter contracts:
 
@@ -15,7 +15,7 @@ Find changes that simplify incorrectly or silently alter contracts:
 
 Fix correctness and compatibility defects before aesthetic cleanup.
 
-#### Pass B: Reuse, Deletion, and Consolidation
+## Pass B: Reuse, Deletion, and Consolidation
 
 Look for code that should not exist because the project already has a better primitive:
 
@@ -27,7 +27,7 @@ Look for code that should not exist because the project already has a better pri
 
 Delete more than you add. Do not create a new abstraction just to satisfy DRY when two explicit call sites are clearer.
 
-#### Pass C: Shape, Boundaries, and Cognitive Load
+## Pass C: Shape, Boundaries, and Cognitive Load
 
 Find code that makes the system harder to reason about:
 
@@ -40,7 +40,7 @@ Find code that makes the system harder to reason about:
 
 Prefer code that makes invalid states unrepresentable, but do not broaden scope just to model every theoretical state.
 
-#### Pass D: Concurrency, Lifecycle, and Resource Ownership
+## Pass D: Concurrency, Lifecycle, and Resource Ownership
 
 Find simplifications that create leaks, races, stuck work, or lifetime bugs:
 
@@ -55,7 +55,7 @@ Find simplifications that create leaks, races, stuck work, or lifetime bugs:
 
 Do not silence concurrency warnings by erasing isolation, broadening mutability, or adding unsafe annotations unless the invariant is actually true and documented.
 
-#### Pass E: Security, Privacy, and Trust Boundaries
+## Pass E: Security, Privacy, and Trust Boundaries
 
 Find changes that weaken safety:
 
@@ -68,7 +68,7 @@ Find changes that weaken safety:
 
 Prefer existing security wrappers and policy gates. Do not invent local security mechanisms during a cleanup pass.
 
-#### Pass F: Performance, Memory, and Scalability
+## Pass F: Performance, Memory, and Scalability
 
 Find obvious waste without premature optimization:
 
@@ -82,7 +82,7 @@ Find obvious waste without premature optimization:
 
 Measure when the performance tradeoff is non-obvious. For obvious waste, fix locally.
 
-#### Pass G: Tests, Observability, and Failure Modes
+## Pass G: Tests, Observability, and Failure Modes
 
 Check whether simplified code remains testable and diagnosable:
 

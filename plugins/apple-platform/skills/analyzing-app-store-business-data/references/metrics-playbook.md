@@ -7,21 +7,26 @@ trace a number to a cached report, don't quote it.
 
 | KPI | Formula | Source |
 |---|---|---|
-| Proceeds (T12M) | Σ `Developer Proceeds` over trailing 12 complete months | SALES monthly |
+| Proceeds (T12M) | Σ (`Units` × per-unit `Developer Proceeds`) over trailing 12 complete months, grouped by currency | SALES monthly |
 | Proceeds run rate | trailing 3 complete months × 4 | SALES monthly |
 | Downloads | Σ Units where Product Type ∈ {1, 1F, 1T} | SALES |
 | Active subscribers | latest SUBSCRIPTION snapshot (standard + offer rows) | SUBSCRIPTION |
 | New subscribers | Σ Subscribe events per period | SUBSCRIPTION_EVENT |
 | Paid conversion | new subscribers ÷ downloads, same window | EVENT ÷ SALES |
-| ARPU | proceeds ÷ downloads (per period) | SALES |
-| ARPPU / ASP | proceeds ÷ paying transactions | SALES (IAY rows) |
+| Proceeds per download | net proceeds ÷ downloads, same period | SALES |
+| Proceeds per paid transaction | net proceeds ÷ paid transaction units, same period | SALES |
 | Refund rate | Refund events ÷ Subscribe+Renew events | SUBSCRIPTION_EVENT |
 | Rating quality/volume | average and count, per territory | `asc reviews ratings` |
 
-Proceeds are Apple-cut-adjusted (developer receives 70%, or 85% in the Small
-Business Program — nearly all indie accounts are in it). Note which currency
-column you summed; when mixing currencies use the proceeds-currency column
-plus finance reports for exact conversion, or state the approximation.
+Proceeds are net of applicable taxes and Apple's commission; use the report
+values rather than assuming a commission rate. See [Apple's metric
+definitions](https://developer.apple.com/help/app-store-connect-analytics/reference/metrics-definitions/).
+State which currency column you used; reconcile mixed currencies through
+finance reports or label the conversion as approximate. [Summary Sales
+Report proceeds are per unit](https://developer.apple.com/help/app-store-connect/reference/reporting/summary-sales-report/):
+multiply by signed units before summing, including refunds and credits.
+Proceeds per download or transaction are not ARPU or ARPPU; those metrics
+require user counts for the denominator.
 
 ## The Funnel
 
@@ -34,9 +39,10 @@ Impressions → Product Page Views → Downloads → Subscribes → Paid retenti
   right default for small apps; daily is noise).
 - Split by source type (search / browse / referrer) — ASO work moves search
   impressions; conversion work moves page-view→download.
-- Calibration: analytics counts are opted-in users only. Compute
-  `sales downloads ÷ analytics downloads` and apply it before comparing
-  stages that cross the analytics/sales boundary. State it in output.
+- Coverage: verify report definitions, populations, date windows, and privacy
+  limits before combining Analytics and sales counts. Usage metrics are
+  opt-in; discovery and download counts must not be scaled as though all
+  Analytics data were an opt-in sample. State unresolved differences.
 - Benchmarks for orientation (state as heuristics, not truth): page-view →
   download commonly 25–35% for utility apps; download → paid for freemium
   utilities commonly 1–5%; search impression → page view is highly
@@ -86,6 +92,9 @@ Use exactly these shapes so reviews are comparable over time.
 
 - Exclude the trailing 2 days of sales data or label them provisional.
 - Never sum the SUBSCRIPTION snapshot across days; it's a level, not a flow.
+- Use one report frequency for each covered period. Do not add daily and
+  monthly SALES totals for overlapping dates; aggregate currencies
+  separately until an explicit conversion is applied.
 - Deduplicate by (report date, SKU, country, type) when concatenating cached
   TSVs; re-downloads of restated reports can differ — latest fetch wins.
 - Minimum samples: no percentage from a denominator under 20; no

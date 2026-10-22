@@ -3,7 +3,7 @@ name: instrumenting-accessibility-identifiers
 description: "Add or audit type-safe accessibility identifiers and XCUITest selectors in SwiftUI or UIKit, including screenshot automation. Use for identifier structure and lookup, not a general VoiceOver audit."
 ---
 
-# Type-safe iOS accessibility identifiers
+# Instrumenting Accessibility Identifiers
 
 Create or migrate a compiler-checked accessibility-identifier contract that works across SwiftUI, UIKit, XCUITest, and screenshot automation.
 

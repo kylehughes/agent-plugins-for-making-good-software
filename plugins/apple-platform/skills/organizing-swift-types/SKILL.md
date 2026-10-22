@@ -3,7 +3,7 @@ name: organizing-swift-types
 description: "Organize Swift declarations, extensions, conformances, access control, and file layout. Use when adding or restructuring types; member sorting belongs to ordering-symbols."
 ---
 
-# Swift Type Organization Conventions
+# Organizing Swift Types
 
 ## Scope and Assumptions
 

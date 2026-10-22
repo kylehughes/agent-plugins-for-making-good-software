@@ -236,7 +236,7 @@ Smallest next action: [one decision, permission, credential, or environment fix]
 
 Do not allow “blocked” merely because the first approach failed. The worker should try reasonable alternatives within scope before invoking it.
 
-Many goal harnesses do not expose a first-class BLOCKED status. When a blocked disjunct becomes true, the harness may record the overall condition as achieved or simply clear it. The worker's final transcript must therefore say `BLOCKED`, not `SUCCESS`, and enumerate the incomplete criteria.
+Native goal states differ by runtime. The worker's final transcript must say `BLOCKED`, not `SUCCESS`, and enumerate the incomplete criteria. Follow the runtime's authority and timing rules for any native status transition; the contract's report outcome does not authorize marking an incomplete objective complete.
 
 ## 8. Character-budget strategy
 

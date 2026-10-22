@@ -146,11 +146,12 @@ Use only the sections relevant to the change. These are prompts for investigatio
 
 ## Runtime-Specific Prompts
 
-Apply only when relevant and verify actual language/runtime versions:
+Verify the actual language, runtime, and platform versions. Compose with an available companion covering their semantics; its rules win for that platform. Reuse the existing review scope and evidence rather than starting another review. If no companion is available, inspect authoritative documentation and state any unresolved semantics that limit the review.
 
-- **Swift and Apple platforms**: actor isolation, reentrancy across `await`, `Sendable`, task cancellation/lifetime, `MainActor` UI access, reference cycles, API availability, Codable/persistence compatibility, privacy, localization, and accessibility.
-- **JavaScript/TypeScript**: runtime validation beyond static types, promise rejection/await behavior, event-loop ordering, server/client boundaries, prototype/object pollution, bundler effects, and package lifecycle scripts.
-- **JVM and .NET**: async context and blocking waits, disposal, thread-safe publication, nullability gaps, serializer/reflection behavior, dependency-injection lifetimes, and runtime version compatibility.
-- **Go**: goroutine/channel lifetime, context propagation, data races, nil interfaces, slice/map aliasing, error handling, and partial I/O.
-- **Python, Ruby, and PHP**: dynamic runtime shapes, mutable/shared defaults, sync/async mixing, import/configuration side effects, serialization, and injection sinks.
-- **C, C++, Rust, and FFI boundaries**: ownership, lifetime, bounds, integer overflow, undefined behavior, aliasing, unsafe blocks, ABI/layout compatibility, and cross-language allocation/release rules.
+Use these platform-neutral questions to select the relevant guidance:
+
+- Which guarantees are enforced statically, and which inputs or runtime shapes still require validation?
+- How do isolation, suspension, blocking, cancellation, and resource lifetime interact at the changed boundary?
+- Can aliasing, shared defaults, reflection, serialization, or foreign interfaces bypass the intended ownership or validation rules?
+- Do imports, package lifecycle scripts, build tools, or dependency lifetimes introduce side effects?
+- Which availability, persistence, ABI, layout, or allocation/release contracts must remain compatible?

@@ -53,11 +53,11 @@ func startIsIdempotent() async throws {
 }
 ```
 
-## Observer lifecycle — "provider stop stops emitting"
+## Observer lifecycle — recorder detachment after provider stop
 
 ```swift
-@Test("Provider stop stops emitting updates")
-func providerStopStopsEmitting() async throws {
+@Test("Recorder detachment prevents further collection")
+func recorderDetachmentPreventsFurtherCollection() async throws {
     let harness = await Harness()
     let events = await EventRecorder<Thread>.consuming(harness.provider.data)
 
@@ -74,7 +74,7 @@ func providerStopStopsEmitting() async throws {
 }
 ```
 
-The order is the point: prove attachment (first `waitFor`), stop, **detach before the baseline** so the count is stable by construction, then bound the non-occurrence window.
+This example proves attachment and recorder detachment. Its post-detach count is stable by construction, so it does not independently prove that `harness.stop()` stopped production emissions. To test that claim, keep a separate observer attached while provoking the external event, or assert producer-owned completion evidence before taking the final snapshot.
 
 ## State transition — "view model reaches loaded state"
 
@@ -171,8 +171,8 @@ try await withAsyncCleanup(
 
 ## Non-occurrence — "after stop, no more X"
 
-`detach()` first, then `expectNoEvents(for:since:)` from a post-detach baseline. Detachment proves collection-task termination; the baseline makes the stable-count assertion sound; the window is the observation bound, not a scheduler hack.
+Prove attachment, take a baseline, provoke the action, and keep observation live for the bounded no-event window. Detach during cleanup before reading a final collected transcript. A post-detach stable-count assertion establishes recorder detachment only; source-stop correctness needs independent live observation or producer-owned completion evidence.
 
 ## Cancellation correctness
 
-Wrap the test body in the serial executor. Cancel the task under test. Use the recorder to assert no further emissions (detach + bounded window). Check exit state synchronously. The test proves all three edges: the task was cancelled, the operation observed cancellation, and cleanup occurred.
+Use the serial executor only when the test relies on Swift task ordering. Cancel the task under test, await its termination, and assert evidence that the operation observed cancellation and completed cleanup. If checking for later source emissions, keep an independent observer live for the bounded window. Detaching that observer before the window proves only recorder termination.

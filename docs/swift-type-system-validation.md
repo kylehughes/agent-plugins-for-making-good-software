@@ -1,5 +1,12 @@
 # Swift type-system integration validation
 
+This is the historical 2026-10-19 integration record for Apple Platform 1.6.0.
+Results, version changes, and tool availability below describe that snapshot.
+The later [compiler and behavioral verification](swift-type-integration-verification.md)
+and [consolidation record](swift-type-system-consolidation.md) cover subsequent work.
+The supplied archive and `/tmp/` artifacts are not distributed in this repository;
+the recorded commands and digests alone cannot reproduce source-backed checks.
+
 ## Scope and baseline
 
 The acceptance contract is AC1–AC6 from the supplied Goal. This integration adds
@@ -8,8 +15,7 @@ native-runtime behavioral acceptance belong to Goal 2; no such acceptance is
 claimed here. Nothing was published or committed.
 
 Work began on 2026-10-19 at commit
-`7a6ac750c6e9d1b30342d0bb3bdcc90185651469`, in the existing worktree
-`/Users/kyle/Developer/Projects/Kyle Hughes/Codex Plugins for Making Good Software/Repositories/Plugins`.
+`7a6ac750c6e9d1b30342d0bb3bdcc90185651469`, in the repository worktree.
 `git status --short` was empty. The supplied archive SHA-256 matched
 `4454c583ec5a9cc4dd80487ff19a9a2dc9925e5249588db8e4a06482bf35eb13`.
 The archive was extracted to `/tmp/swift-type-system-integration-source/Swift_Type_System_Companion`.
@@ -34,7 +40,7 @@ unchanged, and the shared instructions remain runtime-neutral.
   and 18 task-oriented routing walkthroughs.
 - [Attribution](../plugins/apple-platform/skills/modeling-swift-types-for-correctness/ATTRIBUTION.md):
   supplied archive identity and derivation policy.
-- [Feature decisions](../plugins/apple-platform/skills/modeling-swift-types-for-correctness/references/swift-feature-status.md#conflict-decisions-and-evidence-limits):
+- [Feature decisions](swift-type-system-source-decisions.md#conflict-decisions-and-evidence-limits):
   primary-source corrections, duplicated core reports, performance-probe limits,
   and fresh/supplied/unknown evidence labels.
 

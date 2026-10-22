@@ -67,7 +67,7 @@ If a beta or newer SDK declares one of these APIs, isolate the source that uses 
 
 ## Onscreen-awareness architecture
 
-Current shipping iPhoneOS 26.5 implementation:
+Implementation verified against iPhoneOS 26.5:
 
 ```text
 Primary detail object on screen
