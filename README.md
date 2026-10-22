@@ -93,6 +93,14 @@ Platform-agnostic tools for making good software.
 | `writing-escalation-briefs` | A standalone handoff packet for a stuck problem — evidence, attempts, and hypotheses, with no repository access assumed. |
 | `writing-technical-prose` | Conventions for direct, pragmatic developer-facing prose — READMEs, ADRs, docs, and comments. |
 
+Invoke `hardening-changes` on its own to include applicable project-specific
+hardening skills. It finds companions through available skill descriptions and
+references in project instructions, then applies their requirements in the same
+audit-and-fix pass. Make a companion's project and purpose clear in its description
+or link it from project instructions; no particular skill name is required.
+Explicit project requirements can add preparation steps and checks during
+hardening, while checks assigned to a later ship gate stay there.
+
 ### Agents
 
 | Agent | Purpose |

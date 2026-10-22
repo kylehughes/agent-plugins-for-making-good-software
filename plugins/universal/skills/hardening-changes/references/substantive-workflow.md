@@ -10,7 +10,7 @@ Before editing, allocate a fresh temporary directory outside the repository usin
 
 Surfaces the branch does not implicate stay untouched. Defer owned work that requires app-wide rearchitecture or a product decision only the user can make.
 
-**This path runs one compile checkpoint, not a verification pass.** The project's full build, test, and release checks remain its later ship gate.
+**By default, this path runs one compile checkpoint, not a verification pass.** Apply the entry point's project-companion requirements: explicit checks required during hardening run in this pass; checks assigned to the later ship gate remain there.
 
 ## Dispositions
 
@@ -67,7 +67,7 @@ Launch the implicated auditors in parallel against the surface. The roster is a 
 
 Platform plugins and projects commonly add reviewers for concerns such as codified standards compliance, type-system enforcement, complexity and cognitive load, and async-test determinism. Launch every installed reviewer agent whose concern the surface implicates; record the concerns you had no reviewer for.
 
-Apply the opening scope and activation rules to the auditor contracts. Investigate domain values and legal transitions introduced, altered, or newly exposed by substantive changes. Consider a stronger representation when it prevents concrete misuse at a justified complexity cost. This adds no reviewer or verification loop: the compile checkpoint stays in Phase 4 and project proof follows hardening.
+Apply the opening scope, companion requirements, and activation rules to the auditor contracts. Investigate domain values and legal transitions introduced, altered, or newly exposed by substantive changes. Consider a stronger representation when it prevents concrete misuse at a justified complexity cost. This adds no reviewer or verification loop: Phase 4 owns the default compile checkpoint, and project instructions determine when their additional checks run.
 
 Pass this contract to every auditor, filling the compatibility input for any reviewer assessing changed behavior:
 
@@ -99,16 +99,18 @@ Fix every mechanical and judgment finding, grouped by file, each patch inside it
 
 ### Phase 4: Compile Checkpoint
 
-Run this **once**, after the first substantive fix batch, and only if the fixes touched source code, package manifests, or project files. Hardening can introduce failures that static analysis cannot see — public API changes, access control, concurrency isolation, package boundaries — and this is where they surface.
+Run the default compile checkpoint **once**, after the first substantive fix batch, and only if the fixes touched source code, package manifests, or project files. Hardening can introduce failures that static analysis cannot see — public API changes, access control, concurrency isolation, package boundaries — and this is where they surface. Explicit project requirements may also require commands when no fixes were needed or at another point in this pass; follow their timing.
 
 Use the narrowest command that compiles the full dependent graph of the touched modules — a whole-app or whole-workspace build, or the unit-test build when test targets changed. **Not an incremental, changed-module-only build**: it does not compile the changed module's dependents, which is precisely where the failures this checkpoint exists to catch appear. The incremental build is the iteration loop; the checkpoint needs the graph.
 
-Purely mechanical iterations — formatting, ordering, whitespace — skip this phase. Once the checkpoint passes, later audit fixes do not start another compile/test gate; carry any new verification obligations, including rechecks required by an invariant correction, to the project ship gate. Only the compiler-caused repair exception below permits a retry.
+Purely mechanical iterations — formatting, ordering, whitespace — skip the default compile checkpoint. A project-required check that already compiles the required dependent graph on the same artifacts satisfies it; do not add a duplicate build. Once the checkpoint passes, later audit fixes do not restart it except for the compiler-caused repair below. Carry other verification obligations, including invariant rechecks, to the project ship gate unless explicit project requirements call for them during hardening. Keep required hardening-check results current under the entry point's reuse and rerun rules.
 
-On failure:
+On default compile-checkpoint failure:
 
 - **Clearly caused by a just-applied fix**: make the smallest repair inside the accepted patch boundary, re-run that command once, and give the repair a **scoped re-audit** through the owning auditor. A compiler-driven repair is still a change; it does not bypass audit.
 - **Ambiguous, unrelated, or in a package the branch did not touch**: stop and report it as a blocker. Do not start editing packages the branch does not own to make a build pass.
+
+For a failed project-required hardening step, classify an owned defect through the existing dispositions, repair it in the same loop, and rerun the affected check. An environmental obstacle, unavailable command, or failure outside the owned thread is a blocker; do not silently move a required hardening step to the later ship gate or repair unrelated code to make it pass.
 
 Also run the cheap deterministic checks the surface requires:
 
@@ -127,6 +129,8 @@ done
 If the diff fires a maintenance trigger the repository declares for an architecture or design document, confirm that document updated on this branch; a missing update is a fix-now judgment finding, not a defer.
 
 ### Phase 5: Re-Audit
+
+Include owned outputs of companion preparation and generation in this review, using their retained pre-command contents. Inspect the output changes for correctness without expanding the frozen surface to unrelated parts of their files. Finish required hardening checks before preparing the final handoff; later fixes that invalidate those results require the affected checks again within this workflow.
 
 Include the retained initial compatibility evidence in every applicable re-audit's contract, alongside the final artifacts. If `verifying-invariants` was loaded, write the complete intended final response to a draft file in the allocated scratch directory after fixes and checkpoint evidence are stable. Read [Manager handoff](manager-handoff.md) now and copy its final review request, inserting the draft file's exact contents inline along with the retained initial comparison contents, final artifact locations, and actual check evidence. The reviewer receives the complete text without needing access to the caller's scratch directory. Do not substitute selected claims or an earlier conversational draft. One completed review covers both the changes and the handoff. An **Incomplete final claim review** requires supplying the named missing input to the same reviewer; it is not a completed review. If findings cause further changes, update the draft and evidence before the final review; a stale draft does not cover the final handoff.
 
