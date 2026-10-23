@@ -32,17 +32,21 @@ struct ItemEntityQuery: EntityStringQuery, EntityPropertyQuery {
     func suggestedEntities() async throws -> [ItemEntity] {
         try await ItemRepository.shared.recentEntities(limit: 10)
     }
-    static var properties = QueryProperties {
-        Property(\.name) {
-            EqualToComparator { $0 }
-            ContainsComparator { $0 }
-        }
-        Property(\.details) {
-            ContainsComparator { $0 }
+    static var properties: QueryProperties {
+        QueryProperties {
+            Property(\.name) {
+                EqualToComparator { $0 }
+                ContainsComparator { $0 }
+            }
+            Property(\.details) {
+                ContainsComparator { $0 }
+            }
         }
     }
-    static var sortingOptions = SortingOptions {
-        SortableBy(\.name)
+    static var sortingOptions: SortingOptions {
+        SortingOptions {
+            SortableBy(\.name)
+        }
     }
     func entities(
         matching comparators: [QueryComparator<ItemEntity>],

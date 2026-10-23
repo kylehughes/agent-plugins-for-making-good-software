@@ -1,19 +1,16 @@
 ---
 name: organizing-swift-types
-description: "Organize Swift declarations, extensions, conformances, access control, and file layout. Use when adding or restructuring types; member sorting belongs to ordering-symbols."
+description: "Organize Swift types, conformances, extensions, access control, and files. Use proactively when adding or restructuring declarations; apply repository conventions before the suggested layout."
 ---
 
 # Organizing Swift Types
 
 ## Scope and Assumptions
 
-These conventions apply to Swift source for iOS projects.
+Use these suggested conventions for Swift source when the repository has no established layout. Repository style wins, including MARK comments, organizational extensions, nested types, and constants namespaces. These are layout choices, not platform restrictions; apply them only within the requested surface.
 
-- Use the selected current Swift compiler. Do not write compatibility branches for older Swift compilers or older Swift language syntax.
-- Assume Swift 6 language mode unless project settings explicitly prove otherwise. Do not optimize style for Swift 5-era limitations.
-- Target iOS 16 as the minimum runtime unless a file or target explicitly states a higher minimum.
-- Use the selected stable Xcode and SDK by default; use a preview channel only after an explicit project decision. When a compiler feature or SDK channel affects organization, consult the shared [feature-status guidance](../modeling-swift-types-for-correctness/references/swift-feature-status.md#swift-64-release-matrix).
-- A newer compiler or SDK does not make newer OS APIs available on iOS 16. Guard every post-iOS-16 API at runtime or isolate it behind an available declaration.
+- Inspect and preserve the project’s compiler, language mode, deployment targets, and SDK. Do not assume iOS 16 or Swift 6 when settings are unknown.
+- Gate newer APIs relative to the affected target’s deployment minimum; organization alone does not justify changing build settings.
 - This skill governs organization. For detailed symbol ordering inside a declaration, apply the `ordering-symbols` skill when available. If that skill is unavailable, use deterministic ordering: compiler-required declarations first, then lexicographic order by symbol name. Never compensate for missing ordering rules with MARK comments.
 
 When a rule here conflicts with compiler correctness, compiler correctness wins. Make the smallest possible exception and preserve the rest of the structure.
@@ -45,7 +42,7 @@ When editing Swift under this skill:
 6. Replace `private enum Constants`, `private struct Constants`, global implementation constants, and type-polluting private static constants with `fileprivate static let` primitive extensions unless the constant is true type API.
 7. Remove MARK comments and visual section comments.
 8. Remove unnecessary `self` while preserving required disambiguation and capture semantics.
-9. Add or preserve iOS availability guards for every post-iOS-16 API.
+9. Preserve availability guards required by the actual deployment targets.
 10. Place previews last inside `#if DEBUG`.
 
 Do not create churn outside the touched file unless moving a legitimate external-type extension or top-level production type into its own file is necessary for correctness or explicitly requested.

@@ -1,6 +1,6 @@
 ---
 name: hardening-changes
-description: "Harden an owned branch or working tree for a PR through an audit-and-fix loop. Use for PR preparation or requested change-set hardening, not a read-only review of someone else's work."
+description: "Harden owned changes through scoped review and fixes. Use proactively when preparing a change set for a PR or when hardening is requested; read-only review belongs to reviewing-code."
 ---
 
 # Hardening Changes
@@ -13,10 +13,10 @@ When an enclosing workflow supplies an owned task surface, preserve that boundar
 
 Apply default whitespace checks to the owned changes. Restrict tracked checks to owned paths; for files containing unrelated edits, compare warnings against retained task-entry contents and resolve only warnings introduced or worsened by the owned changes. Scan only owned untracked text. Report unrelated warnings without repairing them or treating them as failures of this default check. Explicit project-required checks retain their required scope and failure policy.
 
-Inspect `git status --short` first, then select the scope:
+Inspect `git status --short` first, then select the scope from the request or enclosing workflow:
 
-- **Branch mode**: working tree clean → audit the diff from the base branch (usually `main`; confirm from repository context) to `HEAD`.
-- **Working-tree mode**: uncommitted or untracked changes exist → audit the working tree via `git status --short`, `git diff HEAD --find-renames=20%`, and direct reads of untracked files.
+- **Branch mode**: a branch or PR is requested, or no narrower surface is supplied and the tree is clean → audit the diff from the relevant base branch to `HEAD`, plus owned staged, unstaged, and untracked changes when present. Confirm the base from repository context. A dirty tree does not erase committed branch changes.
+- **Working-tree mode**: the request concerns uncommitted work, or no narrower surface is supplied and the tree is dirty → audit via `git status --short`, `git diff HEAD --find-renames=20%`, and direct reads of owned untracked files.
 
 If the committed diff against the base branch is empty but the tree is dirty, working-tree mode is required. Never report a clean branch from an empty committed diff while uncommitted work exists.
 

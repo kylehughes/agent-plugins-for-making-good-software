@@ -194,6 +194,7 @@ public struct AccessibilityIdentifierComponent:
     CustomStringConvertible
 {
     public let rawValue: String
+
     public var description: String { rawValue }
 
     public init(rawValue: String) {
@@ -201,11 +202,15 @@ public struct AccessibilityIdentifierComponent:
             .map(Self.sanitizedScalar)
             .joined()
 
-        precondition(!sanitized.isEmpty, "Identifier component must not be empty.")
+        precondition(
+            !sanitized.isEmpty,
+            "Identifier component must not be empty."
+        )
         precondition(
             sanitized.count <= 80,
             "Identifier component is too long: \(sanitized)"
         )
+
         self.rawValue = sanitized
     }
 
@@ -213,9 +218,28 @@ public struct AccessibilityIdentifierComponent:
         self.init(rawValue: value.description)
     }
 
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        let rawValue = try container.decode(String.self)
+        let sanitized = rawValue.unicodeScalars.map(Self.sanitizedScalar).joined()
+
+        guard !sanitized.isEmpty && sanitized.count <= 80 else {
+            throw DecodingError.dataCorruptedError(
+                in: container,
+                debugDescription: "Invalid accessibility identifier component."
+            )
+        }
+
+        self.rawValue = sanitized
+    }
+
     private static func sanitizedScalar(_ scalar: Unicode.Scalar) -> String {
         switch scalar.value {
-        case 45, 46, 48...57, 65...90, 97...122:
+        case 45,       // -
+             46,       // .
+             48...57,  // 0-9
+             65...90,  // A-Z
+             97...122: // a-z
             return String(scalar)
         default:
             return "-"
@@ -683,3 +707,7 @@ Do not assert the raw identifier string in normal UI tests. Contract tests cover
 The ceremony is intentional. It buys compiler-checked element references, stable localized-test behavior, explicit ownership, a curated public automation surface, and duplicate detection.
 
 It does not make uniqueness automatic, because the app catalog is explicit. It does not prove real-world accessibility quality, because identifiers are only the transport used by automation.
+
+## Decoding the validated wrappers
+
+The bundled Scope and Component types preserve their RawRepresentable scalar-string wire format with custom decoding. Reject malformed values with a decoding error instead of routing untrusted input through a trapping initializer. Components retain constructor sanitization before checking empty/length constraints. Keep fixed historical payload, invalid payload, and valid round-trip tests for each wrapper.

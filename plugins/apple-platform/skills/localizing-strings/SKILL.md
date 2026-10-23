@@ -1,124 +1,65 @@
 ---
 name: localizing-strings
-description: "Localize Apple-platform UI strings with String(localized:) and string catalogs. Use for new user-facing text, hardcoded-string extraction, plurals, or localization bundles."
+description: "Localize Apple-platform UI text with string catalogs and bundle-aware APIs. Use proactively for new user-facing strings, plurals, interpolation, or hardcoded-string extraction."
 ---
 
 # Localizing Strings
 
-Extract hardcoded user-facing strings from SwiftUI and UIKit code into localized `String` extensions.
+Localize application UI text while preserving the repository’s catalog keys, resource bundles, extraction workflow, and language-selection behavior. Use for interpolation, plural variations, accessibility text, and catalog migration. Do not translate developer diagnostics or change the app’s language policy.
 
-## Scope and assumptions
+## Inspect before editing
 
-Use this skill for application UI strings, interpolation, plural variations, and string-catalog migration. Do not use it to translate developer diagnostics or to change the app's language-selection policy.
+- Find the affected target, catalog, source language, and owning resource bundle.
+- Preserve existing key conventions. Phrase keys are readable defaults; stable semantic keys are also valid, especially when source wording changes independently of identity.
+- Use `Bundle.module` only for Swift package targets that provide resources. App resources normally use the main bundle; frameworks use the bundle owning their catalog. See [localizing package resources](https://developer.apple.com/documentation/xcode/localizing-package-resources).
+- Inspect the project’s extraction/build commands and supported OS versions. Do not raise deployment targets to use a localization API.
 
-Inspect the target and resource bundle before editing. The examples use a Swift package target with localized resources, where [Swift Package Manager provides `Bundle.module`](https://developer.apple.com/documentation/xcode/localizing-package-resources). For app-target resources, use the main bundle; for framework or other resource bundles, use the bundle that owns the catalog. Do not copy `.module` into a target that does not provide it. Use the repository's existing extraction and build commands.
+## Choose the API
 
-## Key Format
+- SwiftUI controls such as `Text("Delete Message")` already treat suitable literal initializers as localizable. Preserve that path when it fits; do not wrap every literal in `String(localized:)`.
+- Use `String(localized:bundle:comment:)` when UIKit or another caller needs a resolved `String`.
+- Preserve `LocalizedStringResource`, localization wrappers, generated symbols, or legacy APIs when they serve the project’s compatibility or deferred-resolution contract.
+- Keep interpolation in one localized phrase so translators can reorder arguments. Avoid concatenating translated fragments.
+- Localize labels, button titles, placeholders, visible errors, accessibility labels/hints, and help text. Keep logs, assertions, programming errors, and automation identifiers unlocalized.
 
-Use the actual user-facing phrase as the localization key. Dot-separated identifiers make string catalogs harder to review and provide no context to translators:
+## Implementation workflow
+
+1. Identify the new or changed user-facing text within the requested surface. Check SwiftUI initializer overloads before classifying literals as hardcoded.
+2. Add a translator comment where context, grammar, or argument meaning is unclear.
+3. Follow existing extraction style. When no convention exists, use inline localization for short one-off UI text or file-local `String` helpers for repeated/resolved strings. Helper extraction is a style choice, not an Apple requirement.
+4. Preserve the catalog’s existing keys and translations. Avoid renaming keys solely to follow an example.
+5. Run the documented extraction/build command and inspect the catalog diff. Some repositories provide `make build/package PACKAGE=<PackageName>` or `make build/app`; these are project targets, not standard SwiftPM commands.
+6. Add plural variations using Xcode’s catalog editor or carefully editing the existing schema. Configure all categories required by each locale; English commonly uses `one` and `other`. Retain the actual extracted integer placeholder instead of guessing its width.
+7. Verify representative zero, one, and multiple counts, interpolation order, long translations, and the owning bundle as relevant. Report extraction/build checks actually run.
+
+For a phrase key, choose grammatical source wording consistent with the existing catalog. A singular base phrase is an example convention, not a requirement for plural selection.
+
+## File-local helpers
+
+When the project uses extracted helpers:
 
 ```swift
-// ✅ Phrase as key — readable in Localizable.xcstrings
-String(localized: "Message Will Be Deleted", bundle: .module, comment: "...")
-
-// ❌ Dot-separated identifier — opaque to translators
-String(localized: "alert.deleteTitle", bundle: .module, comment: "...")
-```
-
-## Extraction Requirement
-
-Extract `String(localized:...)` calls into a `fileprivate extension String` rather than leaving them inline. This keeps view bodies focused on layout and makes localized strings reusable within the file:
-
-```swift
-// ❌ Inline in view body — noisy and non-reusable
-Text(String(localized: "Delete Message", bundle: .module, comment: "Button title"))
-
-// ✅ Extracted to extension — clean call site
-Text(.deleteMessageButton)
-
-// In extension:
 extension String {
-    fileprivate static let deleteMessageButton = String(
-        localized: "Delete Message",
-        bundle: .module,
-        comment: "Button title for deleting a message."
-    )
+    fileprivate static var deleteMessageButton: String {
+        String(localized: "Delete Message", comment: "Button that deletes a message.")
+    }
+
+    fileprivate static func peopleCount(_ count: Int) -> String {
+        String(localized: "\(count) people", comment: "Number of people; configure plural variations.")
+    }
 }
 ```
 
-## What to Localize
-
-Only localize strings displayed to end users. Developer-facing text should remain as plain string literals.
-
-**Localize:** UI text, labels, button titles, user-facing messages, prompts, placeholders, error messages shown to users, accessibility labels and hints, tooltips and help text.
-
-**Do not localize:** Log messages, assertions, fatal errors, precondition failures, programming errors, debug strings, code comments, test strings (including `#Preview` blocks).
-
-## Process
-
-1. **Identify hardcoded strings** in the current file or selection that should be localized (UI text, labels, messages, placeholders, etc.)
-
-2. **Create static properties/functions** in a `fileprivate extension String`:
-   - Place after all extensions on the file's primary type, sorted lexicographically with other type extensions
-   - Use `String(localized:bundle:comment:)` initializer
-   - Set the bundle that owns the catalog: `.module` for package resources, the main bundle for app resources, or the existing framework/resource bundle
-   - Write a descriptive but terse comment explaining context and usage
-   - Name properties/functions using camelCase with clear semantic meaning
-   - For strings with counts, use **singular variants** (e.g., "\(count) person" not "people")
-   - Sort properties lexicographically, then functions lexicographically (properties before functions)
-   - Add one empty line between each property/function
-   - No documentation comments on properties/functions
-
-3. **Replace call sites** with implicit member syntax (e.g., `label.text = .messageStatusFailed`)
-
-4. **Build with string extraction enabled** to update `Localizable.xcstrings` entries. Use the repository's documented command. For a repository that provides these Make targets, the package command is:
-   ```bash
-   make build/package PACKAGE=<PackageName>
-   ```
-
-   If that repository's package build does not generate the entries, try its app build:
-   ```bash
-   make build/app
-   ```
-
-   These Make targets are project conventions, not Xcode or Swift Package Manager commands. When absent, use the project's Xcode scheme or extraction workflow and verify that the catalog entries were updated.
-
-5. **Configure plurality** (if applicable):
-   - Locate the newly created entries in `Localizable.xcstrings`
-   - For strings with integer parameters, add plural variations:
-     - `"one"`: singular form
-     - `"other"`: plural form
-   - Edit the JSON directly to add the `"localizations"."en"."variations"."plural"` structure
-
-6. **Format constraints**:
-   - LINE WRAP AT 120 CHARACTERS
-   - KEEP COMMENTS ON ONE LINE WHEN POSSIBLE
-   - Use proper grammar (incomplete sentences allowed for terseness)
-   - Maintain lexicographic ordering
-
-## Rules
-
-- Only localize user-facing application strings; do not localize logs, assertions, fatal errors, or developer-facing diagnostics
-- Use the bundle that owns the string catalog; `.module` applies to Swift package resources
-- Use the actual phrase as the key (e.g., `"Delete Message"`) for translator readability, not dot-separated identifiers (e.g., `"alert.delete"`)
-- Extract to `fileprivate extension String`; do not leave `String(localized:...)` inline in views
-- Place `extension String` after extensions on the file's primary type, sorted lexicographically with other type extensions
-- Sort properties before functions; sort each group lexicographically within the extension
-- Use implicit member syntax at call sites when type context allows (e.g., `.deleteMessageButton`)
-- Do not add documentation comments to the static properties/functions — the `comment:` parameter serves that purpose
-- Do not localize strings in test files or `#Preview` blocks
-- Keep `comment:` values descriptive but terse
-- One empty line between each property/function definition
-- **For strings with plurality**: extract using the singular variant in Swift code, build to auto-generate the catalog entry, then edit `Localizable.xcstrings` directly to add plural variations (one, other, etc.)
+Use the resource-owning bundle where needed. A computed property resolves on each access; `static let` caches the first result. Choose according to the app’s language-change behavior. Keep helper visibility, ordering, and formatting consistent with the file.
 
 ## Reference Map
 
-Read only the examples needed for the requested localization change:
+Read only the examples needed for the requested change, adapting their optional helper/key conventions and package bundle:
 
-- [Simple strings](references/implementation-examples.md#simple-strings): extract fixed UI text.
-- [Strings with parameters](references/implementation-examples.md#strings-with-parameters): preserve interpolation.
-- [Mixed properties and functions](references/implementation-examples.md#mixed-properties-and-functions): order reusable members.
-- [Strings with plurality](references/implementation-examples.md#strings-with-plurality): build and edit plural catalog entries.
-- [Legacy pattern](references/implementation-examples.md#legacy-pattern): migrate NSLocalizedString.
+- [Simple strings](references/implementation-examples.md#simple-strings): fixed UI text.
+- [Strings with parameters](references/implementation-examples.md#strings-with-parameters): interpolation.
+- [Mixed properties and functions](references/implementation-examples.md#mixed-properties-and-functions): reusable members.
+- [Strings with plurality](references/implementation-examples.md#strings-with-plurality): extraction and plural catalog entries.
+- [Legacy pattern](references/implementation-examples.md#legacy-pattern): optional modernization of NSLocalizedString.
 
-Before finishing, check the extraction and catalog changes against the Rules above.
+Before finishing, confirm the bundle, extraction, keys, plural categories, and language-resolution behavior match the project.

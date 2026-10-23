@@ -1,6 +1,6 @@
 ---
 name: writing-swift
-description: "Write, debug, review, or migrate Swift code and packages. Use for .swift or Package.swift changes, Xcode builds, and compiler diagnostics; apply focused companion skills only for the concerns touched."
+description: "Write, debug, review, or migrate Swift code and packages. Use proactively for Swift source, package manifests, Xcode builds, or compiler diagnostics; load focused guidance only as needed."
 ---
 
 # Writing Swift

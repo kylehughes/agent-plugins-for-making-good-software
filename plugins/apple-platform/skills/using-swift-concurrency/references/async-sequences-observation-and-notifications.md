@@ -122,7 +122,7 @@ If using newer typed notification APIs, gate availability for iOS 16-compatible 
 
 ## Observation framework
 
-Observation (`@Observable`, `withObservationTracking`, `Observations`) is not an unconditional iOS 16 baseline. Use it in iOS 17+ code or provide a fallback.
+Observation’s `@Observable` and `withObservationTracking` require iOS 17+/macOS 14+. The async `Observations` sequence requires iOS 26+/macOS 26+; gate it separately or provide a fallback. See [Apple’s `Observations` declaration](https://developer.apple.com/documentation/observation/observations).
 
 For iOS 16-compatible view models, `ObservableObject` remains the safe default.
 

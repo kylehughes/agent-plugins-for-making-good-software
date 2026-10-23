@@ -1,6 +1,6 @@
 ---
 name: using-swift-concurrency
-description: "Design, debug, or review Swift concurrency: async/await, tasks, actors, Sendable, isolation, cancellation, and async sequences. Use for concurrency behavior, migrations, and compiler diagnostics."
+description: "Design or debug Swift concurrency, isolation, Sendable, actors, tasks, and cancellation. Use proactively for async behavior, concurrency migrations, or compiler diagnostics."
 ---
 
 # Using Swift Concurrency
@@ -9,11 +9,11 @@ Use this skill to produce Swift concurrency code that is correct under strict co
 
 ## Scope and assumptions
 
-- Use the project's selected compiler and Swift 6 language mode. [Feature status](../modeling-swift-types-for-correctness/references/swift-feature-status.md) owns dated support and availability facts; consult it when a mechanism depends on toolchain or SDK support.
-- Assume iOS 16 is the lowest supported runtime unless the user states a higher minimum. Code may use current Swift language features, but framework APIs introduced after iOS 16 need availability gates or fallbacks.
+- Preserve the project’s selected compiler and language mode; recommend Swift 6 migration only within the requested scope. [Feature status](../modeling-swift-types-for-correctness/references/swift-feature-status.md) owns dated support and availability facts; consult it when a mechanism depends on toolchain or SDK support.
+- Inspect deployment targets before choosing APIs. The references illustrate an iOS 16 compatibility lane; it is not a default to impose on other projects. Gate framework APIs relative to the actual runtime minimum.
 - Determine stable versus preview support from the selected SDK and official release evidence. Gate newer APIs by their declaration availability; compiler support alone does not establish iOS 16 deployment.
 - Prefer portable Swift and Apple-platform APIs that are available on iOS 16+. If using a newer API such as Observation, Synchronization.Mutex, typed notifications, or beta frameworks, call out the availability implication.
-- Do not preserve Swift 5-era workarounds unless they still improve code under the selected compiler.
+- Remove older workarounds only after checking the project’s supported compiler and language modes.
 
 For a claim about ownership, representable state, typed failure, or mandatory completion, first load the [type-modeling skill body](../modeling-swift-types-for-correctness/SKILL.md) and follow its composition and focused-reference requirements. Reading one of its recipes alone skips that assessment contract. This skill retains scheduling, isolation repair, and task-lifecycle guidance.
 
@@ -55,7 +55,7 @@ For a claim about ownership, representable state, typed failure, or mandatory co
 - Custom actors are for shared mutable state whose operations can be asynchronous and whose invariants benefit from actor serialization. They are not a background-thread annotation.
 - Synchronous shared mutable state on iOS 16 is usually a lock problem, not an actor problem. Prefer `OSAllocatedUnfairLock` for Apple-only iOS 16+ code when a synchronous lock is genuinely needed; use `Synchronization.Mutex` only when the deployment target supports it or when gated.
 - Use `@concurrent` only when a nonisolated async function must switch away from the caller’s actor to perform parallel or CPU-heavy work. Awaiting network I/O does not itself block the main actor.
-- Use `Task.immediate` only when immediate ordering before the first suspension is semantically required. It can overhang the caller executor.
+- Use `Task.immediate` (iOS 26+/macOS 26+) only when immediate ordering before the first suspension is semantically required. It can overhang the caller executor.
 - Use `Task.detached` only when losing actor inheritance, task-local values, and structured cancellation is intentional and all captured values are safe to send.
 - Prefer `async let` and task groups for child work. Prefer returning task handles from unavoidable fire-and-forget APIs so tests and owners can observe completion.
 - Add `Sendable`, `@Sendable`, `sending`, protocol isolation, and isolated conformances because they describe the real API contract, not because the compiler asked for a token.
@@ -75,4 +75,4 @@ When changing code, include the smallest correct patch and a brief explanation o
 - Are protocol requirements explicit about isolation, synchronicity, and transferability?
 - Are async bridges cancellation-safe and exactly-once for continuations?
 - Are async tests event-driven rather than sleep/yield driven?
-- Are APIs introduced after iOS 16 gated or replaced with iOS 16-compatible fallbacks?
+- Are APIs newer than the deployment target gated or given compatible fallbacks?

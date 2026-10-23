@@ -1,8 +1,10 @@
 # UIKit Integration for App Intents, Siri, and Apple Intelligence
 
+Check [current availability](sdk-availability-and-verification.md#current-documentation-check--2026-10-23) for SDK-specific examples; retain older-SDK build lanes only when required by the project.
+
 This document treats UIKit as a first-class host for App Intents on iOS 26 and iOS 27. It covers scene routing, `NSUserActivity` primary-screen awareness, selected-SDK-gated list/canvas annotation strategy, Siri promotion, drag and drop, interaction donations, multiwindow behavior, mixed Objective-C applications, testing, and the SwiftUI islands that remain required by system frameworks.
 
-Exact declarations can move between Xcode seeds. The iPhoneOS 26.5 SDK does not include UIKit per-view/table/collection/canvas annotation APIs; only `NSUserActivity.appEntityIdentifier` is buildable for onscreen context. Preserve the architecture and compile-check protocol names, availability, and initializer labels against the selected SDK before generating code.
+Use the current availability reference and selected SDK declarations for this surface. Omit or source-gate unsupported APIs only when preserving a required older-SDK build lane; runtime gates alone cannot supply missing declarations.
 
 ## 1. UIKit is not a second-class App Intents client
 
@@ -329,9 +331,9 @@ An activity should express the screen’s main semantic subject. Use view annota
 
 `NSUserActivity` can participate in restoration, Handoff, search, prediction, and App Intent context. Configure only the capabilities actually intended. Adding an App Entity identifier does not require exposing the activity to every other subsystem.
 
-## 11. Forward-looking individual UIKit view annotations
+## 11. Selected-SDK-dependent individual UIKit view annotations
 
-The iPhoneOS 26.5 SDK does not provide a buildable UIKit per-view App Entity annotation API beyond `NSUserActivity`. `AppEntityAnnotatable` and `NSUserActivity.appEntityIdentifier` are present as iOS 18.2 declarations, but the view/list/canvas APIs previously described in this skill are absent from the 26.5 SDK.
+Use the current availability reference and selected SDK declarations for this surface. Omit or source-gate unsupported APIs only when preserving a required older-SDK build lane; runtime gates alone cannot supply missing declarations.
 
 Keep this design ready, but do not compile code against it unless the selected SDK declares the relevant properties/protocols.
 
@@ -352,9 +354,9 @@ Rules when the API exists:
 - Keep annotations consistent with accessibility semantics.
 - Do not declare app-defined `AppEntityAnnotatable` conformances.
 
-## 12. Forward-looking `UITableView` collection annotations
+## 12. Selected-SDK-dependent `UITableView` collection annotations
 
-`UITableViewAppIntentsDataSource` and `tableView.appIntentsDataSource` are absent from the iPhoneOS 26.5 SDK. Do not generate this code for a 26.5-compiled target.
+Use the current availability reference and selected SDK declarations for this surface. Omit or source-gate unsupported APIs only when preserving a required older-SDK build lane; runtime gates alone cannot supply missing declarations.
 
 When a selected SDK supplies a table annotation API, map an index path to an `EntityIdentifier` through the current table data source or diffable snapshot. Never derive identity from row number.
 
@@ -372,9 +374,9 @@ Production requirements when available:
 - Ensure selected row IDs remain stable across snapshots.
 - Test reorder, filter, section insertion, and animated snapshot updates.
 
-## 13. Forward-looking `UICollectionView` collection annotations
+## 13. Selected-SDK-dependent `UICollectionView` collection annotations
 
-`UICollectionViewAppIntentsDataSource` and `collectionView.appIntentsDataSource` are absent from the iPhoneOS 26.5 SDK. Do not generate this code for a 26.5-compiled target.
+Use the current availability reference and selected SDK declarations for this surface. Omit or source-gate unsupported APIs only when preserving a required older-SDK build lane; runtime gates alone cannot supply missing declarations.
 
 When a selected SDK supplies a collection annotation API, use the diffable item identifier as the bridge:
 
@@ -395,7 +397,7 @@ Collection-specific concerns when available:
 - Prefetch callbacks are not evidence that content is onscreen.
 - A compositional-layout decoration view should not receive an entity annotation unless it is semantic content.
 
-## 14. Forward-looking selection and offscreen entities
+## 14. Selected-SDK-dependent selection and offscreen entities
 
 Selection is semantically important for requests such as:
 
@@ -404,7 +406,7 @@ Selection is semantically important for requests such as:
 - “Add those three to the project.”
 - “Explain the highlighted note.”
 
-The iPhoneOS 26.5 SDK does not expose the App Intents collection-selection annotation APIs described above. Still keep your UIKit selection model authoritative and ID-based:
+Use the current availability reference and selected SDK declarations for this surface. Omit or source-gate unsupported APIs only when preserving a required older-SDK build lane; runtime gates alone cannot supply missing declarations.
 
 - Maintain selected item IDs independently of visible cells.
 - Reapply visual selection after diffable snapshots.
@@ -413,9 +415,9 @@ The iPhoneOS 26.5 SDK does not expose the App Intents collection-selection annot
 
 When a future selected SDK provides collection annotation APIs, expose this existing ID-based selection through the adapter.
 
-## 15. Forward-looking custom canvas and nonstandard content
+## 15. Selected-SDK-dependent custom canvas and nonstandard content
 
-`AppEntityUIElement` and `UIView.appEntityUIElementProvider` are absent from the iPhoneOS 26.5 SDK. Do not generate canvas annotation code for a 26.5-compiled target.
+Use the current availability reference and selected SDK declarations for this surface. Omit or source-gate unsupported APIs only when preserving a required older-SDK build lane; runtime gates alone cannot supply missing declarations.
 
 For custom drawing surfaces, maps, timelines, editors, diagrams, games, or media canvases, keep a semantic element model that can later feed a provider:
 
@@ -658,7 +660,7 @@ Provide deletion/revocation when account, privacy settings, or user data changes
 
 ## 26. Notifications, Now Playing, AlarmKit, and other system surfaces
 
-These integrations are independent of UIKit but often originate from UIKit app services. Verify each surface against the selected SDK. In the iPhoneOS 26.5 SDK, notification-content `appEntityIdentifiers` is absent; do not generate notification entity-annotation code for that SDK.
+Use the current availability reference and selected SDK declarations for this surface. Omit or source-gate unsupported APIs only when preserving a required older-SDK build lane; runtime gates alone cannot supply missing declarations.
 
 General rules for surfaces that do expose entity identifiers:
 
@@ -757,26 +759,7 @@ Snippet/widget targets: SwiftUI views and extension-safe dependencies
 
 ## 32. Availability strategy
 
-Suggested buckets verified against iPhoneOS 26.5:
-
-- iOS 16+: core App Intents protocols, `IntentPerson`, `PredictableIntent`.
-- iOS 17+: `AppIntentsPackage`, `ProgressReportingIntent`, `DeprecatedAppIntent`, `IntentDeprecation`.
-- iOS 18+: `IndexedEntity`.
-- iOS 18.2+: `NSUserActivity.appEntityIdentifier` and `AppEntityAnnotatable`.
-- iOS 26+: `UISceneAppIntent`, `AppIntentSceneDelegate`, `SiriTipUIView`, and `ShortcutsUIButton` in the `_AppIntents_UIKit` cross-import overlay; Visual Intelligence integration through `VisualIntelligence`; `PlaceDescriptor` through `GeoToolbox`.
-
-Absent from iPhoneOS 26.5 and therefore selected-SDK-gated: UIKit per-view/table/collection/canvas annotation APIs, `ValueRepresentation`, `IntentValueRepresentation`, `RelevantEntities`, AppIntents `EntityCollection`, `SyncableEntity`, `LongRunningIntent`, `CancellableIntent`, `ExecutionTargets`, `AppIntentsTesting`, SwiftUI per-view annotation modifiers, and notification `appEntityIdentifiers`.
-
-Do not scatter `#available` checks through every controller. Hide version-specific implementation behind adapters:
-
-```text
-PrimaryEntityActivityPublishing      # Shipping path: NSUserActivity.appEntityIdentifier
-AdvancedOnscreenEntityAnnotating     # No-op unless selected SDK provides view/list/canvas APIs
-SceneIntentRouting                   # UISceneAppIntent / AppIntentSceneDelegate
-SiriPromotionProviding               # SiriTipUIView / ShortcutsUIButton
-```
-
-The no-op fallback should be safe and explicit. If the selected SDK lacks a symbol, do not reference it in source compiled by that SDK.
+Use the current availability reference as the single source for SDK visibility and runtime floors. Keep version-specific implementation behind small adapters, with a fallback only for platforms or SDK build lanes the project actually supports. On a supported current SDK, implement the annotation adapter rather than leaving it as a no-op.
 
 ## 33. Performance targets
 

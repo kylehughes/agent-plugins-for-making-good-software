@@ -32,6 +32,8 @@ This script checks, across the whole repository:
     sideways.
 11. That skill and agent descriptions use one-line JSON-compatible strings
     and stay within the repository's editorial character budgets.
+12. That every skill permits both automatic and explicit invocation in
+    Claude Code and Codex.
 
 Caveat: this repository intentionally avoids third-party dependencies, so
 there is no PyYAML available. Frontmatter (in SKILL.md and agent files) and
@@ -370,6 +372,52 @@ def check_openai_yaml() -> list[Finding]:
     return findings
 
 
+def check_skill_invocation() -> list[Finding]:
+    """Enforce the marketplace's explicit-and-automatic discovery policy.
+
+    Accept omitted defaults or explicit booleans. Codex policy uses the
+    repository's block-mapping YAML format; reject unsupported forms instead
+    of silently overlooking an invocation restriction.
+    """
+    findings: list[Finding] = []
+    for skill_dir in _iter_skill_dirs():
+        skill_md, fields, _ = _skill_frontmatter(skill_dir)
+        if fields is not None:
+            for key, expected in (
+                ("disable-model-invocation", "false"),
+                ("user-invocable", "true"),
+            ):
+                if key in fields and fields[key].lower() != expected:
+                    findings.append((
+                        _rel(skill_md),
+                        f"{key} must be {expected} or omitted so all skills remain invocable",
+                    ))
+
+        metadata = skill_dir / "agents" / "openai.yaml"
+        if not metadata.exists():
+            continue  # Already reported by check_openai_yaml.
+        lines = metadata.read_text(encoding="utf-8").splitlines()
+        for index, line in enumerate(lines):
+            if not re.match(r"^policy\s*:", line):
+                continue
+            if re.sub(r"\s+#.*$", "", line).strip() != "policy:":
+                findings.append((_rel(metadata), "policy must use an indented YAML block mapping"))
+                continue
+            block: list[str] = []
+            for following in lines[index + 1 :]:
+                if following.strip() and not following.startswith((" ", "\t", "#")):
+                    break
+                block.append(following)
+            policy = _parse_frontmatter_fields([item.strip() for item in block])
+            value = policy.get("allow_implicit_invocation", "true")
+            if value.lower() != "true":
+                findings.append((
+                    _rel(metadata),
+                    "allow_implicit_invocation must be true or omitted so Codex can select the skill",
+                ))
+    return findings
+
+
 _BACKTICK_PATH_RE = re.compile(
     r"`((?:references|scripts|examples|assets|evals)/[^`]+\.[A-Za-z0-9]+)`"
 )
@@ -675,6 +723,7 @@ CHECKS = [
     ("Skill shape", check_skill_shape),
     ("Version-free identity", check_version_free_identity),
     ("openai.yaml metadata", check_openai_yaml),
+    ("Skill invocation", check_skill_invocation),
     ("Link integrity", check_link_integrity),
     ("Agent frontmatter", check_agent_frontmatter),
     ("Description budgets", check_description_budgets),

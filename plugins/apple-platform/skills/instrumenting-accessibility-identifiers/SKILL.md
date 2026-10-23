@@ -1,11 +1,13 @@
 ---
 name: instrumenting-accessibility-identifiers
-description: "Add or audit type-safe accessibility identifiers and XCUITest selectors in SwiftUI or UIKit, including screenshot automation. Use for identifier structure and lookup, not a general VoiceOver audit."
+description: "Add or audit typed accessibility identifiers and XCUITest selectors in SwiftUI or UIKit. Use proactively for automation contracts and selector migration; not a general VoiceOver audit."
 ---
 
 # Instrumenting Accessibility Identifiers
 
 Create or migrate a compiler-checked accessibility-identifier contract that works across SwiftUI, UIKit, XCUITest, and screenshot automation.
+
+Resolve bundled `scripts/`, `assets/`, and reference paths relative to this skill directory, not the consumer repository.
 
 Read [references/architecture.md](references/architecture.md) before implementing or reviewing this pattern. Read [references/migration.md](references/migration.md) when the repository already contains raw identifiers. Before finishing, check the work against [references/review-checklist.md](references/review-checklist.md).
 

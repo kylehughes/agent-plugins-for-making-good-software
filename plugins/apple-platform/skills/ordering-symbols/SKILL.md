@@ -1,6 +1,6 @@
 ---
 name: ordering-symbols
-description: "Order members within Swift types by declaration kind, access level, and name. Use when adding or moving members or reviewing their order; preserve order-dependent behavior."
+description: "Order Swift members by declaration kind, access, and name when semantics permit. Use proactively when adding or moving members; preserve initialization, enum, UI, and other meaningful order."
 ---
 
 # Ordering Symbols
@@ -9,11 +9,11 @@ description: "Order members within Swift types by declaration kind, access level
 
 Maintain deterministic, lexicographic ordering of Swift declarations wherever reordering is semantics-preserving. Consistent member ordering removes subjective placement decisions and makes types scannable: readers should know where to find a symbol without knowing its implementation.
 
-This skill enforces the existing preference: order by declaration category, access level, static-vs-instance, and name. It does not introduce semantic grouping as an alternative to lexicographic ordering.
+Use the repository’s declared ordering first. When none exists, this skill suggests ordering by declaration category, access level, static-vs-instance, and name. These are editorial conventions, not Swift language requirements. Apply them within the requested edit; do not reorder unrelated declarations.
 
 ## Version and Platform Assumptions
 
-- Use the selected current Swift compiler in Swift 6 language mode. When a compiler feature or SDK channel affects a declaration, consult the shared [feature-status guidance](../modeling-swift-types-for-correctness/references/swift-feature-status.md#swift-64-release-matrix).
+- Preserve the project’s selected Swift compiler and language mode; ordering does not require a language migration. When a compiler feature or SDK channel affects a declaration, consult the shared [feature-status guidance](../modeling-swift-types-for-correctness/references/swift-feature-status.md#swift-64-release-matrix).
 - iOS projects commonly span iOS 16 through the selected stable SDK; use a preview channel only after an explicit project decision. Guard newer APIs by their documented availability. Availability gates are safety boundaries, not sorting keys.
 - Do not preserve old Swift-era conventions for compatibility with versions below the stated deployment target.
 - Do not remove, weaken, or reorder availability fallbacks merely to improve symbol ordering.

@@ -159,6 +159,8 @@ func withTimeout<T: Sendable>(
 }
 ```
 
+This task-group race is a cooperative timeout: the group still waits for every child to terminate after cancellation. It cannot impose a hard deadline on an operation that ignores cancellation or is stuck on a continuation. Ensure the operation has cancellation-aware waits and cleanup; do not report this helper as a hard bound.
+
 If `Task.sleep(for:)` availability is a concern in an older target, use the project’s existing timeout helper or nanosecond sleep wrapper. Do not duplicate unsafe helpers everywhere.
 
 ## Clocks and time-based code
@@ -203,7 +205,7 @@ func cancellationStopsObservation() async {
 }
 ```
 
-If the operation throws, assert `CancellationError` specifically.
+If the operation throws, assert its documented cancellation result, such as `CancellationError` or a framework-specific cancellation error. Cancellation is cooperative; do not assume every API uses the same error type. See [Task cancellation](https://developer.apple.com/documentation/swift/task/cancel()).
 
 ## Non-occurrence tests
 

@@ -1,10 +1,12 @@
 # Testing and Debugging App Intents
 
+Check [current availability](sdk-availability-and-verification.md#current-documentation-check--2026-10-23) for SDK-specific examples; retain older-SDK build lanes only when required by the project.
+
 ## Testing philosophy
 
 Unit tests for repositories are not enough. App Intents need integration tests that exercise the framework boundary: generated intent definitions, parameter bridging, entity queries, result values, Spotlight indexing, `NSUserActivity` annotations, selected-SDK-gated view annotations, snippets, and execution in the same style used by Siri, Shortcuts, widgets, and Spotlight.
 
-Use XCTest/UI tests and manual validation on devices. `AppIntentsTesting` is absent from the iPhoneOS 26.5 SDK; use it only when the selected SDK provides that framework.
+Use the current availability reference and selected SDK declarations for this surface. Omit or source-gate unsupported APIs only when preserving a required older-SDK build lane; runtime gates alone cannot supply missing declarations.
 
 ## Test layers
 
@@ -21,7 +23,7 @@ Use XCTest/UI tests and manual validation on devices. `AppIntentsTesting` is abs
 
 ## AppIntentsTesting setup
 
-`AppIntentsTesting` is absent from the iPhoneOS 26.5 SDK. Do not include `import AppIntentsTesting` in code compiled by that SDK.
+Use the current availability reference and selected SDK declarations for this surface. Omit or source-gate unsupported APIs only when preserving a required older-SDK build lane; runtime gates alone cannot supply missing declarations.
 
 If a selected SDK provides AppIntentsTesting, isolate those tests behind target membership or conditional compilation:
 
@@ -151,7 +153,7 @@ func testProjectDetailPublishesCurrentProjectActivity() throws {
 
 UI tests should also verify the activity is invalidated or replaced when the screen disappears, redacts content, changes account, or changes semantic subject in place.
 
-Forward-looking, selected-SDK-gated tests may inspect per-view annotations, list selections, reusable-cell annotation reset, custom canvas elements, or notification annotations only when the selected SDK exposes those APIs.
+Selected-SDK-dependent, selected-SDK-gated tests may inspect per-view annotations, list selections, reusable-cell annotation reset, custom canvas elements, or notification annotations only when the selected SDK exposes those APIs.
 
 ## Snippet test
 
@@ -171,18 +173,20 @@ Test result snippet, confirmation snippet before mutation, button/toggle intents
 
 ## Long-running/cancellation test
 
-`LongRunningIntent` and `CancellableIntent` are absent from the iPhoneOS 26.5 SDK. Test cancellation at the domain service and `Task` level today.
+Use the current availability reference and selected SDK declarations for this surface. Omit or source-gate unsupported APIs only when preserving a required older-SDK build lane; runtime gates alone cannot supply missing declarations.
 
 ```swift
 func testExportServiceCanBeCancelled() async throws {
+    // The fake exporter exposes readiness after entering a cancellation-aware gate.
+    let exporter = GatedProjectExporter()
     let task = Task {
-        try await ProjectExporter.shared.export(
+        try await exporter.export(
             seededLargeProject.id,
             cancellation: { Task.isCancelled }
         )
     }
 
-    try await Task.sleep(for: .milliseconds(100))
+    await exporter.waitUntilExportStarted() // Bound this wait through the test harness.
     task.cancel()
 
     do {
@@ -194,7 +198,7 @@ func testExportServiceCanBeCancelled() async throws {
 }
 ```
 
-If a selected SDK later provides long-running/cancellable intent protocols, add framework-level tests for progress, cancellation callbacks, persisted job state, duplicate retries, and foreground continuation.
+When SDK visibility and runtime availability permit long-running/cancellable intent protocols, add framework-level tests for progress, cancellation callbacks, persisted job state, duplicate retries, and foreground continuation.
 
 ## Manual Siri matrix
 

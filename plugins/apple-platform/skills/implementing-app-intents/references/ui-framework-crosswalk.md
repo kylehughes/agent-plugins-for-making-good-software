@@ -1,6 +1,8 @@
 # SwiftUI and UIKit App Intents Crosswalk
 
-Use this document when an implementation example is written in SwiftUI but the host application is UIKit. Most of App Intents is UI-framework independent. The differences are concentrated in screen annotation, scene routing, in-app promotion, and the small system-rendered views that Apple currently defines in SwiftUI. Availability in this file follows the iPhoneOS 26.5 SDK verification baseline.
+Check [current availability](sdk-availability-and-verification.md#current-documentation-check--2026-10-23) for SDK-specific examples; retain older-SDK build lanes only when required by the project.
+
+Use this document when an implementation example is written in SwiftUI but the host application is UIKit. Most of App Intents is UI-framework independent. The differences are concentrated in screen annotation, scene routing, in-app promotion, and the small system-rendered views that Apple currently defines in SwiftUI. Availability follows the current API table and project-selected SDK.
 
 ## Boundary rule
 
@@ -8,7 +10,7 @@ Do not translate UI-independent App Intents code into UIKit. Keep these layers s
 
 - `AppIntent`, schema-conforming intents, parameters, summaries, dialogs, confirmations, and result types.
 - `AppEntity`, `IndexedEntity`, `AppEnum`, queries, property queries, value queries, and indexing.
-- App Shortcuts, donations, selected-SDK-gated relevance APIs, `Transferable`, execution modes, and extension packaging.
+- App Shortcuts, donations, supported media/audio suggestion APIs, `Transferable`, execution modes, and extension packaging.
 - Domain services, repositories, authorization, and idempotency.
 
 Translate only the app-facing presentation and navigation layer.
@@ -18,10 +20,10 @@ Translate only the app-facing presentation and navigation layer.
 | Goal | SwiftUI | UIKit | Availability / notes |
 | --- | --- | --- | --- |
 | Publish the primary entity on a screen | `.userActivity(...)` | Create/update an `NSUserActivity`, set `appEntityIdentifier`, assign it to the view controller or call `becomeCurrent()` | Shipping: iOS 18.2+. Keep one primary activity per semantic screen. Invalidate it when it stops representing visible content. |
-| Annotate one visible object | Forward-looking `.appEntityIdentifier(...)` | Forward-looking per-view entity identifier on a framework object that adopts `AppEntityAnnotatable` | Not in iPhoneOS 26.5. Do not generate without selected-SDK verification. |
-| Annotate a list with selection support | Forward-looking `.appEntityIdentifier(forSelectionType:)` | Forward-looking `tableView.appIntentsDataSource` / `UITableViewAppIntentsDataSource` | Not in iPhoneOS 26.5. Keep selection state as stable model IDs so this can be adopted later. |
-| Annotate a collection with selection support | Forward-looking `.appEntityIdentifier(forSelectionType:)` | Forward-looking `collectionView.appIntentsDataSource` / `UICollectionViewAppIntentsDataSource` | Not in iPhoneOS 26.5. Use stable diffable-data-source item IDs rather than index paths if a future SDK provides the API. |
-| Annotate a custom canvas | Forward-looking custom element annotation | Forward-looking `UIView.appEntityUIElementProvider` / `AppEntityUIElement` | Not in iPhoneOS 26.5. Keep semantic geometry models side-effect free for future adoption. |
+| Annotate one visible object | Selected-SDK-dependent `.appEntityIdentifier(...)` | Selected-SDK-dependent per-view entity identifier on a framework object that adopts `AppEntityAnnotatable` | Check current availability and selected SDK declarations. |
+| Annotate a list with selection support | Selected-SDK-dependent `.appEntityIdentifier(forSelectionType:)` | Selected-SDK-dependent `tableView.appIntentsDataSource` / `UITableViewAppIntentsDataSource` | Check current availability and selected SDK declarations. |
+| Annotate a collection with selection support | Selected-SDK-dependent `.appEntityIdentifier(forSelectionType:)` | Selected-SDK-dependent `collectionView.appIntentsDataSource` / `UICollectionViewAppIntentsDataSource` | Check current availability and selected SDK declarations. |
+| Annotate a custom canvas | Selected-SDK-dependent custom element annotation | Selected-SDK-dependent `UIView.appEntityUIElementProvider` / `AppEntityUIElement` | Check current availability and selected SDK declarations. |
 | Route an intent into the active UI | `.onAppIntentExecution(...)` | Adopt `UISceneAppIntent` or make the scene delegate conform to `AppIntentSceneDelegate` | `UISceneAppIntent` / delegate APIs are iOS 26 in `_AppIntents_UIKit`; choose exactly one navigation owner per intent type. |
 | Select which scene handles an intent | `.handlesExternalEvents(...)` | Configure UIKit scene activation conditions and scene-role policy | The scene delegate remains the final owner of navigation state. |
 | Promote a Siri invocation | `SiriTipView` | `SiriTipUIView`; call `setIntent(intent:)` before presentation | iOS 26 in `_AppIntents_UIKit`. Place it next to the feature it invokes and honor `isPresented`. |
@@ -83,7 +85,7 @@ Index paths are presentation coordinates. They change after sorting, filtering, 
 
 ### Do not leave reused cells annotated with old entities
 
-Forward-looking: if the selected SDK exposes reusable-view annotations, clear the annotation in `prepareForReuse()` and assign it every time the cell is configured. A stale annotation is worse than no annotation because Siri may act on the wrong object.
+Selected-SDK-dependent: if the selected SDK exposes reusable-view annotations, clear the annotation in `prepareForReuse()` and assign it every time the cell is configured. A stale annotation is worse than no annotation because Siri may act on the wrong object.
 
 ### Do not add `AppEntityAnnotatable` conformances
 
@@ -122,7 +124,7 @@ AppIntents/
   Shortcuts/
   Indexing/
   Donations/
-  Relevance/
+  MediaSuggestions/
   Transfer/
 SystemSwiftUI/
   Snippets/

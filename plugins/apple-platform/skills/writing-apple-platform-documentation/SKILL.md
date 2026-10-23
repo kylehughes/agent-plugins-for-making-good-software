@@ -1,6 +1,6 @@
 ---
 name: writing-apple-platform-documentation
-description: "Write or review Swift doc comments, DocC, and Apple-platform developer docs. Use for API contracts, terminology, availability, and lifecycle wording; compose with writing-technical-prose when available."
+description: "Write or review Swift doc comments, DocC, and Apple developer docs. Use proactively for API contracts, terminology, availability, or lifecycle wording; compose with writing-technical-prose."
 ---
 
 # Writing Apple Platform Documentation
@@ -33,7 +33,7 @@ Do not use `iOS` as a synonym for every Apple platform. If an API behaves differ
 
 Use `///` comments for declarations unless the project uses block comments for long DocC articles.
 
-The first sentence should be a complete summary of the declaration’s purpose. Do not start with “This method” or restate the symbol name.
+The summary should describe the declaration’s purpose and end with a period; Swift API guidelines commonly use a sentence fragment. Do not start with “This method” or restate the symbol name.
 
 ```swift
 /// Fetches the cached image for a request or loads it from the remote source.
@@ -54,8 +54,8 @@ For complex APIs, add paragraphs in this order when relevant:
 /// `ImagePipeline` coalesces identical in-flight requests and stores decoded images
 /// in memory until the configured cache evicts them.
 ///
-/// Calls are safe from any actor. Completion handlers run on the actor that awaits
-/// the result; UI updates still belong on the main actor.
+/// Callers may await results from any actor. Awaiting callers resume under their
+/// own isolation; callback delivery requires a separate documented contract.
 public actor ImagePipeline { }
 ```
 
@@ -79,7 +79,8 @@ Use callouts for semantics that affect correctness:
 ```swift
 /// - Important: Call this method from the main actor when the result updates UIKit state.
 /// - Warning: This method overwrites any existing file at `destinationURL`.
-/// - Note: Cancellation stops future retries but does not cancel a request already sent by `URLSession`.
+/// - Note: This example API stops future retries on cancellation; document separately
+///   whether its underlying request is cancelled.
 ```
 
 Do not overuse callouts for ordinary details. A document full of notes is harder to scan than a direct paragraph.

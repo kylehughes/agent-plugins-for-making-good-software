@@ -383,8 +383,8 @@ quote_args() {
 
 case "${1:-}" in
   --help|-h)
-    usage >&2
-    exit 1
+    usage
+    exit 0
     ;;
   __prepare)
     shift

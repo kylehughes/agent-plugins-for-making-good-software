@@ -1,6 +1,6 @@
 ---
 name: implementing-app-intents
-description: "Build or debug App Intents for Siri, Shortcuts, Apple Intelligence, Spotlight, widgets, and controls. Use for entities, queries, schemas, intent routing, and system integrations."
+description: "Build or debug App Intents, entities, queries, and system integrations. Use proactively for Siri, Shortcuts, Spotlight, widgets, controls, or Apple Intelligence integration."
 ---
 
 # Implementing App Intents
@@ -8,6 +8,8 @@ description: "Build or debug App Intents for Siri, Shortcuts, Apple Intelligence
 Use this skill when designing, auditing, or implementing App Intents for Apple-platform apps, especially when the goal is integration with Siri, Apple Intelligence, Shortcuts, Spotlight, widgets, controls, Live Activities, the Action button, visual intelligence, onscreen awareness, or cross-app automation.
 
 This is a production implementation skill, not a short reference card. It assumes Swift, SwiftUI/UIKit/AppKit, AppIntents, CoreSpotlight, CoreTransferable, WidgetKit where relevant, and current Xcode SDKs. Treat the selected SDK’s Swift interfaces, Xcode autocomplete, and Apple documentation as the final authority. Runtime `#available` gates do not help when the selected SDK lacks a declaration.
+
+Current API availability is recorded in [SDK availability and verification](references/sdk-availability-and-verification.md#current-documentation-check--2026-10-23). Older 26.5 absence notes are historical; they do not make currently documented APIs speculative or require an old SDK compatibility lane.
 
 ## Primary objective
 
@@ -47,9 +49,9 @@ Use this skill when the user asks to:
 - Integrate an app with Apple Intelligence.
 - Build App Intents, App Shortcuts, App Entities, App Enums, or App Schemas.
 - Make app content visible to Siri, Spotlight, Visual Intelligence, Shortcuts, widgets, controls, Live Activities, or the Action button.
-- Implement entity ID lookup, string search, property queries, semantic Spotlight indexing, `IntentValueQuery`, or `Transferable` exports; plan seams for `SyncableEntity` / AppIntents `EntityCollection` only when the selected SDK contains those symbols.
-- Annotate onscreen content so Siri understands the primary item the user is viewing; in the iPhoneOS 26.5 SDK this means `NSUserActivity.appEntityIdentifier` for the primary screen entity. Per-view/list/canvas annotations are selected-SDK-dependent and must be compile-verified.
-- Integrate a UIKit application using `UISceneAppIntent`, `AppIntentSceneDelegate`, and `NSUserActivity.appEntityIdentifier`; do not invent `AppEntityAnnotatable` conformances, and treat per-view/table/collection/canvas annotation APIs as forward-looking unless present in the selected SDK.
+- Implement entity ID lookup, string search, property queries, semantic Spotlight indexing, `IntentValueQuery`, or `Transferable` exports; use `SyncableEntity` / AppIntents `EntityCollection` when SDK visibility and runtime availability permit.
+- Annotate onscreen content so Siri understands the primary item the user is viewing; use `NSUserActivity.appEntityIdentifier` for the primary screen entity and supported view annotations for visible items. Per-view/list/canvas annotations are selected-SDK-dependent and must be compile-verified.
+- Integrate a UIKit application using `UISceneAppIntent`, `AppIntentSceneDelegate`, and `NSUserActivity.appEntityIdentifier`; do not invent `AppEntityAnnotatable` conformances, and verify per-view/table/collection/canvas annotation declarations in the selected SDK.
 - Translate SwiftUI-only examples into correct UIKit scene/coordinator architecture without duplicating the semantic model.
 - Build interactive snippets, confirmation snippets, dialog, undo, progress-reporting, or selected-SDK-gated long-running/cancellable intent flows.
 - Test App Intents with XCTest/manual system surfaces, and with `AppIntentsTesting` only when that framework exists in the selected SDK.
@@ -66,11 +68,11 @@ Apply only the steps relevant to the requested integration surface. A narrow ent
 5. Implement queries before writing complex intents. Siri and Shortcuts cannot act reliably on entities they cannot resolve.
 6. Add OpenIntent for every entity that can be tapped, opened, returned, indexed, or found visually.
 7. Add semantic indexing for durable searchable content. Use CoreSpotlight/AppIntents indexing, not ad hoc string matching.
-8. Add onscreen awareness for visible content. In the iPhoneOS 26.5 SDK, use `NSUserActivity.appEntityIdentifier` for the primary item (iOS 18.2+). Treat per-view SwiftUI modifiers, UIKit table/collection data sources, and custom-canvas providers as forward-looking until the selected SDK declares them. Route incoming UIKit intents through the selected `UIScene`.
-9. Add `Transferable` representations. Use `DataRepresentation`/`FileRepresentation` for known file/data formats. `IntentPerson` (iOS 16) and `PlaceDescriptor` (iOS 26, `GeoToolbox`) can be mapped today; `ValueRepresentation`/`IntentValueRepresentation` are absent from iPhoneOS 26.5 and must be added only when the selected SDK declares them.
+8. Add onscreen awareness for visible content. Use `NSUserActivity.appEntityIdentifier` for the primary item and available view annotations for visible items. Treat per-view SwiftUI modifiers, UIKit table/collection data sources, and custom-canvas providers as selected-SDK-dependent and inspect their runtime availability. Route incoming UIKit intents through the selected `UIScene`.
+9. Add `Transferable` representations. Use `DataRepresentation`/`FileRepresentation` for known file/data formats. `IntentPerson` (iOS 16) and `PlaceDescriptor` (iOS 26, `GeoToolbox`) can be mapped today; use `ValueRepresentation`/`IntentValueRepresentation` when selected-SDK visibility and runtime availability permit.
 10. Add App Shortcuts and parameter summaries for discoverability. Required parameters must appear in parameterSummary unless defaulted.
 11. Add dialog, snippets, confirmation, requestChoice, undo, ownership, and foreground continuation for sensitive, ambiguous, or visual workflows.
-12. Add donations, `PredictableIntent` (iOS 16), and Spotlight associations only after the model is correct. Add `RelevantEntities` only if the selected SDK declares it.
+12. Add donations, `PredictableIntent` (iOS 16), and Spotlight associations only after the model is correct. Add `RelevantEntities` only if the selected SDK declares it. Use only its documented media/audio contexts; it is not a generic document/project registry.
 13. Test through XCTest, Shortcuts, Spotlight, Siri, widgets/controls, snippets, and foreground/background paths. Add `AppIntentsTesting` only if the selected SDK provides that framework.
 
 ## Default design position
@@ -79,7 +81,7 @@ For Siri and Apple Intelligence, the best implementation is not a natural-langua
 
 ## UI-framework rule
 
-Entities, queries, schemas, indexing, donations, transfer, and domain services are UI-framework independent. For UIKit, use per-scene coordinators plus `UISceneAppIntent` or `AppIntentSceneDelegate` from the `_AppIntents_UIKit` cross-import overlay; use `NSUserActivity.appEntityIdentifier` for onscreen context in the verified iPhoneOS 26.5 baseline. Do not generate UIKit view/list/canvas annotation APIs unless the selected SDK declares them. Use `SiriTipUIView` and `ShortcutsUIButton` for native UIKit promotion. Snippets, widgets, controls, and Live Activities remain small SwiftUI system surfaces even in a UIKit app. See [ui-framework-crosswalk.md](references/ui-framework-crosswalk.md).
+Entities, queries, schemas, indexing, donations, transfer, and domain services are UI-framework independent. For UIKit, use per-scene coordinators plus `UISceneAppIntent` or `AppIntentSceneDelegate` from the `_AppIntents_UIKit` cross-import overlay; use `NSUserActivity.appEntityIdentifier` for onscreen context for primary screen context. Do not generate UIKit view/list/canvas annotation APIs unless the selected SDK declares them. Use `SiriTipUIView` and `ShortcutsUIButton` for native UIKit promotion. Snippets, widgets, controls, and Live Activities remain small SwiftUI system surfaces even in a UIKit app. See [ui-framework-crosswalk.md](references/ui-framework-crosswalk.md).
 
 ## Hard rules
 
@@ -96,8 +98,8 @@ Entities, queries, schemas, indexing, donations, transfer, and domain services a
 - Do not navigate a UIKit app by taking `connectedScenes.first`, finding a global top view controller, or retaining one process-wide navigation controller.
 - Do not call `perform()` on the `any UISceneAppIntent` supplied to `AppIntentSceneDelegate`; the framework owns execution.
 - Do not route the same scene-targeted intent in both `performNavigation(forScene:)` and `AppIntentSceneDelegate`; assign one navigation owner per intent type.
-- Do not declare new `AppEntityAnnotatable` conformances in app code. In iPhoneOS 26.5, only `NSUserActivity.appEntityIdentifier` is the buildable onscreen annotation path; use view/list/canvas APIs only when the selected SDK exposes them.
-- Do not use an index path as entity identity. If a future SDK supplies reusable-view annotation APIs, clear stale annotations during reuse.
+- Do not declare new `AppEntityAnnotatable` conformances in app code. use view/list/canvas APIs only when the selected SDK exposes them.
+- Do not use an index path as entity identity. If the selected SDK supplies reusable-view annotation APIs, clear stale annotations during reuse.
 - Do not perform network work, mutations, or presentation from a UIKit annotation provider or drag-session startup callback.
 - Do not claim a custom snippet can be implemented as a UIKit view; system snippet content is SwiftUI regardless of the host app UI framework.
 
@@ -108,34 +110,14 @@ For a broad implementation, cover the applicable items below. For a narrow chang
 - Semantic model: entities, properties, relationships, queries, indexing, schemas, screen context, and transfer semantics.
 - Intent catalog: Open/Create/Update/Delete/Search/Export/Share/Control actions with protocols, parameters, result types, snippets, confirmation, execution target, and tests.
 - Swift code availability-gated for iOS 26/iOS 27 when necessary, and source-gated when the selected SDK lacks a symbol.
-- UI-host plan: SwiftUI view-control path or UIKit scene/coordinator path, including cold launch, multiwindow behavior, `NSUserActivity` primary-screen annotation, forward-looking selected-SDK gates for per-view/list/canvas annotations, and unavoidable SwiftUI islands.
+- UI-host plan: SwiftUI view-control path or UIKit scene/coordinator path, including cold launch, multiwindow behavior, `NSUserActivity` primary-screen annotation, selected-SDK-dependent selected-SDK gates for per-view/list/canvas annotations, and unavoidable SwiftUI islands.
 - Siri/Apple Intelligence plan: App Schemas, current onscreen annotation, `Transferable`, structured-value mappers for `PlaceDescriptor`/`IntentPerson`, selected-SDK-gated transfer representations, `IntentValueQuery`, donations, optional relevance APIs, and semantic search.
 - Discoverability plan: App Shortcuts, parameter summaries, Spotlight, widgets, controls, Live Activities, Action button.
 - Testing plan: XCTest/UI coverage, manual system surfaces, selected-SDK-gated AppIntentsTesting, and failure-mode checks.
 
 ## Availability guidance
 
-Do not trust era labels without checking the selected SDK. The iPhoneOS 26.5 SDK verified on 2026-07-03 has these important floors:
-
-- Core `AppIntent`, `AppEntity`, `AppShortcutsProvider`, and entity queries: iOS 16.
-- `IntentPerson` and `PredictableIntent`: iOS 16.
-- `AppIntentsPackage`, `ProgressReportingIntent`, `DeprecatedAppIntent`, and `IntentDeprecation`: iOS 17.
-- `IndexedEntity`: iOS 18.
-- `NSUserActivity.appEntityIdentifier` and `AppEntityAnnotatable`: iOS 18.2.
-- `UISceneAppIntent`, `AppIntentSceneDelegate`, `SiriTipUIView`, and `ShortcutsUIButton`: iOS 26 through the `_AppIntents_UIKit` cross-import overlay.
-- `SemanticContentDescriptor`: iOS 26 in the `VisualIntelligence` framework.
-- `PlaceDescriptor`: iOS 26 in `GeoToolbox` plus `_GeoToolbox_AppIntents` overlay.
-
-The same SDK does **not** declare `ValueRepresentation`, `IntentValueRepresentation`, `RelevantEntities`, AppIntents `EntityCollection`, `SyncableEntity`, `LongRunningIntent`, `ExecutionTargets`, `CancellableIntent`, `AppIntentsTesting`, UIKit table/collection/canvas annotation APIs, SwiftUI per-view `.appEntityIdentifier(...)`, or notification `appEntityIdentifiers`. A runtime availability check cannot make absent declarations compile.
-
-Use this workflow before generating production code:
-
-```bash
-SDK=$(xcrun --sdk iphoneos --show-sdk-path)
-find "$SDK/System/Library/Frameworks" -name "arm64e-apple-ios.swiftinterface"   | xargs grep -l -w "SymbolName"
-```
-
-Then inspect the matching declaration and `@available` annotation. Cross-import overlays matter; check `_AppIntents_UIKit`, `_AppIntents_SwiftUI`, and `_GeoToolbox_AppIntents` when the API depends on two frameworks. See [sdk-availability-and-verification.md](references/sdk-availability-and-verification.md).
+Use [SDK availability and verification](references/sdk-availability-and-verification.md) as the single availability reference. It separates current documented runtime floors from historical SDK visibility and provides the inspection procedure. Preserve older-SDK source compatibility only when the project requires that build lane; do not quarantine supported current APIs merely because an earlier SDK lacked them.
 
 ## Common failure pattern
 

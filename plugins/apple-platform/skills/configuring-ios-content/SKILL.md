@@ -1,16 +1,16 @@
 ---
 name: configuring-ios-content
-description: "Configure UIKit cell content, backgrounds, empty states, and SwiftUI hosting. Use for UIContentConfiguration, cell registration, state updates, and migration from legacy cell labels."
+description: "Configure UIKit cell content, backgrounds, empty states, and SwiftUI hosting. Use proactively for cell registration, configuration updates, reuse, or legacy cell-label migration."
 ---
 
 # Configuring iOS Content
 
-Use this skill for modern cell and content-view configuration in UIKit projects. The default project shape uses the selected current Swift compiler in Swift 6 language mode, UIKit/SwiftUI on the main actor, and an iOS deployment target of 16 or newer. Do not include Swift 5 compatibility branches or iOS 13-15 fallback code unless the user explicitly asks.
+Use this skill for modern cell and content-view configuration in UIKit projects. Inspect and preserve the selected compiler, language mode, and deployment target. The examples use iOS 16+; keep existing older-runtime paths when the project supports them. UIKit view updates belong on the main actor.
 
 ## Baseline assumptions
 
-- Minimum deployment target: iOS 16 unless the user states otherwise.
-- Use `UIHostingConfiguration` freely for cell content because it is iOS 16+.
+- Read the affected target’s deployment minimum before choosing APIs.
+- Use `UIHostingConfiguration` for cell content on iOS 16+; preserve a compatible path below that floor.
 - Gate iOS 17+ APIs, especially `UIContentUnavailableConfiguration`, with `#available(iOS 17.0, *)` when the target remains iOS 16.
 - Use the selected stable Xcode and SDK by default; use a preview channel only after an explicit project decision. When adopting a recent compiler or SDK feature, consult the shared [feature-status guidance](../modeling-swift-types-for-correctness/references/swift-feature-status.md#swift-64-release-matrix) and verify the specific API's availability and behavior.
 - Treat UIKit code as main-actor UI code. Do not update cells, configurations, snapshots, or views from background tasks.
@@ -34,7 +34,7 @@ Use this skill for modern cell and content-view configuration in UIKit projects.
 - Use stable model IDs in diffable data sources. Do not use configuration structs as item identifiers.
 - Use [`snapshot.reconfigureItems(_:)`](https://developer.apple.com/documentation/uikit/nsdiffabledatasourcesnapshot-swift.struct/reconfigureitems(_:)), then apply the snapshot, for content changes that keep item identity the same; use snapshot inserts/deletes/moves for identity changes.
 - Do not capture `indexPath` in action closures. Capture a stable item ID, or query the current index path at action time.
-- Closure properties stored in configurations must capture owners weakly and must not retain cells, view controllers, image loaders, tasks, or data sources strongly.
+- Audit closure ownership. Capture cells/controllers weakly when a stored callback would otherwise form a cycle; strong captures of independent loaders or immutable dependencies can be appropriate.
 - `UIContentConfiguration` does **not** require `Hashable` or `Equatable`. Add equality only when there is a concrete reason.
 - If a content view skips no-op updates by comparing configurations, the comparison must include every field that affects rendered output, including state-derived fields such as selected/highlighted/disabled, image identity, colors, fonts, accessories, and visibility. Otherwise, do not skip the update.
 - Keep configurations lightweight. Do not perform networking, image decoding, formatting-heavy work, or database access in `updated(for:)` or `makeContentView()`.
@@ -144,5 +144,7 @@ struct UserRowContentConfiguration: UIContentConfiguration {
 - Rebuilding constraints in `apply` or `layoutSubviews` creates duplicate constraints and layout churn.
 - Calling `setNeedsUpdateConfiguration()` from an update callback creates loops.
 - Storing heavyweight reference objects in configurations makes reuse, equality, and memory behavior harder to reason about.
+
+The imported `REFERENCE.md` includes historical Swift 6/iOS 16 assumptions; adapt those templates to the project settings established above rather than treating them as upgrade requirements.
 
 For complete templates, custom state keys, content-unavailable examples, diffable-data-source guidance, and review checklists, read `REFERENCE.md`.

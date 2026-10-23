@@ -1,6 +1,6 @@
 ---
 name: analyzing-app-store-business-data
-description: "Analyze App Store revenue, subscriptions, downloads, reviews, ASO, pricing, and growth using App Store Connect data. Use for business performance questions about an app, not in-app engineering."
+description: "Analyze App Store Connect revenue, subscriptions, acquisition, reviews, and growth. Use proactively for app business performance or experiment planning; not in-app engineering."
 ---
 
 # Analyzing App Store Business Data
@@ -8,7 +8,7 @@ description: "Analyze App Store revenue, subscriptions, downloads, reviews, ASO,
 Turn App Store Connect data into business judgment: honest KPIs, a diagnosed
 funnel, and growth plans where every lever has a hypothesis and a measurement
 source. The data backbone is the `asc` CLI (https://asccli.sh); this skill
-supplies the methodology.
+supplies the methodology. Resolve bundled scripts relative to this skill directory.
 
 ## Scope
 
@@ -26,10 +26,9 @@ Do not use this skill for:
 
 ## Requirements and Setup
 
-Run `asc doctor` first, always. Fix what it reports before analyzing.
+For live CLI access, run `asc doctor` and check installed command help before use; skip setup when analyzing supplied exports. Resolve only blockers relevant to the requested analysis. Do not install tools, alter telemetry preferences, or configure credentials unless authorized.
 
-- **CLI**: `brew install asc`. Disable telemetry once per machine:
-  `asc telemetry disable`.
+- **CLI**: use the installed `asc` CLI when available. `brew install asc` is an optional setup step; inspect its telemetry preferences with the user rather than changing them automatically.
 - **Auth**: keychain-backed profiles via
   `asc auth login --name <profile> --key-id … --issuer-id … --private-key <path>.p8 --network`.
   Prefer a dedicated machine-local key (never committed to a repo). Select
@@ -41,24 +40,22 @@ Run `asc doctor` first, always. Fix what it reports before analyzing.
   `ASC_VENDOR_NUMBER`, else `~/.config/app-store-business-analyst/config.toml`
   (`vendor_number = "…"`), else ask the user (they can read it from
   App Store Connect → Payments and Financial Reports).
-- **Analytics reports**: require a one-time ONGOING request per app:
+- **Analytics reports**: live collection requires an ONGOING request per app. Reuse an existing request; create one only when live collection is within the authorized scope:
   `asc analytics request --app $ASC_APP_ID --access-type ONGOING --reuse-existing`.
   First data appears ~48h later; requests stop if unread for long periods
   (re-run the same command to revive).
 
 ## Tooling Contract
 
-- All App Store Connect access goes through `asc`. Never mint JWTs or call the
-  API ad hoc. Discover unfamiliar commands with `asc search <term>` or
-  `asc docs list`.
+- Prefer an available App Store Connect connector or the installed `asc` CLI; command examples assume `asc` and may vary by version. Do not invent authentication plumbing when a supported tool exists. Discover unfamiliar commands with installed help; public Search/Lookup endpoints are covered in the ASO reference.
 - Download raw reports into the cache, not the repo:
   `~/.cache/app-store-business-analyst/vendor-<num>/sales/` for Sales & Trends
   (vendor-wide reports) and
   `~/.cache/app-store-business-analyst/<bundle-id>/{analytics,reviews,market}/`
   for app-scoped data.
-  Use deterministic file names (`SALES_SUMMARY_DAILY_2026-07-01.tsv`). The
+  Use deterministic versioned file names (`SALES_SUMMARY_DAILY_2026-07-01_v1_3.tsv`). The
   cache is the durable history — Apple expires old daily reports, so backfill
-  early with `scripts/backfill-sales.sh` and never delete the cache.
+  early with `scripts/backfill-sales.sh` and preserve the cache. The helper keeps legacy unversioned files but downloads versioned replacements; inspect schemas before reusing older files.
 - The cache and config directories keep the `app-store-business-analyst` name
   this skill was first published under. They are deliberately not renamed:
   the cached history cannot be re-downloaded once Apple expires it.
@@ -96,8 +93,7 @@ Use when asked "how is the app doing" or as the foundation for any plan.
    source-type split, subscriber cohort grid, territory table.
 5. Mine reviews/ratings for themes mapped to the funnel stage they affect.
    If there are few or no written reviews, say so — silence is itself a signal.
-6. Write the review to `Documentation/Business/YYYY-MM-DD-business-review.md`
-   in the app repo, in this order: executive summary (5 bullets, numbers
+6. Return the review in the requested destination. Use `Documentation/Business/YYYY-MM-DD-business-review.md` only when the user requests a repository artifact and its visibility is appropriate for financial data. Suggested order: executive summary (5 bullets, numbers
    required) → KPI table → funnel → cohorts → reviews/ratings themes →
    risks and anomalies → data caveats.
 
@@ -117,7 +113,7 @@ Requires a current Procedure A in context (run it first if stale).
    multiplication math showing which stage improvements compound to the
    target, a sequenced 90-day experiment schedule, kill/scale checkpoints,
    and a monitoring cadence (which pulls to re-run, when).
-5. Write to `Documentation/Business/YYYY-MM-DD-growth-plan.md`: goal and
+5. Return the plan in the requested destination; for an authorized repository artifact, use `Documentation/Business/YYYY-MM-DD-growth-plan.md`. Include: goal and
    baseline → constraint diagnosis → plan table (lever, hypothesis, success
    metric + target, measurement source, effort, timeline) → sequencing →
    monitoring plan.

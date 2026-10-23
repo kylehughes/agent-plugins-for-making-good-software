@@ -1,6 +1,6 @@
 ---
 name: compiling-agent-goals
-description: "Write or refine bounded /goal contracts from specs, plans, or issues, with acceptance evidence and stopping conditions. Use for persistent-agent task handoffs, not implementing the underlying feature."
+description: "Compile specs, plans, or issues into bounded agent goal contracts with acceptance evidence and stopping conditions. Use proactively when preparing a persistent-agent handoff; this authors the contract, not the implementation."
 ---
 
 # Compiling Agent Goals

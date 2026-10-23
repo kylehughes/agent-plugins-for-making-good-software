@@ -1,11 +1,11 @@
 ---
 name: testing-swift-code
-description: "Plan or write Swift unit tests using Swift Testing, including inline suites and regression coverage. Required for test plans, assertions, @Test, @Suite, traits, and migration; async timing has its own skill, and UI tests remain XCTest."
+description: "Plan or write Swift unit tests with Swift Testing. Use proactively for regression coverage, assertions, suites, traits, or migration; async timing has its own skill and UI tests use XCTest."
 ---
 
 # Testing Swift Code
 
-Write tests using the Swift `Testing` framework (Swift 6 / Xcode 16+). This framework replaces XCTest with macro-based annotations and expression-level assertions.
+Write tests using the Swift `Testing` framework (Swift 6 / Xcode 16+). It provides macro-based annotations and expression-level assertions for unit and integration tests. Preserve existing XCTest suites unless migration is requested; UI and performance tests still use XCTest.
 
 Ordinary function-output regression tests stay here. Positive, negative, empty, or boundary inputs do not by themselves call for type modeling or invariant verification; those skills address representations and enforcement boundaries.
 
@@ -89,7 +89,7 @@ func bounded() async { ... }
 @Test(.tags(.integration))
 func networkTest() { ... }
 
-@Suite(.serialized) // Run tests sequentially, not in parallel
+@Suite(.serialized) // Serialize this suite’s tests; unrelated suites may still run in parallel
 struct SerialTests { ... }
 
 @Test(.disabled("Blocked by #1234"))
@@ -117,7 +117,7 @@ func pairs(i: Int, s: String) { ... }
 
 ## Async Testing
 
-Mark the test function `async` and use `confirmation` to verify callbacks fire the expected number of times:
+Mark the test function `async`. A `confirmation` checks the callback count when its body returns; it does not wait for future callbacks. Await the operation’s completion inside the body and remove any retained callback during cleanup:
 
 ```swift
 @Test func callbacks() async {

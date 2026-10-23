@@ -1,6 +1,6 @@
 ---
 name: presenting-ios-modals
-description: "Build or review SwiftUI and UIKit modal sheets: navigation chrome, close/cancel/done actions, detents, and dismissal. Use for modal presentation, not ordinary navigation or general visual styling."
+description: "Build or review SwiftUI and UIKit modal sheets, navigation chrome, button roles, detents, and dismissal. Use proactively for modal flows; not ordinary navigation or general styling."
 ---
 
 # Presenting iOS Modals
@@ -18,8 +18,7 @@ Current Apple guidance:
 ## Navigation Chrome
 
 Use the real navigation bar for modal chrome whenever the presentation needs a title, close/cancel
-button, primary action, or future back button. Prefer a `UINavigationController`-based modal container
-for new modal flows so pushed steps, back navigation, and nested presentations compose naturally.
+button, primary action, or future back button. Use `UINavigationController` for UIKit flows or `NavigationStack` for SwiftUI flows when they need hierarchical navigation; preserve the app’s existing presentation ownership.
 
 Do not draw an in-content header to replace a navigation bar. A custom header is only appropriate for a
 surface that truly has no navigation bar, such as a compact custom picker. If that header contains a
@@ -113,11 +112,9 @@ or another expandable detent only when the flow benefits from expansion, and let
 follow whether expandable detents exist. Handle keyboard-aware sizing in the shared configuration site,
 not per feature.
 
-When hosting SwiftUI content in a content-sized sheet, the hosting controller owns vertical scrolling so
-the detent can measure the content's natural height; do not root the hosted content in another
-`ScrollView`, `List`, or vertically greedy `maxHeight: .infinity` frame.
+For a custom content-sized sheet, identify which layer measures content and which layer owns scrolling. Some app containers require unbounded hosted content for measurement; standard SwiftUI sheets can contain `ScrollView` or `List`. Follow the actual container contract and test keyboard, Dynamic Type, and detent changes. Avoid nested competing scroll owners.
 
-Leave modal navigation chrome to UIKit unless the feature has a specific chrome treatment.
+Keep modal navigation chrome in the framework that owns the flow unless an existing bridge requires otherwise.
 
 ## Review Checklist
 

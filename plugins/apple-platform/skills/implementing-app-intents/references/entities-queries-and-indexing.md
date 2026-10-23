@@ -1,5 +1,7 @@
 # Entities, Queries, and Indexing
 
+Check [current availability](sdk-availability-and-verification.md#current-documentation-check--2026-10-23) for SDK-specific examples; retain older-SDK build lanes only when required by the project.
+
 UIKit/SwiftUI rule: entities and queries are shared semantic types. Never put `UIView`, `UIViewController`, `UIScene`, `UIImageView`, navigation state, index paths, or diffable data-source instances inside an entity or query. UIKit adapters publish only stable entity IDs.
 
 ## Entity taxonomy
@@ -12,8 +14,8 @@ UIKit/SwiftUI rule: entities and queries are shared semantic types. Never put `U
 | `AppEnum` | Fixed set of values | Stable raw values and strong display names. |
 | `@UnionValue` | A parameter/result can be one of several types | Useful for flexible Siri requests and Shortcuts pickers. |
 | `PlaceDescriptor` / `IntentPerson` mappers | Convert an entity to a shipping system-known structured value | `IntentPerson` is iOS 16; `PlaceDescriptor` is iOS 26 in `GeoToolbox`. Keep mappers pure and UI-independent. |
-| AppIntents `EntityCollection` | Forward-looking large/lazy entity collection passed by identifier | Absent from iPhoneOS 26.5. Do not compile against it unless the selected SDK declares it. |
-| `SyncableEntity` | Forward-looking entity with local and stable sync identity | Absent from iPhoneOS 26.5. Use your own stable ID mapping until the selected SDK declares it. |
+| AppIntents `EntityCollection` | Selected-SDK-dependent large/lazy entity collection passed by identifier | Check current availability and selected SDK declarations. |
+| `SyncableEntity` | Selected-SDK-dependent entity with local and stable sync identity | Check current availability and selected SDK declarations. |
 
 ## AppEntity baseline
 
@@ -151,27 +153,31 @@ Use for Shortcuts Find actions and structured filters.
 struct TaskEntityQuery: EntityPropertyQuery {
     typealias Entity = TaskEntity
 
-    static var properties = QueryProperties {
-        Property(\.title) {
-            EqualToComparator { $0 }
-            ContainsComparator { $0 }
-        }
-        Property(\.projectName) {
-            EqualToComparator { $0 }
-            ContainsComparator { $0 }
-        }
-        Property(\.dueDate) {
-            LessThanComparator { $0 }
-            GreaterThanComparator { $0 }
-        }
-        Property(\.isCompleted) {
-            EqualToComparator { $0 }
+    static var properties: QueryProperties {
+        QueryProperties {
+            Property(\.title) {
+                EqualToComparator { $0 }
+                ContainsComparator { $0 }
+            }
+            Property(\.projectName) {
+                EqualToComparator { $0 }
+                ContainsComparator { $0 }
+            }
+            Property(\.dueDate) {
+                LessThanComparator { $0 }
+                GreaterThanComparator { $0 }
+            }
+            Property(\.isCompleted) {
+                EqualToComparator { $0 }
+            }
         }
     }
 
-    static var sortingOptions = SortingOptions {
-        SortableBy(\.title)
-        SortableBy(\.dueDate)
+    static var sortingOptions: SortingOptions {
+        SortingOptions {
+            SortableBy(\.title)
+            SortableBy(\.dueDate)
+        }
     }
 
     func entities(
@@ -237,7 +243,7 @@ func indexNotes(_ notes: [Note]) async throws {
 }
 
 func removeNotesFromIndex(ids: [UUID]) async throws {
-    try await CSSearchableIndex.default().deleteSearchableItems(withIdentifiers: ids.map(\.uuidString))
+    try await CSSearchableIndex.default().deleteAppEntities(identifiedBy: ids, ofType: NoteEntity.self)
 }
 ```
 
@@ -320,7 +326,7 @@ Good for unsaved drafts, search previews, temporary conversion outputs, and live
 
 ## Sync identity without assuming SyncableEntity
 
-`SyncableEntity` and `SyncableEntityIdentifier` are absent from the iPhoneOS 26.5 SDK. Do not generate code that conforms to `SyncableEntity` for a 26.5-compiled target.
+Use the current availability reference and selected SDK declarations for this surface. Omit or source-gate unsupported APIs only when preserving a required older-SDK build lane; runtime gates alone cannot supply missing declarations.
 
 Still design stable identity carefully:
 
@@ -356,9 +362,9 @@ Implementation notes:
 - Never expose sync IDs if they are sensitive or account-scoped.
 - If a future selected SDK declares `SyncableEntity`, adapt this mapping rather than changing the public entity ID semantics.
 
-## Forward-looking EntityCollection
+## Selected-SDK-dependent EntityCollection
 
-AppIntents `EntityCollection` is absent from the iPhoneOS 26.5 SDK. Do not confuse it with unrelated RealityKit symbols of the same name.
+Use the current availability reference and selected SDK declarations for this surface. Omit or source-gate unsupported APIs only when preserving a required older-SDK build lane; runtime gates alone cannot supply missing declarations.
 
 For a 26.5-compatible app, model large relationships with stable IDs and query methods:
 
@@ -389,7 +395,7 @@ If a selected SDK later supplies an AppIntents collection type, wrap this existi
 
 ## Structured value mappers and future ValueRepresentation
 
-`ValueRepresentation` and `IntentValueRepresentation` are absent from the iPhoneOS 26.5 SDK. `PlaceDescriptor` and `IntentPerson` are available structured value types. Use mapper properties now; add transfer wrappers only if the selected SDK declares them.
+Use the current availability reference and selected SDK declarations for this surface. Omit or source-gate unsupported APIs only when preserving a required older-SDK build lane; runtime gates alone cannot supply missing declarations.
 
 ```swift
 import AppIntents
@@ -408,10 +414,10 @@ struct LandmarkEntity: AppEntity {
 }
 ```
 
-Forward-looking wrapper shape, not buildable with iPhoneOS 26.5:
+Use the current availability reference and selected SDK declarations for this surface. Omit or source-gate unsupported APIs only when preserving a required older-SDK build lane; runtime gates alone cannot supply missing declarations.
 
 ```swift
-// Forward-looking / selected-SDK-gated only.
+// Selected-SDK-gated only.
 static var transferRepresentation: some TransferRepresentation {
     ValueRepresentation(exporting: \.systemPlaceDescriptor)
 }
@@ -457,9 +463,8 @@ struct AccountDocumentEntity: AppEntity, OwnershipProvidingEntity {
     let accountID: UUID
     let name: String
 
-    var isOwned: Bool {
-        AccountManager.shared.currentAccountID == accountID
-    }
+    // Supply the framework ownership value from the authorized repository.
+    let ownership: EntityOwnership
 }
 ```
 

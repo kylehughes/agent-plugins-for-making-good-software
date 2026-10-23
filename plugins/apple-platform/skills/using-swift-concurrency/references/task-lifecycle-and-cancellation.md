@@ -113,12 +113,20 @@ Better:
 ```swift
 @MainActor
 final class ObserverModel {
+    private let updates: AsyncStream<Int>
     private var observationTask: Task<Void, Never>?
+    private(set) var latestValue: Int?
+
+    init(updates: AsyncStream<Int>) { self.updates = updates }
 
     func start() {
         observationTask?.cancel()
+        let updates = updates
         observationTask = Task { [weak self] in
-            await self?.observeForever()
+            for await value in updates {
+                guard !Task.isCancelled else { break }
+                self?.latestValue = value
+            }
         }
     }
 
@@ -127,10 +135,9 @@ final class ObserverModel {
         observationTask = nil
     }
 
-    deinit {
-        observationTask?.cancel()
-    }
+    deinit { observationTask?.cancel() }
 }
+
 ```
 
 If a method starts unstructured work that tests must observe, return the task:
@@ -215,9 +222,12 @@ Before using detached, ask:
 
 ## `Task.immediate`
 
+`Task.immediate` is a standard-library API with iOS 26+/macOS 26+ runtime availability, not merely compiler syntax. Guard it or its containing declaration on older deployment targets. A normal `Task` is a fallback only when delayed scheduling preserves the contract; otherwise perform the required synchronous prefix directly before starting async work. See [Apple’s declaration](https://developer.apple.com/documentation/swift/task/immediate(name:priority:executorpreference:operation:)-88o80).
+
 Use immediate tasks only when initial synchronous execution order matters.
 
 ```swift
+@available(iOS 26.0, macOS 26.0, *)
 @MainActor
 func begin() {
     Task.immediate { [weak self] in

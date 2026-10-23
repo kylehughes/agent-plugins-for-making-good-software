@@ -4,15 +4,9 @@ Use this reference whenever an app is compiled with the current Swift toolchain 
 
 ## Policy
 
-This skill supports one Swift source baseline:
+Preserve the project’s selected compiler, language mode, SDK, and deployment targets. The examples below use a Swift 6 / iOS 16 compatibility lane; they do not authorize migrating language mode or raising or lowering deployment targets.
 
-- Swift 6 language mode.
-- The project’s selected current Xcode/Swift toolchain.
-- No compatibility implementation for another Swift language mode.
-- iOS 16 as the default minimum deployment target unless the project states otherwise.
-- Runtime and SDK availability handled independently from language syntax.
-
-A lower deployment target does not require an earlier Swift language mode. Compile current Swift source, then isolate every API or standard-library symbol whose runtime availability starts after iOS 16.
+A lower deployment target does not require an earlier Swift language mode. Conversely, a newer compiler does not authorize dropping the language modes the project tests. Isolate APIs whose runtime availability starts after the actual deployment minimum, adapting the iOS 16 examples as needed.
 
 ## Current release facts
 
@@ -101,7 +95,7 @@ Be explicit where closure or generic inference becomes difficult. A typed failur
 
 ### `InlineArray`
 
-`InlineArray` has a later runtime floor than this skill's default baseline; see [release row 11](swift-feature-status.md#release-11). For a baseline app:
+`InlineArray` has a later runtime floor than the illustrative compatibility baseline; see [release row 11](swift-feature-status.md#release-11). For a baseline app:
 
 - Do not place it in an unannotated stored property, parameter, return type, or generic constraint of an iOS 16 declaration.
 - Put the entire declaration that mentions it behind `@available(iOS 26, *)`.
@@ -158,7 +152,7 @@ SUPPORTED_PLATFORMS
 OTHER_SWIFT_FLAGS
 ```
 
-Require Swift 6 language mode for every affected target. A textual search is only an inventory; use `xcodebuild -showBuildSettings` on the actual scheme and configuration.
+Record and preserve the actual language mode for every affected target; require Swift 6 only for a deliberately selected migration or fixture lane. A textual search is only an inventory; use `xcodebuild -showBuildSettings` on the actual scheme and configuration.
 
 ### Swift Package Manager
 
@@ -229,7 +223,7 @@ A current simulator alone does not exercise fallback branches. Test adapters dir
 
 ## Review Checklist
 
-- Is every affected target in Swift 6 language mode?
+- Is each affected target checked under its supported Swift language mode?
 - Is the selected Xcode/Swift toolchain recorded from the actual build environment?
 - Is the iOS deployment target analyzed separately from source-language capability?
 - Does every new symbol have verified SDK and runtime availability?

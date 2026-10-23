@@ -1,6 +1,6 @@
 ---
 name: designing-swift-apis
-description: "Design and review Swift API names, argument labels, signatures, and documentation contracts using Apple's API Design Guidelines."
+description: "Design Swift API names, labels, signatures, and documentation contracts. Use proactively when adding or changing APIs or reviewing call-site clarity against Apple's API Design Guidelines."
 ---
 
 # Designing Swift APIs

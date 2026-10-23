@@ -1,6 +1,6 @@
 ---
 name: delivering-changes
-description: "Carry a requested change from a ticket or brief to a PR-ready handoff. Use when the user delegates the full implementation, simplification, and hardening workflow, with project-defined manual verification checkpoints."
+description: "Carry a requested change through implementation, simplification, hardening, and required checks to a PR-ready handoff. Use proactively when the user delegates end-to-end delivery; preserve narrower requests and project checkpoints."
 ---
 
 # Delivering Changes

@@ -1,36 +1,21 @@
 # Onscreen Awareness and Content Transfer
 
+Check [current availability](sdk-availability-and-verification.md#current-documentation-check--2026-10-23) for SDK-specific examples; retain older-SDK build lanes only when required by the project.
+
 ## Why this matters
 
 Siri and Apple Intelligence need a reliable bridge from natural references like “this,” “that,” “the current document,” or “the item I’m viewing” to an `AppEntity` that your app can resolve. Screen pixels and accessibility text are not enough. The system needs durable entity identifiers, queries that can resolve those identifiers, and content representations it can safely pass to other actions.
 
-## Availability reality for iPhoneOS 26.5
-
-The iPhoneOS 26.5 SDK exposes `NSUserActivity.appEntityIdentifier` and `AppEntityAnnotatable` as iOS 18.2 APIs. In that SDK, the only buildable App Intents onscreen annotation path is the `NSUserActivity` level for the primary screen entity.
-
-These APIs are **absent** from iPhoneOS 26.5 and must be treated as forward-looking / selected-SDK-dependent:
-
-- SwiftUI per-view `.appEntityIdentifier(...)`.
-- SwiftUI `.appEntityIdentifier(forSelectionType:)`.
-- UIKit `UITableViewAppIntentsDataSource` and `UICollectionViewAppIntentsDataSource`.
-- UIKit `AppEntityUIElement` and `UIView.appEntityUIElementProvider`.
-- Notification-content `appEntityIdentifiers`.
-
-Keep examples for absent APIs out of production targets compiled with the 26.5 SDK. `@available` is not sufficient when the compiler cannot see the declaration.
-
 ## Awareness layers
 
-Layer verified against iPhoneOS 26.5:
+Use the current availability reference and selected SDK to choose among these complementary layers:
 
-1. **Primary screen entity** — use `NSUserActivity.appEntityIdentifier` to associate the screen’s main semantic subject with an `AppEntity` identifier.
+1. **Primary screen entity:** `NSUserActivity.appEntityIdentifier`.
+2. **Individual visible object:** supported per-view entity annotations.
+3. **Collection/selection:** list, grid, table, collection, or selection annotations.
+4. **Custom canvas elements:** geometric entity regions.
 
-Selected-SDK-gated future layers:
-
-2. **Individual visible object** — per-view entity identifiers, when the selected SDK declares them.
-3. **Collection/selection** — list, grid, table, collection, or selection annotations, when the selected SDK declares them.
-4. **Custom canvas elements** — geometric entity regions/elements, when the selected SDK declares them.
-
-Do not collapse the mental model. Design your domain model so levels 2–4 can be added later, but ship iOS 26.5 code using level 1 only unless a newer SDK supplies the other declarations.
+Keep one stable entity model across these layers. Use all layers required by the task that the selected SDK and runtime support; keep reduced functionality only for an actual compatibility lane.
 
 ## Primary entity with NSUserActivity
 
@@ -68,12 +53,12 @@ Rules:
 - Keep the activity title, visible navigation title, accessibility title, and entity display representation consistent.
 - The entity identifier must resolve through the entity query without requiring the original view controller.
 
-## Forward-looking individual SwiftUI view annotation
+## Selected-SDK-dependent individual SwiftUI view annotation
 
-The following is the intended shape for per-view annotation, but the per-view `.appEntityIdentifier(...)` modifier is absent from `_AppIntents_SwiftUI` in the iPhoneOS 26.5 SDK. Use only when the selected SDK declares it.
+Use the current availability reference and selected SDK declarations for this surface. Omit or source-gate unsupported APIs only when preserving a required older-SDK build lane; runtime gates alone cannot supply missing declarations.
 
 ```swift
-// Forward-looking / selected-SDK-gated; not buildable with iPhoneOS 26.5.
+// Use only with selected-SDK declarations and runtime availability.
 TaskRow(task: task)
     .appEntityIdentifier(EntityIdentifier(for: task))
 ```
@@ -85,12 +70,12 @@ Use cases when available:
 - Message bubbles, calendar events, annotations, or canvas objects.
 - A focused attachment preview or selected visual object.
 
-## Forward-looking collection and selection annotation
+## Selected-SDK-dependent collection and selection annotation
 
-The following selection-style API is absent from the iPhoneOS 26.5 SDK. Use only when the selected SDK declares an equivalent API.
+Use the current availability reference and selected SDK declarations for this surface. Omit or source-gate unsupported APIs only when preserving a required older-SDK build lane; runtime gates alone cannot supply missing declarations.
 
 ```swift
-// Forward-looking / selected-SDK-gated; not buildable with iPhoneOS 26.5.
+// Use only with selected-SDK declarations and runtime availability.
 List(tasks, selection: $selectedIDs) { task in
     TaskRow(task: task)
         .appEntityIdentifier(EntityIdentifier(for: task))
@@ -102,9 +87,9 @@ List(tasks, selection: $selectedIDs) { task in
 
 Preserve the design invariant even before the API exists: selection should be represented by stable model IDs, not index paths or visible-cell objects.
 
-## Forward-looking custom canvas annotation
+## Selected-SDK-dependent custom canvas annotation
 
-Custom drawing/canvas apps often need geometry-aware entity annotations. The iPhoneOS 26.5 SDK does not declare `AppEntityUIElement` or `UIView.appEntityUIElementProvider`, and it does not expose a buildable SwiftUI custom-region equivalent.
+Use the current availability reference and selected SDK declarations for this surface. Omit or source-gate unsupported APIs only when preserving a required older-SDK build lane; runtime gates alone cannot supply missing declarations.
 
 When a selected SDK provides such an API, each element should be:
 
@@ -147,7 +132,7 @@ final class ProjectViewController: UIViewController {
 }
 ```
 
-Do not generate UIKit table/collection/canvas annotation code for a 26.5-compiled target. Keep selection and visible-object state in stable model-ID form so a future adapter can expose it when the SDK provides APIs.
+Use table/collection/canvas annotation APIs when selected-SDK visibility and runtime availability permit. Keep selection and visible-object state in stable model-ID form and expose it through supported annotation adapters.
 
 ## Scene routing is part of context correctness
 
@@ -157,7 +142,7 @@ Do not guess a window from global application state. Give each intent type one n
 
 ## Annotations outside the app
 
-Do not use `UNMutableNotificationContent.appEntityIdentifiers` for iPhoneOS 26.5 code; that property is absent from the verified SDK. If a future SDK supplies notification entity annotations, apply the same privacy rules as screen context:
+Use the current availability reference and selected SDK declarations for this surface. Omit or source-gate unsupported APIs only when preserving a required older-SDK build lane; runtime gates alone cannot supply missing declarations.
 
 - Only expose entities safe for the notification surface.
 - Avoid private content on the lock screen.
@@ -206,9 +191,7 @@ Guidelines:
 
 `PlaceDescriptor` and `IntentPerson` are distinct from `ValueRepresentation` / `IntentValueRepresentation`.
 
-- `IntentPerson` is in `AppIntents` and is available since iOS 16.
-- `PlaceDescriptor` is in `GeoToolbox` and is available in the iOS 26 SDK, with `_GeoToolbox_AppIntents` overlay support.
-- `ValueRepresentation` and `IntentValueRepresentation` are absent from the iPhoneOS 26.5 SDK.
+Use the current availability reference and selected SDK declarations for this surface. Omit or source-gate unsupported APIs only when preserving a required older-SDK build lane; runtime gates alone cannot supply missing declarations.
 
 For iOS 26.5-compatible code, create pure mapping helpers:
 
@@ -252,8 +235,8 @@ struct ImportableContentQuery: IntentValueQuery {
     func values(for input: SemanticContentDescriptor) async throws -> [ImportableContentMatch] {
         var results: [ImportableContentMatch] = []
 
-        if let text = input.text {
-            results += try await SemanticTextIndex.shared.matches(text).map { .document($0) }
+        for label in input.labels {
+            results += try await SemanticTextIndex.shared.matches(label).map { .document($0) }
         }
 
         if let pixelBuffer = input.pixelBuffer {
@@ -338,10 +321,4 @@ Do not expose more through transfer than the user could see or intentionally sha
 
 ## Pitfalls
 
-- Treating screen text as enough context.
-- Publishing stale `NSUserActivity` after navigation.
-- Publishing an entity ID whose query cannot resolve after app relaunch.
-- Returning private entity titles in error dialogs.
-- Confusing `PlaceDescriptor` or `IntentPerson` value mappers with absent structured transfer representation APIs.
-- Generating per-view/list/canvas annotation code for iPhoneOS 26.5 even though the symbols are absent.
-- Assuming notification content has App Entity annotations without checking the selected SDK.
+Use the current availability reference and selected SDK declarations for this surface. Omit or source-gate unsupported APIs only when preserving a required older-SDK build lane; runtime gates alone cannot supply missing declarations.

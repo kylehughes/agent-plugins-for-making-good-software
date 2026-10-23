@@ -174,7 +174,7 @@ extension FormValidatorFactory: FormValidatorCreating {
 2. An assembly exports only protocol-conforming factory types. Concrete internal types never appear in the public API.
 3. Naming: `<Noun>Factory` for the concrete type (e.g., `MainMenuCoordinatorFactory` for `MainMenuCoordinatorCreating`).
 
-**Tradeoff:** Adds a module per package. Justified when it eliminates parameter drilling across multiple features. Strictly better build graph than the app target approach — changes to `*Feature` rebuild only `*Assembly` and its consumers, not the entire app target.
+**Tradeoff:** Adds a module per package and may reduce wiring duplication. Measure incremental builds before claiming a build-time benefit: importing clients and the app’s final link may still rebuild when internals change.
 
 ### Delegate for Navigation
 

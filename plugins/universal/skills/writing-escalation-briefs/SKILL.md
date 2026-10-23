@@ -1,6 +1,6 @@
 ---
 name: writing-escalation-briefs
-description: "Prepare a standalone expert handoff for a stuck problem or a requested second opinion on a design, plan, or UI. Include the evidence an expert without repo access needs; not routine first-pass debugging."
+description: "Prepare a standalone expert brief with evidence a reader without repository access needs. Use proactively when debugging stalls or an escalation or expert handoff is requested; skip ordinary first-pass debugging and direct reviews."
 ---
 
 # Writing Escalation Briefs
@@ -9,7 +9,7 @@ description: "Prepare a standalone expert handoff for a stuck problem or a reque
 
 Create an expert-ready handoff brief, not another speculative fix. The brief must let a capable engineer answer without reading the prior conversation or accessing the repository. Preserve the highest-signal facts, evidence, constraints, and history while avoiding noise, secrets, and unsupported claims.
 
-When invoked, stop trying to solve the problem unless the user explicitly asks for more coding. The job is now evidence compression and question extraction.
+While preparing the brief, focus on evidence compression and question extraction. Preserve any enclosing implementation request; preparing a brief does not cancel already authorized work or authorize sending the brief externally.
 
 ## When to Use
 
@@ -18,7 +18,7 @@ Use this skill when any of these are true:
 - The agent is looping, guessing, or making repeated unsuccessful fixes.
 - The root cause remains unclear after reasonable debugging.
 - The user asks for a handoff, escalation, expert brief, debugging packet, or summary for another model or person.
-- The user wants expert judgment on a design, architecture, UI, plan, or approach ("review this plan," "are these decisions right," "get a second opinion from a stronger model").
+- The user asks for a standalone brief to obtain expert judgment on a design, architecture, UI, plan, or approach. A direct request to review a plan stays a review unless a handoff is requested or needed.
 - Work functions but its quality is unsatisfying and the effort keeps circling without converging.
 - Continued implementation is likely to waste time without better diagnosis or direction.
 
@@ -108,7 +108,7 @@ Filter every candidate through these gates; delete any question that fails one:
 
 Then run a premortem: imagine the expert's answer arrives, you implement it, and the problem persists. What question do you now wish you had asked? Add it and gate it like the others.
 
-Keep 3–7 surviving questions, ordered by stakes. If none survive, the friction audit or self-audit was probably superficial — redo them before concluding you have no questions. Only a proactive handoff with no working history behind it can genuinely have fewer.
+Keep only surviving questions, ordered by stakes; three to seven is a useful range for a complex escalation, not a quota. If none survive, report that the evidence supports a next action rather than inventing questions.
 
 Finally, reverse the direction: predict the first two or three clarifying questions the expert would ask you before answering, and answer them now inside the appropriate brief sections. Round trips are expensive. If you cannot answer one, list it in Missing Information with the reason.
 
@@ -153,9 +153,9 @@ If your runtime supports subagents, delegate the cold read: give a subagent only
 
 ## Delivery
 
-Write the finished brief to a single self-contained markdown file — one contiguous document with no links to other local files — named `handoff-<topic-slug>.md` in your runtime's scratch or temporary directory. In chat, give the user the file path and the Executive Summary; do not duplicate the brief.
+Honor the user’s requested format and destination. By default, write the finished brief to a single self-contained markdown file — one contiguous document with no links to other local files — named `handoff-<topic-slug>.md` in your runtime's scratch or temporary directory. In chat, give the user the file path and the Executive Summary; do not duplicate the brief.
 
-The user will often ask for the brief on the clipboard (on macOS, `pbcopy < path`). Do not copy it unprompted, but expect the request. If file writing is unavailable or denied, emit the brief as one contiguous markdown message with nothing after it.
+Copy to the clipboard only when requested, using an available platform tool. If file writing is unavailable or denied, emit the brief as one contiguous markdown message with nothing after it.
 
 ## Applying the Expert's Answer
 

@@ -89,13 +89,18 @@ final class SearchViewModel: ObservableObject {
 
     private func runSearch(query: String) async {
         isLoading = true
-        defer { isLoading = false }
+        defer {
+            if !Task.isCancelled { isLoading = false }
+        }
 
         do {
-            results = try await service.search(query: query)
+            let updatedResults = try await service.search(query: query)
+            guard !Task.isCancelled else { return }
+            results = updatedResults
         } catch is CancellationError {
             // Leave current state or set an explicit cancelled state.
         } catch {
+            guard !Task.isCancelled else { return }
             results = []
         }
     }
@@ -106,7 +111,7 @@ final class SearchViewModel: ObservableObject {
 }
 ```
 
-Use `[weak self]` when the task is stored by `self` or can keep the view model alive longer than intended. If the task is strictly view-lifecycle-managed by SwiftUI `.task`, weak capture may be unnecessary.
+Weak capture only defers the strong reference: the awaited instance call above retains its owner until `runSearch` returns. Cancel finite search work from the owning lifecycle when required; do not rely solely on `deinit` to cancel an operation that itself keeps the owner alive. If the task is strictly view-lifecycle-managed by SwiftUI `.task`, weak capture may be unnecessary.
 
 ## SwiftUI `.task` versus manual tasks
 
@@ -270,11 +275,20 @@ If `deinit` must touch isolated state or main-thread-only APIs, use Swift’s is
 ```swift
 @MainActor
 final class ObserverOwner {
+    private let events: AsyncStream<Int>
     private var task: Task<Void, Never>?
+    private(set) var latestValue: Int?
+
+    init(events: AsyncStream<Int>) { self.events = events }
 
     func start() {
+        task?.cancel()
+        let events = events
         task = Task { [weak self] in
-            await self?.observe()
+            for await value in events {
+                guard !Task.isCancelled else { break }
+                self?.latestValue = value
+            }
         }
     }
 
@@ -283,10 +297,9 @@ final class ObserverOwner {
         task = nil
     }
 
-    deinit {
-        task?.cancel()
-    }
+    deinit { task?.cancel() }
 }
+
 ```
 
 ## UI review checklist

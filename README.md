@@ -57,8 +57,9 @@ The same SSH source works with `claude plugin marketplace add`.
 
 ## Usage
 
-Describe the task and its scope in your project session. Select a skill
-explicitly when you want a particular workflow:
+Describe the task and its scope in your project session. All 28 skills allow
+automatic selection when relevant and explicit invocation in both Claude Code
+and Codex. Select one directly when you want a particular workflow:
 
 | Task | Claude Code | Codex |
 | :--- | :--- | :--- |
@@ -86,7 +87,10 @@ checks the project requires during hardening.
 
 Reviewer definitions cover separate concerns. Their availability and invocation
 depend on the host; when a workflow cannot delegate, follow its documented
-direct-review fallback. See [agent model selection](docs/agent-model-selection.md)
+direct-review fallback. These shared Markdown reviewers register as Claude Code
+agents; Codex native agents use a separate configuration format, so pass the
+reviewer instructions to an available native agent when the named role is absent.
+See [agent model selection](docs/agent-model-selection.md)
 for shared reviewer instructions and runtime settings.
 
 ## Apple Platform
@@ -168,7 +172,7 @@ python3 scripts/validate.py
 python3 scripts/skill_catalog.py --base HEAD
 ```
 
-These checks validate tooling, metadata, navigation, and catalog consistency.
+These checks validate tooling, metadata, invocation policy, navigation, and catalog consistency.
 Behavioral evaluations are separate; see the
 [evaluation guide](docs/invariant-verification.md#behavioral-acceptance) for setup,
 execution, and evidence requirements.

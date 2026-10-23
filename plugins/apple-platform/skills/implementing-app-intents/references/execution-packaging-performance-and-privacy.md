@@ -1,5 +1,7 @@
 # Execution, Packaging, Performance, and Privacy
 
+Check [current availability](sdk-availability-and-verification.md#current-documentation-check--2026-10-23) for SDK-specific examples; retain older-SDK build lanes only when required by the project.
+
 ## Execution surfaces
 
 The same intent may run from Siri, Shortcuts, Spotlight, widgets, controls, Live Activities, the Action button, the app UI, an App Intents extension, a WidgetKit extension, or the main app process. Design each intent with explicit execution expectations.
@@ -48,7 +50,7 @@ Use execution-mode APIs to adapt behavior.
 
 ```swift
 func perform() async throws -> some IntentResult {
-    switch SystemIntentContext.current.currentMode {
+    switch systemContext.currentMode {
     case .foreground:
         return try await performWithUIAvailable()
     case .background:
@@ -146,7 +148,7 @@ Use when creation/search should end by opening the created/found content.
 
 ## Long-running work and cancellation
 
-`ProgressReportingIntent` is available since iOS 17 and is the shipping tool for bounded progress. `LongRunningIntent` and `CancellableIntent` are absent from the iPhoneOS 26.5 SDK. Do not reference them in source compiled by that SDK.
+Use the current availability reference and selected SDK declarations for this surface. Omit or source-gate unsupported APIs only when preserving a required older-SDK build lane; runtime gates alone cannot supply missing declarations.
 
 For work beyond normal intent limits, design the domain service now:
 
@@ -157,10 +159,10 @@ For work beyond normal intent limits, design the domain service now:
 - Retry safety.
 - Foreground continuation when the work genuinely requires app UI.
 
-Forward-looking wrapper shape, not buildable with iPhoneOS 26.5:
+Use the current availability reference and selected SDK declarations for this surface. Omit or source-gate unsupported APIs only when preserving a required older-SDK build lane; runtime gates alone cannot supply missing declarations.
 
 ```swift
-// Forward-looking / selected-SDK-gated only.
+// Selected-SDK-gated only.
 struct ExportLargeProjectIntent: AppIntent, LongRunningIntent, ProgressReportingIntent, CancellableIntent {
     // Use only when the selected SDK declares these protocols.
 }
@@ -191,7 +193,7 @@ Use bounded progress units. Do not fake progress for unknown-duration operations
 
 ## Cancellation without CancellableIntent
 
-`CancellableIntent` is absent from the iPhoneOS 26.5 SDK. Still make every async intent cancellation-cooperative:
+Use the current availability reference and selected SDK declarations for this surface. Omit or source-gate unsupported APIs only when preserving a required older-SDK build lane; runtime gates alone cannot supply missing declarations.
 
 ```swift
 struct AnalyzeVideoIntent: AppIntent {
@@ -226,7 +228,7 @@ Good uses: video/image processing, local ML inference, OCR, embedding/index gene
 
 ## ExecutionTargets
 
-`ExecutionTargets` is absent from the iPhoneOS 26.5 SDK. Do not declare it for code compiled by that SDK.
+Use the current availability reference and selected SDK declarations for this surface. Omit or source-gate unsupported APIs only when preserving a required older-SDK build lane; runtime gates alone cannot supply missing declarations.
 
 Until a selected SDK provides an execution-target declaration API, document the intended process boundary explicitly and enforce it through target membership and dependency design:
 
@@ -244,10 +246,10 @@ Intent can run in WidgetKit extension:
   - shared app group storage where required
 ```
 
-Forward-looking wrapper shape, not buildable with iPhoneOS 26.5:
+Use the current availability reference and selected SDK declarations for this surface. Omit or source-gate unsupported APIs only when preserving a required older-SDK build lane; runtime gates alone cannot supply missing declarations.
 
 ```swift
-// Forward-looking / selected-SDK-gated only.
+// Selected-SDK-gated only.
 static var allowedExecutionTargets: ExecutionTargets {
     ExecutionTargets {
         .widgetKitExtension

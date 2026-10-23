@@ -1,22 +1,17 @@
 ---
 name: brainstorming-design-specs
-description: "Develop an implementation-ready design through research and dialogue when scope, requirements, or tradeoffs are unresolved. Use for ambiguous product or engineering work, not a specified change ready to implement."
+description: "Develop an implementation-ready design through research and dialogue. Use proactively when product scope, requirements, or engineering tradeoffs remain unresolved; skip specified changes ready to implement."
 ---
 
 # Brainstorming Design Specs
 
 Structured brainstorming dialogue that explores a problem space deeply enough to produce a design spec. The spec captures sufficient intent and rigor that a planning session can work from it directly without further clarification.
 
-## Core Principle: Leave No Stone Unturned
+## Design Contract
 
-Every brainstorming session should produce a spec where:
+Resolve the uncertainties that affect implementation. Record meaningful choices, their rationale, applicable invariants, failure modes, and compatibility constraints. Research existing code and relevant APIs before making technical claims; label assumptions that cannot yet be verified.
 
-- **Every design choice is deliberate** — no "this seemed fine" defaults. Every meaningful decision has a rationale and considered alternatives.
-- **Invalid states are identified and bounded** — the spec calls out what the type system should prevent, what invariants must hold, what error states exist, and which boundary enforces each one.
-- **Edge cases are surfaced, not deferred** — concurrency implications, failure modes, migration paths, backward compatibility. If it matters, it's in the spec.
-- **Nothing is assumed** — you research the codebase, sibling implementations on other platforms when the project has them, and platform APIs rather than guessing. The user articulates intent rather than leaving it implicit.
-
-Front-load the thinking so implementation is confident and correct.
+Scale the dialogue to the problem. A small design may need one focused exchange; a complex feature may need several rounds. Do not ask the user to settle routine choices that project evidence already answers.
 
 ## Invocation
 
@@ -26,9 +21,9 @@ When invoked without arguments, infer context from the current conversation — 
 
 The workflow leans on four capabilities. Use the runtime's native mechanism for each; when one is unavailable, fall back as described:
 
-- **Structured questions** — ask the user through the runtime's structured question tool when it has one (2–4 questions per round); otherwise ask directly in conversation, still bounded to 2–4.
+- **Structured questions** — ask the user through the runtime's structured question tool when it has one (up to three focused questions per round); otherwise ask directly in conversation, still bounded to three.
 - **Research dispatch** — send read-only explore subagents to search the codebase, sibling implementations, and platform APIs when the runtime supports subagents; otherwise research inline. Do not guess when you can look.
-- **Skills** — load the platform and language skills relevant to the problem space, proactively at the start and again as the domain clarifies.
+- **Skills** — load the platform and language skills relevant to the problem space, when the problem first touches their scope.
 - **Prose review** — before saving the spec, review it with `writing-technical-prose`, or a prose-focused auditor agent when one is available.
 
 When the requested design requires an explicit invariant or proof, or changes an enforcement model or state transition, use [verifying-invariants](../verifying-invariants/SKILL.md) to choose bounded evidence. Do not add it to ordinary brainstorming or preload it for every design.
@@ -39,7 +34,7 @@ A brainstorming session is a series of **rounds**. Each round follows the same r
 
 1. **Research** — dispatch explore subagents (or research inline) informed by what you learned in the previous round.
 2. **Summarize** — brief restatement of the emerging design and any constraints locked in so far. Keeps both parties synchronized and makes context compaction safe.
-3. **Ask** — 2–4 questions. Preface each with what you found and why the answer matters. Never a wall of questions.
+3. **Ask** — up to three unresolved questions. Preface each with what you found and why the answer matters. Never a wall of questions.
 
 The agent moves between three modes throughout these rounds. Modes are vocabulary for signaling what you are doing — they describe focus, not a rigid sequence.
 
@@ -53,11 +48,11 @@ Pressure-test the emerging design. Apply each tenet as a questioning lens (see T
 
 ### CONVERGE (Late Rounds)
 
-Draft the spec, present for review, refine until both parties confirm it captures intent.
+Draft the spec and reconcile feedback with the established intent. Ask for confirmation only when a consequential decision remains unresolved.
 
 ### Depth Guard
 
-Minimum **3 rounds** before proposing convergence. Track rounds explicitly. The agent naturally moves from ORIENT toward DEEPEN as the problem space clarifies — early convergence is the most common failure mode.
+Propose convergence when the outcome, material constraints, acceptance bar, and consequential tradeoffs are clear enough to implement. Surface unresolved decisions explicitly; do not manufacture rounds or questions to meet a quota.
 
 ## Tenet Integration
 
@@ -97,17 +92,17 @@ The format is a modular baseline. Omit sections that don't apply. Expand heavily
 
 ## Completion and Handoff
 
-1. Propose convergence with confidence level and remaining concerns.
-2. Ask the user if any areas feel underexplored.
-3. Final tenet sweep.
-4. Draft the spec. Save to a gitignored scratch or spec location in the repository (create it if needed; confirm the location with the user if the project has no convention). Name it `YYYY-MM-DDTHHMM Title.md` — timestamped with date and time to avoid collisions across parallel worktrees. No ticket reference in the filename. Specs are local-only — they serve the brainstorm and implementation sessions, not as permanent documentation. Decisions that outlive the feature branch belong in the PR description, ADRs, or agent skills.
+1. Present the emerging design and any remaining consequential uncertainties.
+2. Resolve missing user decisions when they affect the acceptable outcome; otherwise proceed from established intent.
+3. Check the design against the applicable tenets.
+4. Draft the spec at the requested destination or follow the repository convention. If neither exists, use an allocated scratch directory and report the path; do not create repository policy or ignore rules merely to save it. Use a descriptive filename. Keep durable decisions in the project’s established documentation when requested.
 5. Review the spec for prose quality (see Capabilities). Revise as needed.
-6. Suggest the user proceed to plan mode or their planning flow, referencing the spec. Do NOT start planning or implementation yourself.
+6. Hand off the spec with its unresolved decisions and acceptance bar. Continue into planning or implementation when the enclosing request already authorizes it; a design-only request ends here.
 
 ## Anti-Patterns
 
 - **Question dump** — 10+ questions at once
-- **Premature convergence** — spec before 3 rounds
+- **Premature convergence** — claiming implementation readiness while consequential decisions remain unresolved
 - **Blind guessing** — proposing design details for platform APIs or existing code without researching to verify
 - **Silent research** — running many file reads without explaining to the user what you are looking for and why
 - **Tenet theater** — checking tenets perfunctorily at the end instead of using them throughout DEEPEN

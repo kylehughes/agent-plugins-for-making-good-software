@@ -1,6 +1,6 @@
 ---
 name: verifying-invariants
-description: "Assess whether invalid domain values or states can be constructed, decoded, mutated into, or reached, and verify changes to those enforcement boundaries. Select checks and bound conclusions. Excludes ordinary function-output tests, defect review, naming, and async-test flakiness."
+description: "Assess whether invalid domain values or states can be constructed, decoded, mutated into, or reached. Use proactively for invariant assessments or enforcement-boundary changes; choose bounded evidence. Skip ordinary output tests and async-test timing."
 ---
 
 # Verifying Invariants

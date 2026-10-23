@@ -1,6 +1,6 @@
 # Review Passes
 
-Run all seven passes in full before classifying findings.
+Apply the passes selected in the skill’s workflow to the same frozen surface. These prompts guide investigation; they do not presume defects or authorize edits outside scope.
 
 ## Pass A: Behavior, Compatibility, and Correctness
 

@@ -60,7 +60,7 @@ This section carries the weight of the whole brief. Three parts:
 
 **Primary request.** One or two sentences stating the help needed: diagnose the likely root cause, propose the minimal safe patch, identify the missing invariant or architectural mismatch, design a decisive test, or review an approach against the constraints.
 
-**Questions.** The 3–7 questions that survived the gates in Extracting Questions for the Expert, highest-stakes first. For each:
+**Questions.** Only the questions that survived the gates in Extracting Questions for the Expert, highest-stakes first. Three to seven is a useful range for a complex brief, not a quota. For each:
 
 - The question, specific enough that a correct answer is checkable.
 - Why it blocks progress (one line).

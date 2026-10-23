@@ -1,5 +1,7 @@
 # Structured Value Mapping and Future ValueRepresentation
 
+Check [current availability](sdk-availability-and-verification.md#current-documentation-check--2026-10-23) for SDK-specific examples; retain older-SDK build lanes only when required by the project.
+
 ## Availability correction
 
 In the iPhoneOS 26.5 SDK verified on 2026-07-03:
@@ -8,7 +10,7 @@ In the iPhoneOS 26.5 SDK verified on 2026-07-03:
 - `PlaceDescriptor` exists in `GeoToolbox` and is present in the iOS 26 SDK, with `_GeoToolbox_AppIntents` overlay support.
 - `ValueRepresentation` and `IntentValueRepresentation` are absent.
 
-That split matters. The structured value types are real and useful today. The transfer-representation plumbing described in iOS 27-era material is not available to source compiled with iPhoneOS 26.5.
+Use the current availability reference and selected SDK declarations for this surface. Omit or source-gate unsupported APIs only when preserving a required older-SDK build lane; runtime gates alone cannot supply missing declarations.
 
 Do not write production code that references `ValueRepresentation` or `IntentValueRepresentation` unless the selected SDK declares those symbols. A runtime `#available` check cannot fix a missing compile-time declaration.
 
@@ -96,10 +98,10 @@ Design rules:
 
 ## Future transfer wrapper shape
 
-The following illustrates the intended future shape only. It is not buildable with the iPhoneOS 26.5 SDK because `ValueRepresentation` is absent.
+Use the current availability reference and selected SDK declarations for this surface. Omit or source-gate unsupported APIs only when preserving a required older-SDK build lane; runtime gates alone cannot supply missing declarations.
 
 ```swift
-// Forward-looking / selected-SDK-gated; not buildable with iPhoneOS 26.5.
+// Use only with selected-SDK declarations and runtime availability.
 import AppIntents
 import CoreTransferable
 import GeoToolbox
@@ -216,23 +218,11 @@ Should incoming content create a new entity?
 
 ## Validation checklist
 
-- [ ] The app compiles against the selected SDK without referencing absent symbols.
-- [ ] `IntentPerson` and `PlaceDescriptor` initializer labels are verified in the selected SDK.
-- [ ] Structured value mappers are pure, testable, and UI-independent.
-- [ ] `Transferable` file/data representations re-check authorization at export time.
-- [ ] Future `ValueRepresentation` / `IntentValueRepresentation` code is isolated from 26.5-compiled targets.
-- [ ] `NSUserActivity.appEntityIdentifier` resolves through the entity query after app relaunch.
-- [ ] Precision and privacy of exported location/person data are intentionally bounded.
+Use the current availability reference and selected SDK declarations for this surface. Omit or source-gate unsupported APIs only when preserving a required older-SDK build lane; runtime gates alone cannot supply missing declarations.
 
 ## Anti-patterns
 
-- Treating `ValueRepresentation` as available in iPhoneOS 26.5.
-- Treating `PlaceDescriptor` or `IntentPerson` as unavailable merely because the transfer wrappers are absent.
-- Using fake JSON files for places or contacts when a system-known value type exists.
-- Exporting another app’s private IDs.
-- Assuming `DisplayRepresentation` or `@Property` is enough to pass structured content to another app.
-- Compiling iOS 27-era symbols into an iOS 26.5 SDK deployment path without source isolation.
-- Building structured values in UIKit/SwiftUI view code instead of the entity/value layer.
+Use the current availability reference and selected SDK declarations for this surface. Omit or source-gate unsupported APIs only when preserving a required older-SDK build lane; runtime gates alone cannot supply missing declarations.
 
 ## Agent instruction
 

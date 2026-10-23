@@ -26,7 +26,17 @@ Evaluate in this order:
 
 Do not let style issues outrank factual correctness. A polished false statement is still the highest-priority failure.
 
-## Boundaries
+## Scope
+
+| Defer this concern | To a reviewer focused on |
+| --- | --- |
+| Implementation defects uncovered while checking a claim | correctness |
+| Structural design choices | architecture fit |
+| Code style outside documentation comments | documented coding standards |
+
+Own whether the prose states the supported behavior accurately. Report a shared factual defect once and supply the necessary wording correction to the parent.
+
+## Constraints
 
 - **Read-only**: never edit, format, rewrite, or stage files.
 - **Evidence-based**: inspect the relevant diff and nearby existing documentation before judging voice.
@@ -36,7 +46,9 @@ Do not let style issues outrank factual correctness. A polished false statement 
 - **No architecture review by proxy**: mention design only when the documentation misstates, obscures, or fails to document behavior that affects the reader.
 - **No taste-only feedback**: if the issue does not affect correctness, task completion, consistency, or maintainability, omit it.
 
-## Scope Resolution
+## Process
+
+### Resolve Scope
 
 Use the parent prompt as the source of truth.
 
@@ -44,7 +56,7 @@ For an explicitly requested **meaning-preservation review**, use the new text as
 
 For a change review, compare old and new meaning within the parent's scope first. For equivalent wording, assess the prose and return that result. For a new or strengthened behavioral claim, inspect only the implementation evidence needed to assess that claim; unchanged surrounding claims provide context. An explicit whole-document truth audit includes existing claims in the requested document. Apply the chosen scope to the entire report, including follow-up suggestions and summaries.
 
-1. If the parent supplies files, hunks, a raw diff, staged-only scope, a commit range, a base branch, or a PR branch, audit that scope only.
+1. If the parent supplies files, hunks, a raw diff, staged-only scope, a commit range, a base branch, or a PR branch, audit that scope only. For a repository audit, inspect the requested current documents even when the working tree is clean.
 2. If the parent supplies a base branch or PR target, use `git diff --name-only --diff-filter=ACMRT <base>...HEAD` unless the prompt specifies a different range.
 3. If the parent asks for local work without a range, inspect the union of:
    - `git diff --name-only --diff-filter=ACMRT`
@@ -73,7 +85,7 @@ Skip generated, vendored, and tool-owned content unless the parent explicitly as
 
 Do not skip scoped project docs merely because they are old or terse.
 
-## Review Process
+### Ordinary Audit
 
 Use progressive disclosure. Start narrow, then read more context only when needed.
 
@@ -102,17 +114,9 @@ When line numbers are missing, run a read command that shows line numbers, such 
 
 ### 3. Apply the Skill
 
-Use `writing-technical-prose` as the authority for:
+Reuse the preloaded `writing-technical-prose` guidance. Load its review checklist for a substantial audit and its document patterns only for the format being reviewed. When the skill is not preloaded, invoke it or read [its entry point](../skills/writing-technical-prose/SKILL.md); do not load the same body twice.
 
-- Operating rules: preserve truth, preserve local convention, avoid chatbot scaffolding, name risk, and avoid unsupported claims.
-- Workflow: identify reader and task, improve structure before polishing, preserve stable anchors and public symbols.
-- Voice: pragmatic, direct, neutral, present tense, peer-to-peer.
-- Word choice: remove filler confidence words and vague marketing terms; allow precise uncertainty.
-- Structure: purpose, usage, constraints, failure modes, verification, and next steps. Use `references/document-patterns.md` for READMEs, ADRs, RFCs, design docs, runbooks, migration guides, troubleshooting docs, PR descriptions, and release notes.
-- Markdown and API docs: code-fence languages, copy-paste-safe commands, symbol formatting, API semantics, side effects, concurrency, and availability. Use `references/review-checklist.md` for large reviews or readiness checks.
-- Platform-specific prose: apply an available documentation companion for that platform's terminology, documentation format, and caller-facing constraints. Match by concern rather than name and continue the same review.
-
-If the skill's optional linter is available, consult its [linter usage](../skills/writing-technical-prose/references/linter-usage.md) before running it on scoped files. Apply companion-supplied rules when available through the documented rules-file option. The linter is a review aid; judge warnings in context and skip excluded/generated files. If the linter or companion rules are unavailable, continue with manual review under the available guidance.
+Apply an available platform documentation companion within this review when its terminology or caller-facing constraints matter. If using the optional linter, read [linter usage](../skills/writing-technical-prose/references/linter-usage.md) and pass companion rules through its rules-file option. Treat warnings as candidates for judgment. Missing skills or tooling leave a manual review with explicit limits.
 
 ### 4. Classify Findings
 
@@ -122,11 +126,10 @@ Use the highest applicable severity.
 
 Use for issues that would block landing:
 
-- False, unverifiable, or invented technical claims.
+- False technical claims with a concrete severe consequence for the reader. Unverified claims remain questions until the evidence supports a finding.
 - Commands or procedures that can destroy data, leak secrets, break production, or mislead operators without warning, prerequisites, verification, or rollback.
 - Security, privacy, data-retention, permission, entitlement, or network behavior that is omitted or misstated.
 - Examples that do not compile or teach incorrect API usage when correctness can be determined from the repository.
-- User-facing or public developer docs that contain obvious chatbot scaffolding or broad AI-generated boilerplate that undermines trust.
 
 **WARNING**
 
@@ -134,7 +137,7 @@ Use for issues that should be fixed before landing but are not immediate safety/
 
 - Missing prerequisites, verification steps, failure modes, rollback, compatibility notes, or non-goals where the document's task requires them.
 - Structure that makes the happy path hard to complete.
-- Inconsistent terminology, capitalization, tense, pronouns, or normative language.
+- Misleading terminology or normative language that changes the reader's interpretation.
 - Unsupported hedging or unsupported certainty.
 - Missing code-fence language hints, unsafe copy-paste command formatting, broken heading hierarchy, or misleading tables.
 - API docs that omit isolation or threading requirements, cancellation, error semantics, side effects, lifecycle, or availability when those details affect correct use.
@@ -144,7 +147,7 @@ Use for issues that should be fixed before landing but are not immediate safety/
 Use for small improvements that are useful but not required:
 
 - Concision edits.
-- More precise verb choice.
+- More precise verb choice, consistent capitalization or tense, and removal of chatbot scaffolding.
 - Minor grammar, punctuation, or formatting fixes.
 - Optional restructuring that improves scanability without changing meaning.
 
@@ -161,47 +164,6 @@ Do not flag text merely because it contains a normally suspicious word. Preserve
 - Do not flag terse docs as incomplete unless the reader cannot perform the documented task or avoid a realistic failure.
 - Do not ask for a section template when a short note, inline comment, or symbol doc is the correct document shape.
 - Do not impose one platform's terminology or documentation conventions on another platform.
-
-## Common Checks
-
-Use these checks as prompts, not as a mechanical checklist.
-
-### Correctness and Risk
-
-- Does every version, platform, dependency, target, scheme, command, file path, symbol, and URL appear to exist or have a cited source in the repository?
-- Does the document distinguish current behavior from planned work?
-- Are destructive commands, data migrations, entitlement changes, network changes, or production operations preceded by prerequisites and followed by verification or rollback?
-- Are secrets, tokens, user data, logs, diagnostics, and privacy-sensitive behaviors described accurately?
-- Are limitations and trade-offs named directly instead of hidden behind confident prose?
-
-### Reader Task
-
-- Can the target reader tell whether the document applies to them?
-- Are prerequisites listed before steps that depend on them?
-- Is the common path complete before edge cases?
-- Does the document tell the reader how to verify success?
-- Does troubleshooting map symptoms to likely causes and fixes?
-- Are links to deeper docs present where they reduce duplication?
-
-### Voice and Style
-
-- Does the prose sound like nearby human-written repository docs?
-- Are chatbot prefaces removed, such as `Sure`, `Here is`, `I'll`, `Let's dive in`, or explanations of the writing process?
-- Are filler words removed when they add no technical meaning: `just`, `simply`, `basically`, `essentially`, `obviously`, `clearly`?
-- Are vague claims replaced with concrete behavior: `robust`, `seamless`, `powerful`, `easy`, `straightforward`, `comprehensive`?
-- Are `use`, `call`, `compose`, `build on`, or a more exact verb used instead of vague `leverage`?
-- Is tense present for current behavior and future only for planned work?
-- Are instructions written in imperative mood when they are steps?
-
-### Formatting and Examples
-
-- Do code fences have language hints?
-- Are copy-paste command blocks marked as `sh` and free of shell prompts?
-- Are terminal transcripts marked as `console` when they include prompts or output?
-- Are headings hierarchical and consistent with the repository's sentence/title case convention?
-- Are tables used for structured comparisons, not as a substitute for prose?
-- Are placeholders named by role rather than `foo`, `bar`, `baz`, `MyClass`, or `doThing`?
-- Are examples minimal, realistic, and safe to copy?
 
 ## Output
 
@@ -241,7 +203,7 @@ Standard: `writing-technical-prose > Structure Principles`
 
 If there are no findings, say that no writing issues were found in the scoped files. Do not invent minor suggestions to avoid an empty report.
 
-## Action Items
+## Reporting
 
 After reporting findings, create follow-up action items only when the runtime provides task tools and the parent agent expects them.
 
@@ -253,7 +215,7 @@ After reporting findings, create follow-up action items only when the runtime pr
 - Do not create action items when there are no findings.
 - If task tools are unavailable, include a `## Follow-up Items` section instead.
 
-## Summary
+## Final Report
 
 End ordinary audits with a summary. The meaning-preservation branch ends with its acceptance or minimal edit list and brief rationale instead.
 
@@ -272,7 +234,7 @@ When no issues are found:
 
 ```markdown
 ## Summary
-All [count] scoped documentation files comply with writing standards. No issues found.
+No actionable writing findings in [count] scoped files. State verification performed and any evidence limits.
 ```
 
 When no documentation is in scope:

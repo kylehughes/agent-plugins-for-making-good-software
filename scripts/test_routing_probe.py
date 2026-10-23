@@ -71,13 +71,20 @@ class RoutingProbeTests(unittest.TestCase):
     def test_export_has_no_answer_key_or_hint_ids(self):
         with tempfile.TemporaryDirectory() as directory:
             output = Path(directory) / "prompts.json"
-            subprocess.run([sys.executable, str(PROBE), "export", "--catalog", str(self.catalog_file), "--cases", str(CASES), "--output", str(output)], check=True)
+            cases_file = Path(directory) / "cases.json"
+            cases = json.loads(CASES.read_text())
+            cases["cases"][0]["required"] = ["answer-key-required-sentinel"]
+            cases["cases"][0]["forbidden"] = ["answer-key-forbidden-sentinel"]
+            cases_file.write_text(json.dumps(cases))
+            subprocess.run([sys.executable, str(PROBE), "export", "--catalog", str(self.catalog_file), "--cases", str(cases_file), "--output", str(output)], check=True)
             prompt = output.read_text()
             self.assertIn("case-001", prompt)
             self.assertNotIn("positive-", prompt)
             self.assertNotIn("negative-", prompt)
-            self.assertNotIn("required", prompt)
-            self.assertNotIn("forbidden", prompt)
+            # These words can legitimately appear in skill descriptions or
+            # user requests; only hidden grading data must stay out.
+            self.assertNotIn("answer-key-required-sentinel", prompt)
+            self.assertNotIn("answer-key-forbidden-sentinel", prompt)
 
     def test_malformed_response_is_rejected(self):
         result = self.run_probe({"selections": "not-a-list"})

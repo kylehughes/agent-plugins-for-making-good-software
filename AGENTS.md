@@ -59,8 +59,8 @@ Skills and agents are stored once and serve both platforms. Do not fork content 
 - Keep identity fields (`name`, the `# ` H1, and the leading clause of `description`) free of specific OS or SDK version numbers; leave version-gating detail in the body where it is accurate.
 - Preserve source `REFERENCE.md`, `ATTRIBUTION.md`, and `references/` files with their skill directories.
 - Keep `description` written for implicit skill selection: describe in natural language when to use the skill. This drives Claude Code's automatic invocation and Codex's implicit selection.
-- Preserve implicit invocation unless a skill has a documented reason to opt out; use `policy.allow_implicit_invocation: false` only when automatic selection would be unsafe or misleading.
-- Every skill also carries `skills/<name>/agents/openai.yaml` with Codex `interface` metadata: `display_name`, `short_description`, and a `default_prompt` (invoking the skill as `$<name>`). Claude Code ignores this file. Add MCP dependencies or `policy.allow_implicit_invocation: false` to it when a skill needs them.
+- Keep every skill available for both explicit and automatic invocation. Omit Claude Code invocation restrictions (`disable-model-invocation`, `user-invocable`) and Codex `policy.allow_implicit_invocation`, or set their enabled defaults. Put authorization requirements immediately before the affected action in the workflow; discovery does not grant permission to act.
+- Every skill also carries `skills/<name>/agents/openai.yaml` with Codex `interface` metadata: `display_name`, `short_description`, and a `default_prompt` (invoking the skill as `$<name>`). Claude Code ignores this file. Declare MCP dependencies there only when the skill needs them; retain automatic invocation.
 - Canonical SKILL.md shape: frontmatter (`name` == directory, gerund, version-free identity) → H1 → scope/assumptions including when NOT to use → decision procedure/contract → workflow → `## Reference Map` with an imperative lead-in → checklist pointer. Exemplars: `writing-swift`, `modeling-swift-types-for-correctness`.
 - Size budget: SKILL.md targets ≤ ~200 lines; exhaustive rules, tables, and examples live in `references/*.md`; every reference file must appear in the reference map (no orphans); split any reference beyond ~500 lines by topic.
 - Attribution: imported or derived skills carry top-level `ATTRIBUTION.md`; source snapshots are top-level `REFERENCE.md`; load-on-demand content lives in `references/`. Manually authored skills may omit attribution.
@@ -77,7 +77,7 @@ Skills and agents are stored once and serve both platforms. Do not fork content 
 - Description formula: what it checks + "Use PROACTIVELY after/when …" + what it does not cover, with the scope boundary in the first sentence so overlapping agents don't both auto-spawn.
 - Bodies are runtime-neutral, use Markdown `##` headers only (no XML section tags), and follow standard sections: Scope with a concern-defer table, Constraints, Process with the layered scope-resolution steps, Classifications or Severity, Output Format, Reporting, Final Report. Reporting instructions prefer task tools (`TaskCreate`/`TaskList`) when the runtime exposes them and fall back to a prioritized follow-up list otherwise.
 - Each reviewer agent owns exactly one concern. Current concern map: structure (`code-reviewer`), correctness (`correctness-reviewer`), codified rules (`code-standards-auditor`), types (`type-driven-design-auditor`), simplification (`code-simplifier` universally, `information-entropy-reducer` for Swift judgment), async-test determinism (`async-testing-auditor`), prose (`technical-writing-auditor`). A new agent claims an empty concern or explicitly splits one.
-- Codex does not automatically spawn custom agents from their descriptions. Spawn the Apple Platform reviewer agents only when the user explicitly asks for subagents, delegated review, or parallel agent work and the runtime exposes those roles. If the roles are not available, run the review directly with the relevant skills.
+- Reviewer registration and delegation depend on the host. Follow the user's and runtime's delegation rules, including standing authorization. When a named role is unavailable, pass its shared instructions to an available native agent or review directly with the relevant skills. A discovery description does not itself authorize delegation.
 
 ## Review Workflow
 
@@ -90,7 +90,7 @@ When the user asks to review a PR, branch, or diff:
 5. Include file paths, symbols, and reproduction or verification notes where possible.
 6. Avoid style-only comments unless they hide correctness, maintainability, or platform-convention risk.
 
-When agents are spawned, use the narrowest useful set, wait for their results before finalizing, then consolidate duplicate findings instead of forwarding separate reports wholesale:
+When agents are spawned, use the narrowest useful set and one reviewer per concern on each surface. For Swift simplification, choose the general simplifier or the Swift complexity reviewer, or give them disjoint scopes. Wait for their results before finalizing, then consolidate duplicate findings instead of forwarding separate reports wholesale:
 
 - `async-testing-auditor`: deterministic synchronization edges in changed Swift async tests.
 - `code-reviewer`: structural design consistency and architecture fit.
@@ -119,7 +119,7 @@ When agents are spawned, use the narrowest useful set, wait for their results be
 
 ## Validation
 
-- Primary gate: `python3 scripts/validate.py` — the same script CI runs via `.github/workflows/validate.yml`. It checks manifest JSON validity and marketplace↔plugin.json consistency, skill `name` == directory, version-free identity fields, `agents/openai.yaml` presence with a `$<skill-name>` default prompt, SKILL.md relative links and reference-map completeness, agent `skills:` same-plugin resolution, and README table ↔ disk consistency.
+- Primary gate: `python3 scripts/validate.py` — the same script CI runs via `.github/workflows/validate.yml`. It checks manifest JSON validity and marketplace↔plugin.json consistency, skill `name` == directory, version-free identity fields, `agents/openai.yaml` presence with a `$<skill-name>` default prompt, enabled explicit/automatic invocation, SKILL.md relative links and reference-map completeness, agent `skills:` same-plugin resolution, and README table ↔ disk consistency.
 - Run `python3 -m unittest discover -s scripts -p 'test_*.py'` before the validator, then inspect context costs with `python3 scripts/skill_catalog.py --base HEAD` (add `--json` for tooling). See [docs/skill-context.md](docs/skill-context.md) for the discovery/activation model and evaluation procedure.
 - Validate JSON manifests with `python3 -m json.tool`: `.claude-plugin/marketplace.json`, `.agents/plugins/marketplace.json`, `plugins/apple-platform/.claude-plugin/plugin.json`, `plugins/apple-platform/.codex-plugin/plugin.json`, `plugins/universal/.claude-plugin/plugin.json`, and `plugins/universal/.codex-plugin/plugin.json`.
 - Run `claude plugin validate plugins/apple-platform` and `claude plugin validate plugins/universal` for the Claude manifests; local-only, since the `claude` CLI is not guaranteed on CI runners.

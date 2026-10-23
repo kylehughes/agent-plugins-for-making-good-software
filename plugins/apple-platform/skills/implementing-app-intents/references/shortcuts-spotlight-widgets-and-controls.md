@@ -10,6 +10,8 @@ Each surface has different visibility rules. A good integration makes the same e
 
 Use `AppShortcutsProvider` for zero-configuration actions users can invoke immediately.
 
+App Shortcut phrase parameters must use supported fixed-value `AppEnum` or `AppEntity` parameters. Keep free-text and duration input out of phrase interpolation; collect those through the intent’s normal parameter flow. Swift typechecking alone does not verify App Shortcut metadata extraction. See [Explore enhancements to App Intents](https://developer.apple.com/videos/play/wwdc2023/10102/).
+
 ```swift
 struct ProjectAppShortcuts: AppShortcutsProvider {
     static var appShortcuts: [AppShortcut] {
@@ -17,7 +19,7 @@ struct ProjectAppShortcuts: AppShortcutsProvider {
             intent: CreateProjectIntent(),
             phrases: [
                 "Create a project in \(.applicationName)",
-                "Add \(\.$name) as a project in \(.applicationName)"
+                "Add a project in \(.applicationName)"
             ],
             shortTitle: "Create Project",
             systemImageName: "folder.badge.plus"
@@ -27,7 +29,7 @@ struct ProjectAppShortcuts: AppShortcutsProvider {
             intent: SearchInAppIntent(),
             phrases: [
                 "Search \(.applicationName)",
-                "Find \(\.$criteria) in \(.applicationName)"
+                "Find content in \(.applicationName)"
             ],
             shortTitle: "Search",
             systemImageName: "magnifyingglass"
@@ -51,7 +53,7 @@ Phrase rules:
 AppShortcut(
     intent: StartFocusSessionIntent(),
     phrases: [
-        "Start a \(\.$duration) focus session in \(.applicationName)",
+        "Start a focus session in \(.applicationName)",
         "Focus on \(\.$project) in \(.applicationName)"
     ],
     shortTitle: "Start Focus",
@@ -126,14 +128,16 @@ try await CSSearchableIndex.default().indexAppEntities(projectEntities)
 Shortcuts can create Find-style actions from `EntityPropertyQuery` and/or indexed entities.
 
 ```swift
-static var properties = QueryProperties {
-    Property(\.title) {
-        ContainsComparator { $0 }
-        EqualToComparator { $0 }
-    }
-    Property(\.dueDate) {
-        GreaterThanComparator { $0 }
-        LessThanComparator { $0 }
+static var properties: QueryProperties {
+    QueryProperties {
+        Property(\.title) {
+            ContainsComparator { $0 }
+            EqualToComparator { $0 }
+        }
+        Property(\.dueDate) {
+            GreaterThanComparator { $0 }
+            LessThanComparator { $0 }
+        }
     }
 }
 ```
@@ -165,8 +169,8 @@ func donateCompletedTask(_ task: TaskEntity) async {
 Delete donations when no longer valid:
 
 ```swift
-try await IntentDonationManager.shared.delete(
-    matching: IntentDonationMatchingPredicate(type: CompleteTaskIntent.self)
+try await IntentDonationManager.shared.deleteDonations(
+    matching: .intentType(CompleteTaskIntent.self)
 )
 ```
 
@@ -180,24 +184,7 @@ Rules:
 
 ## RelevantEntities
 
-`RelevantEntities` is absent from the iPhoneOS 26.5 SDK. Do not generate this code for a 26.5-compiled target.
-
-If a selected SDK supplies a relevance API, use it for dynamic contextual suggestions only, such as currently playing media, active workout/session/project, current document, current route, current camera mode, or a location-relevant item. Do not use it for large search corpora; durable searchable content belongs in entity queries and Spotlight.
-
-Forward-looking shape only:
-
-```swift
-// Not buildable with iPhoneOS 26.5 unless the selected SDK declares RelevantEntities.
-struct NowPlayingRelevantEntitiesProvider {
-    func update(track: TrackEntity?) async {
-        if let track {
-            try? await RelevantEntities.shared.updateEntities([track], for: .audio)
-        } else {
-            try? await RelevantEntities.shared.updateEntities([], for: .audio)
-        }
-    }
-}
-```
+Apple documents `RelevantEntities` on iOS 27+ for media suggestions using supported audio contexts, such as Now Playing and workouts. It is not a general registry for documents, projects, routes, or arbitrary selected items. Use entity queries, screen annotations, and Spotlight for those surfaces. See [the current availability table](sdk-availability-and-verification.md#current-documentation-check--2026-10-23).
 
 ## PredictableIntent
 

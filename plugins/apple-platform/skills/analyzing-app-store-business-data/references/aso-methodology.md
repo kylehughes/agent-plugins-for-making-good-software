@@ -41,13 +41,9 @@ responses under `market/` in the skill cache.
 1. Seed 10–20 candidate terms from: the app's job-to-be-done, competitor
    titles/subtitles, review language (what words do users use?), and the
    Discovery & Engagement report's search performance.
-2. For each term, pull the SERP and record: top-10 apps, each one's
+2. For each term, sample search results and record: the first ten returned apps, each one's
    `userRatingCount`, and whether the term appears in their title/subtitle.
-3. Score: **opportunity = relevance × demand proxy ÷ competition strength**,
-   where demand proxy = median rating count of the top 10 (crowded, reviewed
-   SERPs indicate real search volume) and competition strength = how many of
-   the top 10 carry the term in their *title* (title matches are hard to
-   outrank).
+3. Compare relevance, observed acquisition, and competing listings. Rating counts describe app popularity, not keyword search volume; the public Search API is a discovery sample, not a promise of on-device App Store rankings. Do not assign a numerical demand score without a defensible source.
 4. Target terms where the app can plausibly reach the top 5; treat a #40
    ranking as low priority unless observed traffic justifies it. Verify movement 2–6 weeks after shipping metadata via
    search-source impressions in analytics.
@@ -57,8 +53,7 @@ responses under `market/` in the skill cache.
 For each of the top 3–5 competitors: positioning (title/subtitle promise),
 monetization (price, IAP list from lookup + their listing), rating velocity
 (`userRatingCount` now vs a cached earlier snapshot — build history by
-caching every run), update cadence, screenshot narrative (first two
-screenshots carry most conversion), and their negative-review themes (fetch
+caching every run), update cadence, screenshot narrative (evaluate the first visible screenshots), and their negative-review themes (fetch
 their public reviews via the same reviews RSS/lookup surfaces) — those are
 positioning gaps you can claim.
 
@@ -79,5 +74,4 @@ positioning gaps you can claim.
 Metadata changes go through Procedure C (SKILL.md): diff to
 `fastlane/metadata/`, translate, upload via the repo's lane. Title/subtitle
 changes require an app version review; keywords ship with the next version
-too — batch them with releases. Promotional text is the only field
-changeable anytime.
+too — batch them with releases. Promotional text can be updated independently of a new app version; other fields have their own editability rules. Check [Apple’s app information reference](https://developer.apple.com/help/app-store-connect/reference/app-information/platform-version-information/) before claiming that a field requires a release.

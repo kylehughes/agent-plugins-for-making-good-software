@@ -31,6 +31,21 @@ public struct AccessibilityIdentifierScope:
         self.init(rawValue: rawValue)
     }
 
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        let rawValue = try container.decode(String.self)
+
+        guard !rawValue.isEmpty && rawValue.count <= 80
+            && rawValue.unicodeScalars.allSatisfy(Self.isAllowedScalar) else {
+            throw DecodingError.dataCorruptedError(
+                in: container,
+                debugDescription: "Invalid accessibility identifier scope."
+            )
+        }
+
+        self.rawValue = rawValue
+    }
+
     private static func isAllowedScalar(_ scalar: Unicode.Scalar) -> Bool {
         switch scalar.value {
         case 48...57,  // 0-9

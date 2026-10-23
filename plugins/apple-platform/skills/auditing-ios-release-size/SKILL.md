@@ -1,6 +1,6 @@
 ---
 name: auditing-ios-release-size
-description: "Audit iOS IPA, download, and install size through release builds and App Thinning. Use for size regressions or binary and resource bloat; not routine Debug or simulator build sizing."
+description: "Audit shipping iOS download, install, binary, and resource size. Use proactively for release-size regressions or bloat investigations; not routine simulator build sizing."
 ---
 
 # Auditing iOS Release Size
@@ -19,7 +19,7 @@ Use this skill to turn a build-size investigation into repeatable evidence and f
 
 - Use the project's build, archive, and simulator conventions — or a build-tooling skill covering them, when one is available — rather than inventing commands.
 - Use `writing-technical-prose` when writing durable Markdown or long-form issue summaries.
-- Use `hardening-changes` only when the audit produces tracked code, build-system, documentation, or skill changes that should be reviewed.
+- Review tracked fixes using the repository’s normal review workflow; use an available hardening workflow only when it applies.
 
 ## Discover The Shipping Path
 
@@ -101,9 +101,9 @@ Be skeptical of source-code refactors when the largest contributors are binary S
 
 ## Capture The Outcome
 
-The durable result of a size audit belongs in the project's issue tracker and the PR narrative, not in local scratch files. When the project has no tracker, the PR description is the durable home; write a committed doc only when the user asks.
+Return the audit in the requested destination. When issue or PR updates are already authorized, capture the evidence there; otherwise provide ready-to-use follow-up text in the response. Creating or updating external tracker items is not implied by a size investigation. Keep local scratch artifacts disposable; write a committed document only when requested.
 
-Update the source issue with:
+For an authorized source-issue update, include:
 
 - Final size metrics and measurement context.
 - Baseline status.
@@ -113,7 +113,7 @@ Update the source issue with:
 
 Before creating follow-ups, search for existing issues to avoid duplicates. When creating issues, carry over the source issue's project, parent, assignee, and status equivalents where the tracker has them, unless the user asks otherwise.
 
-Create focused follow-up issues rather than one omnibus cleanup task. Good follow-ups name one measurable contributor or correctness issue and include the evidence, expected impact, risk, and validation path.
+When issue creation is authorized, create focused follow-ups; otherwise list them in the audit response. Good follow-ups name one measurable contributor or correctness issue and include the evidence, expected impact, risk, and validation path.
 
 ## PR Guidance
 
@@ -135,5 +135,5 @@ The audit is complete when:
 - Build configuration was checked and categorized.
 - Baseline comparison is present or the lack of baseline is explicit.
 - Optional external reports were used or noted as unavailable.
-- Actionable findings are captured as focused issues, or in the PR narrative when no tracker exists.
+- Actionable findings are returned in the requested report or captured in authorized issue/PR updates.
 - Local scratch artifacts are clearly excluded from the PR surface.

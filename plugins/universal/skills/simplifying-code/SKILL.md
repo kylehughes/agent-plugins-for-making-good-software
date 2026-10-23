@@ -1,6 +1,6 @@
 ---
 name: simplifying-code
-description: "Simplify existing code while preserving behavior. Use for requested cleanup, deduplication, local refactoring, or a simplification review; ordinary defect review belongs to reviewing-code."
+description: "Simplify existing code while preserving behavior. Use proactively for requested cleanup, deduplication, local refactoring, or simplification review; preserve read-only review scope. Ordinary defect review belongs to reviewing-code."
 ---
 
 # Simplifying Code
@@ -8,6 +8,8 @@ description: "Simplify existing code while preserving behavior. Use for requeste
 Run this skill as a disciplined, behavior-preserving cleanup and hardening pass over code that already exists or has just been written. The goal is smaller, clearer, safer, more idiomatic, more reusable, and more maintainable code.
 
 This is not a rewrite license. Prefer deletion, reuse, narrower boundaries, and targeted fixes over new architecture. Expand scope only when the current change cannot be simplified safely without touching adjacent code.
+
+For a simplification review, inspect and report opportunities without editing. Apply fixes only when cleanup or implementation is authorized by the current request or enclosing workflow. Preserve that mode throughout the steps below.
 
 ## Non-Negotiable Contract
 
@@ -53,7 +55,8 @@ Then choose the surface:
 - If staged or unstaged tracked changes exist, review `git diff HEAD` so staged and unstaged edits are considered together.
 - If only unstaged tracked changes exist, `git diff` is acceptable, but still note the changed file list from `git status --short`.
 - If untracked source files exist, inspect them explicitly with `git ls-files --others --exclude-standard`; ordinary diffs will not show them.
-- If the repository is not a git repository, review the files the user mentioned, files you edited earlier, and the most recently modified relevant source files.
+- If the working tree is clean and the request concerns a branch or commit, compare against its relevant base from project or task context. For a focused cleanup, use the explicitly named files.
+- If the repository is not a git repository, use the files identified by the request or enclosing task. Do not infer ownership from modification time alone.
 - If there are merge conflicts, stop broad cleanup and only simplify conflict-resolution code unless the user explicitly asked for a larger pass.
 - If a file is generated, vendored, minified, binary, huge, or build output, do not hand-edit it. Inspect only enough to identify the relevant hand-written source.
 
@@ -84,7 +87,7 @@ When a requested proof names an invariant, or a simplification changes an enforc
 
 ### 4. Run Independent Review Passes
 
-Run these passes independently. If the environment supports parallel reviewers or subagents, give each the full frozen surface and ask for separate findings. Otherwise, perform the passes yourself and keep findings separated until all passes are complete.
+Start with behavior preservation, reuse, and cognitive load. Add the concurrency, security, performance, and testing passes when the scoped code implicates those concerns. A requested full audit covers every applicable pass; record a short reason for any exclusion. Keep one frozen surface and consolidate findings before editing. Use independent reviewers only when they add useful evidence within the caller’s delegation and verification rules.
 
 - **Pass A: Behavior, Compatibility, and Correctness** — Find changes that simplify incorrectly or silently alter contracts.
 - **Pass B: Reuse, Deletion, and Consolidation** — Look for code that should not exist because the project already has a better primitive.
@@ -94,7 +97,7 @@ Run these passes independently. If the environment supports parallel reviewers o
 - **Pass F: Performance, Memory, and Scalability** — Find obvious waste without premature optimization.
 - **Pass G: Tests, Observability, and Failure Modes** — Check whether simplified code remains testable and diagnosable.
 
-Run every pass in full from [review-passes](references/review-passes.md) before classifying findings.
+Read the selected pass sections in [review-passes](references/review-passes.md) before classifying findings.
 
 ### 5. Classify Findings Before Editing
 
@@ -108,7 +111,7 @@ For each skipped real finding, keep a short note explaining why it was not chang
 
 ### 6. Apply Safe Fixes
 
-When editing:
+Skip edits in review-only mode and report actionable opportunities instead. When editing:
 
 1. Work in small patches. After each meaningful patch, reassess whether the code got smaller and clearer.
 2. Preserve the smallest stable API. Tighten visibility where safe, but do not break public, cross-module, serialized, persisted, reflected, plugin, or external callers.
@@ -141,7 +144,7 @@ Before finalizing, confirm the [compact checklist](references/compact-checklist.
 
 Load only the reference relevant to the current step:
 
-- [Review passes](references/review-passes.md): the full Pass A–G checklists run during step 4.
+- [Review passes](references/review-passes.md): the Pass A–G checklists selected during step 4.
 - [Adaptation and anti-simplification](references/adaptation-and-anti-simplification.md): universal adaptation rules, anti-simplifications to reject, and file-type-specific attention prompts.
 - [Compact checklist](references/compact-checklist.md): final confirmation checklist before finishing.
 

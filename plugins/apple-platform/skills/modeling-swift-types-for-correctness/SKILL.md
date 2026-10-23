@@ -1,6 +1,6 @@
 ---
 name: modeling-swift-types-for-correctness
-description: "Assess Swift invariants, validated decoding, legal transitions, borrowed-view lifetimes, ownership, typed failures, and generic relationships. Required before judging or changing these enforcement boundaries, including small fixes; excludes ordinary output tests and naming."
+description: "Model Swift invariants, validated decoding, legal transitions, ownership, and generic relationships. Load before assessing or changing enforcement boundaries; not ordinary output tests or naming."
 ---
 
 # Modeling Swift Types for Correctness
@@ -19,13 +19,15 @@ Inspect the environment when compiler behavior, availability, isolation, or owne
 
 1. Record minimum deployment versions and SDK.
 2. Record the selected Xcode channel and `xcrun swift --version`.
-3. Confirm Swift 6 language mode for every affected target.
+3. Record the actual Swift language mode for every affected target; do not silently migrate it.
 4. Record strict concurrency, default isolation, upcoming features, experimental features, strict memory safety, and library evolution.
 5. Identify app, package, binary framework, and Objective-C or C boundaries.
 
-Run `python3 scripts/audit_project.py <project-root>` for a heuristic inventory, then verify target-specific Xcode settings. Only one current Swift toolchain is in scope. Treat a target outside Swift 6 language mode as migration work rather than a compatibility lane.
+Resolve all bundled script, fixture, and reference paths relative to this skill directory; run project commands from the consumer repository.
 
-Choose one runtime lane:
+Run `python3 scripts/audit_project.py <project-root>` for a heuristic inventory, then verify target-specific Xcode settings. The bundled compiler fixtures use Swift 6 language mode. Assess production code under its actual supported settings; a different language mode is a verification limit, not permission to migrate.
+
+Preserve the project’s actual runtime lane. The following iOS 16 examples illustrate compatibility choices, not a mandatory deployment minimum:
 
 - **iOS 16 baseline:** current Swift compiler, with no symbols unavailable on iOS 16.
 - **Availability lane:** newer SDK or standard-library API behind declaration and runtime availability, with an iOS 16 fallback.
@@ -192,14 +194,4 @@ Load the owner of the changed concern. Mechanism guides explain construction and
 - [Feature status and frontier](references/swift-feature-status.md): the dated support and availability authority, experiment flags, evidence limits, and unavailable encodings.
 - [Sources](references/sources.md): primary specifications and official release documentation for time-sensitive guidance.
 
-## Included utilities and fixtures
-
-- `scripts/audit_project.py`: inventories Swift/Xcode compatibility settings.
-- `scripts/swift_compile_checks.py` and `swift_compiler_corpus.py`: run paired baseline fixtures and the imported corpus, with separate compiler/runtime evidence.
-- `examples/compile-checks.json` and `compiler-corpus-map.json`: declare the baseline fixtures and 89 imported cases; corpus controls and experimental lanes remain explicit.
-- `scripts/check_examples.sh`: compatibility entry point with optional skip and `REQUIRE_SWIFTC=1` behavior.
-- `scripts/validate_skill.py`: validates metadata, links, evals, manifest wiring, and fixtures.
-- `examples/CorePatterns.swift`, `CurrentSwiftPatterns.swift`, and `TrustStatePatterns.swift`: shared sources used by controls and misuse fixtures.
-- `examples/CorePatternsRuntimeChecks.swift`: executable validation and `Codable` checks.
-- `examples/CompilePass*.swift` and `CompileFail*.swift`: paired valid and invalid uses of the shared sources.
-- `evals/trigger-evals.json` and `evals/quality-evals.md`: activation and response-quality scenarios.
+For bundled scripts, fixture sources, and activation/quality evals, see the [utility inventory](references/compile-check-runner.md#included-utilities-and-fixtures).

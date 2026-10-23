@@ -1,5 +1,7 @@
 # Agent Playbook
 
+Check [current availability](sdk-availability-and-verification.md#current-documentation-check--2026-10-23) for SDK-specific examples; retain older-SDK build lanes only when required by the project.
+
 Use this when responding to a user who wants App Intents implemented in a real codebase.
 
 ## First pass: ask or infer

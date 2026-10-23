@@ -10,7 +10,7 @@ Before editing, allocate a fresh temporary directory outside the repository usin
 
 Surfaces the branch does not implicate stay untouched. Defer owned work that requires app-wide rearchitecture or a product decision only the user can make.
 
-**By default, this path runs one compile checkpoint, not a verification pass.** Apply the entry point's project-companion requirements: explicit checks required during hardening run in this pass; checks assigned to the later ship gate remain there.
+**By default, this path uses a compile checkpoint rather than a full verification pass.** Apply the entry point's project-companion requirements: explicit checks required during hardening run in this pass; checks assigned to the later ship gate remain there.
 
 ## Dispositions
 
@@ -48,7 +48,7 @@ Resolve everything resolvable from project evidence before stopping. An attended
 
 When hardening is one stage of an enclosing workflow, the filing offer belongs at that workflow's final handoff. Return the stage result and continue the enclosing workflow's remaining checks before making the offer.
 
-Translate the workflow onto the current runtime rather than treating tool names literally. The finding ledger lives in orchestrator state. Auditors return findings as text in their final report — subagents receive a reduced tool set and cannot be relied on to create tasks or invoke skills by name, so the orchestrator collects and records. Use the runtime's native subagent mechanism for auditors; if it does not expose the named agents, pass the matching agent definition as prompt context.
+Translate the workflow onto the current runtime rather than treating tool names literally. The finding ledger lives in orchestrator state. Auditors return findings as text in their final report — subagents receive a reduced tool set and cannot be relied on to create tasks or invoke skills by name, so the orchestrator collects and records. Follow the caller's delegation rules. When delegation is permitted, use the native subagent mechanism; if it does not expose a named role, pass the matching agent definition as prompt context. Otherwise perform the scoped review directly.
 
 Where the runtime provides cheaper delegated workers, bounded mechanical slices can go to them once the orchestrator fixes file scope and acceptance criteria. Workers do not build or run the project; every worker prompt names its working directory explicitly and quotes space-containing paths.
 
@@ -58,7 +58,7 @@ Where the runtime provides cheaper delegated workers, bounded mechanical slices 
 
 Use the mode and frozen surface from the initial inspection. Display the surface, including file lists for untracked directories, so auditors can inspect new files.
 
-Launch the implicated auditors in parallel against the surface. The roster is a set of concerns, not a fixed list of names. This plugin supplies four:
+Select one reviewer per implicated concern and run independent reviews in parallel when delegation is permitted. The roster is a set of concerns, not a fixed list of names. This plugin supplies four:
 
 | Agent | Question |
 |---|---|
@@ -67,7 +67,7 @@ Launch the implicated auditors in parallel against the surface. The roster is a 
 | `correctness-reviewer` | Does this behave correctly on real paths? |
 | `technical-writing-auditor` | Does this match the human voice? |
 
-Platform plugins and projects commonly add reviewers for concerns such as codified standards compliance, type-system enforcement, complexity and cognitive load, and async-test determinism. Launch every installed reviewer agent whose concern the surface implicates; record the concerns you had no reviewer for.
+Platform plugins and projects commonly add reviewers for concerns such as codified standards compliance, type-system enforcement, complexity and cognitive load, and async-test determinism. Choose the best-fitting reviewer for each concern; when a platform reviewer overlaps a general reviewer, use one or assign disjoint scopes. In particular, simplification and cognitive-load review share a concern unless the task explicitly separates them. Record concerns covered directly because no reviewer was available.
 
 Apply the opening scope, companion requirements, and activation rules to the auditor contracts. Investigate domain values and legal transitions introduced, altered, or newly exposed by substantive changes. Consider a stronger representation when it prevents concrete misuse at a justified complexity cost. This adds no reviewer or verification loop: Phase 4 owns the default compile checkpoint, and project instructions determine when their additional checks run.
 
@@ -101,11 +101,11 @@ Fix every mechanical and judgment finding, grouped by file, each patch inside it
 
 ### Phase 4: Compile Checkpoint
 
-Run the default compile checkpoint **once**, after the first substantive fix batch, and only if the fixes touched source code, package manifests, or project files. Hardening can introduce failures that static analysis cannot see — public API changes, access control, concurrency isolation, package boundaries — and this is where they surface. Explicit project requirements may also require commands when no fixes were needed or at another point in this pass; follow their timing.
+Run the default compile checkpoint after the first substantive fix batch, and only if the fixes touched source code, package manifests, or project files. Hardening can introduce failures that static analysis cannot see — public API changes, access control, concurrency isolation, package boundaries — and this is where they surface. Explicit project requirements may also require commands when no fixes were needed or at another point in this pass; follow their timing.
 
 Use the narrowest command that compiles the full dependent graph of the touched modules — a whole-app or whole-workspace build, or the unit-test build when test targets changed. **Not an incremental, changed-module-only build**: it does not compile the changed module's dependents, which is precisely where the failures this checkpoint exists to catch appear. The incremental build is the iteration loop; the checkpoint needs the graph.
 
-Purely mechanical iterations — formatting, ordering, whitespace — skip the default compile checkpoint. A project-required check that already compiles the required dependent graph on the same artifacts satisfies it; do not add a duplicate build. Once the checkpoint passes, later audit fixes do not restart it except for the compiler-caused repair below. Carry other verification obligations, including invariant rechecks, to the project ship gate unless explicit project requirements call for them during hardening. Keep required hardening-check results current under the entry point's reuse and rerun rules.
+Purely mechanical iterations — formatting, ordering, whitespace — skip the default compile checkpoint. A project-required check that already compiles the required dependent graph on the same artifacts satisfies it; do not add a duplicate build. Reuse a passing checkpoint only while later edits leave its compile evidence applicable. Re-run the affected dependent graph after later source, manifest, or project changes that invalidate it. Carry other verification obligations, including invariant rechecks, to the project ship gate unless explicit project requirements call for them during hardening. Keep required hardening-check results current under the entry point's reuse and rerun rules.
 
 On default compile-checkpoint failure:
 

@@ -10,7 +10,7 @@ Use this reference when converting completion handlers, delegates, Objective-C A
 | One callback maybe never/cancelable | Continuation plus cancellation handler and timeout/cancel path. |
 | Multiple values over time | `AsyncStream` / `AsyncThrowingStream`. |
 | Delegate with lifecycle | Adapter object plus stream or actor/MainActor callbacks. |
-| Synchronous blocking API | Keep synchronous behind `@concurrent` or a lock/queue; do not block async tasks. |
+| Synchronous blocking API | Prefer an async replacement; otherwise use a bounded queue/executor designed for blocking and bridge completion. `@concurrent` alone does not make blocking safe. |
 | Combine publisher | Use `AsyncSequence` boundary carefully; maintain cancellation and subscriptions. |
 
 ## Continuation rules
@@ -197,7 +197,7 @@ Better:
 await work()
 ```
 
-If a synchronous API must perform blocking legacy work, keep it outside async contexts or move it behind an `@concurrent` function that does not call back into actor-isolated state while blocked. Prefer replacing blocking APIs with async APIs when possible.
+Prefer an asynchronous API. If blocking legacy work is unavoidable, run it on an explicitly owned queue or executor designed for blocking and bridge completion asynchronously, with bounded concurrency and cancellation semantics. `@concurrent` and `Task.detached` still use Swift’s cooperative executor by default; they do not make blocking waits safe. See [Swift concurrency: Behind the scenes](https://developer.apple.com/videos/play/wwdc2021/10254/).
 
 ## Combine bridging
 

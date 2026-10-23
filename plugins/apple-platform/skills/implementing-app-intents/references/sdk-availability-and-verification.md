@@ -1,6 +1,26 @@
 # SDK Availability and Verification
 
-Treat this file as the local ground-truth layer for the package. The verified facts below came from the iPhoneOS 26.5 SDK Swift interfaces from Xcode 26.5, checked on 2026-07-03. Future beta or GA SDKs may add, remove, rename, or move declarations. Always verify against the SDK selected by the project before generating load-bearing code.
+Use the project’s selected SDK interfaces and current Apple documentation as authority. The iPhoneOS 26.5 findings below are a **supplied historical snapshot dated 2026-07-03**, retained for provenance and not re-executed in this audit. They are not a list of features missing from current SDKs. If an older SDK build lane matters, independently inspect that SDK before relying on an absence claim.
+
+## Current documentation check — 2026-10-23
+
+Apple now documents the following APIs. Their runtime introduction versions can predate the SDK that first exposes the declarations; inspect both axes before generating code. These rows are documentation checks, not local SDK compilation evidence.
+
+| API | Documented iOS floor | Primary documentation |
+| --- | --- | --- |
+| `IntentValueRepresentation` / entity `ValueRepresentation` | 26.4 | [Structured transfer](https://developer.apple.com/documentation/appintents/intentvaluerepresentation) |
+| `CancellableIntent` | 26.4 | [Cancellation](https://developer.apple.com/documentation/appintents/cancellableintent) |
+| `LongRunningIntent` | 27.0 | [Extended execution](https://developer.apple.com/documentation/appintents/longrunningintent) |
+| `RelevantEntities` | 27.0 | [Media suggestions](https://developer.apple.com/documentation/appintents/relevantentities) |
+| `EntityCollection`, `SyncableEntity` | 27.0 | [Collections](https://developer.apple.com/documentation/appintents/entitycollection), [cross-device identity](https://developer.apple.com/documentation/appintents/syncableentity) |
+| `AppIntent.ExecutionTargets` (`IntentExecutionTargets`) | 27.0 | [Execution targets](https://developer.apple.com/documentation/appintents/appintent/executiontargets) |
+| AppIntentsTesting `IntentDefinitions` | 27.0 | [Integration tests](https://developer.apple.com/documentation/appintentstesting/intentdefinitions) |
+| UIKit table/collection App Intents data sources | 18.4 | [Table](https://developer.apple.com/documentation/appintents/uitableviewappintentsdatasource), [collection](https://developer.apple.com/documentation/appintents/uicollectionviewappintentsdatasource) |
+| `AppEntityUIElement`, SwiftUI `appEntityIdentifier(_:)` | 18.4 | [Custom views](https://developer.apple.com/documentation/appintents/appentityuielement), [SwiftUI](https://developer.apple.com/documentation/swiftui/view/appentityidentifier(_:)) |
+
+Use the current APIs where the selected SDK declares them and the deployment contract permits them. Retain 26.5 source compatibility only when the project actually supports building with that SDK. Do not infer that every example below has been compiled against a current SDK.
+
+`RelevantEntities` supports the documented media/audio contexts, including Now Playing and workouts. It is not a generic current-document/project suggestion registry; inspect `AppEntityContext` instead of inventing `.currentContext`.
 
 ## Verified iPhoneOS 26.5 SDK availability
 
@@ -41,7 +61,7 @@ Do not generate code using these symbols for a project compiling with the iPhone
 - SwiftUI `.appEntityIdentifier(forSelectionType:)`
 - Notification-content `appEntityIdentifiers`
 
-When discussing these APIs, mark them as forward-looking / selected-SDK-dependent. Keep examples quarantined in documentation or in files compiled only by an SDK that actually declares the symbol.
+When discussing these historical absences, distinguish selected-SDK visibility from current documented availability. Keep examples quarantined in documentation or in files compiled only by an SDK that actually declares the symbol.
 
 ## Assistant Schemas domains verified in iPhoneOS 26.5
 
@@ -80,7 +100,7 @@ extension ContactEntity {
 }
 ```
 
-When a future or beta SDK declares the structured transfer representation API, the adoption should be a thin wrapper around these existing mappers rather than new business logic inside a view controller.
+When the selected SDK declares the structured transfer representation API, the adoption should be a thin wrapper around these existing mappers rather than new business logic inside a view controller.
 
 ## Verify against the selected SDK
 

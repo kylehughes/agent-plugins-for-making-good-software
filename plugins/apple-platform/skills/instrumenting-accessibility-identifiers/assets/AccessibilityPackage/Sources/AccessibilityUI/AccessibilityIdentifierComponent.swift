@@ -31,6 +31,21 @@ public struct AccessibilityIdentifierComponent:
         self.init(rawValue: value.description)
     }
 
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        let rawValue = try container.decode(String.self)
+        let sanitized = rawValue.unicodeScalars.map(Self.sanitizedScalar).joined()
+
+        guard !sanitized.isEmpty && sanitized.count <= 80 else {
+            throw DecodingError.dataCorruptedError(
+                in: container,
+                debugDescription: "Invalid accessibility identifier component."
+            )
+        }
+
+        self.rawValue = sanitized
+    }
+
     private static func sanitizedScalar(_ scalar: Unicode.Scalar) -> String {
         switch scalar.value {
         case 45,       // -

@@ -90,9 +90,12 @@ Detached tasks are for intentionally independent work. They are not a general �
 
 ## `Task.immediate`
 
+`Task.immediate` is a standard-library API with iOS 26+/macOS 26+ runtime availability, not merely compiler syntax. Guard it or its containing declaration on older deployment targets. A normal `Task` is a fallback only when delayed scheduling preserves the contract; otherwise perform the required synchronous prefix directly before starting async work. See [Apple’s declaration](https://developer.apple.com/documentation/swift/task/immediate(name:priority:executorpreference:operation:)-88o80).
+
 `Task.immediate` starts synchronously on the caller’s execution context until the task reaches an actual suspension point. It is still an unstructured task unless created through a task group immediate-child API.
 
 ```swift
+@available(iOS 26.0, macOS 26.0, *)
 @MainActor
 func handleTapSynchronouslyEnough() {
     Task.immediate {

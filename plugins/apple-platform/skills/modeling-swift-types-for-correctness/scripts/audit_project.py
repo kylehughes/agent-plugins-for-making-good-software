@@ -214,26 +214,8 @@ def current_swift_policy_issues(
 ) -> list[str]:
     issues: list[str] = []
 
-    for finding in findings:
-        if finding.category == "SWIFT_VERSION":
-            match = re.match(r"\s*([0-9]+)", finding.value)
-            if match is not None and int(match.group(1)) != 6:
-                issues.append(
-                    f"{finding.file}:{finding.line} selects Swift language mode {finding.value}; this skill requires Swift 6 mode"
-                )
-        elif finding.category in {
-            "SwiftPM package language modes",
-            "SwiftPM target language mode",
-        }:
-            modes = [int(value) for value in re.findall(r"\.v([0-9]+)", finding.value)]
-            if modes and any(mode != 6 for mode in modes):
-                issues.append(
-                    f"{finding.file}:{finding.line} declares a non-Swift-6 package language mode: {finding.value}"
-                )
-        elif finding.category == "SwiftPM legacy package language versions":
-            issues.append(
-                f"{finding.file}:{finding.line} uses legacy swiftLanguageVersions; use Swift 6 language-mode declarations"
-            )
+    # Production language modes are inventory, not migration violations.
+    # Only bundled-fixture toolchain compatibility is assessed here.
 
     selected = toolchains.get("xcode_swift") or toolchains.get("swift")
     if selected:
@@ -270,7 +252,7 @@ def build_report(root: Path, *, include_toolchains: bool = True) -> dict[str, ob
         "toolchains": toolchains,
         "current_swift_policy": {
             "toolchain": "project-selected current Xcode/Swift compiler; bundled fixtures require Swift 6.3+",
-            "language_mode": "Swift 6 only",
+            "language_mode": "preserve project-supported modes; bundled fixtures use Swift 6",
             "issues": policy_issues,
         },
         "containers": {
@@ -283,7 +265,7 @@ def build_report(root: Path, *, include_toolchains: bool = True) -> dict[str, ob
         "caveats": [
             "These are textual findings, not fully resolved per-target/per-configuration build settings.",
             "Verify Xcode targets and schemes with xcodebuild -showBuildSettings on a machine with Xcode.",
-            "This skill uses the project-selected current Swift compiler and Swift 6 language mode. The fixture minimum is Swift 6.3; consult references/swift-feature-status.md for the dated release snapshot.",
+            "Preserve the project-selected compiler and language mode. Bundled fixtures use Swift 6 language mode and require Swift 6.3+; consult references/swift-feature-status.md for the dated release snapshot.",
             "Deployment target, SDK/runtime availability, Swift semantic settings, and ABI policy remain independent axes.",
             "A declaration that compiles can still require an availability annotation or runtime fallback.",
             "This offline audit cannot determine whether the installed compiler is the newest release; verify the selected Xcode channel separately.",

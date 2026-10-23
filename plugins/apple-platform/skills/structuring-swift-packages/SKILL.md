@@ -1,9 +1,13 @@
 ---
 name: structuring-swift-packages
-description: "Structure Swift packages and modules, dependency direction, exported interfaces, composition roots, and cross-module type promotion. Use for package boundaries or dependency cycles, not feature architecture within one module."
+description: "Structure Swift package boundaries, dependencies, exports, and composition roots. Use proactively for module placement or dependency cycles; preserve the repository’s architecture and naming."
 ---
 
 # Structuring Swift Packages
+
+## Scope and convention
+
+Inspect the existing package graph, product visibility, naming, and composition roots before editing. Preserve a coherent repository architecture. The suffix taxonomy below is an opinionated convention to use when already adopted or when the user requests a new structure; SwiftPM does not assign semantics to these suffixes. Do not rename modules or introduce all six layers solely because this skill was invoked. For a small library, one library target and a test target may be sufficient.
 
 ## Philosophy
 
@@ -36,7 +40,7 @@ These suffixes apply to **every package** in a project. There are no exceptions 
 
 `*UI` and `*Feature` are the critical distinction. `*UI` modules provide reusable presentational components — views that accept data and emit user actions. `*Feature` modules contain feature screens — coordinators, view models, and views wired to services.
 
-The line is strict: a `*UI` module must not depend on any `*Services` or `*Feature` module. It must not accept closures or callbacks that perform service-layer work (network calls, cache writes, analytics). If a component needs to trigger a service operation, it emits an action through a delegate or callback and the `*Feature` layer handles the side effect. This prevents `*UI` modules from becoming secretly service-bound through injected closures.
+Under this convention, a `*UI` module must not depend on any `*Services` or `*Feature` module. It emits user actions through delegates or callbacks; the caller may handle those actions with service work. Avoid making the component itself coordinate networking, cache writes, or analytics. This prevents `*UI` modules from becoming secretly service-bound through injected closures.
 
 Third-party image loading, caching, and formatting libraries are not services. A `*UI` module that uses such a library remains a `*UI` module.
 

@@ -1,5 +1,7 @@
 # Architecture and Model
 
+Check [current availability](sdk-availability-and-verification.md#current-documentation-check--2026-10-23) for SDK-specific examples; retain older-SDK build lanes only when required by the project.
+
 ## Core model
 
 App Intents is the app's semantic interface to system experiences. Treat it as an application boundary, not as a shortcuts-only feature. The integration should expose a graph of actions, entities, properties, relationships, queries, indexed content, current-screen context, transfer representations, and execution rules.
@@ -30,40 +32,9 @@ Keep the semantic model independent of the UI framework. UIKit, SwiftUI, AppKit,
 9. Add `Transferable` exports and structured-value mappers where applicable.
 10. Add snippets, confirmation, choice requests, undo, progress, foreground continuation, UIKit scene routing, widgets, controls, and tests.
 
-## iPhoneOS 26.5 baseline surfaces
+## SDK surfaces
 
-The following are buildable in the verified iPhoneOS 26.5 SDK or earlier, subject to their specific `@available` annotations:
-
-- Core `AppIntent`, `AppEntity`, `AppShortcutsProvider`, and the entity-query family: iOS 16+.
-- `IntentPerson`: iOS 16+, `AppIntents`.
-- `PredictableIntent`: iOS 16+, `AppIntents`.
-- `AppIntentsPackage`: iOS 17+, `AppIntents`. This is a discovery floor for intents stored in Swift packages.
-- `ProgressReportingIntent`: iOS 17+, `AppIntents`.
-- `DeprecatedAppIntent` and `IntentDeprecation`: iOS 17+, `AppIntents`.
-- `IndexedEntity`: iOS 18+, `AppIntents`.
-- `NSUserActivity.appEntityIdentifier` and `AppEntityAnnotatable`: iOS 18.2+, `AppIntents`.
-- `SnippetIntent`, `ShowInAppSearchResultsIntent`, `IntentValueQuery`, `@UnionValue`, `UndoableIntent`, `ForegroundContinuableIntent`, `TargetContentProvidingIntent` / `.onAppIntentExecution`, and view-based `requestConfirmation` / `requestChoice`: present in the 26-era SDK or earlier.
-- UIKit scene and promotion APIs: `UISceneAppIntent`, `AppIntentSceneDelegate`, `SiriTipUIView`, and `ShortcutsUIButton`: iOS 26, `_AppIntents_UIKit` cross-import overlay.
-- `SemanticContentDescriptor`: iOS 26, `VisualIntelligence` framework.
-- `PlaceDescriptor`: iOS 26, `GeoToolbox` plus `_GeoToolbox_AppIntents` overlay.
-
-## Selected-SDK-gated / forward-looking surfaces
-
-The following were absent from the verified iPhoneOS 26.5 SDK. Do not emit source that references them for a target compiled by that SDK:
-
-- SwiftUI per-view `.appEntityIdentifier(...)`.
-- SwiftUI `.appEntityIdentifier(forSelectionType:)`.
-- UIKit `UITableViewAppIntentsDataSource` and `UICollectionViewAppIntentsDataSource`.
-- UIKit `AppEntityUIElement` and `UIView.appEntityUIElementProvider`.
-- Notification-content `appEntityIdentifiers`.
-- `ValueRepresentation` and `IntentValueRepresentation`.
-- `RelevantEntities`.
-- AppIntents `EntityCollection`. Ignore unrelated RealityKit types with the same name.
-- `SyncableEntity` and `SyncableEntityIdentifier`.
-- `LongRunningIntent`, `CancellableIntent`, and `ExecutionTargets`.
-- `AppIntentsTesting` as a framework/module.
-
-If a beta or newer SDK declares one of these APIs, isolate the source that uses it and keep the iPhoneOS 26.5-compatible baseline intact.
+Use the current availability reference for API floors, modules, historical SDK visibility, and runtime gates. Implement current per-view annotations, structured transfer, and execution APIs when supported; preserve older-SDK build lanes only when required by the project.
 
 ## Onscreen-awareness architecture
 
@@ -77,9 +48,9 @@ Primary detail object on screen
   -> activity.becomeCurrent()
 ```
 
-That is the only buildable current-screen entity annotation path verified in iPhoneOS 26.5. It is appropriate for detail screens, selected documents, currently viewed assets, active boards, active mail drafts, and other primary objects.
+Use the current availability reference and selected SDK declarations for this surface. Omit or source-gate unsupported APIs only when preserving a required older-SDK build lane; runtime gates alone cannot supply missing declarations.
 
-Forward-looking APIs for per-view/list/collection/canvas awareness should be treated as adapters over the same stable entity IDs, not as a second model. Keep reusable cells, diffable IDs, selection state, and canvas element geometry clean today so those adapters are easy to add when the selected SDK declares them.
+Selected-SDK-dependent APIs for per-view/list/collection/canvas awareness should be treated as adapters over the same stable entity IDs, not as a second model. Keep reusable cells, diffable IDs, selection state, and canvas element geometry clean today so those adapters are easy to add when the selected SDK declares them.
 
 ## UIKit host architecture
 

@@ -488,35 +488,9 @@ SDKROOT = iphoneos
 
 
 def validate_current_swift_policy(root: Path, validation: Validation) -> None:
-    skill = root / "SKILL.md"
-    if skill.exists():
-        text = skill.read_text(encoding="utf-8")
-        required = (
-            "Swift 6 language mode",
-            "Only one current Swift toolchain is in scope",
-        )
-        for phrase in required:
-            if phrase not in text:
-                validation.error(f"SKILL.md is missing current-Swift policy phrase: {phrase}")
-
-    forbidden_patterns = (
-        ("legacy Swift major reference", re.compile(r"Swift\s+" + "5" + r"(?:\.[0-9]+)?", re.IGNORECASE)),
-        ("legacy swiftc language flag", re.compile(r"-swift-version\s+" + "5" + r"\b")),
-        ("legacy SwiftPM language mode", re.compile(r"\.v" + "5" + r"\b")),
-        ("language-mode conditional", re.compile(r"#if\s+" + "swift" + r"\s*\(")),
-        ("superseded fixture name", re.compile("Modern" + "Patterns")),
-    )
-    for path in sorted(root.rglob("*")):
-        if not path.is_file() or path.suffix not in {".md", ".swift", ".py", ".sh", ".yaml", ".json"}:
-            continue
-        text = path.read_text(encoding="utf-8", errors="replace")
-        for label, pattern in forbidden_patterns:
-            match = pattern.search(text)
-            if match is None:
-                continue
-            line = text.count("\n", 0, match.start()) + 1
-            validation.error(f"{label} in {path.relative_to(root)}:{line}")
-
+    # Do not enforce a consumer project's language mode through prose strings
+    # or ban references to supported older modes. Fixture requirements live in
+    # their compile manifest; this check verifies only the helper delegation.
     check_script = root / "scripts/check_examples.sh"
     if check_script.exists() and "swift_compile_checks.py" not in check_script.read_text(encoding="utf-8"):
         validation.error("scripts/check_examples.sh must delegate compiler checks to swift_compile_checks.py")

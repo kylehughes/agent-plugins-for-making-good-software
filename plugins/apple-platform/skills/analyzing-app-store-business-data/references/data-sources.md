@@ -67,9 +67,7 @@ subscriber math (new vs renewal, churn) comes from here.
 Row-per-subscriber-event with proceeds, subscriber age, and consecutive paid
 periods — the input for cohort and LTV analysis. **Not currently exposed by
 `asc analytics sales --type`** (its type list stops at SUBSCRIPTION_EVENT).
-Before doing cohort work, re-check `asc analytics sales --help`; if still
-missing, approximate cohorts from SUBSCRIPTION_EVENT (subscribe month ×
-subsequent renew/cancel counts) and note the approximation.
+Before doing cohort work, re-check installed tool support. If subscriber-level linkage is unavailable, report aggregate subscribe/renew/cancel flows. Aggregate events cannot identify which acquisition cohort renewed, so do not fabricate a cohort grid or cohort LTV from them.
 
 ### Timing rules
 

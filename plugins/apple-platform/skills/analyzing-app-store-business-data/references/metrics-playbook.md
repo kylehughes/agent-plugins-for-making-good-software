@@ -12,7 +12,7 @@ trace a number to a cached report, don't quote it.
 | Downloads | Σ Units where Product Type ∈ {1, 1F, 1T} | SALES |
 | Active subscribers | latest SUBSCRIPTION snapshot (standard + offer rows) | SUBSCRIPTION |
 | New subscribers | Σ Subscribe events per period | SUBSCRIPTION_EVENT |
-| Paid conversion | new subscribers ÷ downloads, same window | EVENT ÷ SALES |
+| Subscription acquisition ratio | new subscription starts ÷ downloads, same window; distinguish trials and paid starts | EVENT ÷ SALES |
 | Proceeds per download | net proceeds ÷ downloads, same period | SALES |
 | Proceeds per paid transaction | net proceeds ÷ paid transaction units, same period | SALES |
 | Refund rate | Refund events ÷ Subscribe+Renew events | SUBSCRIPTION_EVENT |
@@ -43,25 +43,15 @@ Impressions → Product Page Views → Downloads → Subscribes → Paid retenti
   limits before combining Analytics and sales counts. Usage metrics are
   opt-in; discovery and download counts must not be scaled as though all
   Analytics data were an opt-in sample. State unresolved differences.
-- Benchmarks for orientation (state as heuristics, not truth): page-view →
-  download commonly 25–35% for utility apps; download → paid for freemium
-  utilities commonly 1–5%; search impression → page view is highly
-  keyword-dependent.
+- Prefer the app’s own comparable historical windows and controlled experiments. Use external benchmarks only with a cited source, category, population, and date. These aggregate stage ratios do not establish user-level conversion.
 
 ## Annual Subscriptions (the 1-year SKU case)
 
 Monthly churn is the wrong lens for an annual product. Instead:
 
-- **Cohorts**: group subscribers by subscribe month (from SUBSCRIPTION_EVENT
-  Subscribe counts; per-subscriber detail needs the SUBSCRIBER report — see
-  data-sources.md for its availability). Track each cohort's renewal events
-  at month +12.
-- **Year-1 renewal rate** = renewals in month M ÷ subscribes in month M−12.
-  Only quote when the denominator ≥ 20; below that report raw counts
-  ("3 of 7 renewed") instead of percentages.
-- **Realized LTV** per cohort = Σ proceeds attributed to the cohort so far.
-  Projected LTV = ASP × (1 + r + r² …) using observed renewal rate r — label
-  the projection and the r you assumed.
+- **Cohorts** require subscriber-level linkage between the original paid start and later renewal events. Aggregate SUBSCRIPTION_EVENT totals alone cannot establish membership; report aggregate flows when linkage is unavailable.
+- **Year-1 renewal rate** = first-renewal successes for a cohort ÷ members eligible for that first renewal. Account for trials, refunds, grace periods, product changes, and incomplete observation. Renewals in one calendar month divided by starts twelve months earlier is only an aggregate proxy, not this cohort rate.
+- **Realized cohort proceeds** = proceeds attributable to the cohort so far; divide by the stated cohort population for per-subscriber realized LTV. A projection such as ASP × (1 + r + r² …) requires explicit horizon, constant-price and retention assumptions; label it as a model, not an observed KPI.
 - Refunds cluster near purchase; deduct them from the cohort's realized LTV.
 
 ## Standard Output Tables
@@ -95,8 +85,7 @@ Use exactly these shapes so reviews are comparable over time.
 - Use one report frequency for each covered period. Do not add daily and
   monthly SALES totals for overlapping dates; aggregate currencies
   separately until an explicit conversion is applied.
-- Deduplicate by (report date, SKU, country, type) when concatenating cached
-  TSVs; re-downloads of restated reports can differ — latest fetch wins.
+- Deduplicate report files by vendor, report type, frequency, date, and version; replace a restated report as a unit. Do not collapse rows by date/SKU/country/type: legitimate rows may differ in price, currency, offer, or other dimensions.
 - Minimum samples: no percentage from a denominator under 20; no
   trend claims from fewer than 3 periods.
 - When a report 404s, record the period as "no data" — for a small app that

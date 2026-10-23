@@ -10,7 +10,7 @@ Contract:
 - Time progresses only when the test calls `advance(by:)`; sleeps scheduled at or before the new deadline resume.
 - Exposes enough state to prove a sleep was *armed* before advancing — a scheduled-sleep count with a bounded wait — so a test can distinguish "the operator scheduled its delay, then I advanced" from "I advanced before the operator got there." Use that wait only to sequence arm-then-advance, never as proof the operator observed a value.
 
-[swift-clocks](https://github.com/pointfreeco/swift-clocks) `TestClock` satisfies the core contract, and its `advance(by:)` is `async` and awaits its sleepers, which subsumes the armed-sleep wait for most tests. A hand-rolled manual clock needs: a lock-protected schedule of `(deadline, continuation)` pairs, `sleep(until:tolerance:)` registering into it, `advance(by:)` snapshotting due entries atomically before resuming them, and an `Instant: InstantProtocol` measured as a `Duration` offset from zero.
+[swift-clocks](https://github.com/pointfreeco/swift-clocks) `TestClock` satisfies the core contract, and its `advance(by:)` is `async` and coordinates with scheduled sleeps; inspect its contract rather than treating a return as proof that downstream processing completed. A hand-rolled manual clock needs: a lock-protected schedule of `(deadline, continuation)` pairs, `sleep(until:tolerance:)` registering into it, `advance(by:)` snapshotting due entries atomically before resuming them, and an `Instant: InstantProtocol` measured as a `Duration` offset from zero. Cancellation must remove or claim a pending continuation atomically against advancement, including cancellation before registration; each continuation resumes once.
 
 ## Event Recorder
 
@@ -20,9 +20,9 @@ Contract:
 - `recording()` — no collection task; callback-shaped APIs call `await record(_:)` directly, avoiding a scheduler hop.
 - `waitFor(_ predicate:since:timeout:)` — resume when a matching event lands at or after a transcript baseline index; throw on timeout.
 - `waitForEventCount(_:timeout:)` — resume when the transcript reaches a count.
-- `detach()` — cancel the collection task **and await its termination**. That task cannot append after `detach()` returns. Direct `record(_:)` callbacks require a separate producer stop barrier.
+- `detach()` — cancel the collection task **and await its termination**. This requires the source iterator to respond to cancellation or another explicit stop signal; cancellation alone cannot terminate an arbitrary sequence. That task cannot append after `detach()` returns. Direct `record(_:)` callbacks require a separate producer stop barrier.
 - `expectNoEvents(for:since:)` — observe the transcript from a baseline over a bounded window. Keep collection active to assess source non-occurrence; after detach, a stable transcript proves only recorder detachment.
-- Every wait spends its deadline through the timeout budget below, not a single wall-clock sleep.
+- Every wait has a bounded, cancellation-aware failure policy. The sliced budget below is one option; use a monotonic deadline when strict elapsed time matters.
 
 Reference sketch (actor; waits shown for one method, the rest follow the same shape):
 
@@ -63,7 +63,7 @@ actor EventRecorder<Event: Sendable> {
             if let match = transcript[min(baseline, transcript.count)...].first(where: predicate) {
                 return match
             }
-            guard await budget.spendSlice() else { throw RecorderFailure.waitTimedOut }
+            guard try await budget.spendSlice() else { throw RecorderFailure.waitTimedOut }
         }
     }
 
@@ -83,7 +83,7 @@ A production-grade version replaces the polling loop with registered continuatio
 
 ## Timeout Budget
 
-Contract: spend a nominal duration in short sleep slices and report exhaustion through `spendSlice()`. Delayed resumptions can extend elapsed wall-clock time. This heuristic does not guarantee fairness or completion before timeout, and it is not a strict wall-clock deadline.
+Contract: spend a nominal duration in short sleep slices and report exhaustion through `spendSlice()`. Propagate cancellation instead of turning cancelled sleeps into a tight polling loop. Delayed resumptions can extend elapsed wall-clock time. This heuristic does not guarantee fairness or completion before timeout, and it is not a strict wall-clock deadline.
 
 ```swift
 final class TimeoutBudget: @unchecked Sendable {
@@ -94,14 +94,14 @@ final class TimeoutBudget: @unchecked Sendable {
     init(timeout: Duration) { remaining = timeout }
 
     /// Sleeps one slice and debits it. Returns false once the budget is spent.
-    func spendSlice() async -> Bool {
+    func spendSlice() async throws -> Bool {
         let spent = lock.withLock {
             let spent = remaining <= .zero
             if !spent { remaining -= slice }
             return spent
         }
         guard !spent else { return false }
-        try? await Task.sleep(for: slice)
+        try await Task.sleep(for: slice)
         return true
     }
 }

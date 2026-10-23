@@ -1,5 +1,7 @@
 # App Intents Production Checklists
 
+Check [current availability](sdk-availability-and-verification.md#current-documentation-check--2026-10-23) for SDK-specific examples; retain older-SDK build lanes only when required by the project.
+
 ## Semantic model checklist
 
 For each app noun:
@@ -60,7 +62,7 @@ For each intent:
 - [ ] Dialog works on voice-only devices.
 - [ ] Snippets are compact visual aids, not required for comprehension.
 - [ ] Donations are meaningful and revocable.
-- [ ] Selected-SDK-gated relevance APIs are used for current context only if present; they are not used for bulk data.
+- [ ] `RelevantEntities` donations use supported media/audio contexts; arbitrary document/project context uses screen annotations, queries, or indexing.
 - [ ] Sensitive content is excluded or gated.
 - [ ] XCTest/manual system tests cover execution, queries, indexing, and `NSUserActivity` annotation; AppIntentsTesting is added only if the selected SDK provides it.
 

@@ -1,5 +1,7 @@
 # App Intents Examples
 
+Check [current availability](sdk-availability-and-verification.md#current-documentation-check--2026-10-23) for SDK-specific examples; retain older-SDK build lanes only when required by the project.
+
 This file contains composable examples. Adjust schema names and availability gates to the SDK you are compiling against.
 
 ## Project/task entity model
@@ -98,20 +100,24 @@ struct ProjectQuery: EntityStringQuery, EntityPropertyQuery {
         try await ProjectRepository.shared.activeProjects(limit: 10).map(ProjectEntity.init(model:))
     }
 
-    static var properties = QueryProperties {
-        Property(\.name) {
-            EqualToComparator { $0 }
-            ContainsComparator { $0 }
-        }
-        Property(\.modifiedDate) {
-            GreaterThanComparator { $0 }
-            LessThanComparator { $0 }
+    static var properties: QueryProperties {
+        QueryProperties {
+            Property(\.name) {
+                EqualToComparator { $0 }
+                ContainsComparator { $0 }
+            }
+            Property(\.modifiedDate) {
+                GreaterThanComparator { $0 }
+                LessThanComparator { $0 }
+            }
         }
     }
 
-    static var sortingOptions = SortingOptions {
-        SortableBy(\.name)
-        SortableBy(\.modifiedDate)
+    static var sortingOptions: SortingOptions {
+        SortingOptions {
+            SortableBy(\.name)
+            SortableBy(\.modifiedDate)
+        }
     }
 
     func entities(
@@ -225,7 +231,7 @@ struct TaskAppShortcuts: AppShortcutsProvider {
             intent: CreateTaskIntent(),
             phrases: [
                 "Create a task in \(.applicationName)",
-                "Add \(\.$title) to \(.applicationName)"
+                "Add a task to \(.applicationName)"
             ],
             shortTitle: "Create Task",
             systemImageName: "plus.circle"
@@ -302,10 +308,10 @@ struct ProjectDetailView: View {
 }
 ```
 
-Forward-looking / selected-SDK-gated shape only. The per-view and selection modifiers below are absent from the iPhoneOS 26.5 SDK:
+Use the current availability reference and selected SDK declarations for this surface. Omit or source-gate unsupported APIs only when preserving a required older-SDK build lane; runtime gates alone cannot supply missing declarations.
 
 ```swift
-// Not buildable with iPhoneOS 26.5 unless the selected SDK adds these modifiers.
+// Requires selected-SDK declarations and appropriate runtime availability.
 List(tasks, selection: $selectedTaskIDs) { task in
     TaskRow(task: task)
         .appEntityIdentifier(EntityIdentifier(for: task))
@@ -317,7 +323,7 @@ List(tasks, selection: $selectedTaskIDs) { task in
 
 ## UIKit onscreen and navigation equivalents
 
-The semantic entities and intents above are shared. A UIKit host should route open/search intents through the selected scene. Buildable iPhoneOS 26.5 onscreen awareness is primary `NSUserActivity.appEntityIdentifier`; table/collection data-source annotations are forward-looking and absent from that SDK.
+Use the current availability reference and selected SDK declarations for this surface. Omit or source-gate unsupported APIs only when preserving a required older-SDK build lane; runtime gates alone cannot supply missing declarations.
 
 ```swift
 @available(iOS 26.0, *)
@@ -352,10 +358,10 @@ final class ProjectViewController: UIViewController {
 }
 ```
 
-Forward-looking / selected-SDK-gated table annotation shape only:
+Selected-SDK-gated table annotation shape only:
 
 ```swift
-// Not buildable with iPhoneOS 26.5 unless the selected SDK declares these APIs.
+// Requires selected-SDK declarations and appropriate runtime availability.
 final class TasksViewController: UITableViewController,
     UITableViewAppIntentsDataSource {
 
@@ -385,8 +391,8 @@ enum ProjectIndexer {
     }
 
     static func remove(ids: [ProjectEntity.ID]) async throws {
-        try await CSSearchableIndex.default().deleteSearchableItems(
-            withIdentifiers: ids.map(\.uuidString)
+        try await CSSearchableIndex.default().deleteAppEntities(
+            identifiedBy: ids, ofType: ProjectEntity.self
         )
     }
 
@@ -413,8 +419,8 @@ struct AppVisualMatchQuery: IntentValueQuery {
     func values(for input: SemanticContentDescriptor) async throws -> [VisualMatch] {
         var output: [VisualMatch] = []
 
-        if let text = input.text {
-            output += try await TaskRepository.shared.searchTasks(text, limit: 5)
+        for label in input.labels {
+            output += try await TaskRepository.shared.searchTasks(label, limit: 5)
                 .map { .task(TaskEntity(model: $0)) }
         }
 
@@ -429,28 +435,11 @@ struct AppVisualMatchQuery: IntentValueQuery {
 
 ## Relevant entities
 
-`RelevantEntities` is absent from the iPhoneOS 26.5 SDK. The following is forward-looking / selected-SDK-gated only.
-
-```swift
-// Not buildable with iPhoneOS 26.5 unless the selected SDK declares RelevantEntities.
-actor ProjectRelevanceController {
-    func updateCurrentProject(_ project: ProjectEntity?) async {
-        do {
-            if let project {
-                try await RelevantEntities.shared.updateEntities([project], for: .currentContext)
-            } else {
-                try await RelevantEntities.shared.updateEntities([], for: .currentContext)
-            }
-        } catch {
-            // Do not fail the user action because relevance update failed.
-        }
-    }
-}
-```
+Apple documents `RelevantEntities` on iOS 27+ for media suggestions using supported audio contexts, such as Now Playing and workouts. It is not a general registry for documents, projects, routes, or arbitrary selected items. Use entity queries, screen annotations, and Spotlight for those surfaces. See [the current availability table](sdk-availability-and-verification.md#current-documentation-check--2026-10-23).
 
 ## Long-running export
 
-`ProgressReportingIntent` is available since iOS 17. `LongRunningIntent` and `CancellableIntent` are absent from iPhoneOS 26.5. The full protocol-conformance example is forward-looking / selected-SDK-gated.
+Use the current availability reference and selected SDK declarations for this surface. Omit or source-gate unsupported APIs only when preserving a required older-SDK build lane; runtime gates alone cannot supply missing declarations.
 
 Buildable progress-oriented shape:
 
@@ -472,17 +461,17 @@ struct ExportProjectIntent: AppIntent, ProgressReportingIntent {
             cancellation: { Task.isCancelled }
         )
         return .result(
-            value: IntentFile(fileURL),
+            value: IntentFile(fileURL: fileURL),
             dialog: "Exported \(project.name)."
         )
     }
 }
 ```
 
-Forward-looking wrapper only:
+Selected-SDK-dependent wrapper only:
 
 ```swift
-// Not buildable with iPhoneOS 26.5 unless the selected SDK declares these protocols.
+// Requires selected-SDK declarations and appropriate runtime availability.
 struct FutureExportProjectIntent: AppIntent, LongRunningIntent, ProgressReportingIntent, CancellableIntent {
     // Add long-running/cancellation hooks here only when available.
 }
@@ -495,7 +484,7 @@ enum ExportFormat: String, AppEnum {
     case archive
 
     static var typeDisplayRepresentation: TypeDisplayRepresentation { "Export Format" }
-    static var caseDisplayRepresentations: [Self: DisplayRepresentation] = [
+    static let caseDisplayRepresentations: [Self: DisplayRepresentation] = [
         .pdf: "PDF",
         .markdown: "Markdown",
         .archive: "Archive"
@@ -530,7 +519,7 @@ struct LegacyAddTodoIntent: DeprecatedAppIntent {
 
 ## Test skeleton
 
-`AppIntentsTesting` is absent from the iPhoneOS 26.5 SDK. Use direct XCTest coverage for queries and services, and add AppIntentsTesting only when the selected SDK provides it.
+Use the current availability reference and selected SDK declarations for this surface. Omit or source-gate unsupported APIs only when preserving a required older-SDK build lane; runtime gates alone cannot supply missing declarations.
 
 ```swift
 import XCTest
@@ -543,7 +532,7 @@ final class ProjectIntentTests: XCTestCase {
 }
 ```
 
-Forward-looking selected-SDK-gated shape:
+Selected-SDK-dependent selected-SDK-gated shape:
 
 ```swift
 #if canImport(AppIntentsTesting)
@@ -568,7 +557,7 @@ final class ProjectIntentFrameworkTests: XCTestCase {
 
 ## Structured value mapping: place entity to Maps-style actions
 
-`PlaceDescriptor` is available in `GeoToolbox` in the iOS 26 SDK. `ValueRepresentation` is absent from iPhoneOS 26.5. Build the mapper now; add a transfer wrapper only when the selected SDK declares it.
+Use the current availability reference and selected SDK declarations for this surface. Omit or source-gate unsupported APIs only when preserving a required older-SDK build lane; runtime gates alone cannot supply missing declarations.
 
 ```swift
 import AppIntents
@@ -595,10 +584,10 @@ struct LandmarkEntity: AppEntity, Sendable, Identifiable {
 }
 ```
 
-Forward-looking transfer wrapper only:
+Selected-SDK-dependent transfer wrapper only:
 
 ```swift
-// Not buildable with iPhoneOS 26.5 unless the selected SDK declares ValueRepresentation.
+// Requires selected-SDK declarations and appropriate runtime availability.
 import CoreTransferable
 import UniformTypeIdentifiers
 

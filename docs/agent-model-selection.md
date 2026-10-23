@@ -1,6 +1,6 @@
 # Agent model selection
 
-Policy introduced 2026-09-18; runtime documentation checked 2026-10-22.
+Policy introduced 2026-09-18; runtime documentation checked 2026-10-23.
 
 This repository leaves agent model and effort unset unless measured evidence
 supports a pin. The caller and host decide what runs when these fields are
@@ -39,7 +39,9 @@ spawn values; otherwise the order is explicit spawn value, then
 Selecting a model can also change its default reasoning effort. See
 [Codex subagent configuration](https://learn.chatgpt.com/docs/agent-configuration/subagents).
 
-`model: inherit` is Claude frontmatter, not a portable Codex setting. The
+`model: inherit` is Claude frontmatter, not a portable Codex setting. Codex
+custom agents use TOML files under `.codex/agents/` or `~/.codex/agents/`; the
+shared Markdown definitions here are not those native registrations. The
 [2026-09-18 Codex loader check](skill-context.md#validation-results) verified
 skills, not native registration of these Markdown agents. When a named role is
 unavailable, pass its instructions to an available native agent and use that

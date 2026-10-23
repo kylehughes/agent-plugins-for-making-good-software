@@ -1,11 +1,11 @@
 ---
 name: testing-async-swift-code
-description: "Make Swift async tests deterministic. Use for flaky tests, clocks, observer attachment, completion, cancellation, cleanup, and proving non-occurrence; not general test organization or production concurrency design."
+description: "Make Swift async tests deterministic. Use proactively for timing, observer readiness, completion, cancellation, cleanup, or flaky tests; not general test organization."
 ---
 
 # Testing Async Swift Code
 
-Recurring async-test flakes share one shape: the test infers progress from scheduler behavior instead of awaiting an explicit happens-before edge. `advance(by:)`, `Task.yield()`, `Task.sleep()`, and `stop()` prove only that time passed or the scheduler turned — not that an observer saw a value, a task detached, or the system quiesced. This skill codifies the four primitives that prove those edges, the category-to-primitive decision table, canonical idioms, and anti-patterns to remove.
+Recurring async-test flakes share one shape: the test infers progress from scheduler behavior instead of awaiting an explicit happens-before edge. A yield or elapsed sleep does not establish observer readiness or completion. Clock advancement and `stop()` establish only what their implementations promise; an awaited stop that joins its task can be a real completion barrier. This skill offers synchronization patterns, a decision table, and focused examples.
 
 This skill assumes the base doctrine — event-driven waits over scheduler guesses, timeouts as safety bounds rather than progress mechanisms, Swift Testing confirmations, cancellation proof — covered by a general Swift Concurrency skill when one is installed (`using-swift-concurrency` here). It adds the primitive layer that doctrine stops short of.
 
@@ -15,13 +15,13 @@ For an explicit invariant or proof request, or when changed async code alters an
 
 ## The Four Primitives
 
-Each primitive owns one synchronization problem. No two overlap. These are contracts: use your project's implementations when it has them, adopt the named ecosystem implementations when it doesn't, or write the small ones from [the contracts reference](references/primitive-contracts.md).
+The following patterns address different synchronization needs; their implementations can overlap. Select only the primitives the test needs. Reuse project implementations; consider the named packages or [contract sketches](references/primitive-contracts.md) when a missing primitive warrants them. Do not add a dependency or scheduler hook solely to follow this table.
 
 ### 1. Virtual clock — deterministic time
 
 Owns: "advance time deterministically for code that sleeps on a `Clock`." Nothing else.
 
-Production code that debounces, throttles, retries, or times out should accept a `Clock`; tests then inject a controllable clock and advance it explicitly. Point-Free's [swift-clocks](https://github.com/pointfreeco/swift-clocks) `TestClock` is the ecosystem-standard implementation; a minimal manual clock is also about a page of code (contract in the reference).
+Production code that debounces, throttles, retries, or times out should accept a `Clock`; tests then inject a controllable clock and advance it explicitly. Point-Free’s [swift-clocks](https://github.com/pointfreeco/swift-clocks) provides one `TestClock` implementation. A custom clock also needs correct cancellation, registration, and resume races; prefer a tested project primitive over a new sketch.
 
 If the clock's `advance` is synchronous, it only schedules resumed continuations — always pair an advance with an explicit handshake, usually a recorder wait, to observe whatever emission the sleep drove. Never probe the clock ("is something sleeping for at least N?") to prove an operator observed a value; the operator doesn't expose that, and the probe can't prove what it claims.
 
@@ -51,7 +51,7 @@ Owns: the timeout policy around every wait.
 
 A shared timeout budget can spend a nominal duration in short sleep slices. Delayed resumptions can make its elapsed wall-clock duration longer, which may reduce failures caused by contention. This is a scheduling heuristic, not a guarantee that progressing work will finish before the timeout. Prove progress with observable synchronization edges; diagnose a timeout from the missing event and the CI evidence.
 
-Timeouts catch bugs; they don't drive progress. If a test only passes because the timeout expired, the test is wrong. Keep the default budget unless measured work or CI evidence justifies a longer one, and explain the reason locally. Never hand-roll a wall-clock deadline (`ContinuousClock().now.advanced(by:)` loops, yield spins bounded by a real clock) in a test or helper.
+Timeouts catch bugs; they don't drive progress. If a test only passes because the timeout expired, the test is wrong. Keep the default budget unless measured work or CI evidence justifies a longer one, and explain the reason locally. Prefer the project’s bounded wait helpers. A monotonic `ContinuousClock` deadline is appropriate when a strict elapsed-time bound is required; sliced budgets intentionally permit longer elapsed time. Neither timeout style establishes readiness or progress.
 
 ## Preflight for Async Test Changes
 
@@ -79,7 +79,7 @@ Make the answer visible in code structure, a short local comment where needed, o
 | Cancellation correctness | | ✓ | ✓ | net |
 | Concurrency correctness (actor races, reentrancy) | | ✓ | ✓ | net |
 
-"net" means a real-time timeout is always the outer failure bound, never a load-bearing signal.
+"net" means a real-time timeout is the outer failure bound, never a load-bearing signal. Checkmarks identify potentially useful primitives, not mandatory infrastructure; use serial executor hooks only when the specific test needs controlled Swift task scheduling.
 
 For synchronous callback effects, assert synchronously on local `@MainActor` state. The empty row is deliberate: using a primitive there usually creates the race.
 
@@ -101,7 +101,7 @@ Apply the category through [the canonical idioms](references/idioms.md) — timi
 | Posting one `NotificationCenter` notification after `Task.sleep` | The listener may not have attached; the test misses the only post and hangs. | Await a readiness seam, or repeatedly post under a bounded wait until the state transition is observed. |
 | Non-occurrence via "sleep X ms then check empty" | Sleeping without proven setup is not proof. | Prove attachment, then observe over a bounded window; use producer completion when available. Detach only after observation. |
 | Raising a timeout because a test flaked in CI | A timeout alone does not distinguish a lost event from slow work or scheduler contention; a bigger constant can hide the cause. | Trace the emission path: stale read, attach-after-emit, dropped one-shot. |
-| Hand-rolled `ContinuousClock` deadlines or yield-spin waits | Duplicates timeout policy; yield spins can worsen contention and neither form proves progress. | Budgeted waits on the recorder or polling helpers. |
+| Yield-spin waits or duplicated timeout loops | Spins can worsen contention; timeout expiry alone does not prove progress. | Shared bounded waits with explicit event barriers; use a monotonic deadline when elapsed time is the contract. |
 | Production observers spawning one task per change notification, re-reading state in each | Actor reentrancy resumes reads out of order; downstream last-value latching freezes on a stale snapshot. Microseconds locally, seconds on CI. | Coalesce notifications into a pending set drained by one serial loop. |
 | Calling a process-global hook from parallel suites without a scope guard | Concurrent sibling calls clobber each other. | A suite trait or serializing wrapper around the hook. |
 | Reusing entity IDs in tests backed by shared singleton/coordinator state | Prior dirty state leaks across tests; assertions become order-dependent. | Unique IDs per test, or an explicit reset seam. |
@@ -112,7 +112,7 @@ Apply the category through [the canonical idioms](references/idioms.md) — timi
 1. Identify the category from the table; load the matching idiom from [the idioms reference](references/idioms.md).
 2. Synchronous callback on the current actor → record into local state, assert synchronously, stop here.
 3. Timing-operator semantics → marble harness. Wrapper lifecycle is a separate test with a zero interval.
-4. Apply the serial executor to the smallest suite or region that needs Swift task ordering.
+4. If explicit event barriers are insufficient and controlled scheduling is necessary, scope a guarded serial executor hook to the smallest region.
 5. Use a virtual clock for timing; real clocks only for the timeout safety net.
 6. Attach a recorder to whatever `AsyncSequence` the system publishes.
 7. Drive the system, then block on the specific wait that proves the behavior — never a sleep, never a yield budget.

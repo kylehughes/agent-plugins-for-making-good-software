@@ -1,5 +1,7 @@
 # Apple Intelligence and Siri Integration
 
+Check [current availability](sdk-availability-and-verification.md#current-documentation-check--2026-10-23) for SDK-specific examples; retain older-SDK build lanes only when required by the project.
+
 ## What Siri needs from an app
 
 Siri and Apple Intelligence do not need your app to parse natural language. They need a semantically complete App Intents surface:
@@ -22,7 +24,7 @@ User request
   ↓
 Siri / Apple Intelligence intent planning
   ↓
-App Schema match + App Shortcut + Spotlight/entity search + visible context + donations + relevant entities
+App Schema match + App Shortcut + Spotlight/entity search + visible context + donations + supported media suggestions (when applicable)
   ↓
 Entity resolution and parameter filling
   ↓
@@ -42,7 +44,7 @@ The app’s job is to publish enough typed structure that this stack works witho
 5. Annotate visible content and selections.
 6. Add Transferable/value representations for content Siri should understand or pass to another service.
 7. Add dialog and compact snippets.
-8. Donate meaningful interactions and provide relevant entities.
+8. Donate meaningful interactions; for media apps, add supported audio-context suggestions where useful.
 9. Test through XCTest/manual Siri/Spotlight/Shortcuts surfaces, and through AppIntentsTesting only if the selected SDK includes that framework.
 
 ## App Schemas
@@ -83,7 +85,7 @@ enum PhotoAssetType: String, AppEnum {
     case video
 
     static var typeDisplayRepresentation: TypeDisplayRepresentation { "Asset Type" }
-    static var caseDisplayRepresentations: [Self: DisplayRepresentation] = [
+    static let caseDisplayRepresentations: [Self: DisplayRepresentation] = [
         .photo: "Photo",
         .video: "Video"
     ]
@@ -177,7 +179,7 @@ viewController.userActivity = activity
 activity.becomeCurrent()
 ```
 
-Forward-looking / selected-SDK-gated: per-view SwiftUI `.appEntityIdentifier(...)`, SwiftUI selection annotations, UIKit view annotations, UIKit table/collection data sources, and UIKit custom-canvas providers are absent from the iPhoneOS 26.5 SDK. Mention them as design targets, not buildable iOS 26 code, unless the selected SDK declares them.
+Use the current availability reference and selected SDK declarations for this surface. Omit or source-gate unsupported APIs only when preserving a required older-SDK build lane; runtime gates alone cannot supply missing declarations.
 
 UIKit context correctness still matters today: route contextual actions through the owning `UIScene`; do not guess a global window, and assign exactly one navigation owner to each scene-targeted intent.
 
@@ -191,9 +193,7 @@ Use `Transferable` when Siri, ChatGPT, Shortcuts, or another app should receive 
 
 For known file/data formats, export plain text, rich text, images, PDFs, or files. For system-known structured values, separate the value type from the transfer wrapper:
 
-- `IntentPerson` ships in `AppIntents` since iOS 16.
-- `PlaceDescriptor` ships in iOS 26 through `GeoToolbox` plus `_GeoToolbox_AppIntents` overlay support.
-- `ValueRepresentation` and `IntentValueRepresentation` are absent from the iPhoneOS 26.5 SDK.
+Use the current availability reference and selected SDK declarations for this surface. Omit or source-gate unsupported APIs only when preserving a required older-SDK build lane; runtime gates alone cannot supply missing declarations.
 
 Build pure mappers from entities to `IntentPerson` or `PlaceDescriptor` now. Add future `ValueRepresentation` / `IntentValueRepresentation` wrappers only when the selected SDK declares them. A landmark that only exports text can be mailed; a landmark that can be represented as a `PlaceDescriptor` has the right semantic shape for Maps-style actions once a transfer wrapper exists. See [value-representation-and-structured-transfer.md](value-representation-and-structured-transfer.md).
 
@@ -303,7 +303,7 @@ For selected-SDK-gated iOS 27-era interactions, include result values when that 
 func donateCreatedTask(_ task: TaskEntity) async {
     var intent = CreateTaskIntent()
     intent.title = task.title
-    let result = IntentResultContainer(value: task)
+    let result = IntentResultContainer<TaskEntity, Never, Never, Never>.result(value: task)
     try? await IntentDonationManager.shared.donate(intent: intent, result: result)
 }
 ```
@@ -312,9 +312,7 @@ Delete donations when the underlying content is deleted, access is revoked, or a
 
 ## RelevantEntities
 
-`RelevantEntities` is absent from the iPhoneOS 26.5 SDK. Do not generate code for it in a 26.5-compiled target.
-
-If a selected SDK supplies a relevance API, use it for dynamic context-specific suggestions such as the current document, active workout, currently playing item, selected project, or current location-specific item. Do not use it as bulk indexing; durable corpora belong in entity queries and Spotlight.
+Apple documents `RelevantEntities` on iOS 27+ for media suggestions using supported audio contexts, such as Now Playing and workouts. It is not a general registry for documents, projects, routes, or arbitrary selected items. Use entity queries, screen annotations, and Spotlight for those surfaces. See [the current availability table](sdk-availability-and-verification.md#current-documentation-check--2026-10-23).
 
 ## Search in app
 
@@ -324,7 +322,7 @@ Use the system in-app search schema when the app supports arbitrary in-app searc
 @AppIntent(schema: .system.searchInApp)
 struct SearchInAppIntent: ShowInAppSearchResultsIntent {
     static let title: LocalizedStringResource = "Search"
-    static var searchScopes: [StringSearchScope] = [.general]
+    static let searchScopes: [StringSearchScope] = [.general]
 
     var criteria: StringSearchCriteria
 
@@ -352,5 +350,5 @@ An app is meaningfully Siri-ready when:
 - Intent result values are meaningful and typed.
 - Dialog is clear on voice-only devices.
 - Snippets are optional compact visual aids.
-- Donations reflect real user behavior; selected-SDK-gated relevance APIs reflect current context only when available.
+- Donations reflect real user behavior; supported media/audio suggestions are kept current when used.
 - Tests execute intents, queries, indexing, and annotations through XCTest/manual system surfaces; add AppIntentsTesting only when the framework exists.

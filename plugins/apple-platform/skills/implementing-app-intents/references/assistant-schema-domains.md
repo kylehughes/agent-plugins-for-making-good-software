@@ -1,5 +1,7 @@
 # App Schema Domains
 
+Check [current availability](sdk-availability-and-verification.md#current-documentation-check--2026-10-23) for SDK-specific examples; retain older-SDK build lanes only when required by the project.
+
 ## Purpose
 
 App Schemas give the system a shared semantic contract for common app domains. A schema-conforming intent says “this action is the standard open/create/update/delete/search/send/capture/read operation for this kind of content.” A schema-conforming entity says “this object has the standard properties and behavior for this domain noun.”
@@ -40,7 +42,7 @@ enum AssetType: String, AppEnum {
     case video
 
     static var typeDisplayRepresentation: TypeDisplayRepresentation { "Asset Type" }
-    static var caseDisplayRepresentations: [Self: DisplayRepresentation] = [
+    static let caseDisplayRepresentations: [Self: DisplayRepresentation] = [
         .photo: "Photo",
         .video: "Video"
     ]
@@ -167,7 +169,7 @@ Notes:
 @AppEntity(schema: .files.file)
 struct ProjectFileEntity: FileEntity {
     static let defaultQuery = ProjectFileQuery()
-    static var supportedContentTypes: [UTType] = [.pdf, .plainText, .image]
+    static let supportedContentTypes: [UTType] = [.pdf, .plainText, .image]
 
     var id: FileEntityIdentifier
     var creationDate: Date?
@@ -412,7 +414,7 @@ Notes:
 @AppIntent(schema: .system.searchInApp)
 struct SearchInAppIntent: ShowInAppSearchResultsIntent {
     static let title: LocalizedStringResource = "Search"
-    static var searchScopes: [StringSearchScope] = [.general]
+    static let searchScopes: [StringSearchScope] = [.general]
     var criteria: StringSearchCriteria
 
     func perform() async throws -> some IntentResult {
@@ -461,5 +463,5 @@ When no schema exists:
 6. Add onscreen annotations.
 7. Add Transferable/value representations.
 8. Donate interactions.
-9. Add selected-SDK-gated relevance APIs for dynamic context only if the SDK declares them.
+9. For media apps, add supported audio-context suggestions when the SDK and runtime permit them.
 10. Test Siri behavior and adjust entity/query surfaces before adding more phrases.

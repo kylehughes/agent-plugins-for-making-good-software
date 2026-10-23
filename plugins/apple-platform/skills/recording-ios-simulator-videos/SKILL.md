@@ -1,6 +1,6 @@
 ---
 name: recording-ios-simulator-videos
-description: "Record and compress iOS Simulator video for UI tests, bug reproductions, or PR demos. Use when a video artifact is needed; not for screenshots or physical-device capture."
+description: "Record and compress iOS Simulator video for UI tests, bug reproductions, or PR demos. Use when a video artifact is needed; not screenshots or physical-device capture."
 ---
 
 # Recording iOS Simulator Videos

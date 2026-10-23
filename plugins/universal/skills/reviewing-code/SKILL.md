@@ -1,6 +1,6 @@
 ---
 name: reviewing-code
-description: "Required for requested code review, including a single short function or an obvious defect. Load before reporting correctness, security, concurrency, or compatibility findings. Review-only requests stay read-only; fixes require authorization."
+description: "Review code for concrete correctness, security, concurrency, and compatibility defects. Load for every requested review, including a short function, diff, PR, branch, or repository audit. Keep review-only requests read-only."
 ---
 
 # Reviewing Code

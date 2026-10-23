@@ -2,10 +2,10 @@
 
 `validate_invariants.py` checks that an invariant manifest is structurally complete and that each declared local reference exists. It does not execute commands, inspect symbols, run tests, or prove any invariant. A successful exit status means only that the manifest is well-formed against the selected project root.
 
-Run it from any directory:
+Resolve the checker from the installed skill directory; the manifest and root arguments identify the project to inspect:
 
 ```sh
-python3 plugins/universal/skills/verifying-invariants/scripts/validate_invariants.py \
+python3 /absolute/path/to/verifying-invariants/scripts/validate_invariants.py \
   path/to/invariants.json --root path/to/project
 ```
 

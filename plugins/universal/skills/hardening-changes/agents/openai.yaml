@@ -1,6 +1,4 @@
 interface:
   display_name: "Hardening Changes"
-  short_description: "Reviewer-agent hardening loop before PR"
-  default_prompt: "Use $hardening-changes to audit and harden this work with the reviewer agents until it converges, then hand off the judgment calls."
-policy:
-  allow_implicit_invocation: false
+  short_description: "Scoped review and fixes before a PR"
+  default_prompt: "Use $hardening-changes to review and harden the owned changes with available reviewers or direct review, run required checks, and report the evidence and remaining decisions."

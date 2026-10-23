@@ -82,7 +82,10 @@ func load(userID: User.ID) {
             guard !Task.isCancelled else { return }
             self?.profile = profile
         } catch is CancellationError { }
-        catch { self?.error = error }
+        catch {
+            guard !Task.isCancelled else { return }
+            self?.error = error
+        }
     }
 }
 ```

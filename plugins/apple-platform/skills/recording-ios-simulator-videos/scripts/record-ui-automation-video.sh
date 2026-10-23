@@ -950,13 +950,11 @@ wait_for_app_start_trigger() {
   local command_pid="$1"
   local bundle_id="$2"
   local attempts=$((START_TIMEOUT * 5))
-  local baseline_pids=""
+  local baseline_pids="$3"
   local command_exit_attempts=0
   local current_pids=""
   local detected_pid=""
   local attempt=0
-
-  baseline_pids="$(app_process_pids "$bundle_id")"
 
   {
     printf "Waiting for app launch trigger.\n"
@@ -1350,12 +1348,15 @@ case "$SUBCOMMAND" in
     if [ "$START_TRIGGER" = "app" ]; then
       echo "Running command. Recording will start when $START_APP_BUNDLE_ID launches..."
 
+      # Observe existing processes before launch; sampling afterward can mistake
+      # a fast new process for the baseline and miss the launch entirely.
+      BASELINE_APP_PIDS="$(app_process_pids "$START_APP_BUNDLE_ID")"
       set +e
       "${COMMAND[@]}" > >(tee "$COMMAND_LOG") 2>&1 &
       COMMAND_PID=$!
       set -e
 
-      if wait_for_app_start_trigger "$COMMAND_PID" "$START_APP_BUNDLE_ID"; then
+      if wait_for_app_start_trigger "$COMMAND_PID" "$START_APP_BUNDLE_ID" "$BASELINE_APP_PIDS"; then
         start_recording "$ACTIVE_STATE"
         wait_for_command_status "$COMMAND_PID"
         COMMAND_STATUS="$WAITED_COMMAND_STATUS"

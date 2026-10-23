@@ -1,6 +1,6 @@
 # Skill context and discovery
 
-Context-reduction study, 2026-09-18; maintainer guidance updated 2026-10-22.
+Context-reduction study, 2026-09-18; maintainer guidance updated 2026-10-23.
 
 This repository serves one shared skill catalog to Claude Code and Codex.
 Model-specific forks would multiply upkeep
@@ -26,6 +26,26 @@ sets a supported per-process budget and checks the native diagnostic log for
 truncation. It does not preload skill bodies or change user settings. See
 [Claude Code's loading model](https://code.claude.com/docs/en/features-overview#understand-how-features-load)
 for the distinction between discovery metadata and activated content.
+
+## Invocation policy
+
+Every shipped skill allows automatic selection and direct invocation in both
+supported hosts. Keep the defaults: Claude Code's `disable-model-invocation`
+is false and `user-invocable` is true; Codex's `allow_implicit_invocation` is
+true. Omitted fields use those defaults. The repository validator rejects
+opt-outs. See [Claude's invocation controls](https://code.claude.com/docs/en/skills#control-who-invokes-a-skill)
+and [Codex skill metadata](https://learn.chatgpt.com/docs/build-skills).
+
+Availability does not guarantee selection. Lead each description with its
+concrete job, name the prompt or changed concern that should trigger it, and
+reserve exclusions for likely near-misses. Test both matching requests and
+near-misses. An instruction to use a guide proactively should remain scoped to
+that guide's job; it does not authorize edits, publishing, or extra workflows.
+
+Agent preloads contain complete skill bodies. Reuse preloaded guidance and read
+conditional references only when needed. In hosts without a skill invocation
+tool, read the same `SKILL.md` and its relative references. This keeps one source
+of instructions without requiring every host to register the reviewer role.
 
 ## Swift knowledge ownership
 
@@ -81,7 +101,7 @@ names distinct while avoiding a second catalog of descriptions.
 | Test structure and determinism | `testing-swift-code`, `testing-async-swift-code`, `recording-ios-simulator-videos` |
 | Apple platform surfaces | `configuring-ios-content`, `presenting-ios-modals`, `instrumenting-accessibility-identifiers`, `implementing-app-intents`, `simplifying-apple-platform-code` |
 | Business and release evidence | `analyzing-app-store-business-data`, `auditing-ios-release-size` |
-| Workflow: review and repair | `reviewing-code`, `simplifying-code`, `hardening-changes` |
+| Workflow: delivery, review, and repair | `delivering-changes`, `reviewing-code`, `simplifying-code`, `hardening-changes` |
 | Workflow: ambiguity and handoff | `brainstorming-design-specs`, `compiling-agent-goals`, `writing-escalation-briefs` |
 | Technical prose | `writing-technical-prose` |
 

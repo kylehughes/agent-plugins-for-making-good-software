@@ -1,10 +1,12 @@
 # UIKit App Intents Examples
 
-Availability note: buildable iPhoneOS 26.5 UIKit onscreen context is `NSUserActivity.appEntityIdentifier` for the primary screen entity. Sections that mention per-view `appEntityIdentifier`, table/collection App Intents data sources, custom canvas providers, notification `appEntityIdentifiers`, or AppIntentsTesting are forward-looking / selected-SDK-gated unless explicitly stated otherwise.
+Check [current availability](sdk-availability-and-verification.md#current-documentation-check--2026-10-23) for SDK-specific examples; retain older-SDK build lanes only when required by the project.
+
+Availability note: buildable iPhoneOS 26.5 UIKit onscreen context is `NSUserActivity.appEntityIdentifier` for the primary screen entity. Sections that mention per-view `appEntityIdentifier`, table/collection App Intents data sources, custom canvas providers, notification `appEntityIdentifiers`, or AppIntentsTesting are selected-SDK-gated unless explicitly stated otherwise.
 
 These examples focus on UIKit-specific integration. Entity/query/intent definitions remain the same as in [examples.md](examples.md).
 
-The iOS 26/iOS 27 SDKs are still evolving. Code marked **SDK-sensitive** shows the intended API shape; use Xcode autocomplete and compiler diagnostics for the selected SDK’s exact declaration.
+The examples span SDK generations; determine stable versus preview status from the project’s selected SDK. Code marked **SDK-sensitive** shows the intended API shape; use Xcode autocomplete and compiler diagnostics for the selected SDK’s exact declaration.
 
 ## Shared assumptions
 
@@ -226,7 +228,7 @@ struct OpenProjectIntent: OpenIntent {
 
 @AppIntent(schema: .system.searchInApp)
 struct SearchProjectsIntent: ShowInAppSearchResultsIntent {
-    static var searchScopes: [StringSearchScope] = [.general]
+    static let searchScopes: [StringSearchScope] = [.general]
     var criteria: StringSearchCriteria
 
     func perform() async throws -> some IntentResult {
@@ -480,9 +482,9 @@ final class ProjectDetailViewController: UIViewController {
 
 If the controller stays visible while switching among child entities, republish whenever the semantic subject changes.
 
-## Forward-looking: annotating an individual `UIView`
+## Selected-SDK-dependent: annotating an individual `UIView`
 
-The iPhoneOS 26.5 SDK does not expose a buildable UIKit per-view annotation API beyond `NSUserActivity`. `AppEntityAnnotatable` exists as an iOS 18.2 declaration, but per-view `appEntityIdentifier` use on UIKit views must be compile-verified against the selected SDK. Do not add a new conformance in app code.
+Use the current availability reference and selected SDK declarations for this surface. Omit or source-gate unsupported APIs only when preserving a required older-SDK build lane; runtime gates alone cannot supply missing declarations.
 
 ```swift
 @MainActor
@@ -511,7 +513,7 @@ Annotate the semantic container, not every child label/image.
 
 ## Reusable cell hygiene
 
-The stable-ID cleanup portion is buildable today. The `contentView.appEntityIdentifier` lines are forward-looking and must be removed or source-gated unless the selected SDK declares per-view annotation on UIKit views.
+The stable-ID cleanup portion is buildable today. The `contentView.appEntityIdentifier` lines are selected-SDK-dependent and must be removed or source-gated unless the selected SDK declares per-view annotation on UIKit views.
 
 ```swift
 @MainActor
@@ -543,9 +545,9 @@ final class TaskCell: UITableViewCell {
 
 Even when a collection data source supplies identifiers, clearing any per-cell annotation avoids stale data from earlier implementations or child views.
 
-## Forward-looking: `UITableViewAppIntentsDataSource`
+## Selected-SDK-dependent: `UITableViewAppIntentsDataSource`
 
-`UITableViewAppIntentsDataSource` and `tableView.appIntentsDataSource` are absent from iPhoneOS 26.5. This section is a selected-SDK-gated shape only.
+Use the current availability reference and selected SDK declarations for this surface. Omit or source-gate unsupported APIs only when preserving a required older-SDK build lane; runtime gates alone cannot supply missing declarations.
 
 ```swift
 import AppIntents
@@ -599,9 +601,9 @@ final class TasksViewController: UITableViewController,
 
 The index path is used only to query the current diffable snapshot.
 
-## Forward-looking: `UICollectionViewAppIntentsDataSource`
+## Selected-SDK-dependent: `UICollectionViewAppIntentsDataSource`
 
-`UICollectionViewAppIntentsDataSource` and `collectionView.appIntentsDataSource` are absent from iPhoneOS 26.5. This section is a selected-SDK-gated shape only.
+Use the current availability reference and selected SDK declarations for this surface. Omit or source-gate unsupported APIs only when preserving a required older-SDK build lane; runtime gates alone cannot supply missing declarations.
 
 ```swift
 import AppIntents
@@ -688,9 +690,9 @@ final class SelectionModel<ID: Hashable & Sendable> {
 
 The table/collection and App Intents annotation adapter should read from the same selection model. Do not lose semantic selection merely because a cell scrolled away.
 
-## Forward-looking: custom canvas with `appEntityUIElementProvider`
+## Selected-SDK-dependent: custom canvas with `appEntityUIElementProvider`
 
-`AppEntityUIElement` and `UIView.appEntityUIElementProvider` are absent from iPhoneOS 26.5. This section is a selected-SDK-gated shape only. **SDK-sensitive initializer labels.** Verify `identifier`, `bounds`, and `state` against the selected SDK.
+Use the current availability reference and selected SDK declarations for this surface. Omit or source-gate unsupported APIs only when preserving a required older-SDK build lane; runtime gates alone cannot supply missing declarations.
 
 ```swift
 import AppIntents
@@ -765,8 +767,7 @@ struct ProjectEntityQuery: EntityStringQuery {
     }
 
     func displayRepresentations(
-        for identifiers: [ProjectEntity.ID],
-        requestedComponents: DisplayRepresentation.Components = .text
+        for identifiers: [ProjectEntity.ID]
     ) async throws -> [ProjectEntity.ID: DisplayRepresentation] {
         let summaries = try await repository.summaries(for: identifiers)
         return Dictionary(uniqueKeysWithValues: summaries.map { summary in
@@ -953,9 +954,9 @@ case let search as SearchProjectsIntent:
 
 The search intent does not find a window in `perform()`, and it does not also implement custom scene navigation. The exact schema/protocol relationship is SDK-sensitive; the durable architecture is structured criteria → selected scene → coordinator route → UIKit search controller.
 
-## Forward-looking: notification entity annotation
+## Selected-SDK-dependent: notification entity annotation
 
-Notification-content `appEntityIdentifiers` is absent from iPhoneOS 26.5. This section is a selected-SDK-gated shape only.
+Use the current availability reference and selected SDK declarations for this surface. Omit or source-gate unsupported APIs only when preserving a required older-SDK build lane; runtime gates alone cannot supply missing declarations.
 
 ```swift
 import AppIntents
@@ -1037,7 +1038,7 @@ import UIKit
 final class AppIntentUIKitBridge: NSObject {
     static let shared = AppIntentUIKitBridge()
 
-    // Forward-looking: only compile this adapter when the selected SDK exposes
+    // Selected-SDK-dependent: only compile this adapter when the selected SDK exposes
     // per-view entity annotation on UIKit views.
     func annotate(
         view: UIView,
@@ -1130,9 +1131,9 @@ final class AppIntentRouteTests: XCTestCase {
 
 Expose a test-only pure mapping function rather than constructing a real `UIScene` for every routing test.
 
-## Forward-looking: UI-test reusable-cell annotations
+## Selected-SDK-dependent: UI-test reusable-cell annotations
 
-Pseudo-code. AppIntentsTesting and reusable-view annotation inspection APIs are absent from iPhoneOS 26.5 and can move across SDK seeds.
+Use the current availability reference and selected SDK declarations for this surface. Omit or source-gate unsupported APIs only when preserving a required older-SDK build lane; runtime gates alone cannot supply missing declarations.
 
 ```swift
 func testCellReuseDoesNotExposeOldTask() async throws {

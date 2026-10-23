@@ -1,6 +1,6 @@
 ---
 name: writing-technical-prose
-description: "Writes, edits, reviews, and normalizes developer-facing technical prose: READMEs, ADRs, RFCs, design docs, API docs, comments, runbooks, migration guides, release notes, PR descriptions, and Markdown. Use when correctness, clarity, voice consistency, and actionable structure matter."
+description: "Write, edit, review, and normalize developer documentation, API comments, READMEs, design docs, runbooks, and PR descriptions. Use proactively for technical prose that needs accurate claims, clear structure, or consistent voice."
 ---
 
 # Writing Technical Prose

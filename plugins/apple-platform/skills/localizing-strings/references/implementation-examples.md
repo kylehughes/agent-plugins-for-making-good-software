@@ -1,6 +1,6 @@
 # Localization implementation examples
 
-Read the section matching the current task. These Swift examples assume a Swift package target with localized resources and `Bundle.module`; adapt the bundle for app or framework targets as described in [Scope and assumptions](../SKILL.md#scope-and-assumptions).
+Read the section matching the current task. The helper extraction, phrase keys, and singular base wording below are optional conventions; preserve the repository’s established pattern. These Swift examples assume a Swift package target with localized resources and `Bundle.module`; adapt the bundle for app or framework targets as described in [Scope and assumptions](../SKILL.md#inspect-before-editing).
 
 ## Contents
 
@@ -174,13 +174,11 @@ Find the newly created entry and add plural variations:
 }
 ```
 
-**Important**: After adding the localized string to Swift code, ALWAYS:
-1. Build the package (or app if needed) to generate the catalog entry
-2. Edit `Localizable.xcstrings` directly to add plural variations
+After adding the localized string, run the project’s extraction workflow and inspect the catalog entry. Configure plural variations in Xcode or edit the existing JSON schema carefully. The English example shows `one` and `other`; other locales can require additional categories.
 
 ## Legacy Pattern
 
-You may encounter older code using `NSLocalizedString`. When refactoring, convert to the modern pattern:
+You may encounter older code using `NSLocalizedString`. When modernization is within scope and deployment targets support it, the equivalent modern pattern is:
 
 ```swift
 // ❌ Legacy — NSLocalizedString

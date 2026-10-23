@@ -4,14 +4,14 @@ Use this reference before making broad concurrency changes or when a fix depends
 
 ## Baseline for this skill
 
-The default target uses the project's selected current toolchain, Swift 6 language mode, and iOS 16+ runtime support. [Swift feature status](../../modeling-swift-types-for-correctness/references/swift-feature-status.md) owns the dated compiler/Xcode snapshot and API availability; [iOS versioning](../../modeling-swift-types-for-correctness/references/ios-versioning.md) owns deployment policy. Latest Swift syntax is allowed. Runtime framework APIs still obey deployment target availability.
+Preserve the project’s selected toolchain, language mode, and deployment targets. The settings below recommend a Swift 6 posture for new or deliberately migrating targets, and use iOS 16 as an example compatibility lane. [Swift feature status](../../modeling-swift-types-for-correctness/references/swift-feature-status.md) owns the dated compiler/Xcode snapshot and API availability; [iOS versioning](../../modeling-swift-types-for-correctness/references/ios-versioning.md) owns deployment policy. Latest Swift syntax is allowed. Runtime framework APIs still obey deployment target availability.
 
 Separate these concepts every time:
 
 | Question | Meaning | Example |
 |---|---|---|
-| Can the compiler parse this? | Swift toolchain/language feature. | `sending`, `@concurrent`, isolated conformances, `Task.immediate`. |
-| Can this symbol link and run on iOS 16? | SDK/runtime API availability. | `Observation`, `Synchronization.Mutex`, new Foundation typed notifications, beta frameworks. |
+| Can the compiler parse this? | Swift toolchain/language feature. | `sending`, `@concurrent`, isolated conformances. |
+| Can this symbol link and run on iOS 16? | SDK/runtime API availability. | `Task.immediate` (iOS 26+), `Observation`, `Synchronization.Mutex`, new Foundation typed notifications, beta frameworks. |
 | Does this module infer isolation? | Per-target compiler setting. | `-default-isolation MainActor` versus `nonisolated`. |
 | Does this API cross actor boundaries? | Concurrency contract. | `Sendable`, `@Sendable`, `sending`, `async`, isolated parameters. |
 

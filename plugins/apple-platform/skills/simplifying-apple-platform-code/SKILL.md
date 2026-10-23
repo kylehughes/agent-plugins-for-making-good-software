@@ -1,6 +1,6 @@
 ---
 name: simplifying-apple-platform-code
-description: "Simplify Swift and Apple-platform code while preserving SDK, lifecycle, concurrency, and deployment contracts. Use for cleanup or hardening with simplifying-code when available."
+description: "Simplify Swift and Apple-platform code while preserving SDK, lifecycle, concurrency, and deployment contracts. Use proactively for requested cleanup with simplifying-code when available."
 ---
 
 # Simplifying Apple Platform Code

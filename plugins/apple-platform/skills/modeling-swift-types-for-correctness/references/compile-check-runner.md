@@ -151,3 +151,15 @@ claiming compatibility with another compiler or SDK. Accepted unsafe, effects,
 and frontier probes are compilation-only. Only the two named runtime examples
 are executed. Performance experiments are unsupported illustrations and are not
 part of these acceptance counts.
+
+## Included utilities and fixtures
+
+- `scripts/audit_project.py`: inventories Swift/Xcode compatibility settings.
+- `scripts/swift_compile_checks.py` and `swift_compiler_corpus.py`: run paired baseline fixtures and the imported corpus, with separate compiler/runtime evidence.
+- `examples/compile-checks.json` and `compiler-corpus-map.json`: declare the baseline fixtures and 89 imported cases; corpus controls and experimental lanes remain explicit.
+- `scripts/check_examples.sh`: compatibility entry point with optional skip and `REQUIRE_SWIFTC=1` behavior.
+- `scripts/validate_skill.py`: validates metadata, links, evals, manifest wiring, and fixtures.
+- `examples/CorePatterns.swift`, `CurrentSwiftPatterns.swift`, and `TrustStatePatterns.swift`: shared sources used by controls and misuse fixtures.
+- `examples/CorePatternsRuntimeChecks.swift`: executable validation and `Codable` checks.
+- `examples/CompilePass*.swift` and `CompileFail*.swift`: paired valid and invalid uses of the shared sources.
+- `evals/trigger-evals.json` and `evals/quality-evals.md`: activation and response-quality scenarios.

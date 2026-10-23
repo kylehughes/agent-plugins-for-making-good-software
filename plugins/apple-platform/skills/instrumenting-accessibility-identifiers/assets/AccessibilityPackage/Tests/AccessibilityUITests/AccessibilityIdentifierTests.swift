@@ -85,4 +85,46 @@ final class AccessibilityIdentifierTests: XCTestCase {
 
         XCTAssertEqual(decoded, original)
     }
+
+    func testScopeDecodingPreservesHistoricalShapeAndValidation() throws {
+        let historical = Data(#""LoginView""#.utf8)
+        let value = try JSONDecoder().decode(AccessibilityIdentifierScope.self, from: historical)
+        XCTAssertEqual(value.rawValue, "LoginView")
+        XCTAssertEqual(
+            try JSONDecoder().decode(
+                AccessibilityIdentifierScope.self,
+                from: JSONEncoder().encode(value)
+            ),
+            value
+        )
+
+        for invalid in ["", "Login View", String(repeating: "a", count: 81)] {
+            let payload = try JSONEncoder().encode(invalid)
+            XCTAssertThrowsError(try JSONDecoder().decode(AccessibilityIdentifierScope.self, from: payload))
+        }
+    }
+
+    func testComponentDecodingPreservesHistoricalShapeAndValidation() throws {
+        let historical = Data(#""abc-123""#.utf8)
+        let value = try JSONDecoder().decode(AccessibilityIdentifierComponent.self, from: historical)
+        XCTAssertEqual(value.rawValue, "abc-123")
+        XCTAssertEqual(
+            try JSONDecoder().decode(
+                AccessibilityIdentifierComponent.self,
+                from: JSONEncoder().encode(value)
+            ),
+            value
+        )
+
+        XCTAssertEqual(
+            try JSONDecoder().decode(AccessibilityIdentifierComponent.self, from: Data(#""abc_123""#.utf8)).rawValue,
+            "abc-123"
+        )
+
+        for invalid in ["", String(repeating: "a", count: 81)] {
+            let payload = try JSONEncoder().encode(invalid)
+            XCTAssertThrowsError(try JSONDecoder().decode(AccessibilityIdentifierComponent.self, from: payload))
+        }
+    }
+
 }

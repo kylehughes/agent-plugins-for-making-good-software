@@ -13,7 +13,7 @@ Do not collapse four independent compatibility decisions into “uses current Sw
 | SwiftPM tools version | `// swift-tools-version: 6.3` | Which `PackageDescription` APIs the manifest may use |
 | Deployment target | `.macOS(.v15)` | Oldest runtime on which the built product may execute |
 
-Compiler version and language mode are separate: a current compiler can support more than one mode. This skill defaults to Swift 6; assess another mode as migration work. A package can use Swift 6 language mode while still
+Compiler version and language mode are separate: a current compiler can support more than one mode. Preserve the project’s supported language modes. Prefer Swift 6 for a new project or an explicitly authorized migration; another existing mode does not turn routine work into migration. A package can use Swift 6 language mode while still
 supporting older OS versions if every runtime API is availability-gated. The SwiftPM tools-version directive normally
 uses the major and minor version; pin a patch only for an identified manifest requirement.
 
