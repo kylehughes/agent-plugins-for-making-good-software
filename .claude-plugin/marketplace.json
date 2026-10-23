@@ -36,7 +36,7 @@
       "source": "./plugins/universal",
       "displayName": "Universal",
       "description": "Platform-agnostic tools for making good software.",
-      "version": "1.9.10",
+      "version": "1.10.0",
       "author": {
         "name": "Kyle Hughes",
         "email": "kyle@kylehugh.es"

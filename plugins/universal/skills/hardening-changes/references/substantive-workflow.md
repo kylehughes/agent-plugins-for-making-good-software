@@ -114,17 +114,10 @@ For a failed project-required hardening step, classify an owned defect through t
 
 Also run the cheap deterministic checks the surface requires:
 
-- Always: `git diff --check HEAD --find-renames=20%`.
+- Always: `git diff --check HEAD --find-renames=20% -- <owned-paths>`, applying the entry point's scope guard to unrelated edits within those files. Do not run an unrestricted check when no tracked paths are owned.
 - Agent configuration changed (skills, agents, runtime settings) → run the project's validation script for that configuration, when it ships one.
 - Scripts or tooling changed → run the project's tooling tests, when it has them; nothing else runs them, so a tooling-only branch is otherwise unverified.
-- Working-tree mode → scan untracked text files for trailing whitespace and missing final newlines:
-
-```bash
-git ls-files --others --exclude-standard -z | xargs -0 grep -nIE '[ \t]+$' -- || true
-git ls-files --others --exclude-standard | while IFS= read -r f; do
-  [ -s "$f" ] && [ -n "$(tail -c 1 "$f")" ] && echo "$f: missing final newline"
-done
-```
+- Working-tree mode → enumerate untracked files with `git ls-files --others --exclude-standard -z`, filter to the owned surface, then scan owned text files for trailing whitespace and missing final newlines.
 
 If the diff fires a maintenance trigger the repository declares for an architecture or design document, confirm that document updated on this branch; a missing update is a fix-now judgment finding, not a defer.
 

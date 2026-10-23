@@ -1,0 +1,4 @@
+interface:
+  display_name: "Delivering Changes"
+  short_description: "Carry a requested change to a PR-ready handoff"
+  default_prompt: "Use $delivering-changes to take this request through implementation, simplification, hardening, and required verification to a PR-ready handoff, pausing for project-required manual checks."
