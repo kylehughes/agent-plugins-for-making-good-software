@@ -19,7 +19,7 @@ All 18 catalog families have a single destination anchor, and each destination r
 
 This is a focused, read-only integration review of the four new references and the three changed routers requested by the parent task. The supplied source of truth was `/tmp/swift-type-system-integration-source/Swift_Type_System_Companion`, especially `Swift_6_4_Type_System_Catalog.json` and `Swift_6_4_Type_System_Reference.html`. I also inspected `docs/swift-type-system-integration-map.json` to connect every catalog family to its destination anchor.
 
-The review assesses retained instructional content rather than keyword presence. It does not accept or rerun the archive's compiler corpus, native runtime examples, builds, or tests. Release statements are assessed only as prose with the evidence qualifications written in the new status reference.
+The review checks whether the instructional content was retained, not just whether its keywords appear. It does not accept or rerun the archive's compiler corpus, native runtime examples, builds, or tests. Release statements are checked only against the evidence qualifications in the new status reference.
 
 | Family | Catalog entries | Destination | Verdict |
 | --- | ---: | --- | --- |
@@ -190,9 +190,9 @@ The review assesses retained instructional content rather than keyword presence.
 
 **Pass — conditional loading.** `writing-swift` routes invariant-bearing and generic-relationship work to `modeling-swift-types-for-correctness`, while opening feature status directly only for a newer type-system mechanism. `using-swift-concurrency` keeps scheduling, isolation repair, and task lifetime as its concern, then routes ownership, representable state, typed failure, and mandatory completion claims through type modeling. Its platform/build reference now consults feature status only to determine whether an API belongs to the selected preview SDK, while runtime gating follows the API's declaration. `type-driven-design-auditor` preloads only the same-plugin modeling skill and now tells the reviewer to use it as a router rather than blanket-loading advanced recipes or feature status.
 
-**Pass — no duplicated governing rules.** The three recipe guides link to the established implementation references for language rules and keep their own role to task composition, proof boundary, and trade-off. The status guide owns release-sensitive support and evidence classifications. The changed hubs point to those owners instead of restating the 18 families.
+**Pass — no duplicated governing rules.** The three recipe guides link to the established implementation references for language rules. The recipes focus on composing tasks, defining proof boundaries, and weighing trade-offs. The status guide owns release-sensitive support and evidence classifications. The changed hubs point to those owners instead of restating the 18 families.
 
-**Pass — plugin independence.** Every new production link is relative to content inside `plugins/apple-platform`. The auditor's sole preloaded skill is also in `apple-platform`. The modeling skill's conditional composition with an installed invariant procedure remains availability-qualified, so the Apple plugin does not require a universal-plugin file to resolve its own reference map.
+**Pass — plugin independence.** Every new production link is relative to content inside `plugins/apple-platform`. The auditor's sole preloaded skill is also in `apple-platform`. The modeling skill still makes composition with an invariant procedure conditional on that procedure being installed, so the Apple plugin does not require a universal-plugin file to resolve its own reference map.
 
 ## Limits
 

@@ -1,6 +1,6 @@
 # Swift type-system source decisions
 
-This maintainer record preserves archive-forensic decisions from the original source integration. It is not an operational dependency of the shipped plugin. The [integration ledger](swift-type-system-integration-map.json) retains original source URLs, paths, digests, and decisions; its source records are preserved; consolidation updates destinations to the current canonical owners.
+This maintainer record preserves decisions from the original source-archive review. The shipped plugin does not depend on it. The [integration ledger](swift-type-system-integration-map.json) retains the original source URLs, paths, digests, and decisions. Consolidation updates the destinations to their current canonical owners while preserving the source records.
 
 Archive: `Swift_Type_System_Companion/`, dated 2026-10-18; supplied ZIP SHA-256 `4454c583ec5a9cc4dd80487ff19a9a2dc9925e5249588db8e4a06482bf35eb13`.
 
@@ -20,14 +20,14 @@ The decisions below were recorded during the 2026-10-19 source review. â€œFreshâ
 | Do accepted proposals or Linux SIL probes establish Apple deployment support? | No. Use Apple symbol documentation or the selected SDK interface. Mark the floor unknown when neither establishes it. | Evidence rule |
 | Does compilation establish arbitrary correctness or liveness? | No. It establishes only the checked compiler rule for the exact source, phase, flags, and toolchain. Runtime validation, semantic laws, cleanup, progress, and exactly-once behavior need separate evidence. | Evidence rule |
 
-During the original source integration, the companion archive was inspected as supplied; that review did not accept or rerun its compiler corpus or runtime suite. Its `release_matrix.json`, README, HTML catalog, saved reports, tagged checksums, and proposal links informed the conflict inventory. Primary-source status wins over descriptive archive prose, while supplied compiler outcomes remain explicitly scoped corroboration.
+During the original source integration, the companion archive was inspected as supplied; that review did not accept or rerun its compiler corpus or runtime suite. Its `release_matrix.json`, README, HTML catalog, saved reports, tagged checksums, and proposal links informed the conflict inventory. Primary-source status takes precedence over descriptive archive prose. Supplied compiler outcomes corroborate those decisions only within their stated limits.
 
-The performance interpretation also follows the freshly inspected [Swift underscored-attribute reference](https://github.com/swiftlang/swift/blob/main/docs/ReferenceGuides/UnderscoredAttributes.md#_effectseffectname): `_effects` supplies optimizer assumptions, and violating them can cause undefined behavior. The original [performance-annotation pitch](https://forums.swift.org/t/performance-annotations/54441) describes compiler diagnostics, not stable general effect types. Neither source turns the supplied probes into a latency, allocation-count, purity, or constant-time proof.
+The performance interpretation also follows the review's inspection of the [Swift underscored-attribute reference](https://github.com/swiftlang/swift/blob/main/docs/ReferenceGuides/UnderscoredAttributes.md#_effectseffectname): `_effects` supplies optimizer assumptions, and violating them can cause undefined behavior. The original [performance-annotation pitch](https://forums.swift.org/t/performance-annotations/54441) describes compiler diagnostics, not stable general effect types. Neither source turns the supplied probes into a latency, allocation-count, purity, or constant-time proof.
 
 
 ## Later verification and current ownership
 
-[Goal 2 verification](swift-type-integration-verification.md) subsequently established all 89 imported compiler outcomes and 15 paired controls on Apple Swift 6.4 (`swiftlang-6.4.0.34.1`) from Xcode 27.1, with a compile-only macOS 27.0 target. Both imported runtime sources separately built and ran using the host-compatible default target. Those results do not repair the unknown compiler identity of the duplicate core reports or the performance report, establish iOS deployment support, or turn compilation into performance measurement.
+[Goal 2 verification](swift-type-integration-verification.md) subsequently established all 89 imported compiler outcomes and 15 paired controls on Apple Swift 6.4 (`swiftlang-6.4.0.34.1`) from Xcode 27.1, with a compile-only macOS 27.0 target. Both imported runtime sources separately built and ran using the host-compatible default target. Those results do not identify the compiler used for the duplicate core reports or the performance report, establish iOS deployment support, or turn compilation into performance measurement.
 
 The final behavioral selection contains five final-snapshot reruns and 19 unaffected earlier accepted runs. It is not a fresh 24-run matrix on the final snapshot. Read the verification report for attempts, settings, carry-forward rules, and limitations.
 

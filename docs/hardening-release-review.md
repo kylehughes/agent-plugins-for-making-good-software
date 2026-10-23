@@ -60,8 +60,8 @@ The expert response (local-only artifact `/tmp/hardening-release-consultation/op
 separates observed interface gaps from causal hypotheses.
 
 The consultation identified missing reviewer context, an incomplete draft
-format, and conflicting final-review routing. The repaired instructions address
-those defects at these owners:
+format, and conflicting final-review routing. The revised instructions address
+those defects in the following files:
 
 | Defect | Repair and owner |
 | --- | --- |
@@ -71,8 +71,8 @@ those defects at these owners:
 | Phase 5 reuse and mechanical exits could skip the required claim check. | [Substantive re-audit](../plugins/universal/skills/hardening-changes/references/substantive-workflow.md#phase-5-re-audit) makes the check mandatory when invariant guidance was loaded; reuse requires the same final artifacts, evidence, and complete draft. Findings that change the work require an updated draft and evidence. |
 | Cosmetic reporting invited speculation about unchanged decoding. | The [wording-only path](../plugins/universal/skills/hardening-changes/SKILL.md#wording-only-path) compares old and new assertions without implementation assessment, defines the stage status, and excludes speculation about code outside the changed text. |
 
-The physical split remains: shared routing and the terminal wording-only path
-stay in the entry point; substantive detail is conditionally loaded. This
+The files remain split: shared routing and the terminal wording-only path
+stay in the entry point; substantive detail loads when needed. This
 reduces irrelevant activation and context cost. Opus disputed it as a demonstrated
 fix for the observed cosmetic leak; that causal benefit remains unproven.
 
@@ -89,16 +89,16 @@ records partial compliance from Sonnet `claude-sonnet-5-5`, requested at medium
 effort, with no tools. Explicit context repaired stage semantics and dirty-baseline
 reasoning and separated source-oriented records from draft records. It still
 missed the exact positivity comment and occurrence grouping, conflated some
-logical forms, and attributed an introduced named-error choice to broader project
+logical forms, and attributed a newly introduced named-error choice to broader project
 authority. This supports missing context as a contributor, without isolating it
 from prompt, artifact, and flat-context changes. The short-draft replay did not
 exercise caller transfer or native end-to-end behavior.
 
 The second replay assessment (local-only artifact `/tmp/hardening-review-replay-quoted/diagnostic-review.json`)
-records a completed, predeclared Sonnet 5.5 medium diagnostic with no tools. It
+records a predeclared Sonnet 5.5 medium diagnostic that completed without tools. It
 used the original full narrative, with only the status line adapted. It derived
 the exact source positivity comment and diagnostic, separated their authority,
-used the dirty compatibility baseline, and dispositioned the full narrative.
+used the dirty compatibility baseline, and recorded dispositions for the full narrative.
 Residual issues include an under-specified serialization alternative, imprecise
 authority cells and counts, and an unnecessary heading correction. The retained
 draft-to-reviewed diff accounts for its changes. This improves the review
@@ -213,7 +213,7 @@ and platform-specific prose in the Universal auditor. Runtime questions included
 whether specialized stopping rules win over the agent's general summary format
 and whether children can read the captured artifact.
 
-Those findings informed the subsequent context repair below. They remain part
+Those findings informed the context repair below. They remain part
 of the 1.9.2 review record and do not become native runtime findings merely
 because they prompted edits.
 
@@ -362,7 +362,7 @@ run or proof that the proposed completion repair will work. The consulted source
 `aaed940c368f381046f148c1c72e2e1368ae7024ec2c95a19f9c9c854f6d0600`;
 its existing static receipt remains historical.
 
-The parent has implemented Universal 1.9.6: the caller names editing intent,
+The parent implemented Universal 1.9.6: the caller names editing intent,
 checks delivery independently, and can submit one fresh formulation to the same
 reviewer after erased cleanup. Final invariant handoff uses a scratch draft
 file; the correctness reviewer routes final handoff assertions to its claim
@@ -443,15 +443,16 @@ match the prompt's embedded file bodies and the frozen 1.9.7 files. Initializati
 and every assistant message identify `claude-fable-5-1`, medium effort was
 requested, no tools were exposed or called, and the process completed. Prompt,
 source bindings, launch/result receipts, response, and native stream are retained
-and hashed below. This is exact two-file static review, not approval of every
-file in the snapshot or proof of runtime compliance.
+and hashed below. This static review covers those exact two files, not every file in the
+snapshot. It does not establish runtime compliance.
 
 Its bounded limits concern the caller's selection of needed inline contents,
 missing-input return paths, prompt size, the ordinary contract's reliance on
 the reviewer agent for the no-alternate-tool rule, and scratch lifetime. No
 additional source changes were made in response. The original completion
-pilot's frozen 6/6 and separate instruction failure remain unchanged. The subsequent inline results below test that transport change without
-replacing the earlier instruction record.
+pilot's frozen 6/6 and separate instruction failure remain unchanged. The
+inline results below test that transport change without replacing the earlier
+instruction record.
 
 ## Inline outcome and subsequent full matrix
 
@@ -472,7 +473,7 @@ preceded bootstrap in a harmless order deviation. These are finite limitations,
 not claims of perfect adherence. The integrating parent adopted no source change
 or new gate for them.
 
-The full 18-run matrix is authorized on the same source
+The full 18-run matrix was authorized on the same source
 `4394ce3b257bc2edc397b24e4a171e7d188d9b95d6e47d3900824cf5893de492`.
 The full matrix was subsequently declared on the same source and completed;
 its final outcome is recorded at the beginning of this report.

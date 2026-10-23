@@ -3,28 +3,28 @@
 Context-reduction study, 2026-09-18; maintainer guidance updated 2026-10-23.
 
 This repository serves one shared skill catalog to Claude Code and Codex.
-Model-specific forks would multiply upkeep
-without improving the underlying guidance. Run `python3 scripts/skill_catalog.py`
-from the repository root for current counts and authored character measurements.
-The design separates two costs:
+Model-specific forks would add upkeep without improving the guidance. Run
+`python3 scripts/skill_catalog.py` from the repository root for current counts
+and authored character measurements. The catalog has two context costs:
 
 | Layer | What it contains | How it is controlled |
 | --- | --- | --- |
 | Discovery | Names, descriptions, and paths used to choose a skill | Short, distinctive descriptions and narrow trigger language |
 | Activation | The selected body, references, and any agent preloads | Progressive disclosure and conditional same-plugin links |
 
-Measurements use authored Unicode characters, not tokens. They are editorial
-measurements for comparison, not claims about fitting a particular host
+Measurements use authored Unicode characters, not tokens. They help compare
+revisions; they do not establish whether a catalog fits a particular host
 window. Paths in this document refer to this repository; other installed plugins
 and skills are outside the measurement boundary.
 
 The host's listing budget is a separate constraint. Claude Code may retain a
 skill's name while dropping its description when the combined metadata exceeds
-that budget. Registration alone therefore cannot establish discovery exposure.
-The [invariant acceptance launcher](invariant-verification.md#behavioral-acceptance)
-sets a supported per-process budget and checks the native diagnostic log for
-truncation. It does not preload skill bodies or change user settings. See
-[Claude Code's loading model](https://code.claude.com/docs/en/features-overview#understand-how-features-load)
+that budget. Registration alone therefore does not show whether the model saw a
+description. The [invariant acceptance
+launcher](invariant-verification.md#behavioral-acceptance) sets a supported
+per-process budget and checks the native diagnostic log for truncation. It does
+not preload skill bodies or change user settings. See [Claude Code's loading
+model](https://code.claude.com/docs/en/features-overview#understand-how-features-load)
 for the distinction between discovery metadata and activated content.
 
 ## Invocation policy
@@ -52,8 +52,9 @@ of instructions without requiring every host to register the reviewer role.
 The [Swift knowledge-base guide](swift-type-system-consolidation.md) records the
 current ownership and routing contract. Entry points select a concern; mechanism
 guides explain construction rules; recipes apply them to compound invariants.
-Dated release and availability facts have one owner. Source archaeology and prior
-verification reports stay in maintainer documentation, outside ordinary activation.
+Each dated release or availability fact has one owner. Source history and prior
+verification reports stay in maintainer documentation, outside ordinary
+activation.
 
 The repository validator checks local file targets and Markdown section fragments
 in skill entry points, references, and agent instructions. It ignores fenced
@@ -80,17 +81,17 @@ Swift Testing description began a comment. The retained scalar ends after
 JSON-compatible double-quoted scalars, which preserve hashes, colons, escaped
 quotes, and other punctuation.
 
-The largest activation costs are handled by structure. The App Intents skill's
-unconditional list of 20 items became a conditional map, and its skeleton
-moved out of the activation entry point into conditional reference material.
-The general Swift hub now routes to focused Swift guides only when a changed
-concern requires them. Agents preload only guides they always need; other
-guides are linked and read when a changed concern requires them.
+Changes to the skill structure reduced the largest activation costs. The App
+Intents skill's unconditional list of 20 items became a conditional map, and its
+skeleton moved out of the activation entry point into conditional reference
+material. The general Swift hub now routes to focused Swift guides only when a
+changed concern requires them. Agents preload only guides they always need;
+other guides are linked and read when a changed concern requires them.
 
 ## Lightweight ontology
 
-The ontology is a maintainer map, not a skill loaded by other skills. It keeps
-names distinct while avoiding a second catalog of descriptions.
+This map helps maintainers keep skill names distinct without maintaining a
+second catalog of descriptions. Other skills do not load it.
 
 | Concern family | Skills |
 | --- | --- |
@@ -115,28 +116,28 @@ for the tooling and acceptance matrix.
 
 The initial invariant-verification addition at `ad72b90` brought the catalog to
 27 skills with 5,338 description characters and kept 8 agents. Its entry-point
-bodies totaled 253,016 characters and summed agent preloads totaled 74,190.
-The historical follow-up snapshot recorded 5,464 description characters,
-264,000 body characters, and 79,561 summed preload characters. No preload entries
-were added in that follow-up; the increase
-came from guidance in existing owner skills. At that snapshot, the conditionally
-loaded verifier had a 121-line entry point and Swift modeling had 199 lines.
-These figures describe earlier snapshots, not the current catalog. The
-[validation results](invariant-verification.md#validation-results) distinguish
-deterministic tooling checks from runtime activation and response-quality limits.
+bodies totaled 253,016 characters and summed agent preloads totaled 74,190. The
+historical follow-up snapshot recorded 5,464 description characters, 264,000
+body characters, and 79,561 summed preload characters. No preload entries were
+added in that follow-up; guidance added to existing owner skills caused the
+increase. At that snapshot, the conditionally loaded verifier had a 121-line
+entry point and Swift modeling had 199 lines. These figures describe earlier
+snapshots, not the current catalog. The [validation
+results](invariant-verification.md#validation-results) distinguish deterministic
+tooling checks from runtime activation and response-quality limits.
 
 ## Authoring rules
 
 Put the user task or intent in the first sentence of a description. Keep the
-rest of the procedure in the body or references. Exclusions belong only when a
+rest of the procedure in the body or references. Add an exclusion only when a
 near-miss would otherwise trigger the skill. A short description should tell a
 model when to select the skill, not summarize every section it contains.
 
 Agent `skills:` entries preload full bodies when the agent starts. Keep only
-always-needed owner guides there. Use relative links for conditional guides so
-the agent can load precise rules after it sees the changed concern. Preserve
-domain rules and progressive disclosure; do not add model-specific prompt
-hacks or hide useful coverage merely to reduce a number.
+owner guides the agent always needs there. Use relative links for conditional
+guides so the agent can load precise rules after it sees the changed concern.
+Preserve domain rules and progressive disclosure; do not add model-specific
+prompt hacks or hide useful coverage merely to reduce a number.
 
 ## Runtime loading and authoring sources
 
@@ -225,9 +226,9 @@ claude plugin eval plugins/<plugin> --eval-dir evals/discovery-smoke --ablation 
 
 Compare old and new versions from isolated temporary copies using the same
 fixtures. A no-plugin baseline answers a different question and should not be
-treated as a plugin comparison. Native Codex discovery smoke tests should be
-reported separately; agent registration introspection is unavailable in that
-path, so do not claim it.
+treated as a plugin comparison. Report native Codex discovery smoke tests
+separately. That path cannot inspect agent registration, so do not claim to have
+checked it.
 
 ## Validation results
 
@@ -267,9 +268,10 @@ properties, not complete correctness or execution of generated tests.
 
 An initial 175-character prose description reduced Fable's README activation
 from 8/9 to 3/9. Restoring explicit editing, normalization, and clarity triggers
-produced the final 283-character description and the 8/9 result above. Shortest
-is not the objective. This case informed the revision, so it is not a held-out
-quality estimate.
+produced the final 283-character description and the 8/9 result above. The goal
+is a description that triggers reliably, rather than the shortest possible
+description. This case informed the revision, so it is not a held-out quality
+estimate.
 
 These samples do not establish statistical equivalence, full-task quality, or
 behavior with a larger installed catalog. For a deployment check, load the

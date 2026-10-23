@@ -10,7 +10,7 @@ the recorded commands and digests alone cannot reproduce source-backed checks.
 ## Scope and baseline
 
 The acceptance contract is AC1–AC6 from the supplied Goal. This integration adds
-progressively disclosed guidance and its provenance checks. Compiler-corpus and
+guidance that loads as needed, with checks on its provenance. Compiler-corpus and
 native-runtime behavioral acceptance belong to Goal 2; no such acceptance is
 claimed here. Nothing was published or committed.
 
@@ -23,9 +23,9 @@ The archive was extracted to `/tmp/swift-type-system-integration-source/Swift_Ty
 Before edits, `python3 -m unittest discover -s scripts -p 'test_*.py'` passed
 114 tests (exit 0), followed by `python3 scripts/validate.py` (exit 0) and
 `python3 scripts/skill_catalog.py --base HEAD` (exit 0). Both Claude plugin
-validation commands also passed. There were no pre-existing primary-gate
-failures to exempt. Expected negative-fixture diagnostics in test output are
-part of the tests, not repository validation failures.
+validation commands also passed. No primary-gate failures predated the edits.
+Expected negative-fixture diagnostics in test output are part of the tests, not
+repository validation failures.
 
 ## Design and coverage evidence
 
@@ -71,7 +71,7 @@ figures compare the final owner entrypoints with the starting commit, using
 | Swift concurrency | 8,140 | 8,704 | Removes stale preview assumptions and separates concurrency behavior from enforcement claims. |
 | Type-driven design auditor | 7,826 | 7,946 | Explicitly uses conditional reference loading; the preload list is unchanged. |
 
-The type auditor's single preloaded type-modeling body shrinks by 113 characters.
+The type-modeling body, the type auditor's only preload, shrinks by 113 characters.
 No agent gains a preload. The four new references add 92,351 characters outside
 default loads (311, 327, 316, and 325 lines respectively). The largest updated
 entrypoint has 200 total lines, including frontmatter. All curated references
@@ -107,11 +107,11 @@ across its 606 entries; none are excluded. All 18 literal HTML `section` element
 have mapped enclosing anchors. The independent review found no actionable
 coverage or routing defects. The parent corrected two tooling issues before the
 final gate: tests depending on a temporary source path and incorrect rendered
-JSON/HTML locator combinations. The source discrepancy decisions retain
-conceptual guidance while limiting unsupported evidence claims.
+JSON/HTML locator combinations. The decisions about source discrepancies preserve
+conceptual guidance while limiting claims that the evidence does not support.
 
 `skills-ref` is not installed, so the skill validator reports its built-in fallback.
-Its other warning records the requested `--skip-swift`. Neither is disguised as a
+Its other warning records the requested `--skip-swift`. Neither counts as a
 compiler or native-runtime acceptance pass. A temporary bytecode file generated
 by a new import test initially failed packaging validation; the test now suppresses
 bytecode for that import, the file was removed, and skill validation passes.
@@ -162,6 +162,6 @@ evidence; the Apple Platform 1.6.0 plugin content is unchanged.
 | AC5 | PASS | 127 tests, primary validator, skill metadata, six JSON manifests, both Claude plugin validators, and local-path Codex skill metadata reads pass. Apple Platform 1.6.0 is consistent across versioned manifests. |
 | AC6 | PASS | Descriptions meet 320/7,000 and 300/2,200 budgets. Entrypoint body growth is +665 characters; summed preloads shrink by 113. Detailed new guidance stays outside default loads. |
 
-No introduced or worsened failure remains in these gates. Release availability
+These gates show no new or worsened failures. Release availability
 marked unknown is an explicit evidence boundary, not an inferred deployment
 promise. Compiler-corpus and native-runtime acceptance remain outside this Goal.

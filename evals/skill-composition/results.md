@@ -45,14 +45,14 @@ accepted 6/6; [static validation](validation-inline.json) passed 18 commands,
 including 163 tooling tests, on the same bytes. Fresh standard verification and
 auxiliary receipt checks passed.
 
-One provisional scope verdict was adjudicated transparently. Simplification
+One provisional scope verdict was adjudicated. Simplification
 Claude run 1 repeated the same successful focused check. Its provisional failed
 review, archive, actual Fable adjudication (local-only artifact `/tmp/simplification-fable-rubric-adjudication/fable-response.md`),
 and parent decision (local-only artifact `/tmp/simplification-fable-rubric-adjudication/parent-decision.json`)
 remain bound in the aggregate. The parent adopted the original check-selection
 reading: the simplification rubric states no invocation count, and the same
 adequate check is not a separate workflow or gate. The repeated execution remains
-a nonblocking procedure inefficiency. Hardening's explicit checkpoint count is
+a nonblocking procedural inefficiency. Hardening's explicit checkpoint count is
 unchanged. This was not a retry, model substitution, criterion change, or waiver.
 Fable adjudicated only that scope interpretation, not the other 17 cases.
 
@@ -112,8 +112,9 @@ scope, evidence honesty, composition, and deterministic checks passed all six.
 Fresh standard verification and auxiliary binding checks passed. The
 [static receipt](validation-completion.json) remains scoped to those bytes.
 
-At the end of that completion batch, a separate instruction failure held release. In substantive run 1, Read of
-the caller's scratch draft was denied by `--restricted` at trace lines 98–99.
+At the end of that completion batch, a separate instruction failure held release.
+In substantive run 1, `--restricted` denied Read access to the caller's scratch
+draft at trace lines 98–99.
 The reviewer explicitly proposed trying Bash at line 103 and read that same
 file with Bash at lines 104–106. The loaded correctness-reviewer rule forbids
 retrying denied access through another tool. The
@@ -153,7 +154,8 @@ checks passed 4/6, behavior 3/6, scope 6/6, evidence honesty 5/6, and compositio
 Cosmetic runs 2 and 3 copied the minimal-edit contract but accepted broad,
 incorrectly atomic rows that erased the entire cleanup. No feasible corrected
 improvement survived; both failed the required-source-change check. The failure
-is delivered behavior, not whether the reviewer used the requested table shape.
+concerns the delivered behavior, not whether the reviewer used the requested
+table shape.
 
 Substantive run 3 passed the correct initial dirty artifact and implemented the
 required decoder and tests. Its sole final reviewer nevertheless received only
@@ -170,10 +172,11 @@ The [static receipt](validation-scratch.json) remains the historical 18-command,
 recommends a delivery check and at most one fresh formulation through the same
 prose reviewer, rather than more span restrictions. The
 [release review](../../docs/hardening-release-review.md) records its exact inputs,
-no-tool execution, and limits. The subsequent 1.9.6 completion repair is implemented but unvalidated; the
-consultation does not approve its final file bytes. No full matrix followed this failed pilot.
+no-tool execution, and limits. At that stage, the subsequent 1.9.6 completion
+repair was implemented but unvalidated; the consultation did not approve its
+final file bytes. No full matrix followed this failed pilot.
 
-The subsequent Universal 1.9.6 candidate named the editing intent, checks cleanup
+The subsequent Universal 1.9.6 candidate names the editing intent, checks cleanup
 delivery independently, and permits one fresh formulation through the same
 reviewer if cleanup is erased. Final invariant handoff uses a scratch draft;
 assertion review requires that complete draft and compatibility dispositions
@@ -272,7 +275,7 @@ review. The [six-run wording-edits declaration](wording-edits-pilot-plan.json)
 subsequently completed; its results appear above. Its declaration and outcomes
 do not replace the context failure.
 
-The completed accounting is **139 starts across 156 declared slots**. Previous
+These batches account for **139 starts across 156 declared slots**. Previous
 failed outcomes, consultations, and diagnostics retain their separate records.
 
 ## Preservation pilot
@@ -310,8 +313,8 @@ risk is distinct from the observed companion-activation failure. The
 [release review](../../docs/hardening-release-review.md) retains its provenance,
 nonblocking observations, and runtime limits.
 
-This failed batch did not unlock a full matrix. At its close the context repair
-and a new six-run pilot were under preparation. Their subsequent declaration
+This failed batch did not unlock a full matrix. At its close, the context repair
+and a new six-run pilot were being prepared. Their subsequent declaration
 appears above and does not replace these failures. The completed accounting is **133 native starts across 150
 declared slots**, excluding reviewer-only diagnostics and consultations.
 Earlier results and frozen inputs remain unchanged.
@@ -356,7 +359,7 @@ wholesale revert before applying it. It captures initial owned-work evidence in
 a readable per-run scratch artifact for compatibility reviewers and loads the
 manager handoff with the substantive workflow. The preservation pilot was pending
 at the end of the intent batch; its later results appear above. No conditional
-full matrix follows this failed intent batch.
+full matrix followed this failed intent batch.
 
 This pilot adds six starts and six declared slots: **127 native starts across
 144 declared slots**. Reviewer-only diagnostics and consultations remain
@@ -382,7 +385,7 @@ Cosmetic run 2 treated a possible strengthened wording claim as permission to
 switch to the substantive path. It read unchanged implementation and tests,
 diagnosed the existing decoder bypass, and proposed a decoder repair and
 regression as an open decision. It preserved files and honestly skipped runtime
-proof, but exceeded the frozen cosmetic scope. This failure ends the transfer
+proof, but exceeded the frozen cosmetic scope. This failure ended the transfer
 batch; its conditional full matrix was not launched.
 
 The [static receipt](validation-transfer.json), copied byte-for-byte from the
@@ -443,7 +446,7 @@ did not establish an audit of unchanged model behavior. Neither was failed under
 a newly invented ban on incidental prose suggestions. The failing run explicitly
 speculated about the decoding path and proposed follow-up work.
 
-This attempt stops at the declared pilot. No full matrix, replacement runs,
+This attempt stopped at the declared pilot. No full matrix, replacement runs,
 additional model comparison, push, or publication followed. The observed failures
 remain at scope handling and the draft-review-final-response transfer. The
 structural changes did not establish reliable execution of those steps; another
@@ -476,7 +479,7 @@ runs. All six Sonnet hardening runs failed:
   did not keep the review within scope.
 
 The revised instructions remove conflicting reporting invitations, but reliable
-adherence remains unestablished. Further evaluation must declare its inputs and
+adherence has not been established. Further evaluation must declare its inputs and
 denominator before running and retain these failures. That version's record did not authorize a release.
 
 ## Scope revision

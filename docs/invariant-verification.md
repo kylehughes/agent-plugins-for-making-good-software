@@ -1,9 +1,9 @@
 # Invariant verification
 
-This guide explains invariant-workflow ownership, the repository's evaluation
-tools, and the evidence required to accept a native agent run. Run commands from
-the repository root. Recorded results describe their captured snapshots; they
-do not certify later plugin changes.
+This guide explains who owns each part of invariant verification, how to use the
+repository's evaluation tools, and what evidence a native agent run needs for
+acceptance. Run commands from the repository root. Recorded results describe
+their captured snapshots; they do not certify later plugin changes.
 
 Universal's `verifying-invariants` skill owns the procedure for specifying scoped
 invariants, locating their boundaries, selecting evidence, and reporting limits.
@@ -11,22 +11,24 @@ Apple Platform's `modeling-swift-types-for-correctness` owns Swift representatio
 checked construction, decoding, access control, and compiler restrictions. Swift
 testing skills continue to own assertions and deterministic synchronization.
 
-The following describes the workflow contract, not guaranteed agent compliance.
-The [composition evaluation results](../evals/skill-composition/results.md) report
-observed behavior and remaining failures separately.
+The workflow contract below describes what agents should do; it does not
+guarantee that they comply. The [composition evaluation
+results](../evals/skill-composition/results.md) report observed behavior and
+remaining failures separately.
 
 Design, review, simplification, hardening, and goal workflows use this procedure
 for concrete invariant claims or enforcement changes. Hardening begins by
 investigating domain values and legal transitions introduced, changed, or newly
-exposed by its owned work. A concrete gap activates the focused procedure;
-cosmetic work does not activate an invariant audit of neighboring models.
-Stronger representations must prevent a concrete misuse at a justified cost.
+exposed by the work in its scope. A concrete gap activates the focused
+procedure; cosmetic work does not activate an invariant audit of neighboring
+models. Stronger representations must prevent a concrete misuse at a justified
+cost.
 
-Composition runs within one workflow. Apple companions name their Universal
+Skills compose within the same workflow. Apple companions name their Universal
 foundations; Universal skills request platform capabilities without naming a
-platform. Active guidance, frozen scope, decisions, and evidence are reused.
-Apple simplification directly routes Swift enforcement boundaries to the type
-modeling skill and remains usable when Universal is absent.
+platform. The workflow reuses active guidance, frozen scope, decisions, and
+evidence. Apple simplification directly routes Swift enforcement boundaries to
+the type modeling skill and remains usable when Universal is absent.
 
 A bypass and its type-based prevention share one finding and disposition.
 Correctness owns failure evidence and impact, the type specialist supplies
@@ -39,12 +41,13 @@ work does not gain permission to mutate a project.
 
 Implementation tasks choose a bounded claim check before editing. An available
 correctness reviewer assesses maintained claims in the scoped final files and
-the complete response draft. Equivalent repetitions share a record with every
-location; different domains and conclusions stay separate. Each claim receives
-a supported, contradicted, or unestablished disposition, separate from runtime
-defect findings. When review is unavailable, the calling agent records why and
-performs the same inspection directly. An applicable existing review is reused,
-and hardening includes these obligations in its existing correctness review.
+the complete response draft. Repeated equivalent claims share one record listing
+every location; claims about different domains or conclusions stay separate.
+Each claim receives a supported, contradicted, or unestablished disposition,
+separate from runtime defect findings. When review is unavailable, the calling
+agent records why and performs the same inspection directly. The caller reuses
+an applicable existing review, and hardening includes these obligations in its
+existing correctness review.
 
 A claim-only check returns supported wording and counterexamples, without a
 separate defect review or repair alternatives. Existing broader reviews retain
@@ -70,15 +73,16 @@ python3 plugins/universal/skills/verifying-invariants/scripts/validate_invariant
   path/to/invariants.json --root path/to/project --json
 ```
 
-Its successful exit means the metadata is well-formed and local references exist.
+A successful exit means the metadata is well-formed and local references exist.
 It does not execute check commands or establish correctness. Start from the
 [template](../plugins/universal/skills/verifying-invariants/assets/invariants.template.json)
-and consult the [format](../plugins/universal/skills/verifying-invariants/references/manifest-format.md).
+and consult the
+[format](../plugins/universal/skills/verifying-invariants/references/manifest-format.md).
 Execution reports identify the checked snapshot, toolchain, results, and limits
 separately. Ordinary investigations need only a task report, not a new registry.
 
-The Swift skill's existing entry point exercises reusable positive controls,
-negative compilation fixtures, and runtime examples:
+The Swift skill's existing entry point runs reusable positive controls, negative
+compilation fixtures, and runtime examples:
 
 ```sh
 REQUIRE_SWIFTC=1 plugins/apple-platform/skills/modeling-swift-types-for-correctness/scripts/check_examples.sh
@@ -145,36 +149,37 @@ implementation cases allow source and test edits, but reject an unsolicited
 registry, workflow, or configuration change. Their independent executable checks
 cover historical keyed payloads, encoded shape, round trips, invalid values, and
 the project's own tests. A scalar decoder and a decoder that rejects everything
-both fail. Validation-error spelling is not part of the fixture's public contract.
-The ordinary Universal implementation case uses the same Python boundary
-fixture as the durable case, with source and test edits as its only permitted
-changes. Both preserve positive integer, floating-point, and decimal inputs, including
-positive infinity. A positive boolean control catches an added category exclusion
-that the supplied contract does not authorize. Nonpositive controls enter through
-the same import boundary. The durable-contract case also validates the generated manifest with a captured copy
-of the canonical validator, then runs project tests and independent boundary
-assertions. Review still checks whether the declared obligation and CI workflow
-actually match the requested contract. That case permits project-wide file
-placement for the requested infrastructure; its scope verdict requires reviewing
-the full diff for unrelated changes. The ordinary cases retain strict file
-allowlists.
+both fail. Validation-error spelling is not part of the fixture's public
+contract. The ordinary Universal implementation case uses the same Python
+boundary fixture as the durable case, with source and test edits as its only
+permitted changes. Both cases preserve positive integer, floating-point, and
+decimal inputs, including positive infinity. A positive boolean control catches
+an added category exclusion that the supplied contract does not authorize.
+Nonpositive controls enter through the same import boundary. The
+durable-contract case also uses a captured copy of the canonical validator to
+validate the generated manifest, then runs project tests and independent
+boundary assertions. Review still checks whether the declared obligation and CI
+workflow actually match the requested contract. That case permits project-wide
+file placement for the requested infrastructure; its scope verdict requires
+reviewing the full diff for unrelated changes. The ordinary cases retain strict
+file allowlists.
 
 Check metadata exposure separately from plugin registration. Claude Code can
 list a skill's name while omitting its description when the combined listing
 exceeds the host's budget. This occurred with Sonnet 5.5 on Claude Code 2.1.282:
 the CLI treated the unrecognized model as having a 200k context, then truncated
-a 10,758-character listing against a 6,000-character budget. A name in the startup
-registry did not establish that the model saw the authored trigger description.
-The launcher therefore sets a 24,000-character listing budget for each Claude
-child through `SLASH_COMMAND_TOOL_CHAR_BUDGET` and retains the native diagnostic
-log with its hash. This changes metadata exposure,
-not the prompt, expected skill selection, or skill-body preloads. Runs that
-cannot confirm an untruncated listing fail verification. No user settings are
-modified. The result applies to this recorded configuration; it is not evidence
-that the CLI's smaller default budget exposes the complete catalog.
-For an interactive installation that reports truncated skill descriptions, the
-same [documented environment override](https://code.claude.com/docs/en/env-vars#variables)
-can be set when launching Claude Code. The plugin does not change host settings
+a 10,758-character listing against a 6,000-character budget. A name in the
+startup registry did not establish that the model saw the authored trigger
+description. The launcher therefore sets a 24,000-character listing budget for
+each Claude child through `SLASH_COMMAND_TOOL_CHAR_BUDGET` and retains the
+native diagnostic log with its hash. This exposes the metadata without changing
+the prompt, expected skill selection, or skill-body preloads. Runs that cannot
+confirm an untruncated listing fail verification. No user settings are modified.
+The result applies to this recorded configuration; it is not evidence that the
+CLI's smaller default budget exposes the complete catalog. For an interactive
+installation that reports truncated skill descriptions, the same [documented
+environment override](https://code.claude.com/docs/en/env-vars#variables) can be
+set when launching Claude Code. The plugin does not change host settings
 automatically; other installed skills also consume that host budget.
 
 Choose a new or empty output directory outside the repository for each case.
@@ -204,44 +209,45 @@ execution output.
 For the composition suite, add `--config evals/skill-composition/cases.json`,
 choose one of its case IDs, and use medium effort. Add `--fixture-bootstrap` to
 prepare its disposable Git baseline and dirty change before the native agent
-starts. This opt-in executes the copied fixture script on the host, retains a
-setup receipt and streams, and binds them and the source script to the evidence.
-The native sandbox stays unchanged; its later bootstrap call is idempotent. A
-failed setup prevents native launch. Use this flag only for an inspected,
-authorized fixture script.
+starts. With this opt-in, the launcher executes the copied fixture script on the
+host, retains a setup receipt and streams, and binds them and the source script
+to the evidence. The native sandbox stays unchanged; its later bootstrap call is
+idempotent. A failed setup prevents native launch. Use this flag only for an
+inspected, authorized fixture script.
 
-The launcher creates an unrelated random runtime directory containing the
-fixture project, selected plugins without evaluation assets, and temporary
-Codex home. It verifies that the plugin copy matches its source and uses native
-plugin loading. Grading metadata stays in memory until the child exits; the
-bundle and launch record are then written to the separate output directory.
-Inherited working-directory hints are removed from the child's environment.
-This prevents accidental discovery through neighboring files; it is not a
-security boundary against deliberate host filesystem traversal. Claude uses
-restricted mode with file editing, shell execution, native delegation, and access
-to the copied plugin references. Non-writable configurations omit editing, shell,
-and delegation tools. Delegated assistant prose stays in the complete transcript
-and is excluded from the root response; child tool calls retain their parent
-context. A reviewer invocation alone is not evidence that its review completed.
-Codex uses workspace-write for write-capable cases and read-only otherwise.
-Write-capable cases retain session files inside the isolated Codex home because
-native delegation may need the parent rollout; read-only cases remain ephemeral.
-The prepared composition runs recorded missing-rollout errors in native
-delegation, so session persistence is part of the subsequent evaluation protocol.
-Raw transcripts, responses, stderr,
-runtime setup, and every failed or timed-out outcome remain in the output
-directory. The runtime directory is retained because evidence binds its live
-workspace. `launch.json` records its absolute path and any Codex home. Keep both
-directories private; the Codex home may retain an authentication symlink. The
-launcher does not install the reviewed plugin changes or publish evaluations.
-The native CLI may perform its own background cache maintenance; the disposable
-workspace is not an isolation boundary for the host.
+The launcher creates a separate runtime directory with a random name. It
+contains the fixture project, selected plugins without evaluation assets, and a
+temporary Codex home. It verifies that the plugin copy matches its source and
+uses native plugin loading. Grading metadata stays in memory until the child
+exits; the bundle and launch record are then written to the separate output
+directory. Inherited working-directory hints are removed from the child's
+environment. This prevents accidental discovery through neighboring files; it is
+not a security boundary against deliberate host filesystem traversal. Claude
+uses restricted mode with file editing, shell execution, native delegation, and
+access to the copied plugin references. Non-writable configurations omit
+editing, shell, and delegation tools. Delegated assistant prose stays in the
+complete transcript and is excluded from the root response; child tool calls
+retain their parent context. A reviewer invocation alone is not evidence that
+its review completed. Codex uses workspace-write for write-capable cases and
+read-only otherwise. Write-capable cases retain session files inside the
+isolated Codex home because native delegation may need the parent rollout;
+read-only cases remain ephemeral. The prepared composition runs recorded
+missing-rollout errors in native delegation, so session persistence is part of
+the subsequent evaluation protocol. The output directory retains raw
+transcripts, responses, stderr, runtime setup, and every failed or timed-out
+outcome. The launcher retains the runtime directory because the evidence is
+bound to its live workspace. `launch.json` records its absolute path and any
+Codex home. Keep both directories private; the Codex home may retain an
+authentication symlink. The launcher does not install the reviewed plugin
+changes or publish evaluations. The native CLI may perform its own background
+cache maintenance; the disposable workspace is not an isolation boundary for the
+host.
 
 A successful process exit is not acceptance. The launcher reports
 `pending_manual_review` after deterministic checks pass, and exits nonzero for
-execution or artifact failures. It never retries until a case passes. Declare a
-matrix and repetition count before running it, retain every attempt, and report
-counts separately for execution, behavior, composition, and scope.
+execution or artifact failures. It never keeps retrying a case until it passes.
+Declare a matrix and repetition count before running it, retain every attempt,
+and report counts separately for execution, behavior, composition, and scope.
 
 The optional `--effort` accepts `low`, `medium`, or `high` and defaults to
 `medium`. The launcher records it in both launch metadata and the raw outcome.
@@ -252,23 +258,23 @@ does not establish acceptance at medium effort.
 ### Evidence and review
 
 `scripts/invariant_behavior.py` supports `prepare`, `assess`, `finalize-review`,
-and `verify-evidence`. Preparation binds the natural prompt, initial tree, plugin
-snapshot, case configuration, rubric, and independent checker. Assessment copies
-the resulting workspace once, runs checks against that captured copy, and binds
-the complete file map. A later change to the live or captured workspace prevents
-finalization. Compiler and runtime failures are failed evidence.
-Python artifact checks also reject changes to the tested source tree during
-project tests or independent assertions, excluding interpreter caches.
-Their validator, project-test, and assertion processes use separate temporary
-Python cache prefixes and disable bytecode writes, so those processes do not
-write interpreter caches into the captured workspace.
-The complete raw diff and file hashes remain in evidence. Only newly added
-Python bytecode files directly inside `__pycache__` are excluded from the scope
-verdict for Python artifact cases; source files placed there and changes to
-preexisting cache files are still assessed. This keeps incidental interpreter
-outputs from hiding unrelated edits.
-Changes to the selected case configuration or rubric make a prepared run stale;
-retain it as historical evidence and prepare a fresh run for current acceptance.
+and `verify-evidence`. Preparation binds the natural-language prompt, initial
+tree, plugin snapshot, case configuration, rubric, and independent checker.
+Assessment copies the resulting workspace once, runs checks against that
+captured copy, and binds the complete file map. A later change to the live or
+captured workspace prevents finalization. Compiler and runtime failures are
+failed evidence. Python artifact checks also reject changes to the tested source
+tree during project tests or independent assertions, excluding interpreter
+caches. Their validator, project-test, and assertion processes use separate
+temporary Python cache prefixes and disable bytecode writes, so those processes
+do not write interpreter caches into the captured workspace. The complete raw
+diff and file hashes remain in evidence. Only newly added Python bytecode files
+directly inside `__pycache__` are excluded from the scope verdict for Python
+artifact cases; source files placed there and changes to preexisting cache files
+are still assessed. This keeps incidental interpreter outputs from hiding
+unrelated edits. Changes to the selected case configuration or rubric make a
+prepared run stale; retain it as historical evidence and prepare a fresh run for
+current acceptance.
 
 The current assessor writes evidence schema 2, retains the evaluator source as
 `evaluator-engine.py` beside the captured workspace, and requires its version and
@@ -342,9 +348,10 @@ vote alone never substitutes for the full acceptance record.
 
 ## Validation results
 
-These are historical results from the 2026-10-18 report and its declared source
-snapshots, not a rerun of the current tree. Composition evaluations report their
-subsequent outcomes [separately](../evals/skill-composition/results.md).
+These historical results come from the 2026-10-18 report and its declared source
+snapshots. They have not been rerun on the current tree. Composition evaluations
+report their subsequent outcomes
+[separately](../evals/skill-composition/results.md).
 
 The [continuation results](../evals/invariant-verification-continuation-results.json)
 record **51 of 51 accepted case-runs**, with no failures, retries, or adjudications
@@ -364,9 +371,10 @@ records passed strict verification. No earlier pass is pooled into this result.
 
 The evaluated Swift companion tied each persistence claim to its inspected
 construction route and recorded the phase and shared arguments of compiler
-controls before describing their pairing. The evaluated shared procedure separated independently
-authoritative obligations from newly introduced assertions, so correcting an
-unsupported promise does not itself authorize a production behavior change.
+controls before describing their pairing. The evaluated shared procedure
+distinguished obligations with independent authority from newly introduced
+assertions: correcting an unsupported promise does not itself authorize a
+production behavior change.
 
 The matrix wrapper checked the declared source snapshot before and after the
 batch and compared every copied plugin file against it. Other declared files
@@ -378,15 +386,14 @@ model-recognition or fallback warning. All 17 temporary Codex authentication
 symlinks were removed after completion.
 
 Both full 114-test tooling suites passed after the last executable change, on
-Python 3.9.6 and 3.14.7. Subsequent guidance changes passed repository validation,
-catalog and whitespace checks. The Swift skill validation recorded there also
-passed its real Swift 6.3.3 compiler and runtime fixtures: five positive controls,
-five
-intended compiler rejections, and the runtime checks. The evaluator retains
-regressions for stale or poisoned bytecode, replaced assertion sources, and
-missing evaluator provenance. These checks establish the recorded tooling and
-fixture behavior; semantic acceptance separately assesses generated code and
-contracts.
+Python 3.9.6 and 3.14.7. Subsequent guidance changes passed repository
+validation, catalog and whitespace checks. The Swift skill validation recorded
+there also passed its real Swift 6.3.3 compiler and runtime fixtures: five
+positive controls, five intended compiler rejections, and the runtime checks.
+The evaluator retains regressions for stale or poisoned bytecode, replaced
+assertion sources, and missing evaluator provenance. These checks establish the
+recorded tooling and fixture behavior; semantic acceptance separately assesses
+generated code and contracts.
 
 The earlier 396 description-selection probes passed: 44 cases, three
 repetitions, and three models. Those remain historical routing diagnostics;

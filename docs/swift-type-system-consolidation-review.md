@@ -1,10 +1,10 @@
 # Fable review of the Swift consolidation
 
-Review date: 2026-10-20. Model identity was verified from the native receipt as `claude-fable-5-1`, medium effort. The review used only Read, Grep, and Glob. This is a historical static review; its pending native-run statement reflects the time it was written. The [consolidation record](swift-type-system-consolidation.md) separately reports completed native results and follow-up edits.
+Review date: 2026-10-20. Model identity was verified from the native receipt as `claude-fable-5-1`, medium effort. The review used only Read, Grep, and Glob. This is a historical static review; its statement that native runs were pending reflects the time it was written. The [consolidation record](swift-type-system-consolidation.md) separately reports completed native results and follow-up edits.
 
 ## Initial consolidation review
 
-**Verdict: APPROVE WITH NONBLOCKING FOLLOW-UPS.** Static read-only review of the working tree against baseline 8b93376, using Read, Grep, and Glob only. I found no release blockers. Every route the skill body and the recipes depend on resolves to an existing heading or explicit ID in the current files, the moved content lands in a substantive owner rather than a label, and the Apple Platform plugin remains usable alone.
+**Verdict: APPROVE WITH NONBLOCKING FOLLOW-UPS.** Static read-only review of the working tree against baseline 8b93376, using Read, Grep, and Glob only. I found no release blockers. Every route the skill body and recipes depend on resolves to an existing heading or explicit ID in the current files. Each destination contains the moved content rather than just naming it, and the Apple Platform plugin remains usable alone.
 
 ## Findings
 
@@ -19,7 +19,7 @@ No P0 through P2 findings. The items below are optional.
 
 **Ownership is substantive.** The construction examples moved out of the recipes into the mechanism owner: `Patch` and `NonEmpty` now live under `algebraic-and-refined-values.md:73-96`, and `NonblankLabel` with its draft under `:177-193`. Equality and public-evolution rules moved into `domain-modeling-recipes.md:265-285`. The ownership-operation table was merged with the `borrowing`, `consuming`, and `inout` rows in `ownership-concurrency-errors.md:258-268`. The destruction questions moved into the completion recipe at `ownership-effect-recipes.md:273-281`. The decision guide now defers its checklist, lock, resource, and security sections to owners that carry the same substance, which I confirmed at `security-and-resource-modeling.md:5-17` and `:199-227` and `ownership-concurrency-errors.md:12-25` and `:128-146`.
 
-**Recipes and mechanics form a conditional hierarchy.** The skill body routes eight claims to sections. Each recipe links down to a mechanism section only for a named condition, and each mechanism guide opens with a short "read the applied section when assessing an invariant" list. The typestate transition text now points at the recovery recipe, and the resource mechanics point at the completion recipe, which closes the one-way linkage the prior review flagged.
+**Recipes and mechanics form a conditional hierarchy.** The skill body routes eight claims to sections. Each recipe links down to a mechanism section only for a named condition, and each mechanism guide opens with a short "read the applied section when assessing an invariant" list. The typestate transition text now points at the recovery recipe, and the resource mechanics point at the completion recipe, addressing the missing reverse links the prior review flagged.
 
 **No current temporal conflict inside the changed set.** Feature status is the single dated owner at `swift-feature-status.md:5-7` and `:23`. iOS versioning, the modeling sources index, the concurrency baseline, and the new Swift compatibility reference all link there instead of restating a snapshot. The preserved 6.3.2 survey sits in `docs/swift-type-system-source-decisions.md:33-85` and is labeled as historical. The only residual conflicts are the pre-existing sibling statements listed above.
 
@@ -41,7 +41,7 @@ I did not run the validator, unit tests, coverage checker, catalog script, or an
 
 ## Verification of follow-up corrections
 
-**Verdict: APPROVE.** Bounded static verification of the follow-up corrections, using Read, Grep, and Glob only. The edits resolve all four optional findings from my initial review and introduce no concrete new problem. I found no loss of source substance.
+**Verdict: APPROVE.** Bounded static verification of the follow-up corrections, using Read, Grep, and Glob only. The edits resolve all four optional findings from my initial review. I found no concrete new problem or loss of source substance.
 
 **Status of each correction**
 
