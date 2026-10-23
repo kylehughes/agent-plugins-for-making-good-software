@@ -46,6 +46,8 @@ Deferrals need the handoff fields recorded while context is fresh: **Title** (3-
 
 Resolve everything resolvable from project evidence before stopping. An attended run interacts at exactly two points: a blocker, and the exit offer to file deferred work in the project's issue tracker, when one is configured. An unattended run makes neither stop — it reports blockers in the handoff with `Status: Blocked` and records deferred work without offering to file it.
 
+When hardening is one stage of an enclosing workflow, the filing offer belongs at that workflow's final handoff. Return the stage result and continue the enclosing workflow's remaining checks before making the offer.
+
 Translate the workflow onto the current runtime rather than treating tool names literally. The finding ledger lives in orchestrator state. Auditors return findings as text in their final report — subagents receive a reduced tool set and cannot be relied on to create tasks or invoke skills by name, so the orchestrator collects and records. Use the runtime's native subagent mechanism for auditors; if it does not expose the named agents, pass the matching agent definition as prompt context.
 
 Where the runtime provides cheaper delegated workers, bounded mechanical slices can go to them once the orchestrator fixes file scope and acceptance criteria. Workers do not build or run the project; every worker prompt names its working directory explicitly and quotes space-containing paths.

@@ -31,7 +31,7 @@ Write complete sentences after the status block; avoid compressed label-colon fr
 
 **Deferred Work.** Include owned findings whose completion would require app-wide rearchitecture or a product decision. Give the owned change that gives rise to the finding, impact, reason for deferral, first implementation step, affected modules, rough effort (`S`/`M`/`L`/`XL`), and originating finding. Most runs have none; include at most six.
 
-In attended runs with a configured issue tracker, offer once to file deferred work, with at most six concise options. Do not file issues without authorization.
+In attended runs with a configured issue tracker, offer once to file deferred work, with at most six concise options. When hardening is one stage of an enclosing workflow, carry the offer into that workflow's final handoff instead of pausing here. Do not file issues without authorization.
 
 ## When invariant verification applies
 
@@ -70,7 +70,7 @@ Complete intended final response:
 [copy every word from the caller's draft file here, not its path or selected claims]
 ```
 
-After resolving the returned records, send its **Reviewed response** as the final message. An explanation omitted from the draft stays omitted; do not append a fresh summary of the work.
+After resolving the returned records, use its **Reviewed response** as the completed hardening handoff. Send it as the final message for a standalone invocation; otherwise return it to the enclosing workflow so remaining stages can continue. An explanation omitted from the draft stays omitted; do not append a fresh summary of the work.
 
 ## Completion checklist
 

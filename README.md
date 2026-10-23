@@ -68,9 +68,15 @@ explicitly when you want a particular workflow:
 | Prepare owned changes through review and fixes | `/universal:hardening-changes` | `$hardening-changes` |
 | Simplify Swift or Apple-platform code | `/apple-platform:simplifying-apple-platform-code` | `$simplifying-apple-platform-code` |
 
-For example: "Use $reviewing-code to review my changes against main. Focus on
+For a complete change: "Use $delivering-changes to implement this ticket and take
+it to a PR-ready handoff." It handles implementation, simplification, hardening,
+and the required pre-PR checks without a separate prompt for each stage. Put
+project-specific manual verification requirements in your project instructions;
+the workflow pauses at those checkpoints and resumes after you report the result.
+
+For a review: "Use $reviewing-code to review my changes against main. Focus on
 correctness and compatibility; do not edit files." Use the matching Claude Code
-command for the same task in that host.
+command for either task in that host.
 
 The Apple simplification companion loads its universal foundation when available,
 so invoking that companion is enough to apply both guides. Project-specific

@@ -51,6 +51,8 @@ Reuse an earlier audit only when it satisfies the required review contract for t
 
 Treat the hardening handoff as a stage result. Resolve routine next actions within the task rather than forwarding them as another assignment for the user. Preserve genuine blockers and unresolved decisions; do not rename them completion. Continue after **Hardening complete** to finish the delivery checks below.
 
+Carry any optional offer to file deferred work into the final delivery handoff. It does not pause the remaining checks.
+
 ### 5. Complete the Applicable Delivery Checks
 
 Inspect hardening's pending proof and the project's remaining requirements. Run checks assigned after hardening that are executable and required before the PR handoff. Ordinary test, build, generation, or inspection commands are work for the coordinator when authorized and available, not automatic human checkpoints.
