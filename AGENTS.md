@@ -24,6 +24,14 @@ Keep a skill and the agents that preload it in the same plugin so agent `skills:
 
 There are no MCP servers or hooks in this repository right now.
 
+## Project Voice
+
+Describe the marketplace and plugins by their purpose. Keep taglines, manifest descriptions, README introductions, and casual explanations broad, direct, and a little opinionated: "Plugins for making good software." Add only the distinction a reader needs to choose a plugin, such as its platform scope. Preserve that voice when polishing documentation.
+
+Do not turn these descriptions into inventories of covered topics, technologies, skills, or agents. Such lists are awkward to read, difficult to keep in sync, and add little to a reader's understanding of the project's purpose. Adding a skill should not require rewriting the project description.
+
+Put capability lists and counts in catalog tables, reference sections, and release notes where that detail serves a concrete purpose. Specific examples are welcome when they explain a workflow or help someone choose a tool. Individual skill and agent discovery descriptions still need precise task and scope information for accurate selection.
+
 ## Plugin Taxonomy and Composition
 
 - `universal` is the platform-neutral core: its skills define procedure and contract and never embed platform rules.
