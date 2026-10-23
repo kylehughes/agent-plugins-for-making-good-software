@@ -57,41 +57,30 @@ The same SSH source works with `claude plugin marketplace add`.
 
 ## Usage
 
-Describe the task and its scope in your project session. All 28 skills allow
-automatic selection when relevant and explicit invocation in both Claude Code
-and Codex. Select one directly when you want a particular workflow:
+My usual workflow is:
 
-| Task | Claude Code | Codex |
+1. Ask for implementation.
+2. Verify the result manually, with automated checks, or both.
+3. Ask for simplification.
+4. Ask for hardening.
+
+Simplification and hardening bring in the relevant skills and project
+preferences, including code review.
+
+`delivering-changes` codifies that sequence into one workflow: ask it to implement
+a change and take it to a PR-ready handoff. It runs the required checks and pauses
+for manual verification where your project instructions require it.
+
+| Step | Claude Code | Codex |
 | :--- | :--- | :--- |
-| Take a request through to a PR-ready handoff | `/universal:delivering-changes` | `$delivering-changes` |
-| Review a diff without editing it | `/universal:reviewing-code` | `$reviewing-code` |
-| Simplify owned code while preserving behavior | `/universal:simplifying-code` | `$simplifying-code` |
-| Prepare owned changes through review and fixes | `/universal:hardening-changes` | `$hardening-changes` |
-| Simplify Swift or Apple-platform code | `/apple-platform:simplifying-apple-platform-code` | `$simplifying-apple-platform-code` |
+| Simplify | `/universal:simplifying-code` | `$simplifying-code` |
+| Harden | `/universal:hardening-changes` | `$hardening-changes` |
+| Run the whole workflow | `/universal:delivering-changes` | `$delivering-changes` |
 
-For a complete change: "Use $delivering-changes to implement this ticket and take
-it to a PR-ready handoff." It handles implementation, simplification, hardening,
-and the required pre-PR checks without a separate prompt for each stage. Put
-project-specific manual verification requirements in your project instructions;
-the workflow pauses at those checkpoints and resumes after you report the result.
-
-For a review: "Use $reviewing-code to review my changes against main. Focus on
-correctness and compatibility; do not edit files." Use the matching Claude Code
-command for either task in that host.
-
-The Apple simplification companion loads its universal foundation when available,
-so invoking that companion is enough to apply both guides. Project-specific
-hardening companions are discovered through available descriptions and project
-instructions. They contribute requirements to the same scoped pass, including
-checks the project requires during hardening.
-
-Reviewer definitions cover separate concerns. Their availability and invocation
-depend on the host; when a workflow cannot delegate, follow its documented
-direct-review fallback. These shared Markdown reviewers register as Claude Code
-agents; Codex native agents use a separate configuration format, so pass the
-reviewer instructions to an available native agent when the named role is absent.
-See [agent model selection](docs/agent-model-selection.md)
-for shared reviewer instructions and runtime settings.
+For Swift and Apple-platform code, use the
+[`simplifying-apple-platform-code`](plugins/apple-platform/skills/simplifying-apple-platform-code/SKILL.md)
+companion for the simplification step. All skills also support automatic
+selection when relevant and direct invocation.
 
 ## Apple Platform
 
@@ -162,6 +151,14 @@ The `universal` plugin contains 9 skills and 4 reviewer definitions.
 Start with the [documentation index](docs/README.md) for maintained guides,
 evaluation procedures, and historical records. Skill-specific references live
 beside their entry points and are loaded only when their concern applies.
+
+Reviewer definitions cover separate concerns. Their availability and invocation
+depend on the host; when a workflow cannot delegate, follow its documented
+direct-review fallback. These shared Markdown reviewers register as Claude Code
+agents; Codex native agents use a separate configuration format, so pass the
+reviewer instructions to an available native agent when the named role is absent.
+See [agent model selection](docs/agent-model-selection.md)
+for shared reviewer instructions and runtime settings.
 
 For maintenance, follow [repository guidance](AGENTS.md). From the repository root,
 run the tooling tests, validator, and context-cost report:
