@@ -2,7 +2,10 @@
 
 [![Claude Code Plugin](https://img.shields.io/badge/Claude_Code_Plugin-555?logo=claude)](https://code.claude.com/docs/en/plugins)
 [![Codex Plugin][codex_plugin_badge]](https://learn.chatgpt.com/docs/plugins)
-[![CI](https://github.com/kylehughes/agent-plugins-for-making-good-software/actions/workflows/validate.yml/badge.svg?branch=main)](https://github.com/kylehughes/agent-plugins-for-making-good-software/actions/workflows/validate.yml)
+[![CI](https://github.com/kylehughes/agent-plugins-for-making-good-software/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/kylehughes/agent-plugins-for-making-good-software/actions/workflows/ci.yml)
+
+[![Apple Platform release](https://img.shields.io/github/v/release/kylehughes/agent-plugins-for-making-good-software?filter=apple-platform%2Fv%2A&display_name=tag)](https://github.com/kylehughes/agent-plugins-for-making-good-software/releases)
+[![Universal release](https://img.shields.io/github/v/release/kylehughes/agent-plugins-for-making-good-software?filter=universal%2Fv%2A&display_name=tag)](https://github.com/kylehughes/agent-plugins-for-making-good-software/releases)
 
 Plugins for making good software with Claude Code and Codex.
 
