@@ -4,9 +4,6 @@
 [![Codex Plugin][codex_plugin_badge]](https://learn.chatgpt.com/docs/plugins)
 [![CI](https://github.com/kylehughes/agent-plugins-for-making-good-software/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/kylehughes/agent-plugins-for-making-good-software/actions/workflows/ci.yml)
 
-[![Apple Platform release](https://img.shields.io/github/v/release/kylehughes/agent-plugins-for-making-good-software?filter=apple-platform%2Fv%2A&display_name=tag)](https://github.com/kylehughes/agent-plugins-for-making-good-software/releases)
-[![Universal release](https://img.shields.io/github/v/release/kylehughes/agent-plugins-for-making-good-software?filter=universal%2Fv%2A&display_name=tag)](https://github.com/kylehughes/agent-plugins-for-making-good-software/releases)
-
 Plugins for making good software with Claude Code and Codex.
 
 ## About
@@ -91,6 +88,8 @@ selection when relevant and direct invocation.
 
 ## Apple Platform
 
+[![Apple Platform release](https://img.shields.io/github/v/release/kylehughes/agent-plugins-for-making-good-software?filter=apple-platform%2Fv%2A&display_name=tag)](https://github.com/kylehughes/agent-plugins-for-making-good-software/releases?q=tag%3Aapple-platform%2Fv+draft%3Afalse+prerelease%3Afalse)
+
 The `apple-platform` plugin contains 19 skills and 4 reviewer definitions.
 
 ### Skills
@@ -127,6 +126,8 @@ The `apple-platform` plugin contains 19 skills and 4 reviewer definitions.
 | `type-driven-design-auditor` | [Audit Swift representations and opportunities to prevent invalid states.](plugins/apple-platform/agents/type-driven-design-auditor.md) |
 
 ## Universal
+
+[![Universal release](https://img.shields.io/github/v/release/kylehughes/agent-plugins-for-making-good-software?filter=universal%2Fv%2A&display_name=tag)](https://github.com/kylehughes/agent-plugins-for-making-good-software/releases?q=tag%3Auniversal%2Fv+draft%3Afalse+prerelease%3Afalse)
 
 The `universal` plugin contains 9 skills and 4 reviewer definitions.
 
