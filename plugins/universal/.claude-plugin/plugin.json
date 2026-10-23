@@ -2,8 +2,8 @@
   "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "universal",
   "displayName": "Universal",
-  "version": "1.9.9",
-  "description": "Skills and reviewer agents for software design, review, hardening, simplification, invariant verification, and technical writing in any language.",
+  "version": "1.9.10",
+  "description": "Platform-agnostic tools for making good software.",
   "author": {
     "name": "Kyle Hughes",
     "email": "kyle@kylehugh.es",

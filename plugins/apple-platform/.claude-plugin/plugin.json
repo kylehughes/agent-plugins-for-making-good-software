@@ -2,8 +2,8 @@
   "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "apple-platform",
   "displayName": "Apple Platform",
-  "version": "2.1.1",
-  "description": "Skills and reviewer agents for Swift and Apple-platform development, covering APIs, UI, concurrency, localization, testing, and documentation.",
+  "version": "2.1.2",
+  "description": "Tools for making good software on Apple platforms.",
   "author": {
     "name": "Kyle Hughes",
     "email": "kyle@kylehugh.es",

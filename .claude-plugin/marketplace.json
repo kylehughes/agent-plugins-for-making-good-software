@@ -5,14 +5,14 @@
     "name": "Kyle Hughes",
     "email": "kyle@kylehugh.es"
   },
-  "description": "Skills and reviewer agents for software development, with Universal and Apple Platform plugins.",
+  "description": "Plugins for making good software",
   "plugins": [
     {
       "name": "apple-platform",
       "source": "./plugins/apple-platform",
       "displayName": "Apple Platform",
-      "description": "Skills and reviewer agents for Swift and Apple-platform development, covering APIs, UI, concurrency, localization, testing, and documentation.",
-      "version": "2.1.1",
+      "description": "Tools for making good software on Apple platforms.",
+      "version": "2.1.2",
       "author": {
         "name": "Kyle Hughes",
         "email": "kyle@kylehugh.es"
@@ -35,8 +35,8 @@
       "name": "universal",
       "source": "./plugins/universal",
       "displayName": "Universal",
-      "description": "Skills and reviewer agents for software design, review, hardening, simplification, invariant verification, and technical writing in any language.",
-      "version": "1.9.9",
+      "description": "Platform-agnostic tools for making good software.",
+      "version": "1.9.10",
       "author": {
         "name": "Kyle Hughes",
         "email": "kyle@kylehugh.es"

@@ -1,14 +1,13 @@
 # Agent Plugins for Making Good Software
 
-Skills and reviewer agents for Claude Code and Codex, covering software design,
-implementation, review, testing, and technical writing.
+Plugins for making good software with Claude Code and Codex.
 
 ## About
 
-Install `universal` for workflows that apply to any language. Add `apple-platform`
-for Swift, SwiftUI, UIKit, and other Apple-platform work. Each plugin can also be
-used on its own. They share one set of instructions across both runtimes and ship
-27 skills and 8 reviewer definitions in total.
+Install `universal` for platform-agnostic workflows. Add `apple-platform`
+for Apple-platform development. Each plugin also works on its own. They share
+one set of instructions across both runtimes and ship 27 skills and 8 reviewer
+definitions in total.
 
 Skills provide task instructions and supporting references. Reviewer agents
 inspect specific concerns, such as correctness or structural design. These

@@ -1,7 +1,7 @@
 {
   "name": "universal",
-  "version": "1.9.9",
-  "description": "Skills and reviewer agents for software design, review, hardening, simplification, invariant verification, and technical writing in any language.",
+  "version": "1.9.10",
+  "description": "Platform-agnostic tools for making good software.",
   "author": {
     "name": "Kyle Hughes",
     "email": "kyle@kylehugh.es",
@@ -20,8 +20,8 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "Universal",
-    "shortDescription": "Software design, review, and quality in any language",
-    "longDescription": "Skills and reviewer agents for software design, review, hardening, simplification, invariant verification, and technical writing in any language.",
+    "shortDescription": "Platform-agnostic tools for making good software.",
+    "longDescription": "Platform-agnostic tools for making good software.",
     "developerName": "Kyle Hughes",
     "category": "Productivity",
     "capabilities": [
