@@ -1,0 +1,275 @@
+{
+  "date": "2026-10-27",
+  "packet_freeze": "document-design-packets-v1",
+  "producer_model": "gpt-6.1-sol",
+  "reasoning_effort": "medium",
+  "runtime": "native collaboration agents",
+  "sampling": "one fresh agent per arm; six cases sequentially within each agent; arms ran concurrently",
+  "evidence_type": "paired editorial comparison; no naive model readers or human participants",
+  "limitations": [
+    "Not fresh per-case sessions: within-arm carryover is possible.",
+    "Tools had filesystem access, isolation was by copied inputs and explicit read scope rather than a sandbox. Both producers reported no excluded reads.",
+    "Shared runtime instructions and skill catalog may influence both arms.",
+    "No token/time telemetry collected; unavailable.",
+    "No human comprehension, navigation time, delayed retention, or causal component effect measured.",
+    "Cases 07 and 08 remain unexposed to producers and unrun."
+  ],
+  "guidance": {
+    "guidance/writing-prose-like-a-human/ATTRIBUTION.md": "57350ee31c86d84775fca80fbb223c1f90aa486b37caba98eced07f39d11fbac",
+    "guidance/writing-prose-like-a-human/REFERENCE.md": "ec53e234e5976879f59181a0a9020eff21db056bf72d5d2e1c15ec103913fcac",
+    "guidance/writing-prose-like-a-human/SKILL.md": "01c922ace989550314ef2965215162142c1f975cd629ca4a5af991c176f8bc67",
+    "guidance/writing-technical-prose/SKILL.md": "4fe78d57b09406570d5b5f19df1059bcbdad9660366f1600bfc9e1b40a1048f1",
+    "guidance/writing-technical-prose/agents/openai.yaml": "a90235bf3e993730e6133a70080af36d31c2a3f1a6584139d1cf5cc9c26fc372",
+    "guidance/writing-technical-prose/references/document-patterns.md": "06413cf04efd12c114758dc2a5e2ff6ae91ccf06fe487b8d7d70616a3b58d603",
+    "guidance/writing-technical-prose/references/linter-usage.md": "bc72ae7119528839a3292e9cb1baec69bba41b5ba324ce62411e7ab2aeec920c",
+    "guidance/writing-technical-prose/references/review-checklist.md": "73df51762dd56cfdcc46d3253813a93809b03d82b538c4ce2a4f548902b81f3a",
+    "guidance/writing-technical-prose/references/style-examples.md": "7b52249ded096ebf5d0a214ba01712ff0dbec9ddd181e9221bfa5f2bcf8a26f9",
+    "guidance/writing-technical-prose/scripts/lint_technical_writing.py": "b06effe2e1e5164a54815bc5c93f452494ca4be2dd1a2db4c954601ded097587",
+    "designing-documents/ATTRIBUTION.md": "c3dab731c0b14a43803c5cf9cd2a4dff864cacf8f9f41f6b0cdcfb0d237a3e67",
+    "designing-documents/SKILL.md": "02aeaba10e73e8634b15e2a204450a9b36a9bcb52dc13bf38360fbe782bee030",
+    "designing-documents/agents/openai.yaml": "7190cd3e7f176e58f0a45ac55fc2014db841dbabef57cd39729a2fabd4c396c4",
+    "designing-documents/references/pages-and-revision.md": "c0896b379629d42ef4ce1388289c4fb12c22e2ba68a8fce7845bed3910feac92",
+    "designing-documents/references/research-rationale.md": "1c4bc3f6212dc54a10d53cb7499caa6a0e2d399587d9885c7ca944034df1611c",
+    "designing-documents/references/tasks-and-structure.md": "5b2724027499961409ab1a1d5ed2be858ce2a49b8913e74e14a3e6b05f5ebaf5",
+    "designing-documents/references/worked-examples.md": "b41b671d4d748d3e52b31bf2d975aca868b6b1a3175862df0b9d0f6c2b288c6a"
+  },
+  "candidates": [
+    {
+      "case": 1,
+      "candidates": {
+        "A": {
+          "arm": "baseline",
+          "path": "01-A.md",
+          "sha256": "14314ac38dd4e163b22c37ca1a82367e0b512808d4be7b6b4c30a56fdabf1947",
+          "response_words": 335
+        },
+        "B": {
+          "arm": "skill",
+          "path": "01-B.md",
+          "sha256": "6abecbae27840770222ab5648039f5b6317565e1069b8937ddcbfdfae5507a0f",
+          "response_words": 362
+        }
+      },
+      "starting_document_words": 76,
+      "delivered_words": {
+        "A": 335,
+        "B": 362
+      }
+    },
+    {
+      "case": 2,
+      "candidates": {
+        "A": {
+          "arm": "skill",
+          "path": "02-A.md",
+          "sha256": "af06ff8ef060824432b3640bc9c0f9660305f611cf4713b7a8c2b1e633dddc7c",
+          "response_words": 338
+        },
+        "B": {
+          "arm": "baseline",
+          "path": "02-B.md",
+          "sha256": "2bb9ad7f95ff4543f6993bb69a0f958348ac6239a3e5f1c7f40f72f3ec1b340e",
+          "response_words": 291
+        }
+      },
+      "starting_document_words": null,
+      "delivered_words": {
+        "A": 338,
+        "B": 291
+      }
+    },
+    {
+      "case": 3,
+      "candidates": {
+        "A": {
+          "arm": "baseline",
+          "path": "03-A.md",
+          "sha256": "d1d8055e84503e5965bdbf4c28fde55b4544936ff803b95fa8e3d32f535fbce3",
+          "response_words": 369
+        },
+        "B": {
+          "arm": "skill",
+          "path": "03-B.md",
+          "sha256": "dc5438fd2f27938ac7fcf85883465b2ba8c83d184052fe8b6bbc9c473c6186c7",
+          "response_words": 357
+        }
+      },
+      "starting_document_words": 72,
+      "delivered_words": {
+        "A": 369,
+        "B": 357
+      }
+    },
+    {
+      "case": 4,
+      "candidates": {
+        "A": {
+          "arm": "skill",
+          "path": "04-A.md",
+          "sha256": "6d84a69957d8685bc4de825d226589d4ffad6e0b3902e9d35e748a87f7b3d7d1",
+          "response_words": 40
+        },
+        "B": {
+          "arm": "baseline",
+          "path": "04-B.md",
+          "sha256": "7f8a28c79e254784e6b95fb42e505b10042aac06eb9197915ed9ca512664d053",
+          "response_words": 39
+        }
+      },
+      "starting_document_words": 155,
+      "delivered_words": {
+        "A": 155,
+        "B": 155
+      }
+    },
+    {
+      "case": 5,
+      "candidates": {
+        "A": {
+          "arm": "baseline",
+          "path": "05-A.md",
+          "sha256": "dcc220ef22f3ba88e31519de88baab224fcee0bf071bfbd0944b58e3ac5f4001",
+          "response_words": 556
+        },
+        "B": {
+          "arm": "skill",
+          "path": "05-B.md",
+          "sha256": "e78936ad4fd250e382c08c4bde35ed94d1b96a0f697d7b89d79d991b3876b65f",
+          "response_words": 609
+        }
+      },
+      "starting_document_words": 75,
+      "delivered_words": {
+        "A": 556,
+        "B": 609
+      }
+    },
+    {
+      "case": 6,
+      "candidates": {
+        "A": {
+          "arm": "skill",
+          "path": "06-A.md",
+          "sha256": "708f6a3d872cf4e3efa7de73ceabceeda2adfe19f8a77e5f95ba52455afbda03",
+          "response_words": 26
+        },
+        "B": {
+          "arm": "baseline",
+          "path": "06-B.md",
+          "sha256": "3b09b15604000ac5c747023cb47e05016abac428d54db1655af37d87527c8d14",
+          "response_words": 31
+        }
+      },
+      "starting_document_words": 134,
+      "delivered_words": {
+        "A": 134,
+        "B": 134
+      }
+    }
+  ],
+  "baseline_revision": "3d282c2938c86be5bf7733f110d1003fd62ff7c2",
+  "guidance_reads": {
+    "baseline": [
+      "writing-technical-prose/SKILL.md",
+      "writing-technical-prose/references/document-patterns.md",
+      "writing-technical-prose/references/review-checklist.md",
+      "writing-prose-like-a-human/SKILL.md"
+    ],
+    "added": [
+      "same baseline files",
+      "designing-documents/SKILL.md",
+      "designing-documents/references/tasks-and-structure.md",
+      "designing-documents/references/pages-and-revision.md"
+    ]
+  },
+  "mechanical_checks": [
+    "All eight frozen packet/key pairs and protocol hashes match.",
+    "Both 05 outputs contain three pages; intra-set file/anchor links resolve and required anchors survive.",
+    "Both 01 outputs retain four supplied links and Query syntax heading.",
+    "Control responses authorize no changes; delivered originals used for word counts.",
+    "Repeated 01/05 outputs also retain required destinations/headings; cross-page links resolve after extracting file contents from response wrappers."
+  ],
+  "repeats": [
+    {
+      "case": 5,
+      "candidates": {
+        "X": {
+          "arm": "skill",
+          "path": "repeat-05-X.md",
+          "sha256": "43cb839ac1a091d9d43b16ea643bad7e9e7137be9cbc1a51a5422b1252618844",
+          "response_words": 643
+        },
+        "Y": {
+          "arm": "baseline",
+          "path": "repeat-05-Y.md",
+          "sha256": "7cd6c9ed4bba8f491d83f2b86f6666c18bb8ece0f8462564eec29af8c7c266c8",
+          "response_words": 676
+        }
+      }
+    },
+    {
+      "case": 1,
+      "candidates": {
+        "X": {
+          "arm": "baseline",
+          "path": "repeat-01-X.md",
+          "sha256": "54c43abe31d1593c6318d0c57769b1f07b7988fd2e85fd3495ff1cdb1af6ea75",
+          "response_words": 356
+        },
+        "Y": {
+          "arm": "skill",
+          "path": "repeat-01-Y.md",
+          "sha256": "59d695518e1b2590a0d11acc60ee9303ad2a8a059b4492f95837cb2a4fcdf15f",
+          "response_words": 392
+        }
+      }
+    },
+    {
+      "case": 3,
+      "candidates": {
+        "X": {
+          "arm": "skill",
+          "path": "repeat-03-X.md",
+          "sha256": "baebc64aa1b7a46af8a37ea426997be04cf5f7f697d026dcd884046c2ce966d8",
+          "response_words": 480
+        },
+        "Y": {
+          "arm": "baseline",
+          "path": "repeat-03-Y.md",
+          "sha256": "3759bf47bc14693f300bb29bbb399efb91c4d20061b0a52be6d14e6c43744fc1",
+          "response_words": 411
+        }
+      }
+    }
+  ],
+  "repeat_design": "After first editorial review, repeat all three cases with predicted placement concerns, in order 05/01/03. Fresh producer per arm, same model/effort/guidance; three cases within each producer. Producers saw no first outputs, keys, or findings. No skill tuning between batches. Follow-up selection was based on initial concerns, not preregistered.",
+  "development_revision": {
+    "reason": "Repeat exposed an unsupported control location in added-skill case 03 and a shared missing refresh route from the preserved Query syntax heading in case 01.",
+    "changes": [
+      "Treat interface/control locations as factual claims rather than inferring them from verification locations.",
+      "Recheck preserved headings as arrivals after moving necessary instructions."
+    ],
+    "core_sha256": "f07f7f12b1c0bd5aab2aa84e8cd6c1b4c7a6976749ab75926f68717a49c08a48",
+    "evaluation_status": "Final 01/03 focused editorial review found no unresolved concerns; no final paired or held-out comparison."
+  },
+  "focused_outputs": [
+    {
+      "case": 1,
+      "path": "final-01.md",
+      "sha256": "8294972338877180c6e79ffc7a5e2e489de55724c94a4efa4bb0e55acb149cd4",
+      "response_words": 424
+    },
+    {
+      "case": 3,
+      "path": "final-03.md",
+      "sha256": "dc354d69011940df13bd2f8cdd2755a8b4315332be8b19ffe78daf55da9ca137",
+      "response_words": 493
+    }
+  ],
+  "focused_probe": "Single fresh Sol medium producer, two-case batch 01/03, final core plus same frozen baseline guidance. No previous outputs/keys/findings read. Treatment-only post-tuning check, not a new paired comparison.",
+  "focused_guidance_reads": [
+    "same four baseline guidance files",
+    "designing-documents/SKILL.md",
+    "designing-documents/references/pages-and-revision.md"
+  ]
+}

@@ -1,0 +1,147 @@
+{
+  "schema_version": 1,
+  "freeze_id": "document-design-packets-v1",
+  "frozen_on": "2026-10-27",
+  "status": "frozen-before-evaluation",
+  "held_out_policy": "Do not run, expose, or tune on 07-decision or 08-conflicting before candidate and comparison plan are fixed.",
+  "cases": [
+    {
+      "id": "01-adoption",
+      "split": "development",
+      "control": false,
+      "producer": {
+        "path": "producer/01-adoption.md",
+        "sha256": "aea087db9dca99fc12f895e60fff88c6c32444583f856d8b0d6e90416cc1718a"
+      },
+      "evaluator_only": {
+        "path": "evaluator-only/01-adoption.md",
+        "sha256": "7c7f58699f349cb741d4f95f81c6de73d0663b15c41c309e057c1df374925fba"
+      }
+    },
+    {
+      "id": "02-concept",
+      "split": "development",
+      "control": false,
+      "producer": {
+        "path": "producer/02-concept.md",
+        "sha256": "62d5e138624d9a6d6b30f04442723c89f38704dafdf2ded9b3eac78404212434"
+      },
+      "evaluator_only": {
+        "path": "evaluator-only/02-concept.md",
+        "sha256": "0faeb04c99e5d9ac150b5c4a89569d89bc7115bb9a6b32e5ea49a55bd3fbe621"
+      }
+    },
+    {
+      "id": "03-procedure",
+      "split": "development",
+      "control": false,
+      "producer": {
+        "path": "producer/03-procedure.md",
+        "sha256": "4a2a7e78e7720b0324c4a31e6a9f6a5264aa0f75e21b5f49169d776f8347d17d"
+      },
+      "evaluator_only": {
+        "path": "evaluator-only/03-procedure.md",
+        "sha256": "9bf2c4929913529629650be107215370fa41f8d90eb63f43a1e5d26d4e8e527d"
+      }
+    },
+    {
+      "id": "04-reference",
+      "split": "development",
+      "control": true,
+      "producer": {
+        "path": "producer/04-reference.md",
+        "sha256": "17c27412b1c174ca93401cf41447b9e9da62560f2a0404c9a46a770f996ec542"
+      },
+      "evaluator_only": {
+        "path": "evaluator-only/04-reference.md",
+        "sha256": "de5a8ddacce264900a26b09564ad7d77777125ed611f42c77c53d8e364233a91"
+      }
+    },
+    {
+      "id": "05-docset",
+      "split": "development",
+      "control": false,
+      "producer": {
+        "path": "producer/05-docset.md",
+        "sha256": "4a20df3fe69c3b33781b7ca24ab90c5952c1b7c7d33857ee388417ced7de1d50"
+      },
+      "evaluator_only": {
+        "path": "evaluator-only/05-docset.md",
+        "sha256": "b78cc51413735c34bdfc22bb12ca9ec4281e6606eceda16dea625f059784f625"
+      }
+    },
+    {
+      "id": "06-short-guide",
+      "split": "development",
+      "control": true,
+      "producer": {
+        "path": "producer/06-short-guide.md",
+        "sha256": "e9c91e132f7e85b98162e08619fdab640788f393a7a35f9ec474c20409aeaa4c"
+      },
+      "evaluator_only": {
+        "path": "evaluator-only/06-short-guide.md",
+        "sha256": "e3b69e22873b83f6ee015ab3a7ab2046a460e065fba3351027277722a98b6011"
+      }
+    },
+    {
+      "id": "07-decision",
+      "split": "held-out",
+      "control": false,
+      "producer": {
+        "path": "producer/07-decision.md",
+        "sha256": "f2b4485d40e9b8fdd04b9ff8bd620bec4eae18ae4e081c71c81061aaa16393d2"
+      },
+      "evaluator_only": {
+        "path": "evaluator-only/07-decision.md",
+        "sha256": "f7df55211ba9848a589d8db1baa0780d9ac4b10e7878976f5abfd719f7c94ae5"
+      }
+    },
+    {
+      "id": "08-conflicting",
+      "split": "held-out",
+      "control": false,
+      "producer": {
+        "path": "producer/08-conflicting.md",
+        "sha256": "64b46e7d2f89a9dcb44b3ec8fc28764ab554a3112af39e6495b57e226fdd5049"
+      },
+      "evaluator_only": {
+        "path": "evaluator-only/08-conflicting.md",
+        "sha256": "be0d5e3f21092a42300fddfc64469a85848099d82743d9b8588896401b0780b1"
+      }
+    }
+  ],
+  "protocol": {
+    "path": "protocol.md",
+    "sha256": "74dad6d8dad2a5dad95ae396b556bee7bba9a1d9a4db1176960682c986be7873"
+  },
+  "results": [
+    {
+      "path": "runs/2026-10-27/results.md",
+      "type": "exploratory paired editorial comparison",
+      "cases": [
+        "01-adoption",
+        "02-concept",
+        "03-procedure",
+        "04-reference",
+        "05-docset",
+        "06-short-guide"
+      ],
+      "held_out_run": false
+    }
+  ],
+  "protocol_revision": "v2-pre-judging-evidence-labels",
+  "freeze_history": [
+    {
+      "component": "producer packets and evaluator keys",
+      "freeze": "document-design-packets-v1",
+      "status": "unchanged"
+    },
+    {
+      "component": "protocol",
+      "revision": "v2-pre-judging-evidence-labels",
+      "date": "2026-10-27",
+      "previous_sha256": "f76d45e58b95f39e29cf7c818e37cb94a3c3f541d22cd71a9f74f9b36d1ac772",
+      "reason": "Use task outcomes and evidence-based failure classes without numeric/composite scoring; separate organization from authorized completion and added facts from reasoning. No outputs judged or results known."
+    }
+  ]
+}

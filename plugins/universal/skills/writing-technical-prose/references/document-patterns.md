@@ -1,6 +1,6 @@
 # Document Patterns
 
-Use these patterns when the task calls for a full document. Follow existing repository templates first.
+Use these patterns as examples of useful coverage when the task calls for a full document. They do not prescribe headings, section counts, or order. Follow required repository templates, preserve effective existing structures, and omit irrelevant sections. Use the document-design workflow when organization needs judgment.
 
 ## README
 
@@ -44,7 +44,7 @@ Define the smallest set of concepts needed to use or modify the project.
 
 ### Task Name
 
-Show the command or code first, then explain important constraints.
+Place necessary conditions before the action they govern. Show interpretable code or commands with the context the task needs.
 
 ## Configuration
 

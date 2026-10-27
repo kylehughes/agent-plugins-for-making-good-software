@@ -104,7 +104,7 @@ second catalog of descriptions. Other skills do not load it.
 | Business and release evidence | `analyzing-app-store-business-data`, `auditing-ios-release-size` |
 | Workflow: delivery, review, and repair | `delivering-changes`, `reviewing-code`, `simplifying-code`, `hardening-changes` |
 | Workflow: ambiguity and handoff | `brainstorming-design-specs`, `compiling-agent-goals`, `writing-escalation-briefs` |
-| Technical prose | `writing-technical-prose` |
+| Document design and technical prose | `designing-documents`, `writing-technical-prose` |
 
 `verifying-invariants` owns the cross-language procedure for scoped obligations,
 method selection, and evidence limits. Language companions own representation,

@@ -12,6 +12,7 @@ guides and historical implementation records.
 | [Skill context and discovery](skill-context.md) | Understand catalog metadata, activation cost, and discovery checks. |
 | [Agent model selection](agent-model-selection.md) | Keep shared reviewer instructions separate from runtime model and effort settings. |
 | [Invariant verification and evaluation](invariant-verification.md) | Use the optional invariant tools and run evaluations with retained evidence. |
+| [Document-design evaluation](../evals/document-design/README.md) | Compare reader-task support against existing writing guidance with separate producer packets and evaluator keys. |
 | [Composition evaluation procedure](../evals/skill-composition/RUNNING.md) | Declare and assess a new batch of the existing composition scenarios. |
 
 The installed skills and their reference maps define the current workflows.

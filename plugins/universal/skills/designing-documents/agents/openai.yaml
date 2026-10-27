@@ -1,0 +1,4 @@
+interface:
+  display_name: "Designing Documents"
+  short_description: "Organize documents around reader tasks and relationships"
+  default_prompt: "Use $designing-documents to organize this document for its readers' understanding, decisions, actions, and lookup needs."

@@ -28,7 +28,7 @@ Prefer this structure for reviews:
 Provide replacement text for the highest-value section.
 ```
 
-Skip empty sections.
+Skip empty sections. Review-only work does not edit files or require a replacement document; offer a localized replacement only when it explains a finding. No substantive defect is a valid result.
 
 ## Correctness Checklist
 
@@ -47,7 +47,7 @@ Skip empty sections.
 - The opening tells the reader whether the document is relevant to them.
 - Prerequisites appear before steps that require them.
 - The happy path is complete.
-- Edge cases do not interrupt the happy path.
+- Optional detail does not interrupt the task; conditions governing even an uncommon branch remain at its point of use.
 - Troubleshooting maps symptoms to fixes.
 - Verification tells the reader how to know the work succeeded.
 - Rollback exists for migrations, deployments, and destructive operations.
@@ -59,7 +59,8 @@ Skip empty sections.
 - Related concepts are grouped together.
 - Tables compare structured attributes; prose explains causality and trade-offs.
 - Lists are parallel and not overloaded with multi-paragraph items.
-- Repeated concepts link back to one source of truth.
+- Repeated concepts retain one authoritative full account; short necessary conditions remain local at independent entry points.
+- First encounters and plausible direct arrivals have sufficient context without assuming that earlier presentation proves understanding.
 
 ## Voice Checklist
 

@@ -10,7 +10,7 @@ Plugins for making good software with Claude Code and Codex.
 
 Install `universal` for platform-agnostic workflows. Add `apple-platform`
 for Apple-platform development. Each plugin also works on its own. They share
-one set of instructions across both runtimes and ship 28 skills and 8 reviewer
+one set of instructions across both runtimes and ship 29 skills and 8 reviewer
 definitions in total.
 
 Skills provide task instructions and supporting references. Reviewer agents
@@ -130,7 +130,7 @@ The `apple-platform` plugin contains 19 skills and 4 reviewer definitions.
 
 [![Universal release](https://img.shields.io/github/v/release/kylehughes/agent-plugins-for-making-good-software?filter=universal%2Fv%2A&display_name=tag)](https://github.com/kylehughes/agent-plugins-for-making-good-software/releases?q=tag%3Auniversal%2Fv+draft%3Afalse+prerelease%3Afalse)
 
-The `universal` plugin contains 9 skills and 4 reviewer definitions.
+The `universal` plugin contains 10 skills and 4 reviewer definitions.
 
 ### Skills
 
@@ -139,6 +139,7 @@ The `universal` plugin contains 9 skills and 4 reviewer definitions.
 | `brainstorming-design-specs` | [Turn ambiguous work into an implementation-ready design through research and dialogue.](plugins/universal/skills/brainstorming-design-specs/SKILL.md) |
 | `compiling-agent-goals` | [Turn specs and plans into bounded agent goals with acceptance evidence and stopping conditions.](plugins/universal/skills/compiling-agent-goals/SKILL.md) |
 | `delivering-changes` | [Carry a requested change from its initial brief to a verified, PR-ready handoff.](plugins/universal/skills/delivering-changes/SKILL.md) |
+| `designing-documents` | [Organize documents for understanding, decisions, action, and lookup.](plugins/universal/skills/designing-documents/SKILL.md) |
 | `hardening-changes` | [Prepare owned changes for a PR by reviewing and fixing issues within the agreed scope.](plugins/universal/skills/hardening-changes/SKILL.md) |
 | `reviewing-code` | [Review correctness, security, concurrency, and compatibility risks with line-specific findings.](plugins/universal/skills/reviewing-code/SKILL.md) |
 | `simplifying-code` | [Simplify and reuse existing code while preserving behavior.](plugins/universal/skills/simplifying-code/SKILL.md) |

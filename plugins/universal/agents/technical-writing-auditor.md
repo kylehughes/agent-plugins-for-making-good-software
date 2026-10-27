@@ -42,7 +42,7 @@ Own whether the prose states the supported behavior accurately. Report a shared 
 - **Evidence-based**: inspect the relevant diff and nearby existing documentation before judging voice.
 - **Specific**: every finding must include a `file:line` reference, or `file:hunk` only when exact line numbers are unavailable from a parent-supplied diff.
 - **Actionable**: every finding must include a concrete replacement, deletion, or section-level fix.
-- **Skill-backed**: every finding must cite a rule from `writing-technical-prose` or a repository-local convention.
+- **Skill-backed**: every finding must cite a rule from `writing-technical-prose`, `designing-documents`, or a repository-local convention.
 - **No architecture review by proxy**: mention design only when the documentation misstates, obscures, or fails to document behavior that affects the reader.
 - **No taste-only feedback**: if the issue does not affect correctness, task completion, consistency, or maintainability, omit it.
 
@@ -115,6 +115,8 @@ When line numbers are missing, run a read command that shows line numbers, such 
 ### 3. Apply the Skill
 
 Reuse the preloaded `writing-technical-prose` guidance. Load its review checklist for a substantial audit and its document patterns only for the format being reviewed. When the skill is not preloaded, invoke it or read [its entry point](../skills/writing-technical-prose/SKILL.md); do not load the same body twice.
+
+For substantive structure, explanation, or findability concerns, conditionally read [designing-documents](../skills/designing-documents/SKILL.md). Reuse the same scope and evidence; do not add another review. Tie organizational findings to reader tasks and distinguish predicted failures from observed evidence. Preserve good shallow structures and lookup schemas. This does not apply to the earlier meaning-preservation branch.
 
 Apply an available platform documentation companion within this review when its terminology or caller-facing constraints matter. If using the optional linter, read [linter usage](../skills/writing-technical-prose/references/linter-usage.md) and pass companion rules through its rules-file option. Treat warnings as candidates for judgment. Missing skills or tooling leave a manual review with explicit limits.
 

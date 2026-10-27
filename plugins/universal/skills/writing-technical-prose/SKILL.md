@@ -26,19 +26,21 @@ Produce technical prose that is correct, concrete, and useful to capable readers
 - Gather source of truth from the repository, existing docs, code, tests, issue text, design notes, or user-provided material.
 - Reuse existing terminology. If terms conflict, choose the term used by public APIs or user-facing docs and note the mismatch if it matters.
 
+For substantive document organization, compose with [designing-documents](../designing-documents/SKILL.md). It owns reader tasks, relationships, sequencing, and access paths; this skill owns technical expression and accuracy. Reuse the same scope and evidence. Local wording edits and already effective short documents need no structural pass.
+
 ### When Creating New Prose
 
 - Start with the purpose or problem, not historical background.
 - Put the most common path before edge cases.
-- Include a minimal working example before optional configuration.
+- Include a working example when it helps the reader interpret or perform the task. Put necessary context and conditions before copying would invite misuse.
 - Explain why a rule or decision exists when the reason affects future maintenance.
 - Use examples that resemble the real codebase. Avoid placeholder names such as `foo`, `bar`, `MyClass`, or `doThing()` unless the surrounding project already uses them.
 
 ### When Editing Existing Prose
 
-- Preserve meaning unless the user explicitly asks for a rewrite.
+- Preserve technical meaning, qualifications, and authority even when rewriting, unless a substantive change is authorized and supported.
 - Improve structure before polishing sentences.
-- Remove duplication, filler, stale claims, and unsupported certainty.
+- Remove repetition that serves no distinct task or entry point, filler, stale claims, and unsupported certainty. Preserve short necessary conditions at independent points of use.
 - Keep stable anchors, heading IDs, public symbol names, and links intact unless they are wrong.
 - Prefer small, reviewable edits for existing project docs.
 
@@ -108,7 +110,7 @@ Use `must`, `must not`, `should`, `should not`, and `may` deliberately.
 
 ## Structure Principles
 
-Every substantial document should answer these questions in the order the reader needs them:
+Use these questions as coverage prompts when relevant to the reader's job, not as required sections or a fixed order:
 
 1. What is this?
 2. When do we use it?
@@ -117,7 +119,7 @@ Every substantial document should answer these questions in the order the reader
 5. How do we verify that it worked?
 6. Where should the reader look next?
 
-For full templates, read `references/document-patterns.md`.
+For adaptable examples, read [document patterns](references/document-patterns.md). Keep useful shallow structures and stable reference schemas; apply only the coverage the task needs.
 
 ### README Baseline
 
@@ -177,12 +179,13 @@ Read [the Markdown formatting example](references/style-examples.md#markdown-for
 
 ## Output Rules
 
-When asked to write or rewrite a document, output the finished artifact unless the user asked for analysis. When asked for a review, output findings plus concrete replacements. When facts are missing, include the smallest possible `TODO:` markers instead of inventing details.
+When asked to write or rewrite a document, output the finished artifact unless the user asked for analysis. When asked for a review, do not edit files or silently replace the document. Output task-linked findings and proportionate remedies; distinguish optional alternatives from defects. No findings is a valid result. When facts are missing, include the smallest possible `TODO:` markers instead of inventing details.
 
 ## Reference Map
 
 Read the reference that matches the deliverable or unresolved writing decision:
 
+- [Designing documents](../designing-documents/SKILL.md): substantive organization and reader-task checks, composed without a separate workflow.
 - [Document patterns](references/document-patterns.md): README, ADR, RFC, runbook, migration, troubleshooting, PR, and release-note structure.
 - [Style examples](references/style-examples.md): examples of pronouns, tense, and Markdown callouts.
 - [Review checklist](references/review-checklist.md): final checks for a substantial draft or requested review.
