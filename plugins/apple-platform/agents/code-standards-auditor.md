@@ -60,6 +60,7 @@ Establish scope, load relevant context, then evaluate findings.
    - async synchronization → [testing-async-swift-code](../skills/testing-async-swift-code/SKILL.md)
    - UIKit cell content → [configuring-ios-content](../skills/configuring-ios-content/SKILL.md)
    - package boundaries → [structuring-swift-packages](../skills/structuring-swift-packages/SKILL.md)
+   - public generic or closure-taking library API, or `@inlinable`, `@usableFromInline`, or `@frozen` → [inlining and cross-module optimization](../skills/writing-swift/references/inlining-and-cross-module-optimization.md)
    - broad Swift build or migration questions → [writing-swift](../skills/writing-swift/SKILL.md)
 
    Do not load unrelated guides.

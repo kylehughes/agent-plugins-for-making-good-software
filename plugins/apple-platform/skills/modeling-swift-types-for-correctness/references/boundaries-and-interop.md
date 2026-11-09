@@ -377,7 +377,7 @@ Consider:
 - Changing a raw type or canonicalization.
 - Exposing a new standard-library type unavailable on older deployment targets.
 
-For a package compiled from source, source compatibility may dominate. For a binary framework, ABI and module stability also matter. Do not use `@frozen`, `@inlinable`, or `@usableFromInline` casually; they expose implementation choices.
+For a package compiled from source, source compatibility may dominate. For a binary framework, ABI and module stability also matter. In a binary framework, `@frozen`, `@inlinable`, and `@usableFromInline` are permanent commitments that expose implementation choices; add them deliberately. In a source-built package, `@inlinable` on public generic API is routine. See [inlining and cross-module optimization](../../writing-swift/references/inlining-and-cross-module-optimization.md) for the decision.
 
 ## Availability Adapters
 

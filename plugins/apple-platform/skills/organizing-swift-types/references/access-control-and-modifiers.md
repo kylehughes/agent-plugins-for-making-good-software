@@ -15,6 +15,7 @@ Use the most restrictive access level that compiles and accurately represents th
 - Prefer `private(set)` over a wider setter.
 - Do not widen access to make organization easier. Move code instead.
 - Do not widen access just because tests want to reach an implementation detail. Prefer testing through public behavior or module test mechanisms already used by the project.
+- When an `@inlinable` body needs an implementation detail, mark that detail `@usableFromInline` and leave it `internal`; do not make it `public`. A `private` member that such a body needs becomes `@usableFromInline internal`, which is the one accepted reason to loosen `private`. For when to use `@inlinable`, see [inlining and cross-module optimization](../../writing-swift/references/inlining-and-cross-module-optimization.md).
 
 Classes are `final` by default.
 

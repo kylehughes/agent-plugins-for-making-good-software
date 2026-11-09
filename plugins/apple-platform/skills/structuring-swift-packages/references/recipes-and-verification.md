@@ -76,12 +76,10 @@ public protocol MainMenuCoordinatorCreating: Sendable {
 // Packages/MainMenu/Sources/MainMenuAssembly/MainMenuCoordinatorFactory.swift
 public struct MainMenuCoordinatorFactory: MainMenuCoordinatorCreating {
     // Dependencies accepted as protocol types
-    @usableFromInline let appInfoProvider: any AppInfoProviding
+    let appInfoProvider: any AppInfoProviding
 
-    @inlinable
     public init(appInfoProvider: some AppInfoProviding, ...) { ... }
 
-    @inlinable
     public func makeMainMenuCoordinator(accountId: Int) -> any MainMenuCoordinating {
         MainMenuCoordinator(appInfoProvider: appInfoProvider, accountId: accountId, ...)
     }
@@ -96,6 +94,8 @@ let mainMenuCoordinatorFactory = MainMenuCoordinatorFactory(
 ```
 
 When the factory is consumed by 2+ packages, the concrete implementation lives in a `*Assembly` module. Single-consumer factories stay in the app target.
+
+Do not mark factory members `@inlinable`. An inlinable body is published to every importer, so it would expose the concrete `MainMenuCoordinator` that the factory exists to hide.
 
 **Tradeoff:** Heavier than a protocol-in-Interfaces — requires a factory registration site and deferred creation. Use when the consumer needs to *create* instances, not just call methods on an existing one.
 

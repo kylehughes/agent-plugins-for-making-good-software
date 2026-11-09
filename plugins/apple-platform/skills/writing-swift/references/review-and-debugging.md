@@ -131,8 +131,14 @@ Define the metric and workload before optimizing. Use release builds.
 Compare distributions, not one timing sample. Control warm-up, cache state, input, device thermal conditions, simulator vs.
 device, and background load.
 
-Review algorithmic complexity and task fan-out before adding inlining, specialization, unsafe buffers, atomics, or custom
-allocators. Preserve a benchmark that proves the regression and improvement where the project supports it.
+Review algorithmic complexity and task fan-out before adding forced inlining, explicit specialization, unsafe buffers,
+atomics, or custom allocators. Preserve a benchmark that proves the regression and improvement where the project supports
+it.
+
+A hot call into another module that reaches an unspecialized generic or a closure-taking function is a common, cheap fix:
+check whether the callee should be `@inlinable` using
+[Inlining and cross-module optimization](inlining-and-cross-module-optimization.md). In review, a public generic library
+API without the attribute is worth a note; the attribute on cold or boundary-hiding code is too.
 
 ## Security and Privacy Review
 

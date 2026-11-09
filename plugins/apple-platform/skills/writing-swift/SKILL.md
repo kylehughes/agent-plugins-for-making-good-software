@@ -28,7 +28,7 @@ State the behavior or diagnostic, identify the owning layer, make the narrowest 
 - Model invalid states with types when that simplifies callers; use typed values instead of stringly typed state.
 - Use optionals for legitimate absence and throwing APIs for recoverable failures. Preserve cancellation and error context.
 - Avoid force unwraps, force casts, and `try!` except for explicit, documented invariants.
-- Choose protocols, generics, `some`, `any`, type erasure, macros, wrappers, and compiler attributes only for a real boundary or measured benefit.
+- Choose protocols, generics, `some`, `any`, type erasure, macros, wrappers, and compiler attributes only for a real boundary or measured benefit. The exception is `@inlinable`, which public generic API in a source-built library module should carry by default.
 - Follow repository formatting and the Swift API Design Guidelines. For API naming, types, errors, access, docs, and source organization, read [API design and style](references/api-design-and-style.md) or the focused designing-swift-apis skill.
 
 ## Focused routing
@@ -43,6 +43,7 @@ Load only the concern-specific guidance needed for the task. Use repository inst
 - API design: `designing-swift-apis`; type and file layout: `organizing-swift-types`; member placement: `ordering-symbols`.
 - User-facing UI text: `localizing-strings`; UIKit cell content: `configuring-ios-content`; sheets: `presenting-ios-modals`.
 - Package/module boundaries: `structuring-swift-packages`.
+- Public generic, closure-taking, or performance-sensitive API in a library module, or any use of `@inlinable`, `@usableFromInline`, or `@frozen`: [Inlining and cross-module optimization](references/inlining-and-cross-module-optimization.md). Read it when writing such API, not only when asked about performance.
 - Swift developer documentation: `writing-apple-platform-documentation`.
 - SwiftPM, Xcode, availability, interop, generated sources, and CI: [Packages, builds, and platforms](references/packages-builds-and-platforms.md).
 - Review or debugging evidence and severity: [Review and debugging](references/review-and-debugging.md).
@@ -71,5 +72,6 @@ Read only the references relevant to the requested work. The focused companion s
 - [Concurrency](references/concurrency.md): isolation, `Sendable`, tasks, actors, cancellation, continuations, streams, and repairs.
 - [Testing Swift](references/testing.md): Swift Testing, XCTest, deterministic async tests, migration, and review.
 - [API design and style](references/api-design-and-style.md): naming, types, errors, access, docs, formatting, and organization.
+- [Inlining and cross-module optimization](references/inlining-and-cross-module-optimization.md): when and how to use `@inlinable` and `@usableFromInline`, by distribution model.
 - [Packages, builds, and platforms](references/packages-builds-and-platforms.md): SwiftPM, Xcode, availability, platforms, interop, generated sources, and CI.
 - [Review and debugging](references/review-and-debugging.md): investigation, severity, compatibility, evidence, and reporting.

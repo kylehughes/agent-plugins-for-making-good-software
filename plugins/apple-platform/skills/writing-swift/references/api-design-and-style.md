@@ -117,9 +117,11 @@ Start with the narrowest access that satisfies the design:
 Review a public declaration for naming, availability, concurrency annotations, `Sendable`, error behavior, generic
 constraints, and documentation before shipping it. Public stored properties and enum cases can constrain future evolution.
 
-For resilient libraries, understand `@frozen`, `@inlinable`, `@usableFromInline`, and implementation-only import behavior
-before using them. These attributes expose layout or implementation details to clients and should not be added as generic
-performance advice.
+`@inlinable` and `@usableFromInline` publish a function body to client modules so they can inline and specialize it. In a
+library module built from source with its clients, add `@inlinable` to public generic, closure-taking, and trivial
+value-type API as a matter of course. In a resilient binary library the body becomes a permanent commitment, as `@frozen`
+is for layout, so add it deliberately. Read [Inlining and cross-module optimization](inlining-and-cross-module-optimization.md)
+before adding, removing, or reviewing these attributes.
 
 Use SPI only when the distribution model and clients explicitly support it. Treat access-controlled imports and exported
 imports as API-surface decisions.
@@ -195,8 +197,10 @@ Review common Swift costs without assuming each is a bug:
 - Actor hops in fine-grained loops.
 - Retain cycles in closures and long-lived tasks.
 
-Use `@inline(always)`, `@specialize`, `@inlinable`, `withoutActuallyEscaping`, unsafe pointers, or manual memory management
-only with measurements, comments explaining the invariant, and tests covering the boundary.
+Use `@inline(__always)`, `@_specialize`, `withoutActuallyEscaping`, unsafe pointers, or manual memory management only with
+measurements, comments explaining the invariant, and tests covering the boundary. `@inlinable` is different: on public
+generic API in a source-built library module it is the expected default, not a measured exception. See
+[Inlining and cross-module optimization](inlining-and-cross-module-optimization.md).
 
 ## API Review Checklist
 
@@ -208,6 +212,7 @@ only with measurements, comments explaining the invariant, and tests covering th
 - Are concurrency isolation, transfer, and cancellation visible in the API?
 - Is access no wider than required?
 - Are public compatibility and availability implications understood?
+- Is public generic or closure-taking library API `@inlinable` where the distribution model allows it?
 - Does documentation explain contracts rather than syntax?
 - Is performance complexity justified by evidence?
 
